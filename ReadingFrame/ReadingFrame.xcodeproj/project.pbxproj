@@ -12,7 +12,7 @@
 		C595A1E82B7A9FFB006D88EC /* BookMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C595A1E72B7A9FFB006D88EC /* BookMap.swift */; };
 		C595A1EC2B7AA01E006D88EC /* MyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C595A1EB2B7AA01E006D88EC /* MyPage.swift */; };
 		C5BE52252B68F53E00FF07F8 /* ReadingFrameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BE52242B68F53E00FF07F8 /* ReadingFrameApp.swift */; };
-		C5BE52272B68F53E00FF07F8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BE52262B68F53E00FF07F8 /* ContentView.swift */; };
+		C5BE52272B68F53E00FF07F8 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BE52262B68F53E00FF07F8 /* LaunchView.swift */; };
 		C5BE52292B68F54000FF07F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5BE52282B68F54000FF07F8 /* Assets.xcassets */; };
 		C5BE522C2B68F54000FF07F8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5BE522B2B68F54000FF07F8 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -24,7 +24,7 @@
 		C595A1EB2B7AA01E006D88EC /* MyPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPage.swift; sourceTree = "<group>"; };
 		C5BE52212B68F53E00FF07F8 /* ReadingFrame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReadingFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5BE52242B68F53E00FF07F8 /* ReadingFrameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingFrameApp.swift; sourceTree = "<group>"; };
-		C5BE52262B68F53E00FF07F8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C5BE52262B68F53E00FF07F8 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		C5BE52282B68F54000FF07F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C5BE522B2B68F54000FF07F8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C5BE52322B68F60300FF07F8 /* ReadingFrame.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReadingFrame.entitlements; sourceTree = "<group>"; };
@@ -114,6 +114,22 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		C595A1ED2B7B1EFC006D88EC /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				C595A1EE2B7B1F12006D88EC /* Views */,
+			);
+			path = Launch;
+			sourceTree = "<group>";
+		};
+		C595A1EE2B7B1F12006D88EC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C5BE52262B68F53E00FF07F8 /* LaunchView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		C5BE52182B68F53E00FF07F8 = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +149,7 @@
 		C5BE52232B68F53E00FF07F8 /* ReadingFrame */ = {
 			isa = PBXGroup;
 			children = (
+				C595A1ED2B7B1EFC006D88EC /* Launch */,
 				C595A1E92B7AA00F006D88EC /* MyPage */,
 				C595A1E52B7A9FE9006D88EC /* BookMap */,
 				C595A1E32B7A9FCF006D88EC /* MainPage */,
@@ -140,7 +157,6 @@
 				C5BE52332B68F68100FF07F8 /* Info.plist */,
 				C5BE52322B68F60300FF07F8 /* ReadingFrame.entitlements */,
 				C5BE52242B68F53E00FF07F8 /* ReadingFrameApp.swift */,
-				C5BE52262B68F53E00FF07F8 /* ContentView.swift */,
 				C595A1DC2B7A89D8006D88EC /* Resources */,
 				C5BE522A2B68F54000FF07F8 /* Preview Content */,
 			);
@@ -225,7 +241,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5BE52272B68F53E00FF07F8 /* ContentView.swift in Sources */,
+				C5BE52272B68F53E00FF07F8 /* LaunchView.swift in Sources */,
 				C5BE52252B68F53E00FF07F8 /* ReadingFrameApp.swift in Sources */,
 				C595A1EC2B7AA01E006D88EC /* MyPage.swift in Sources */,
 				C595A1E82B7A9FFB006D88EC /* BookMap.swift in Sources */,

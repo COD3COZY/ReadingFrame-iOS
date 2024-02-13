@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct LaunchView: View {
     
     @State var isLoading: Bool = true   // 런칭 처리 끝난 후에 바꿔줘서 화면 전환시키기 위한 변수
     
@@ -41,7 +41,7 @@ struct ContentView: View {
 }
 
 // MARK: - 스플래시 스크린
-extension ContentView {
+extension LaunchView {
     var SplashScreenView: some View {
         VStack {
             Spacer()
@@ -58,5 +58,5 @@ extension ContentView {
 }
 
 #Preview {
-    ContentView()
+    LaunchView()
 }

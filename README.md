@@ -269,6 +269,7 @@ import URLNavigator
 
 ---
 - `///`를 사용해서 문서화에 사용되는 주석을 남깁니다.
+- 예를 들어, 파일에 대한 설명, 변수 및 상수에 대한 설명을 주석으로 남깁니다.
   
     ```swift
     /// 사용자 프로필을 그려주는 뷰
@@ -279,30 +280,24 @@ import URLNavigator
     }
     ```
     
-- `// MARK:`를 사용해서 연관된 코드를 구분짓습니다.<br><br>
-  연관된 코드와 그렇지 않은 코드를 구분할 때 사용합니다.
+- `// MARK:`를 사용해서 코드의 구역이나 단위를 시각적으로 구분짓습니다.<br>
   
     ```swift
-    // MARK: Init
     
-    override init(frame: CGRect) {
-      // doSomething()
-    }
+    // MARK: 홈 화면, 책장 화면 전환 버튼
+    HomeSegmentedControl()
+      .frame(width: 118, height: 28)
+      .padding(.top, 15)
     
-    deinit {
-      // doSomething()
-    }
-    
-    // MARK: Layout
-    
-    override func layoutSubviews() {
-      // doSomething()
-    }
-    
-    // MARK: Actions
-    
-    override func menuButtonDidTap() {
-      // doSomething()
+    // MARK: 읽고 있는 책
+    HStack {
+      Text("읽고 있는 책")
+        .font(.thirdTitle)
+        .foregroundStyle(.black0)
+                    
+      Text("\(readingBooksCount)")
+        .font(.thirdTitle)
+        .foregroundStyle(.black0)
     }
     ```
 ---

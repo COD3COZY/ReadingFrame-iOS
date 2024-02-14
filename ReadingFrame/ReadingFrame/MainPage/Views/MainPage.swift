@@ -13,12 +13,20 @@ struct MainPage: View {
     @State private var readingBooksCount = 0 /// 읽고 있는 책 갯수
     @State private var finishReadBooksCount = 0 /// 다 읽은 책 갯수
     
+    @State private var searchText = "" /// 사용자가 입력한 검색어
+    
     var body: some View {
         ScrollView() {
             VStack(alignment: .leading) {
                 VStack(alignment: .trailing) {
-                    // 검색바
-                    SearchBar()
+                    
+                    // FIXME: 전환 속도가 너무 느림, 텍스트 중앙 정렬되는 이유 찾기
+                    // 검색바를 클릭한 경우
+                    NavigationLink {
+                        SearchView()
+                    } label: {
+                        SearchBar(searchText: $searchText)
+                    }
                     
                     // 홈 화면, 책장 화면 전환 버튼
                     HomeSegmentedControl()
@@ -93,8 +101,7 @@ struct MainPage: View {
                 }
                 
             }
-            .padding(.leading, 16)
-            .padding(.trailing, 16)
+            .padding([.leading, .trailing], 16)
             
             Spacer()
         }
@@ -123,6 +130,7 @@ struct notRegisteredBook: View {
             
             // TODO: 버튼 클릭 시 Search 화면으로 이동
             NavigationLink {
+                SearchView()
             } label: {
                 // 검색하기 버튼
                 HStack {

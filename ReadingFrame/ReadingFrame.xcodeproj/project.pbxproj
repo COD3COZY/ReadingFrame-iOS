@@ -18,6 +18,7 @@
 		C5BE522C2B68F54000FF07F8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5BE522B2B68F54000FF07F8 /* Preview Assets.xcassets */; };
 		E7A0DD2A2B7B4B12006004B5 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD292B7B4B12006004B5 /* SearchBar.swift */; };
 		E7A0DD2C2B7B52A7006004B5 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD2B2B7B52A7006004B5 /* Fonts.swift */; };
+		E7A0DD2E2B7B617E006004B5 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD2D2B7B617E006004B5 /* SearchView.swift */; };
 		E7A0DD302B7B6B5B006004B5 /* HomeSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD2F2B7B6B5B006004B5 /* HomeSegmentedControl.swift */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +37,7 @@
 		C5BE52332B68F68100FF07F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E7A0DD292B7B4B12006004B5 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		E7A0DD2B2B7B52A7006004B5 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		E7A0DD2D2B7B617E006004B5 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		E7A0DD2F2B7B6B5B006004B5 /* HomeSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSegmentedControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				C595A1DD2B7A9DD6006D88EC /* AppTabView.swift */,
+				E7A0DD2D2B7B617E006004B5 /* SearchView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				C595A1FB2B7B8A3F006D88EC /* Book.swift in Sources */,
 				E7A0DD2C2B7B52A7006004B5 /* Fonts.swift in Sources */,
 				E7A0DD302B7B6B5B006004B5 /* HomeSegmentedControl.swift in Sources */,
+				E7A0DD2E2B7B617E006004B5 /* SearchView.swift in Sources */,
 				E7A0DD2A2B7B4B12006004B5 /* SearchBar.swift in Sources */,
 				C5BE52272B68F53E00FF07F8 /* LaunchView.swift in Sources */,
 				C5BE52252B68F53E00FF07F8 /* ReadingFrameApp.swift in Sources */,

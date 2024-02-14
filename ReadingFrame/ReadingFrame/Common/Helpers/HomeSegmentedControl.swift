@@ -22,7 +22,7 @@ struct HomeSegmentedControl: View {
         Picker(selection: $selection,
                label: Text("Picker"),
                content: {
-                ForEach(filterOptions.indices) { index in
+                ForEach(filterOptions.indices, id: \.self) { index in
                     Image(systemName: filterOptions[index])
                         .font(.system(size: 13).weight(.semibold))
                         .foregroundStyle(.black)

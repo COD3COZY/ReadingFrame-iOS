@@ -21,13 +21,13 @@ struct SearchView: View {
                     
                     searchResults(searchText: $searchText)
                 }
-                .padding(16)
                 .frame(minHeight: geometry.size.height)
 
             }
             .frame(width: geometry.size.width)
-            
         }
+        .padding(.top, 8)
+        .padding([.leading, .trailing], 16)
         .frame(maxWidth: .infinity) // 화면 전체 스크롤 가능하도록 설정
         .navigationTitle("검색하기")
         .navigationBarTitleDisplayMode(.inline)
@@ -51,7 +51,7 @@ struct searchResults: View {
                     .frame(width: 89)
                 
                 Text("찾고 있는 책을 검색해 보세요.")
-                    .foregroundStyle(Color(red: 124 / 255, green: 124 / 255, blue: 124 / 255))
+                    .foregroundStyle(.greyText)
                     .padding(.top, 25)
             }
             .padding(.bottom, 176)

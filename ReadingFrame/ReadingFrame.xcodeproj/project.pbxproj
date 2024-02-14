@@ -12,6 +12,9 @@
 		C595A1E82B7A9FFB006D88EC /* BookMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C595A1E72B7A9FFB006D88EC /* BookMap.swift */; };
 		C595A1EC2B7AA01E006D88EC /* MyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C595A1EB2B7AA01E006D88EC /* MyPage.swift */; };
 		C595A1FB2B7B8A3F006D88EC /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = C595A1FA2B7B8A3F006D88EC /* Book.swift */; };
+		C595A2002B7BAC7A006D88EC /* RegisterBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = C595A1FF2B7BAC7A006D88EC /* RegisterBook.swift */; };
+		C595A2022B7BCB10006D88EC /* SelectBookTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C595A2012B7BCB10006D88EC /* SelectBookTypeView.swift */; };
+		C595A2042B7BDE87006D88EC /* DatePickerInList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C595A2032B7BDE87006D88EC /* DatePickerInList.swift */; };
 		C5BE52252B68F53E00FF07F8 /* ReadingFrameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BE52242B68F53E00FF07F8 /* ReadingFrameApp.swift */; };
 		C5BE52272B68F53E00FF07F8 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BE52262B68F53E00FF07F8 /* LaunchView.swift */; };
 		C5BE52292B68F54000FF07F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5BE52282B68F54000FF07F8 /* Assets.xcassets */; };
@@ -25,6 +28,9 @@
 		C595A1E72B7A9FFB006D88EC /* BookMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMap.swift; sourceTree = "<group>"; };
 		C595A1EB2B7AA01E006D88EC /* MyPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPage.swift; sourceTree = "<group>"; };
 		C595A1FA2B7B8A3F006D88EC /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
+		C595A1FF2B7BAC7A006D88EC /* RegisterBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterBook.swift; sourceTree = "<group>"; };
+		C595A2012B7BCB10006D88EC /* SelectBookTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectBookTypeView.swift; sourceTree = "<group>"; };
+		C595A2032B7BDE87006D88EC /* DatePickerInList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerInList.swift; sourceTree = "<group>"; };
 		C5BE52212B68F53E00FF07F8 /* ReadingFrame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReadingFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5BE52242B68F53E00FF07F8 /* ReadingFrameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingFrameApp.swift; sourceTree = "<group>"; };
 		C5BE52262B68F53E00FF07F8 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
@@ -144,6 +150,32 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		C595A1FC2B7BABD6006D88EC /* BookInfo */ = {
+			isa = PBXGroup;
+			children = (
+				C595A1FE2B7BAC69006D88EC /* Helpers */,
+				C595A1FD2B7BAC60006D88EC /* Views */,
+			);
+			path = BookInfo;
+			sourceTree = "<group>";
+		};
+		C595A1FD2B7BAC60006D88EC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C595A1FF2B7BAC7A006D88EC /* RegisterBook.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C595A1FE2B7BAC69006D88EC /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				C595A2012B7BCB10006D88EC /* SelectBookTypeView.swift */,
+				C595A2032B7BDE87006D88EC /* DatePickerInList.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		C5BE52182B68F53E00FF07F8 = {
 			isa = PBXGroup;
 			children = (
@@ -163,6 +195,7 @@
 		C5BE52232B68F53E00FF07F8 /* ReadingFrame */ = {
 			isa = PBXGroup;
 			children = (
+				C595A1FC2B7BABD6006D88EC /* BookInfo */,
 				C5BE52332B68F68100FF07F8 /* Info.plist */,
 				C5BE52322B68F60300FF07F8 /* ReadingFrame.entitlements */,
 				C5BE52242B68F53E00FF07F8 /* ReadingFrameApp.swift */,
@@ -255,13 +288,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C595A2002B7BAC7A006D88EC /* RegisterBook.swift in Sources */,
 				C595A1FB2B7B8A3F006D88EC /* Book.swift in Sources */,
 				E7A0DD2C2B7B52A7006004B5 /* Fonts.swift in Sources */,
+				C595A2022B7BCB10006D88EC /* SelectBookTypeView.swift in Sources */,
 				C5BE52272B68F53E00FF07F8 /* LaunchView.swift in Sources */,
 				C5BE52252B68F53E00FF07F8 /* ReadingFrameApp.swift in Sources */,
 				C595A1EC2B7AA01E006D88EC /* MyPage.swift in Sources */,
 				C595A1E82B7A9FFB006D88EC /* BookMap.swift in Sources */,
 				C595A1DE2B7A9DD6006D88EC /* AppTabView.swift in Sources */,
+				C595A2042B7BDE87006D88EC /* DatePickerInList.swift in Sources */,
 				C595A1E02B7A9E59006D88EC /* MainPage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

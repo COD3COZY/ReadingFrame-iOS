@@ -22,7 +22,9 @@ class Book {
     var readingStatus: ReadingStatus = .unregistered
     
     // 생성자
-    init(ISBN: String, cover: String, title: String, author: String, publisher: String, publicationDate: Date, categoryName: CategoryName, totalPage: Int, readingStatus: ReadingStatus) {
+    init(ISBN: String, cover: String, title: String, 
+         author: String, publisher: String, publicationDate: Date,
+         categoryName: CategoryName, totalPage: Int, readingStatus: ReadingStatus) {
         self.ISBN = ISBN
         self.cover = cover
         self.title = title
@@ -35,32 +37,6 @@ class Book {
     }
     
 
-    // 책종류
-    enum BookType {
-        case paperbook  // 종이책
-        case eBook      // 전자책
-        case audioBook  // 오디오북
-    }
-    
-    // 독서상태
-    enum ReadingStatus: Int {
-        case unregistered   = -1    // 미등록
-        case wantToRead     = 0     // 읽고싶은
-        case reading        = 1     // 읽는중
-        case finishRead     = 2     // 다읽음
-    }
-    
-    // 카테고리(장르)
-    enum CategoryName: Int {
-        case humanSocial        // 인문사회
-        case literature         // 문학
-        case essays             // 에세이
-        case science            // 과학
-        case selfImprovement    // 자기계발
-        case art                // 예술
-        case foreign            // 원서
-        case etc                // 기타
-    }
 }
 
 
@@ -81,6 +57,43 @@ class RegisteredBook: Book {
         self.isHidden = isHidden
         self.mainLocation = mainLocation
         
-        super.init(ISBN: registerBook.ISBN, cover: registerBook.cover, title: registerBook.title, author: registerBook.author, publisher: registerBook.publisher, publicationDate: registerBook.publicationDate, categoryName: registerBook.categoryName, totalPage: registerBook.totalPage, readingStatus: registerBook.readingStatus)
+        super.init(
+            ISBN: registerBook.ISBN,
+            cover: registerBook.cover,
+            title: registerBook.title,
+            author: registerBook.author,
+            publisher: registerBook.publisher,
+            publicationDate: registerBook.publicationDate,
+            categoryName: registerBook.categoryName,
+            totalPage: registerBook.totalPage,
+            readingStatus: registerBook.readingStatus)
     }
+}
+
+
+// 책종류
+enum BookType {
+    case paperbook  // 종이책
+    case eBook      // 전자책
+    case audioBook  // 오디오북
+}
+
+// 독서상태
+enum ReadingStatus: Int {
+    case unregistered   = -1    // 미등록
+    case wantToRead     = 0     // 읽고싶은
+    case reading        = 1     // 읽는중
+    case finishRead     = 2     // 다읽음
+}
+
+// 카테고리(장르)
+enum CategoryName: Int {
+    case humanSocial        // 인문사회
+    case literature         // 문학
+    case essays             // 에세이
+    case science            // 과학
+    case selfImprovement    // 자기계발
+    case art                // 예술
+    case foreign            // 원서
+    case etc                // 기타
 }

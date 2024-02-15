@@ -55,7 +55,7 @@ class Book: Identifiable {
         publicationDate: Date.now,
         categoryName: .literature,
         totalPage: 456, 
-        readingStatus: .finishRead
+        readingStatus: .wantToRead
     )
 }
 

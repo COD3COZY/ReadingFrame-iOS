@@ -16,20 +16,7 @@ struct MainPageBookRow: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 ForEach(items) { book in
-                    NavigationLink {
-                        // 읽고 싶은 책이라면
-                        if (book.readingStatus == .wantToRead) {
-                            // TODO: 책 정보 화면으로 이동
-                            
-                        }
-                        // 다 읽은 책 이라면
-                        else {
-                            // TODO: 독서 노트 화면으로 이동
-                        }
-                    } label: {
-                        // 책을 누르면
-                        MainPageBookItem(registeredBook: book)
-                    }
+                    MainPageBookItem(registeredBook: book) // 책 뷰 띄우기
                 }
             }
             .padding(.leading, 16)

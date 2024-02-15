@@ -89,7 +89,6 @@
 			isa = PBXGroup;
 			children = (
 				C595A1DD2B7A9DD6006D88EC /* AppTabView.swift */,
-				E7A0DD2D2B7B617E006004B5 /* SearchView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -228,16 +227,17 @@
 		C5BE52232B68F53E00FF07F8 /* ReadingFrame */ = {
 			isa = PBXGroup;
 			children = (
-				C5BB8B632B7CF3A500A49858 /* SearchLocation */,
-				C595A1FC2B7BABD6006D88EC /* BookInfo */,
 				C5BE52332B68F68100FF07F8 /* Info.plist */,
 				C5BE52322B68F60300FF07F8 /* ReadingFrame.entitlements */,
 				C5BE52242B68F53E00FF07F8 /* ReadingFrameApp.swift */,
 				C595A1E12B7A9FB7006D88EC /* Common */,
 				C595A1ED2B7B1EFC006D88EC /* Launch */,
 				C595A1E32B7A9FCF006D88EC /* MainPage */,
+				E751FDF32B7DFD92003A8030 /* Search */,
+				C595A1FC2B7BABD6006D88EC /* BookInfo */,
 				C595A1E52B7A9FE9006D88EC /* BookMap */,
 				C595A1E92B7AA00F006D88EC /* MyPage */,
+				C5BB8B632B7CF3A500A49858 /* SearchLocation */,
 				C595A1DC2B7A89D8006D88EC /* Resources */,
 				C5BE522A2B68F54000FF07F8 /* Preview Content */,
 			);
@@ -259,6 +259,22 @@
 				E71631602B7CD08B00BCD302 /* MainPageBookRow.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		E751FDF32B7DFD92003A8030 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				E751FDF42B7DFDBA003A8030 /* Views */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		E751FDF42B7DFDBA003A8030 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E7A0DD2D2B7B617E006004B5 /* SearchView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		E7A0DD282B7B49F2006004B5 /* Helpers */ = {

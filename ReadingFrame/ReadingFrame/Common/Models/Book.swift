@@ -46,18 +46,19 @@ class Book: Identifiable {
         self.readingStatus = readingStatus
     }
     
-    // 기본 Book 객체
-    static let defaultBook = Book(
-        ISBN: "1234", cover: "https://image.aladin.co.kr/product/30768/99/cover500/k252830652_2.jpg", 
-        title: "나미야 잡화점의 기적",
-        author: "히가시노 게이고",
-        publisher: "현대문학", 
-        publicationDate: Date.now,
-        categoryName: .literature,
-        totalPage: 456, 
-        readingStatus: .wantToRead
-    )
 }
+
+// 기본 Book 객체
+let defaultBook = Book(
+    ISBN: "1234", cover: "https://image.aladin.co.kr/product/30768/99/cover500/k252830652_2.jpg",
+    title: "나미야 잡화점의 기적",
+    author: "히가시노 게이고",
+    publisher: "현대문학",
+    publicationDate: Date(),
+    categoryName: .literature,
+    totalPage: 456,
+    readingStatus: .wantToRead
+)
 
 /// 읽는중, 다읽은 책으로 등록한 책
 class RegisteredBook: Book {
@@ -98,7 +99,7 @@ class RegisteredBook: Book {
     
     // 기본 Book 객체
     static let defaultRegisteredBook = RegisteredBook(
-        registerBook: Book.defaultBook,
+        registerBook: defaultBook,
         isMine: false,
         bookType: .paperbook,
         startDate: Date.now,

@@ -124,8 +124,13 @@ struct RegisterBook: View {
                     DatePickerInList(selectedDate: $startDate,
                                      isDatePickerVisible: $isStartDatePickerVisible,
                                      dateRange: startDateRange,
-                                     isAnotherDatePickerVisible:$isRecentDatePickerVisible,
                                      listText: "읽기 시작한 날")
+                    // 읽기 시작한 날 DatePicker가 활성화되면 다읽은날 DatePicker는 비활성화
+                    .onChange(of: isStartDatePickerVisible) {
+                        if isStartDatePickerVisible {
+                            isRecentDatePickerVisible = false
+                        }
+                    }
                     
                     // MARK: 다읽은 날 입력
                     // readingStatus 다읽음일때만 보여주도록
@@ -133,8 +138,13 @@ struct RegisterBook: View {
                         DatePickerInList(selectedDate: $recentDate,
                                          isDatePickerVisible: $isRecentDatePickerVisible,
                                          dateRange: recentDateRange,
-                                         isAnotherDatePickerVisible:$isStartDatePickerVisible,
                                          listText: "다 읽은 날")
+                        // 읽기 시작한 날 DatePicker가 활성화되면 다읽은날 DatePicker는 비활성화
+                        .onChange(of: isRecentDatePickerVisible) {
+                            if isRecentDatePickerVisible {
+                                isStartDatePickerVisible = false
+                            }
+                        }
                         
                     }
                     

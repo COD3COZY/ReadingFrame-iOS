@@ -9,7 +9,8 @@ import Foundation
 import CoreLocation
 
 /// 기본책(미등록, 읽고싶은)
-class Book {
+class Book: Identifiable {
+    
     var ISBN: String                = "0000000000000"
     var cover: String               = "https://dummyImage"
     var title: String               = "책제목"
@@ -36,9 +37,27 @@ class Book {
         self.readingStatus = readingStatus
     }
     
-
+    // 홈 화면에서 사용되는 생성자
+    init(ISBN: String, cover: String, title: String, author: String, readingStatus: ReadingStatus) {
+        self.ISBN = ISBN
+        self.cover = cover
+        self.title = title
+        self.author = author
+        self.readingStatus = readingStatus
+    }
+    
+    // 기본 Book 객체
+    static let defaultBook = Book(
+        ISBN: "1234", cover: "https://image.aladin.co.kr/product/30768/99/cover500/k252830652_2.jpg", 
+        title: "나미야 잡화점의 기적",
+        author: "히가시노 게이고",
+        publisher: "현대문학", 
+        publicationDate: Date.now,
+        categoryName: .literature,
+        totalPage: 456, 
+        readingStatus: .wantToRead
+    )
 }
-
 
 /// 읽는중, 다읽은 책으로 등록한 책
 class RegisteredBook: Book {
@@ -68,6 +87,24 @@ class RegisteredBook: Book {
             totalPage: registerBook.totalPage,
             readingStatus: registerBook.readingStatus)
     }
+    
+    // 홈 화면에서 사용되는 생성자
+    init(registerBook: Book, isMine: Bool, isHidden: Bool) {
+        self.isMine = isMine
+        self.isHidden = isHidden
+            
+        super.init(ISBN: registerBook.ISBN, cover: registerBook.cover, title: registerBook.title, author: registerBook.author, readingStatus: registerBook.readingStatus)
+    }
+    
+    // 기본 Book 객체
+    static let defaultRegisteredBook = RegisteredBook(
+        registerBook: Book.defaultBook,
+        isMine: false,
+        bookType: .paperbook,
+        startDate: Date.now,
+        recentDate: Date.now,
+        isHidden: false
+    )
 }
 
 

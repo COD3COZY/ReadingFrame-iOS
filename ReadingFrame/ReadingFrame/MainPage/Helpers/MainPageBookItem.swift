@@ -10,6 +10,8 @@ import SwiftUI
 /// 홈 화면의 읽고 싶은 책, 다 읽은 책 리스트에 들어가는 개별 뷰
 struct MainPageBookItem: View {
     var registeredBook: RegisteredBook
+    @State var readingStatus: ReadingStatus = .reading
+    @State var isRegisterSheetAppear: Bool = false
     
     var body: some View {
         VStack {
@@ -56,11 +58,16 @@ struct MainPageBookItem: View {
                         if (registeredBook.book.readingStatus == .wantToRead) {
                             // MARK: 읽는 중 버튼
                             Button {
+                                // 버튼 누르면 sheet present되도록
+                                isRegisterSheetAppear.toggle()
+                                readingStatus = .reading
                             } label: {
                                 Label("읽는 중", systemImage: "book")
                             }
                             // MARK: 다 읽음 버튼
                             Button {
+                                isRegisterSheetAppear.toggle()
+                                readingStatus = .finishRead
                             } label: {
                                 Label("다 읽음", systemImage: "book.closed")
                             }
@@ -87,6 +94,13 @@ struct MainPageBookItem: View {
                         Image(systemName: "ellipsis")
                             .font(.caption)
                             .foregroundStyle(.black0)
+                    }
+                    // sheet modal 보여주기 위한 코드
+                    .sheet(isPresented: $isRegisterSheetAppear) {
+                        // Sheet 뷰
+                        RegisterBook(book: registeredBook.book, 
+                                     readingStatus: $readingStatus,
+                                     isSheetAppear: $isRegisterSheetAppear)
                     }
                 }
                 .frame(height: registeredBook.book.author.count >= 14 ? 32 : 16)

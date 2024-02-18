@@ -14,10 +14,13 @@ struct RegisterBook: View {
 
     // MARK: 바깥에서 전달받을 값들
     /// 호출한 뷰에서 전달받을 InitialBook 객체
-    let book: InitialBook
+    let book: Book
     
     /// 호출한 뷰에 전달해줘야 하는 독서상태값
     @Binding var readingStatus: ReadingStatus
+    
+    /// 내서재 추가하기 버튼 눌렀을 때 sheet 없어지도록 하기 위한 변수
+    @Binding var isSheetAppear: Bool
 
     
     // MARK: 자체적으로 변경해주면서 사용할 값들
@@ -80,8 +83,14 @@ struct RegisterBook: View {
                 Picker("독서상태", selection: $readingStatus) {
                     Text("읽는중")
                         .tag(ReadingStatus.reading)
+                        .onTapGesture {
+                            print("읽는중 눌림")
+                        }
                     Text("다읽음")
                         .tag(ReadingStatus.finishRead)
+                        .onTapGesture {
+                            print("다읽음 눌렸음")
+                        }
                 }
                 .pickerStyle(.segmented)
                 .padding(.top, 10)
@@ -94,7 +103,7 @@ struct RegisterBook: View {
                     header: Text("책 유형")
                                 .font(.headline)
                                 .foregroundStyle(.primary)
-                                .padding(.bottom) 
+                                .padding(.bottom)
                 ) {
                     SelectBookTypeView(bookType: $bookType)
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -190,6 +199,7 @@ struct RegisterBook: View {
                 print("    - author:", book.author)
                 print("    - categoryName:", book.categoryName)
                 print("    - totalPage:", book.totalPage)
+                isSheetAppear.toggle()
             }, label: {
                 Text("내 서재에 추가하기")
                     .font(.headline)
@@ -207,10 +217,11 @@ struct RegisterBook: View {
 
 // MARK: - Preview
 struct BookInfo_Previews: PreviewProvider {
-    @State static var tempReadingStatus: ReadingStatus = .reading
+//    @State static var tempReadingStatus: ReadingStatus = .reading
     
     static var previews: some View {
         RegisterBook(book: InitialBook(),
-                     readingStatus: $tempReadingStatus)
+                     readingStatus: .constant(ReadingStatus.finishRead),
+                     isSheetAppear: .constant(true))
     }
 }

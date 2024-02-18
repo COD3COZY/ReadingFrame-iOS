@@ -16,7 +16,7 @@ struct MainPageBookRow: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 ForEach(items) { book in
-                    MainPageBookItem(registeredBook: book) // 책 뷰 띄우기
+                    MainPageBookItem(book: book) // 책 뷰 띄우기
                 }
             }
             .padding(.leading, 16)

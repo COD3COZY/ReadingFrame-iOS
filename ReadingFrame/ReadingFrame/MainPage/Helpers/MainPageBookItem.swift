@@ -9,8 +9,14 @@ import SwiftUI
 
 /// 홈 화면의 읽고 싶은 책, 다 읽은 책 리스트에 들어가는 개별 뷰
 struct MainPageBookItem: View {
-    var registeredBook: RegisteredBook
+    
+    /// 책 객체
+    var book: RegisteredBook
+    
+    /// sheet를 띄우기 위한 기본 값
     @State var readingStatus: ReadingStatus = .reading
+    
+    /// sheet가 띄워져 있는지 확인하는 변수
     @State var isRegisterSheetAppear: Bool = false
     
     var body: some View {
@@ -19,12 +25,12 @@ struct MainPageBookItem: View {
                 // MARK: 책 표지
                 NavigationLink {
                     // 읽고 싶은 책이라면
-                    if (registeredBook.book.readingStatus == .wantToRead) {
+                    if (book.book.readingStatus == .wantToRead) {
                         // TODO: 책 정보 화면으로 이동
                         
                     }
                     // 다 읽은 책 이라면
-                    else if (registeredBook.book.readingStatus == .finishRead) {
+                    else if (book.book.readingStatus == .finishRead) {
                         // TODO: 독서 노트 화면으로 이동
                     }
                 } label: {
@@ -35,7 +41,7 @@ struct MainPageBookItem: View {
                 }
                 
                 // MARK: 책 이름
-                Text(registeredBook.book.title)
+                Text(book.book.title)
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(.black0)
                     .lineLimit(2)
@@ -43,9 +49,9 @@ struct MainPageBookItem: View {
                 
                 // 저자 글자 개수에 따른 뷰 처리
                 // 저자가 2줄 이상인 경우 bottom 정렬, 저자가 1줄인 경우 center 정렬
-                HStack(alignment: registeredBook.book.author.count >= 14 ? .bottom : .center) {
+                HStack(alignment: book.book.author.count >= 14 ? .bottom : .center) {
                     // MARK: 저자
-                    Text(registeredBook.book.author)
+                    Text(book.book.author)
                         .font(.caption)
                         .lineLimit(2)
                         .foregroundStyle(.greyText)
@@ -55,10 +61,10 @@ struct MainPageBookItem: View {
                     // MARK: 더보기 버튼
                     Menu {
                         // 읽고 싶은 책이라면
-                        if (registeredBook.book.readingStatus == .wantToRead) {
+                        if (book.book.readingStatus == .wantToRead) {
                             // MARK: 읽는 중 버튼
                             Button {
-                                // 버튼 누르면 sheet present되도록
+                                // 버튼 누르면 sheet present되도록 만들기
                                 isRegisterSheetAppear.toggle()
                                 readingStatus = .reading
                             } label: {
@@ -73,7 +79,7 @@ struct MainPageBookItem: View {
                             }
                         }
                         // 다 읽은 책 이라면
-                        else if (registeredBook.book.readingStatus == .finishRead){
+                        else if (book.book.readingStatus == .finishRead){
                             // MARK: 정보 버튼
                             Button {
                             } label: {
@@ -98,12 +104,12 @@ struct MainPageBookItem: View {
                     // sheet modal 보여주기 위한 코드
                     .sheet(isPresented: $isRegisterSheetAppear) {
                         // Sheet 뷰
-                        RegisterBook(book: registeredBook.book, 
+                        RegisterBook(book: book.book,
                                      readingStatus: $readingStatus,
                                      isSheetAppear: $isRegisterSheetAppear)
                     }
                 }
-                .frame(height: registeredBook.book.author.count >= 14 ? 32 : 16)
+                .frame(height: book.book.author.count >= 14 ? 32 : 16)
                 .padding(.top, 5)
             }
             .fixedSize(horizontal: false, vertical: true)
@@ -114,5 +120,5 @@ struct MainPageBookItem: View {
 }
 
 #Preview {
-    MainPageBookItem(registeredBook: RegisteredBook())
+    MainPageBookItem(book: RegisteredBook())
 }

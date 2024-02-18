@@ -9,12 +9,14 @@ import SwiftUI
 
 /// 홈 화면
 struct MainPage: View {
-    @State private var wantToReadBooksCount = 5 /// 읽고 싶은 책 개수
-    @State private var readingBooksCount = 0 /// 읽고 있는 책 개수
-    @State private var finishReadBooksCount = 0 /// 다 읽은 책 개수
-    @State private var readingBooksList: [RegisteredBook] = [] /// 읽고 있는 책 리스트
-    @State private var wantToReadBooksList: [RegisteredBook] = [] /// 읽고 싶은 책 리스트
-    @State private var finishReadBooksList: [RegisteredBook] = [] /// 다 읽은 책 리스트
+    /// 읽고 있는 책 리스트
+    @State private var readingBooksList: [RegisteredBook] = []
+    
+    /// 읽고 싶은 책 리스트
+    @State private var wantToReadBooksList: [RegisteredBook] = []
+    
+    /// 다 읽은 책 리스트
+    @State private var finishReadBooksList: [RegisteredBook] = []
     
     var body: some View {
         // MARK: - 읽고 있는 책
@@ -24,17 +26,16 @@ struct MainPage: View {
                     .font(.thirdTitle)
                     .foregroundStyle(.black0)
                 
-                Text("\(readingBooksCount)")
+                Text("\(readingBooksList.count)")
                     .font(.thirdTitle)
                     .foregroundStyle(.black0)
             }
             .padding(.top, 29)
-            .padding([.leading, .trailing], 16)
-            .padding(.bottom, 19)
+            .padding([.leading, .bottom], 16)
             
             // TODO: 등록된 책 갯수에 따른 뷰 처리
             // 등록된 책이 있다면
-            if (readingBooksCount >= 1) {
+            if (readingBooksList.count >= 1) {
             }
             // 등록된 책이 없다면
             else {
@@ -49,26 +50,32 @@ struct MainPage: View {
                     .font(.thirdTitle)
                     .foregroundStyle(.black0)
                 
-                Text("\(wantToReadBooksCount)")
+                Text("\(wantToReadBooksList.count)")
                     .font(.thirdTitle)
                     .foregroundStyle(.black0)
             }
-            .padding(.top, 47)
-            .padding([.leading, .trailing], 16)
-            .padding(.bottom, 19)
+            .padding(.top, 30)
+            .padding([.leading, .bottom], 16)
             
             // TODO: 등록된 책 갯수에 따른 뷰 처리
             // 등록된 책이 있다면
-            if (wantToReadBooksCount >= 1) {
-                MainPageBookRow(items: [
-                    RegisteredBook()
-                ])
-                .listRowInsets(EdgeInsets())
+            if (wantToReadBooksList.count >= 1) {
+                MainPageBookRow(items: wantToReadBooksList)
             }
             // 등록된 책이 없다면
             else {
                 notRegisteredBook()
             }
+        }
+        .onAppear {
+            // 임시 데이터 넣기
+            let tempWantToList: [RegisteredBook] = [
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+            ]
+            wantToReadBooksList.append(contentsOf: tempWantToList)
         }
         
         // MARK: - 다 읽은 책
@@ -78,23 +85,34 @@ struct MainPage: View {
                     .font(.thirdTitle)
                     .foregroundStyle(.black0)
                 
-                Text("\(finishReadBooksCount)")
+                Text("\(finishReadBooksList.count)")
                     .font(.thirdTitle)
                     .foregroundStyle(.black0)
             }
-            .padding(.top, 47)
-            .padding([.leading, .trailing], 16)
-            .padding(.bottom, 19)
+            .padding(.top, 30)
+            .padding([.leading, .bottom], 16)
             
             // TODO: 등록된 책 갯수에 따른 뷰 처리
             // 등록된 책이 있다면
-            if (finishReadBooksCount >= 1) {
-                
+            if (finishReadBooksList.count >= 1) {
+                MainPageBookRow(items: finishReadBooksList)
+                    .listRowInsets(EdgeInsets())
             }
             // 등록된 책이 없다면
             else {
                 notRegisteredBook()
             }
+        }
+        .onAppear {
+            // 임시 데이터 넣기
+            let tempFinishReadList: [RegisteredBook] = [
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+            ]
+            finishReadBooksList.append(contentsOf: tempFinishReadList)
         }
     }
 }
@@ -123,6 +141,7 @@ struct notRegisteredBook: View {
                 // 버튼 클릭 시 Search 화면으로 이동
                 NavigationLink {
                     SearchView()
+                        .toolbarRole(.editor) // back 텍스트 표시X
                 } label: {
                     // MARK: 검색하기 버튼
                     HStack {

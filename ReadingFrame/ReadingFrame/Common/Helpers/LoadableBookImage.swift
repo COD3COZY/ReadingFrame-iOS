@@ -9,6 +9,8 @@ import SwiftUI
 
 /// 책 이미지를 불러오는 뷰
 struct LoadableBookImage: View {
+    
+    /// 책 이미지
     var bookCover: RegisteredBook
     
     var body: some View {

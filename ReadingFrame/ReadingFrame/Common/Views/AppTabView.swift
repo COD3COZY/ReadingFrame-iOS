@@ -13,7 +13,7 @@ struct AppTabView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             // Tab1: 홈
-            MainPage()
+            Home()
                 .tabItem {
                     Image(selectedTab == 0 ? "home_selected" : "home_deselected")
                     Text("홈")

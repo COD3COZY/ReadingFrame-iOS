@@ -11,7 +11,7 @@ import SwiftUI
 struct HomeSegmentedControl: View {
     
     /// Default 메뉴 값 (홈 화면)
-    @State var selection: String = "book.closed"
+    @Binding var selection: String
     
     /// Segmented Control에 들어갈 메뉴 값 (홈 화면, 책장 화면)
     let filterOptions: [String] = [
@@ -31,8 +31,4 @@ struct HomeSegmentedControl: View {
         })
         .pickerStyle(SegmentedPickerStyle())
     }
-}
-
-#Preview {
-    HomeSegmentedControl()
 }

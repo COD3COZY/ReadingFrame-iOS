@@ -27,10 +27,6 @@ struct MainPageBookRow: View {
 
 #Preview {
     MainPageBookRow(items: [
-        RegisteredBook.defaultRegisteredBook,
-        RegisteredBook.defaultRegisteredBook,
-        RegisteredBook.defaultRegisteredBook,
-        RegisteredBook.defaultRegisteredBook,
-        RegisteredBook.defaultRegisteredBook,
+        RegisteredBook()
     ])
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 /// 도서정보와 리뷰 간략하게 조회하는 페이지.
 struct BookInfo: View {
-    let book: Book = defaultBook
+    let book: Book = InitialBook()
     
     var body: some View {
         ZStack {

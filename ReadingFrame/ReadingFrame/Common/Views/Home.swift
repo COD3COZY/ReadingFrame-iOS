@@ -20,6 +20,7 @@ struct Home: View {
                         // 검색바를 클릭한 경우
                         NavigationLink {
                             SearchView()
+                                .toolbarRole(.editor) // back 텍스트 표시X
                         } label: {
                             // MARK: 검색 바
                             HStack {
@@ -56,6 +57,7 @@ struct Home: View {
             .scrollIndicators(.hidden)
             .frame(maxWidth: .infinity)
         }
+        .tint(.black0) // 뒤로가기 버튼 색상 적용
     } // 화면 전체 스크롤 가능하도록 설정
 }
 

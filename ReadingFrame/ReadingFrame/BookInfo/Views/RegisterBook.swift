@@ -135,36 +135,7 @@ struct RegisterBook: View {
                 }
                 
                 // section3: 날짜 입력하는 rows
-                Section {
-                    // MARK: 읽기 시작한 날 입력
-                    DatePickerInList(selectedDate: $startDate,
-                                     isDatePickerVisible: $isStartDatePickerVisible,
-                                     dateRange: startDateRange,
-                                     listText: "읽기 시작한 날")
-                    // 읽기 시작한 날 DatePicker가 활성화되면 다읽은날 DatePicker는 비활성화
-                    .onChange(of: isStartDatePickerVisible) {
-                        if isStartDatePickerVisible {
-                            isRecentDatePickerVisible = false
-                        }
-                    }
-                    
-                    // MARK: 다읽은 날 입력
-                    // readingStatus 다읽음일때만 보여주도록
-                    if ($book.readingStatus == .finishRead) {
-                        DatePickerInList(selectedDate: $recentDate,
-                                         isDatePickerVisible: $isRecentDatePickerVisible,
-                                         dateRange: recentDateRange,
-                                         listText: "다 읽은 날")
-                        // 읽기 시작한 날 DatePicker가 활성화되면 다읽은날 DatePicker는 비활성화
-                        .onChange(of: isRecentDatePickerVisible) {
-                            if isRecentDatePickerVisible {
-                                isStartDatePickerVisible = false
-                            }
-                        }
-                        
-                    }
-                    
-                }
+                section3
             }
             // list style
             .listStyle(.insetGrouped)
@@ -176,20 +147,8 @@ struct RegisterBook: View {
             // MARK: 내 서재에 추가하기 버튼
             Button(action: {
                 // 나중에 API로 보내주거나 보내줘야 할 값들 일단 print로 확인하기
-                print("- ISBN:", $book.ISBN)
-                print("- 독서상태:", $book.readingStatus)
-                print("- 책 유형:", $book.bookType)
-                print("- 대표위치: 아직 없음")
-                print("- 소장여부:", $book.isMine)
-                print("- 시작날짜:", $book.startDate.description)
-                print("- 마지막날짜:",
-                      $book.readingStatus == .finishRead ? $book.recentDate.description : "없음")
-                print("> book Information-------")
-                print("    - cover:", $book.cover)
-                print("    - title:", $book.title)
-                print("    - author:", $book.author)
-                print("    - categoryName:", $book.categoryName)
-                print("    - totalPage:", $book.totalPage)
+                print("- ISBN:", book.ISBN)
+                print("- 독서상태:", book.readingStatus)
             }, label: {
                 Text("내 서재에 추가하기")
                     .font(.headline)
@@ -202,6 +161,38 @@ struct RegisterBook: View {
         }
         .padding(20)
         .background(.grey1)
+    }
+    
+    var section3: some View {
+        VStack {
+            // MARK: 읽기 시작한 날 입력
+            DatePickerInList(selectedDate: $startDate,
+                             isDatePickerVisible: $isStartDatePickerVisible,
+                             dateRange: startDateRange,
+                             listText: "읽기 시작한 날")
+            // 읽기 시작한 날 DatePicker가 활성화되면 다읽은날 DatePicker는 비활성화
+            .onChange(of: isStartDatePickerVisible) {
+                if isStartDatePickerVisible {
+                    isRecentDatePickerVisible = false
+                }
+            }
+            
+            // MARK: 다읽은 날 입력
+            // readingStatus 다읽음일때만 보여주도록
+            if (book.readingStatus == .finishRead) {
+                DatePickerInList(selectedDate: $recentDate,
+                                 isDatePickerVisible: $isRecentDatePickerVisible,
+                                 dateRange: recentDateRange,
+                                 listText: "다 읽은 날")
+                // 읽기 시작한 날 DatePicker가 활성화되면 다읽은날 DatePicker는 비활성화
+                .onChange(of: isRecentDatePickerVisible) {
+                    if isRecentDatePickerVisible {
+                        isStartDatePickerVisible = false
+                    }
+                }
+                
+            }
+        }
     }
 }
 

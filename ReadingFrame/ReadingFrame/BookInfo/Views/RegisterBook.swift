@@ -11,20 +11,32 @@ import SwiftUI
 struct RegisterBook: View {
     
     // MARK: - 변수
-//    /// 나중에 호출할 때 전달해줄 book 인스턴스(지금은 일단 비활성화)
-//    var book: Book
+
+    // MARK: 바깥에서 전달받을 값들
+    /// 호출한 뷰에서 전달받을 InitialBook 객체
+    let book: InitialBook
     
-    @State private var readingStatus: ReadingStatus = .reading  /// 독서상태
+    /// 호출한 뷰에 전달해줘야 하는 독서상태값
+    @Binding var readingStatus: ReadingStatus
+
     
-    @State private var bookType: BookType = .paperbook          /// 선택된 책유형 저장할 변수(기본값: 종이책)
+    // MARK: 자체적으로 변경해주면서 사용할 값들
+    /// 선택된 책유형 저장할 변수(기본값: 종이책)
+    @State private var bookType: BookType = .paperbook
     
-    @State private var showSearchLocation: Bool = false         /// 대표위치 입력 sheet 띄울지 결정 여부
+    /// 대표위치 입력 sheet 띄울지 결정 여부
+    @State private var showSearchLocation: Bool = false
     
-    @State private var isMine: Bool = false /// 소장여부
+    /// 소장여부
+    @State private var isMine: Bool = false
+    
     
     /// 읽기 시작한 날
     @State private var startDate = Date()
-    @State private var isStartDatePickerVisible = false         /// 읽기 시작한 날 DatePicker가 보이는지 여부
+    
+    /// 읽기 시작한 날 DatePicker가 보이는지 여부
+    @State private var isStartDatePickerVisible = false
+    
     /// 읽기 시작한 날 정할 수 있는 범위(100년 전 ~ 현재)
     /// - 설마 100년전에 읽던 책까지 우리 앱에 기록하지는 않을거잖아요?
     var startDateRange: ClosedRange<Date> {
@@ -33,9 +45,13 @@ struct RegisterBook: View {
         return min...max
     }
     
+    
     /// 다 읽은 날
     @State private var recentDate = Date()
-    @State private var isRecentDatePickerVisible = false        /// 다 읽은 날 DatePicker가 보이는지 여부
+    
+    /// 다 읽은 날 DatePicker가 보이는지 여부
+    @State private var isRecentDatePickerVisible = false
+    
     /// 다읽은 날 정할 수 있는 범위(읽기 시작한 날 ~ 현재)
     var recentDateRange: ClosedRange<Date> {
         let min = startDate
@@ -160,6 +176,7 @@ struct RegisterBook: View {
             // MARK: 내 서재에 추가하기 버튼
             Button(action: {
                 // 나중에 API로 보내주거나 보내줘야 할 값들 일단 print로 확인하기
+                print("- ISBN:", book.ISBN)
                 print("- 독서상태:", readingStatus)
                 print("- 책 유형:", bookType)
                 print("- 대표위치: 아직 없음")
@@ -167,6 +184,12 @@ struct RegisterBook: View {
                 print("- 시작날짜:", startDate.description)
                 print("- 마지막날짜:",
                       readingStatus == .finishRead ? recentDate.description : "없음")
+                print("> book Information-------")
+                print("    - cover:", book.cover)
+                print("    - title:", book.title)
+                print("    - author:", book.author)
+                print("    - categoryName:", book.categoryName)
+                print("    - totalPage:", book.totalPage)
             }, label: {
                 Text("내 서재에 추가하기")
                     .font(.headline)
@@ -177,13 +200,17 @@ struct RegisterBook: View {
             .clipShape(.capsule)
             
         }
-        .padding(.horizontal, 20)
+        .padding(20)
         .background(.grey1)
     }
 }
 
+// MARK: - Preview
 struct BookInfo_Previews: PreviewProvider {
+    @State static var tempReadingStatus: ReadingStatus = .reading
+    
     static var previews: some View {
-        RegisterBook()
+        RegisterBook(book: InitialBook(),
+                     readingStatus: $tempReadingStatus)
     }
 }

@@ -9,13 +9,18 @@ import SwiftUI
 
 /// 도서정보와 리뷰 간략하게 조회하는 페이지.
 struct BookInfo: View {
-    let book: Book = InitialBook()
+    @State private var book: InitialBook = InitialBook()
     
     var body: some View {
         ZStack {
             ScrollView {
                 // TODO: 책 기본정보
                 Text("Hello world!")
+                Button(action: {
+                    RegisterBook(book: $book)
+                }, label: {
+                    Text("책등록모달 띄워주기")
+                })
                 
                 // TODO: 책설명
                 

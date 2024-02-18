@@ -14,10 +14,10 @@ struct RegisterBook: View {
 
     // MARK: 바깥에서 전달받을 값들
     /// 호출한 뷰에서 전달받을 InitialBook 객체
-    let book: InitialBook
+//    let book: InitialBook
     
     /// 호출한 뷰에 전달해줘야 하는 독서상태값
-    @Binding var readingStatus: ReadingStatus
+    @Binding var book: InitialBook
 
     
     // MARK: 자체적으로 변경해주면서 사용할 값들
@@ -77,7 +77,7 @@ struct RegisterBook: View {
             List {
                 
                 // MARK: 독서상태 선택 Segmented control
-                Picker("독서상태", selection: $readingStatus) {
+                Picker("독서상태", selection: $book.readingStatus) {
                     Text("읽는중")
                         .tag(ReadingStatus.reading)
                     Text("다읽음")
@@ -150,7 +150,7 @@ struct RegisterBook: View {
                     
                     // MARK: 다읽은 날 입력
                     // readingStatus 다읽음일때만 보여주도록
-                    if (readingStatus == .finishRead) {
+                    if ($book.readingStatus == .finishRead) {
                         DatePickerInList(selectedDate: $recentDate,
                                          isDatePickerVisible: $isRecentDatePickerVisible,
                                          dateRange: recentDateRange,
@@ -176,20 +176,20 @@ struct RegisterBook: View {
             // MARK: 내 서재에 추가하기 버튼
             Button(action: {
                 // 나중에 API로 보내주거나 보내줘야 할 값들 일단 print로 확인하기
-                print("- ISBN:", book.ISBN)
-                print("- 독서상태:", readingStatus)
-                print("- 책 유형:", bookType)
+                print("- ISBN:", $book.ISBN)
+                print("- 독서상태:", $book.readingStatus)
+                print("- 책 유형:", $book.bookType)
                 print("- 대표위치: 아직 없음")
-                print("- 소장여부:", isMine)
-                print("- 시작날짜:", startDate.description)
+                print("- 소장여부:", $book.isMine)
+                print("- 시작날짜:", $book.startDate.description)
                 print("- 마지막날짜:",
-                      readingStatus == .finishRead ? recentDate.description : "없음")
+                      $book.readingStatus == .finishRead ? $book.recentDate.description : "없음")
                 print("> book Information-------")
-                print("    - cover:", book.cover)
-                print("    - title:", book.title)
-                print("    - author:", book.author)
-                print("    - categoryName:", book.categoryName)
-                print("    - totalPage:", book.totalPage)
+                print("    - cover:", $book.cover)
+                print("    - title:", $book.title)
+                print("    - author:", $book.author)
+                print("    - categoryName:", $book.categoryName)
+                print("    - totalPage:", $book.totalPage)
             }, label: {
                 Text("내 서재에 추가하기")
                     .font(.headline)
@@ -207,10 +207,9 @@ struct RegisterBook: View {
 
 // MARK: - Preview
 struct BookInfo_Previews: PreviewProvider {
-    @State static var tempReadingStatus: ReadingStatus = .reading
+    @State static var sampleBook = InitialBook()
     
     static var previews: some View {
-        RegisterBook(book: InitialBook(),
-                     readingStatus: $tempReadingStatus)
+        RegisterBook(book: .constant(sampleBook))
     }
 }

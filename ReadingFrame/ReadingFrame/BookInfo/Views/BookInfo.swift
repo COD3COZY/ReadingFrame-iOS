@@ -16,11 +16,11 @@ struct BookInfo: View {
             ScrollView {
                 // TODO: 책 기본정보
                 Text("Hello world!")
-                Button(action: {
-                    RegisterBook(book: $book)
-                }, label: {
-                    Text("책등록모달 띄워주기")
-                })
+//                Button(action: {
+//                    RegisterBook(book: $book)
+//                }, label: {
+//                    Text("책등록모달 띄워주기")
+//                })
                 
                 // TODO: 책설명
                 

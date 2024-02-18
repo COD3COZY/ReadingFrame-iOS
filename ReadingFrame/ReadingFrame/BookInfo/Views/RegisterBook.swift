@@ -14,10 +14,13 @@ struct RegisterBook: View {
 
     // MARK: 바깥에서 전달받을 값들
     /// 호출한 뷰에서 전달받을 InitialBook 객체
-//    let book: InitialBook
+    let book: Book
     
     /// 호출한 뷰에 전달해줘야 하는 독서상태값
-    @Binding var book: InitialBook
+    @Binding var readingStatus: ReadingStatus
+    
+    /// 내서재 추가하기 버튼 눌렀을 때 sheet 없어지도록 하기 위한 변수
+    @Binding var isSheetAppear: Bool
 
     
     // MARK: 자체적으로 변경해주면서 사용할 값들
@@ -77,11 +80,17 @@ struct RegisterBook: View {
             List {
                 
                 // MARK: 독서상태 선택 Segmented control
-                Picker("독서상태", selection: $book.readingStatus) {
+                Picker("독서상태", selection: $readingStatus) {
                     Text("읽는중")
                         .tag(ReadingStatus.reading)
+                        .onTapGesture {
+                            print("읽는중 눌림")
+                        }
                     Text("다읽음")
                         .tag(ReadingStatus.finishRead)
+                        .onTapGesture {
+                            print("다읽음 눌렸음")
+                        }
                 }
                 .pickerStyle(.segmented)
                 .padding(.top, 10)
@@ -94,7 +103,7 @@ struct RegisterBook: View {
                     header: Text("책 유형")
                                 .font(.headline)
                                 .foregroundStyle(.primary)
-                                .padding(.bottom) 
+                                .padding(.bottom)
                 ) {
                     SelectBookTypeView(bookType: $bookType)
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -135,7 +144,36 @@ struct RegisterBook: View {
                 }
                 
                 // section3: 날짜 입력하는 rows
-                section3
+                Section {
+                    // MARK: 읽기 시작한 날 입력
+                    DatePickerInList(selectedDate: $startDate,
+                                     isDatePickerVisible: $isStartDatePickerVisible,
+                                     dateRange: startDateRange,
+                                     listText: "읽기 시작한 날")
+                    // 읽기 시작한 날 DatePicker가 활성화되면 다읽은날 DatePicker는 비활성화
+                    .onChange(of: isStartDatePickerVisible) {
+                        if isStartDatePickerVisible {
+                            isRecentDatePickerVisible = false
+                        }
+                    }
+                    
+                    // MARK: 다읽은 날 입력
+                    // readingStatus 다읽음일때만 보여주도록
+                    if (readingStatus == .finishRead) {
+                        DatePickerInList(selectedDate: $recentDate,
+                                         isDatePickerVisible: $isRecentDatePickerVisible,
+                                         dateRange: recentDateRange,
+                                         listText: "다 읽은 날")
+                        // 읽기 시작한 날 DatePicker가 활성화되면 다읽은날 DatePicker는 비활성화
+                        .onChange(of: isRecentDatePickerVisible) {
+                            if isRecentDatePickerVisible {
+                                isStartDatePickerVisible = false
+                            }
+                        }
+                        
+                    }
+                    
+                }
             }
             // list style
             .listStyle(.insetGrouped)
@@ -148,7 +186,20 @@ struct RegisterBook: View {
             Button(action: {
                 // 나중에 API로 보내주거나 보내줘야 할 값들 일단 print로 확인하기
                 print("- ISBN:", book.ISBN)
-                print("- 독서상태:", book.readingStatus)
+                print("- 독서상태:", readingStatus)
+                print("- 책 유형:", bookType)
+                print("- 대표위치: 아직 없음")
+                print("- 소장여부:", isMine)
+                print("- 시작날짜:", startDate.description)
+                print("- 마지막날짜:",
+                      readingStatus == .finishRead ? recentDate.description : "없음")
+                print("> book Information-------")
+                print("    - cover:", book.cover)
+                print("    - title:", book.title)
+                print("    - author:", book.author)
+                print("    - categoryName:", book.categoryName)
+                print("    - totalPage:", book.totalPage)
+                isSheetAppear.toggle()
             }, label: {
                 Text("내 서재에 추가하기")
                     .font(.headline)
@@ -162,45 +213,15 @@ struct RegisterBook: View {
         .padding(20)
         .background(.grey1)
     }
-    
-    var section3: some View {
-        VStack {
-            // MARK: 읽기 시작한 날 입력
-            DatePickerInList(selectedDate: $startDate,
-                             isDatePickerVisible: $isStartDatePickerVisible,
-                             dateRange: startDateRange,
-                             listText: "읽기 시작한 날")
-            // 읽기 시작한 날 DatePicker가 활성화되면 다읽은날 DatePicker는 비활성화
-            .onChange(of: isStartDatePickerVisible) {
-                if isStartDatePickerVisible {
-                    isRecentDatePickerVisible = false
-                }
-            }
-            
-            // MARK: 다읽은 날 입력
-            // readingStatus 다읽음일때만 보여주도록
-            if (book.readingStatus == .finishRead) {
-                DatePickerInList(selectedDate: $recentDate,
-                                 isDatePickerVisible: $isRecentDatePickerVisible,
-                                 dateRange: recentDateRange,
-                                 listText: "다 읽은 날")
-                // 읽기 시작한 날 DatePicker가 활성화되면 다읽은날 DatePicker는 비활성화
-                .onChange(of: isRecentDatePickerVisible) {
-                    if isRecentDatePickerVisible {
-                        isStartDatePickerVisible = false
-                    }
-                }
-                
-            }
-        }
-    }
 }
 
 // MARK: - Preview
 struct BookInfo_Previews: PreviewProvider {
-    @State static var sampleBook = InitialBook()
+//    @State static var tempReadingStatus: ReadingStatus = .reading
     
     static var previews: some View {
-        RegisterBook(book: .constant(sampleBook))
+        RegisterBook(book: InitialBook(),
+                     readingStatus: .constant(ReadingStatus.finishRead),
+                     isSheetAppear: .constant(true))
     }
 }

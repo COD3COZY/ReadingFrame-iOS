@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct Home: View {
-    @State var selection: String = "book.closed" /// segmented control 변수
+    
+    /// segmented control 변수
+    @State var selection: String = "book.closed"
     
     var body: some View {
         NavigationStack {
@@ -35,11 +37,12 @@ struct Home: View {
                             .background(Color(.grey1))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
+                        .padding([.leading, .trailing], 16)
                         
                         // MARK: 홈 화면, 책장 화면 전환 버튼
                         HomeSegmentedControl(selection: $selection)
                             .frame(width: 118, height: 28)
-                            .padding(.top, 15)
+                            .padding([.top, .trailing], 16)
                         
                         if (selection == "book.closed") {
                             // MARK: 홈 화면 띄우기
@@ -50,14 +53,13 @@ struct Home: View {
                         }
                     }
                     .padding(.top, 10)
-                    .padding([.leading, .trailing], 16)
                 }
                 Spacer()
             }
             .scrollIndicators(.hidden)
             .frame(maxWidth: .infinity)
         }
-        .tint(.black0) // 뒤로가기 버튼 색상 적용
+        .tint(.black0) // accentcolor를 검정색으로(뒤로가기 버튼 색상 설정을 위함)
     } // 화면 전체 스크롤 가능하도록 설정
 }
 

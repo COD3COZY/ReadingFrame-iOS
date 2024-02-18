@@ -206,6 +206,7 @@ struct RegisterBook: View {
                     .padding(10)
                     .frame(maxWidth: .infinity, alignment: .center)
             })
+            .tint(.accentColor)
             .buttonStyle(.borderedProminent)
             .clipShape(.capsule)
             

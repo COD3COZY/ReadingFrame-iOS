@@ -6,6 +6,123 @@
 //
 
 import Foundation
+import Observation
+
+// MARK: 개인용 책 등록용 3종류 리뷰
+/// 사용자가 개별 책에 등록하는 3종 리뷰
+struct Review {
+    var selectReviews: [selectReviewCode]
+    
+    var keyword: String?
+    
+    var comment: String?
+}
+
+// MARK: 한줄평 관련 정보
+/// 한줄평 조회시 사용될 한줄평 관련 정보
+@Observable
+class Comment: Identifiable {
+    // MARK: Property
+    let id = UUID()
+    
+    /// 한줄평 텍스트
+    var commentText: String
+    
+    /// 한줄평 남긴 사람
+    var nickname: String
+    
+    /// 한줄평 남긴 날짜
+    var commentDate: Date
+    
+    /// 내가 반응남긴 경우에 어떤 반응인지
+    var myReaction: commentReaction?
+    
+    // 한줄평에 달린 반응 개수
+    private var heartCount: Int
+    private var goodCount: Int
+    private var wowCount: Int
+    private var sadCount: Int
+    private var angryCount: Int
+    
+    // MARK: Initializer
+    init(commentText: String = "저는 이 책을 읽기 위해 태어났습니다",
+         nickname: String = "사용자",
+         commentDate: Date = Date(),
+         myReaction: commentReaction? = nil,
+         heartCount: Int = 0,
+         goodCount: Int = 0,
+         wowCount: Int = 0,
+         sadCount: Int = 0,
+         angryCount: Int = 0) {
+        self.commentText = commentText
+        self.nickname = nickname
+        self.commentDate = commentDate
+        self.myReaction = myReaction
+        self.heartCount = heartCount
+        self.goodCount = goodCount
+        self.wowCount = wowCount
+        self.sadCount = sadCount
+        self.angryCount = angryCount
+    }
+    
+    // MARK: Function
+    /// UI 만들 때 조작용
+    func setReactions(heart: Int, good: Int, wow: Int, sad: Int, angry: Int) {
+        self.heartCount = heart
+        self.goodCount = good
+        self.wowCount = wow
+        self.sadCount = sad
+        self.angryCount = angry
+    }
+    
+    /// 반응 추가
+    func addReaction(reaction: commentReaction) {
+        switch reaction {
+        case .heart:
+            heartCount += 1
+        case .good:
+            goodCount += 1
+        case .wow:
+            wowCount += 1
+        case .sad:
+            sadCount += 1
+        case .angry:
+            angryCount += 1
+        }
+    }
+    
+    /// 반응 제거
+    func removeReaction(reaction: commentReaction) {
+        switch reaction {
+        case .heart:
+            heartCount -= 1
+        case .good:
+            goodCount -= 1
+        case .wow:
+            wowCount -= 1
+        case .sad:
+            sadCount -= 1
+        case .angry:
+            angryCount -= 1
+        }
+    }
+}
+
+
+// MARK: - 관련 열거형
+/// 한줄평 반응
+enum commentReaction: Int {
+    /// ❤️
+    case heart
+    /// 👍🏻
+    case good
+    /// 😲
+    case wow
+    /// 😢
+    case sad
+    /// 😤
+    case angry
+}
 
 /// 선택리뷰 열거형. raw value는 정수입니다.
 enum selectReviewCode: Int {

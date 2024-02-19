@@ -26,16 +26,21 @@ struct BookInfo: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             ScrollView {
-                // TODO: 책 기본정보
-                
-                
-                // TODO: 책설명
-                
-                
-                // TODO: 키워드 리뷰
-                
-                
-                // TODO: 한줄평 리뷰
+                LazyVStack(spacing: 25) {
+                    // TODO: 책 기본정보
+                    BasicBookInfoView(book: book, commentCount: comments.count)
+                    
+                    // TODO: 책설명
+                    DescriptionView(description: book.description)
+                    
+                    // TODO: 키워드 리뷰
+                    
+                    
+                    // TODO: 한줄평 리뷰
+                    
+                }
+                .padding([.leading, .top, .trailing], 16)
+                .padding(.bottom, 70)
                 
                 
             }
@@ -46,6 +51,25 @@ struct BookInfo: View {
         // MARK: 네비게이션 바 설정
         .navigationTitle("도서 정보")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+/// 책설명
+struct DescriptionView: View {
+    var description: String
+    
+    var body: some View {
+        VStack(alignment: .leading , spacing: 15) {
+            Text("책 설명")
+                .font(.headline)
+                        
+            Text(description)
+                .font(.footnote)
+            
+            Text("정보제공: 알라딘")
+                .font(.caption)
+                .foregroundStyle(Color.greyText)
+        }
     }
 }
 

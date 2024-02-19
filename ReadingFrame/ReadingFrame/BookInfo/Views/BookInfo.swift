@@ -26,25 +26,78 @@ struct BookInfo: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             ScrollView {
-                LazyVStack(spacing: 25) {
-                    // TODO: 책 기본정보
+                LazyVStack(alignment: .leading, spacing: 25) {
+                    // MARK: 책 기본정보
                     BasicBookInfoView(book: book, commentCount: comments.count)
                     
-                    // TODO: 책설명
+                    // MARK: 책설명
                     DescriptionView(description: book.description)
                     
-                    // TODO: 키워드 리뷰
+                    // MARK: 키워드 리뷰
+                    VStack (alignment: .leading, spacing: 15) {
+                        Text("이 책의 키워드 리뷰")
+                            .font(.headline)
+                        
+                        // 키워드 리뷰가 한개도 없을 경우
+                        if (selectReviews.count == 0) {
+                            // 리뷰 없음 뷰
+                            zeroReview(reviewType: "키워드 리뷰")
+                            
+                        // 키워드 리뷰가 있을 경우
+                        } else {
+                            // TODO: SelectReviewClusterView 구현해서 넣기
+                            SelectReviewClusterView()
+                        }
+                        
+                    }
                     
                     
-                    // TODO: 한줄평 리뷰
+                    
+                    // MARK: 한줄평 리뷰
+                    VStack (spacing: 15) {
+                        // 독자들의 한줄평 bar
+                        HStack {
+                            Text("독자들의 한줄평")
+                                .font(.headline)
+                            
+                            Spacer()
+                            
+                            // 한줄평 페이지 링크용 right chevron
+                            NavigationLink {
+                                // TODO: 한줄평 페이지로 바꿔서 연결
+                                // 일단 빈 페이지 연결해두었습니다.
+                                SearchLocation()
+                                    .toolbarRole(.editor)   // 이전 버튼 뒤에 화면 이름 표기 없음
+                            } label: {
+                                Image(systemName: "chevron.forward")
+                                    .font(.headline)
+                                    .foregroundStyle(Color.black)
+                            }
+                            
+                        }
+                        // 한줄평이 한개도 없을 경우
+                        if (comments.count == 0) {
+                            // 리뷰 없음 뷰
+                            zeroReview(reviewType: "키워드 리뷰")
+                                .padding(.bottom, 80)
+                            
+                            
+                        // 한줄평이 있을 경우
+                        } else {
+                            // 한줄평 가로스크롤뷰
+                            CommentHScrollView()
+                                .padding(.bottom, 120)
+                        }
+                        
+                    }
                     
                 }
+                // LazyVStack 패딩
                 .padding([.leading, .top, .trailing], 16)
-                .padding(.bottom, 70)
                 
                 
             }
-            // TODO: 고정위치 버튼 뷰
+            // MARK: 고정위치 버튼 뷰
             BookInfoBottomButtonView(book: book)
 
         }
@@ -72,6 +125,34 @@ struct DescriptionView: View {
         }
     }
 }
+
+/// 책이 등록되지 않았을 때의 뷰
+struct zeroReview: View {
+    /// "키워드 리뷰" 인지 "한줄평"을 적어주면 됩니다
+    var reviewType: String
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack(spacing: 0) {
+                Text("🧐")
+                    .font(.system(size: 64))
+                    .fontWeight(.medium)
+                    .foregroundStyle(.black0)
+                
+                Text("아직 작성된 \(reviewType)가 없어요. \n 첫 번째 리뷰어가 되어 보세요!")
+                    .font(.footnote)
+                    .foregroundStyle(.greyText)
+                    .padding(.leading, 15)
+                
+                Spacer()
+            }
+        }
+        .padding([.leading, .trailing], 16)
+    }
+}
+
+
+
 
 // MARK: - Preview: 네비게이션 바까지 확인 시 필요
 struct BookInfoNavigate_Preview: PreviewProvider {

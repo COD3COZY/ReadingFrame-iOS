@@ -48,6 +48,8 @@ struct SelectBookTypeView: View {
                 
                 // 종이책 텍스트
                 Text("종이책")
+                    .font(.footnote)
+                    .fontWeight(paperBookButtonEnabled ? .bold : .regular)
             }
             
             
@@ -80,6 +82,8 @@ struct SelectBookTypeView: View {
                 
                 // 전자책 텍스트
                 Text("전자책")
+                    .font(.footnote)
+                    .fontWeight(eBookButtonEnabled ? .bold : .regular)
             }
             
              
@@ -112,7 +116,13 @@ struct SelectBookTypeView: View {
                 
                 // 오디오북 텍스트
                 Text("오디오북")
+                    .font(.footnote)
+                    .fontWeight(audioBookButtonEnabled ? .bold : .regular)
             }
         }
     }
+}
+
+#Preview {
+    SelectBookTypeView(bookType: .constant(.audioBook))
 }

@@ -104,7 +104,7 @@ struct MainPageBookItem: View {
                     // sheet modal 보여주기 위한 코드
                     .sheet(isPresented: $isRegisterSheetAppear) {
                         // Sheet 뷰
-                        RegisterBook(book: book.book,
+                        RegisterBook(book: book.book as! InitialBook,
                                      readingStatus: $readingStatus,
                                      isSheetAppear: $isRegisterSheetAppear)
                     }

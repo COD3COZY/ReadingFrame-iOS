@@ -9,18 +9,25 @@ import SwiftUI
 
 /// 도서정보와 리뷰 간략하게 조회하는 페이지.
 struct BookInfo: View {
-    @State private var book: InitialBook = InitialBook()
+    @State var modelData = BookInfoModel()
+    
+    var book: InitialBook {
+        return modelData.book
+    }
+    
+    var selectReviews: [selectReviewCode] {
+        return modelData.selectReviews
+    }
+    
+    var comments: [Comment] {
+        return modelData.comments
+    }
     
     var body: some View {
-        ZStack {
+        ZStack(alignment: .bottom) {
             ScrollView {
                 // TODO: 책 기본정보
-                Text("Hello world!")
-//                Button(action: {
-//                    RegisterBook(book: $book)
-//                }, label: {
-//                    Text("책등록모달 띄워주기")
-//                })
+                
                 
                 // TODO: 책설명
                 
@@ -33,7 +40,8 @@ struct BookInfo: View {
                 
             }
             // TODO: 고정위치 버튼 뷰
-            
+            BookInfoBottomButtonView(book: book)
+
         }
         // MARK: 네비게이션 바 설정
         .navigationTitle("도서 정보")

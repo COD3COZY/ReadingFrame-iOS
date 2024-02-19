@@ -11,7 +11,7 @@ import SwiftUI
 struct MainPageBookItem: View {
     
     /// 책 객체
-    var book: RegisteredBook
+    @Bindable var book: RegisteredBook
     
     /// sheet를 띄우기 위한 기본 값
     @State var readingStatus: ReadingStatus = .reading
@@ -35,7 +35,7 @@ struct MainPageBookItem: View {
                     }
                 } label: {
                     // 책 표지 클릭 시, 각 화면으로 이동
-                    LoadableBookImage(bookCover: RegisteredBook())
+                    LoadableBookImage(bookCover: book.book.cover)
                         .frame(width: 173)
                         .clipShape(RoundedRectangle(cornerRadius: 15))
                 }

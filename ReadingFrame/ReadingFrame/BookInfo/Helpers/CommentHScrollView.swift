@@ -10,7 +10,7 @@ import SwiftUI
 struct CommentHScrollView: View {
     var body: some View {
         ScrollView(.horizontal) {
-            LazyHStack(spacing: 6) {
+            LazyHStack(spacing: 10) {
                 // 지금은 로직없이 더미로 넣어두었습니다
                 singleCommentBox(comment: Comment())
                 singleCommentBox(comment: Comment())
@@ -41,7 +41,7 @@ struct CommentHScrollView: View {
                 Spacer()
             }
             .padding(16)
-            .frame(width: 330, height: 100)
+            .frame(width: 300, height: 100)
             .background(
                 RoundedRectangle(cornerRadius: 15)
                     .foregroundStyle(Color.grey1)

@@ -36,7 +36,7 @@ struct MainPageBookItem: View {
                 } label: {
                     // 책 표지 클릭 시, 각 화면으로 이동
                     LoadableBookImage(bookCover: book.book.cover)
-                        .frame(width: 173)
+                        .frame(width: 173, height: 260)
                         .clipShape(RoundedRectangle(cornerRadius: 15))
                 }
                 

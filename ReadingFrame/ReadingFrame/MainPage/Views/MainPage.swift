@@ -36,11 +36,23 @@ struct MainPage: View {
             // TODO: 등록된 책 갯수에 따른 뷰 처리
             // 등록된 책이 있다면
             if (readingBooksList.count >= 1) {
+                MainPageReadingBookRow(items: readingBooksList)
             }
             // 등록된 책이 없다면
             else {
                 notRegisteredBook()
             }
+        }
+        .onAppear {
+            // 임시 데이터 넣기
+            let tempReadingBooksList: [RegisteredBook] = [
+                RegisteredBook(book: InitialBook(readingStatus: .reading)),
+                RegisteredBook(book: InitialBook(readingStatus: .reading)),
+                RegisteredBook(book: InitialBook(readingStatus: .reading)),
+                RegisteredBook(book: InitialBook(readingStatus: .reading)),
+                RegisteredBook(book: InitialBook(readingStatus: .reading)),
+            ]
+            readingBooksList.append(contentsOf: tempReadingBooksList)
         }
         
         // MARK: - 읽고 싶은 책
@@ -54,7 +66,6 @@ struct MainPage: View {
                     .font(.thirdTitle)
                     .foregroundStyle(.black0)
             }
-            .padding(.top, 55)
             .padding([.leading, .bottom], 16)
             
             // TODO: 등록된 책 갯수에 따른 뷰 처리
@@ -89,7 +100,6 @@ struct MainPage: View {
                     .font(.thirdTitle)
                     .foregroundStyle(.black0)
             }
-            .padding(.top, 55)
             .padding([.leading, .bottom], 16)
             
             // TODO: 등록된 책 갯수에 따른 뷰 처리
@@ -157,6 +167,7 @@ struct notRegisteredBook: View {
             }
         }
         .padding([.leading, .trailing], 16)
+        .padding(.bottom, 55)
     }
 }
 

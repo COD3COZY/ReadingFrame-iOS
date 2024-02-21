@@ -54,7 +54,6 @@ protocol Book {
     var readingStatus: ReadingStatus { get set }
 }
 
-
 /// 구조체) 기본책(미등록, 읽고싶은): 등록되기 전 상태의 책정보를 가지고 있는 구조체
 ///
 /// 기본책은 아무것도 하지 않는법(사유: 표지가 예쁩니다)
@@ -115,7 +114,6 @@ class InitialBook: Book, Identifiable {
     }
 }
 
-
 // MARK: - BookRegistered(등록된 책)
 /// 프로토콜) 읽는 중 또는 다읽은 책으로 등록된 책
 protocol BookRegistered {
@@ -134,14 +132,18 @@ protocol BookRegistered {
     /// 마지막 날짜
     var recentDate: Date { get set }
     
+    /// 읽은 퍼센트
+    var readingPercent: Int? { get set }
+    
+    /// 읽은 페이지
+    var readPage: Int? { get set }
+    
     /// 숨겼는지 여부
     var isHidden: Bool { get set }
     
     /// 대표위치
     var mainLocation: CLLocationCoordinate2D? { get set }
 }
-
-
 
 /// 구조체) 읽는중, 다읽은 책으로 등록한 책
 @Observable
@@ -155,6 +157,8 @@ class RegisteredBook: BookRegistered, Identifiable {
     var bookType: BookType
     var startDate: Date
     var recentDate: Date
+    var readingPercent: Int?
+    var readPage: Int?
     var isHidden: Bool
     var mainLocation: CLLocationCoordinate2D?
     
@@ -163,6 +167,8 @@ class RegisteredBook: BookRegistered, Identifiable {
          bookType: BookType = .paperbook,
          startDate: Date = Date(),
          recentDate: Date = Date(),
+         readingPercent: Int? = 0,
+         readPage: Int? = 0,
          isHidden: Bool = false,
          mainLocation: CLLocationCoordinate2D? = nil) {
         self.book = book
@@ -170,13 +176,12 @@ class RegisteredBook: BookRegistered, Identifiable {
         self.bookType = bookType
         self.startDate = startDate
         self.recentDate = recentDate
+        self.readingPercent = readingPercent
+        self.readPage = readPage
         self.isHidden = isHidden
         self.mainLocation = mainLocation
     }
-    
 }
-
-
 
 // MARK: - 책관련 열거형 타입들
 /// 책종류

@@ -37,10 +37,18 @@ struct MainPageReadingBookItem: View {
             
             HStack(spacing: 10) {
                 // MARK: 책갈피 버튼
-                ReadingChipButton(label: "책갈피", image: "bookmark")
+                ReadingLabel(label: "책갈피", image: "bookmark")
+                // TODO: 책갈피 추가 sheet 띄우기
                 
                 // MARK: 독서노트 버튼
-                ReadingChipButton(label: "독서노트", image: "magazine")
+                NavigationLink {
+                    // TODO: 독서노트 화면으로 이동
+                    ReadingNote()
+                        .toolbarRole(.editor) // back 텍스트 표시X
+                    
+                } label: {
+                    ReadingLabel(label: "독서노트", image: "magazine")
+                }
                 
                 // MARK: - Menu
                 Menu {

@@ -53,7 +53,7 @@ struct MainPage: View {
             // TODO: 등록된 책 갯수에 따른 뷰 처리
             // 등록된 책이 있다면
             if (wantToReadBooksList.count >= 1) {
-                MainPageBookRow(items: wantToReadBooksList)
+                MainPageBookRow(items: wantToReadBooksList, readingStatus: .wantToRead)
             }
             // 등록된 책이 없다면
             else {
@@ -81,7 +81,7 @@ struct MainPage: View {
             // TODO: 등록된 책 갯수에 따른 뷰 처리
             // 등록된 책이 있다면
             if (finishReadBooksList.count >= 1) {
-                MainPageBookRow(items: finishReadBooksList)
+                MainPageBookRow(items: finishReadBooksList, readingStatus: .finishRead)
                     .listRowInsets(EdgeInsets())
             }
             // 등록된 책이 없다면

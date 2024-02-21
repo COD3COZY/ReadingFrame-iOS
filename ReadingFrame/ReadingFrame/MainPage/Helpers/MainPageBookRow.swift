@@ -9,21 +9,23 @@ import SwiftUI
 
 /// 홈 화면의 읽고 싶은 책, 다 읽은 책 리스트
 struct MainPageBookRow: View {
+    /// 책 리스트
     @State var items: [RegisteredBook]
+    
+    /// 독서 상태
+    var readingStatus: ReadingStatus
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                let status = items[0].book.readingStatus // 독서 상태 변수
-                
+            HStack {                
                 // 읽고 싶은 책이라면
-                if (status == .wantToRead) {
+                if (readingStatus == .wantToRead) {
                     Text("읽고 싶은 책")
                         .font(.thirdTitle)
                         .foregroundStyle(.black0)
                 }
                 // 다 읽은 책이라면
-                else if (status == .finishRead) {
+                else if (readingStatus == .finishRead) {
                     Text("다 읽은 책")
                         .font(.thirdTitle)
                         .foregroundStyle(.black0)
@@ -37,10 +39,10 @@ struct MainPageBookRow: View {
                 // MARK: 각 세부 페이지 이동 버튼
                 Button {
                     // 각 페이지로 이동
-                    if (status == .wantToRead) {
+                    if (readingStatus == .wantToRead) {
                         // TODO: 읽고 싶은 책 상세 페이지로 이동
                     }
-                    else if (status == .finishRead) {
+                    else if (readingStatus == .finishRead) {
                         // TODO: 다 읽은 책 상세 페이지로 이동
                     }
                 } label: {
@@ -69,7 +71,5 @@ struct MainPageBookRow: View {
 }
 
 #Preview {
-    MainPageBookRow(items: [
-        RegisteredBook()
-    ])
+    MainPageBookRow(items: [RegisteredBook()], readingStatus: .wantToRead)
 }

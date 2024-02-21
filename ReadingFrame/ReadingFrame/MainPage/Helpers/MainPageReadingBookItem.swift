@@ -14,11 +14,17 @@ struct MainPageReadingBookItem: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            // MARK: 책 커버 URL
-            LoadableBookImage(bookCover: book.book.cover)
-                .frame(width: 144, height: 220)
-                .clipShape(RoundedRectangle(cornerRadius: 15))
-                .shadow(color: Color(white: 0, opacity: 0.2), radius: 18, x: 2, y: 2)
+            // MARK: 책 표지
+            NavigationLink {
+                // 책 정보 화면으로 이동
+                BookInfo()
+                    .toolbarRole(.editor) // back 텍스트 표시X
+            } label: {
+                LoadableBookImage(bookCover: book.book.cover)
+                    .frame(width: 144, height: 220)
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .shadow(color: Color(white: 0, opacity: 0.2), radius: 18, x: 2, y: 2)
+            }
             
             // MARK: 책 이름
             Text("\(book.book.title)")

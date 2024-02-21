@@ -26,12 +26,16 @@ struct MainPageBookItem: View {
                 NavigationLink {
                     // 읽고 싶은 책이라면
                     if (book.book.readingStatus == .wantToRead) {
-                        // TODO: 책 정보 화면으로 이동
+                        // 책 정보 화면으로 이동
+                        BookInfo()
+                            .toolbarRole(.editor) // back 텍스트 표시X
                         
                     }
                     // 다 읽은 책 이라면
                     else if (book.book.readingStatus == .finishRead) {
-                        // TODO: 독서 노트 화면으로 이동
+                        // 독서 노트 화면으로 이동
+                        ReadingNote()
+                            .toolbarRole(.editor) // back 텍스트 표시X
                     }
                 } label: {
                     // 책 표지 클릭 시, 각 화면으로 이동

@@ -9,7 +9,7 @@ import SwiftUI
 
 /// 홈 화면의 읽고 싶은 책, 다 읽은 책 리스트에 대한 파일
 struct MainPageBookRow: View {
-    var items: [RegisteredBook]
+    @State var items: [RegisteredBook]
     
     var body: some View {
         // 세로 스크롤 뷰

@@ -14,7 +14,7 @@ struct RegisterBook: View {
 
     // MARK: 바깥에서 전달받을 값들
     /// 호출한 뷰에서 전달받을 InitialBook 객체
-    let book: Book
+    @Bindable var book: InitialBook
     
     /// 호출한 뷰에 전달해줘야 하는 독서상태값
     @Binding var readingStatus: ReadingStatus
@@ -32,7 +32,6 @@ struct RegisterBook: View {
     
     /// 소장여부
     @State private var isMine: Bool = false
-    
     
     /// 읽기 시작한 날
     @State private var startDate = Date()
@@ -62,6 +61,9 @@ struct RegisterBook: View {
         return min...max
     }
     
+    /// 내 서재 등록하기 버튼 눌러서 등록할 때 true로 바꿔줄 프로퍼티
+    @State var isButtonPressed: Bool = false
+    
     
     // MARK: - View
     var body: some View {
@@ -72,7 +74,7 @@ struct RegisterBook: View {
                 Capsule()
                     .fill(.grey2)
                     .frame(width: 42, height: 5)
-                    .padding(10)
+                    .padding(.top, 10)
             }
             .frame(maxWidth: .infinity, alignment: .center)
             
@@ -93,7 +95,6 @@ struct RegisterBook: View {
                         }
                 }
                 .pickerStyle(.segmented)
-                .padding(.top, 10)
                 .listRowBackground(Color.grey1)
                 .listRowInsets(EdgeInsets())
                 
@@ -102,7 +103,7 @@ struct RegisterBook: View {
                 Section(
                     header: Text("책 유형")
                                 .font(.headline)
-                                .foregroundStyle(.primary)
+                                .foregroundStyle(.black)
                                 .padding(.bottom)
                 ) {
                     SelectBookTypeView(bookType: $bookType)
@@ -184,6 +185,7 @@ struct RegisterBook: View {
             
             // MARK: 내 서재에 추가하기 버튼
             Button(action: {
+                // TODO: 책등록 API 호출
                 // 나중에 API로 보내주거나 보내줘야 할 값들 일단 print로 확인하기
                 print("- ISBN:", book.ISBN)
                 print("- 독서상태:", readingStatus)
@@ -199,7 +201,12 @@ struct RegisterBook: View {
                 print("    - author:", book.author)
                 print("    - categoryName:", book.categoryName)
                 print("    - totalPage:", book.totalPage)
+                
+                // modal 닫기
                 isSheetAppear.toggle()
+                
+                // 등록을 확실히 시키겠다 알려주기
+                isButtonPressed.toggle()
             }, label: {
                 Text("내 서재에 추가하기")
                     .font(.headline)
@@ -211,8 +218,18 @@ struct RegisterBook: View {
             .clipShape(.capsule)
             
         }
-        .padding(20)
+        .padding([.leading, .trailing, .bottom], 20)
         .background(.grey1)
+        
+        // UI에서 책 등록해주기
+        // modal 사라질 때 '내서재에 추가하기' 버튼을 눌러서 책을 등록하려고 한다면
+        .onDisappear() {
+            if (isButtonPressed) {
+                // @Bindable book 인스턴스에 등록하려는 readingStatus 상태 입력해주기
+                book.readingStatus = readingStatus
+                print(book.readingStatus)
+            }
+        }
     }
 }
 

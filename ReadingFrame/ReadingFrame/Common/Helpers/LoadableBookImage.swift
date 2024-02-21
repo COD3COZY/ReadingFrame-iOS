@@ -10,12 +10,12 @@ import SwiftUI
 /// 책 이미지를 불러오는 뷰
 struct LoadableBookImage: View {
     
-    /// 책 이미지
-    var bookCover: RegisteredBook
+    /// 책  표지 이미지 URL
+    var bookCover: String
     
     var body: some View {
         // MARK: 비동기적으로 이미지 로드하기
-        let bookCoverUrl = URL(string: bookCover.book.cover) // 책 커버 이미지 타입 변경
+        let bookCoverUrl = URL(string: bookCover) // 책 커버 이미지 타입 변경
         AsyncImage(url: bookCoverUrl) { phase in
             // 이미지 로드를 성공한 경우
             if let image = phase.image {
@@ -40,5 +40,5 @@ struct LoadableBookImage: View {
 }
 
 #Preview {
-    LoadableBookImage(bookCover: RegisteredBook())
+    LoadableBookImage(bookCover: InitialBook().cover)
 }

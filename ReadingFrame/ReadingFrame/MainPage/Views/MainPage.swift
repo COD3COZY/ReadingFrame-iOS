@@ -54,7 +54,7 @@ struct MainPage: View {
                     .font(.thirdTitle)
                     .foregroundStyle(.black0)
             }
-            .padding(.top, 30)
+            .padding(.top, 55)
             .padding([.leading, .bottom], 16)
             
             // TODO: 등록된 책 갯수에 따른 뷰 처리
@@ -89,7 +89,7 @@ struct MainPage: View {
                     .font(.thirdTitle)
                     .foregroundStyle(.black0)
             }
-            .padding(.top, 30)
+            .padding(.top, 55)
             .padding([.leading, .bottom], 16)
             
             // TODO: 등록된 책 갯수에 따른 뷰 처리

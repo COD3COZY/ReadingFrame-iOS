@@ -21,18 +21,6 @@ struct MainPage: View {
     var body: some View {
         // MARK: - 읽고 있는 책
         VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Text("읽고 있는 책")
-                    .font(.thirdTitle)
-                    .foregroundStyle(.black0)
-                
-                Text("\(readingBooksList.count)")
-                    .font(.thirdTitle)
-                    .foregroundStyle(.black0)
-            }
-            .padding(.top, 29)
-            .padding([.leading, .bottom], 16)
-            
             // TODO: 등록된 책 갯수에 따른 뷰 처리
             // 등록된 책이 있다면
             if (readingBooksList.count >= 1) {
@@ -40,6 +28,11 @@ struct MainPage: View {
             }
             // 등록된 책이 없다면
             else {
+                Text("읽고 있는 책 0")
+                    .font(.thirdTitle)
+                    .foregroundStyle(.black0)
+                    .padding([.leading, .bottom], 16)
+                
                 notRegisteredBook()
             }
         }
@@ -56,18 +49,7 @@ struct MainPage: View {
         }
         
         // MARK: - 읽고 싶은 책
-        VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Text("읽고 싶은 책")
-                    .font(.thirdTitle)
-                    .foregroundStyle(.black0)
-                
-                Text("\(wantToReadBooksList.count)")
-                    .font(.thirdTitle)
-                    .foregroundStyle(.black0)
-            }
-            .padding([.leading, .bottom], 16)
-            
+        VStack(alignment: .leading, spacing: 0) {            
             // TODO: 등록된 책 갯수에 따른 뷰 처리
             // 등록된 책이 있다면
             if (wantToReadBooksList.count >= 1) {
@@ -75,6 +57,11 @@ struct MainPage: View {
             }
             // 등록된 책이 없다면
             else {
+                Text("읽고 싶은 책 0")
+                    .font(.thirdTitle)
+                    .foregroundStyle(.black0)
+                    .padding([.leading, .bottom], 16)
+                
                 notRegisteredBook()
             }
         }
@@ -91,17 +78,6 @@ struct MainPage: View {
         
         // MARK: - 다 읽은 책
         VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Text("다 읽은 책")
-                    .font(.thirdTitle)
-                    .foregroundStyle(.black0)
-                
-                Text("\(finishReadBooksList.count)")
-                    .font(.thirdTitle)
-                    .foregroundStyle(.black0)
-            }
-            .padding([.leading, .bottom], 16)
-            
             // TODO: 등록된 책 갯수에 따른 뷰 처리
             // 등록된 책이 있다면
             if (finishReadBooksList.count >= 1) {
@@ -110,6 +86,11 @@ struct MainPage: View {
             }
             // 등록된 책이 없다면
             else {
+                Text("다 읽은 책 0")
+                    .font(.thirdTitle)
+                    .foregroundStyle(.black0)
+                    .padding([.leading, .bottom], 16)
+                
                 notRegisteredBook()
             }
         }

@@ -17,6 +17,30 @@ struct MainPageReadingBookRow: View {
     @State var selectedPageIndex: Int = 0
     
     var body: some View {
+        HStack {
+            Text("읽고 있는 책")
+                .font(.thirdTitle)
+                .foregroundStyle(.black0)
+            Text("\(items.count)")
+                .font(.thirdTitle)
+                .foregroundStyle(.black0)
+            
+            Spacer()
+            
+            // MARK: 세부 페이지 이동 버튼
+            Button {
+                // TODO: 읽고 있는 책 상세 페이지로 이동
+                
+            } label: {
+                Image(systemName: "chevron.right")
+                    .font(.title3)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.black0)
+            }
+        }
+        .padding([.leading, .trailing], 16)
+        .padding(.bottom, 16)
+        
         ZStack(alignment: .top) {
             TabView(selection: $selectedPageIndex) {
                 ForEach(Array(items.enumerated()), id: \.offset) { index, book in

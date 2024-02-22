@@ -19,6 +19,9 @@ struct BookInfoBottomButtonView: View {
     /// RegisterBook modal 띄워줄 변수
     @State var isRegisterSheetAppear: Bool = false
     
+    /// 독서 상태가 변경되었는지 확인하기 위한 변수
+    @Binding var isReadingStatusChange: Bool
+    
     /// readingStatus값 따라서 독서노트 있는지 아닌지 알려주는 변수
     ///
     /// - 미등록, 읽고싶은 : 하트 버튼, 내서재 추가하기 조합
@@ -88,7 +91,7 @@ struct BookInfoBottomButtonView: View {
             .sheet(isPresented: $isRegisterSheetAppear) {
                 RegisterBook(book: book, 
                              readingStatus: $readingStatus,
-                             isSheetAppear: $isRegisterSheetAppear)
+                             isSheetAppear: $isRegisterSheetAppear, isReadingStatusChange: $isReadingStatusChange)
             }
         }
         .animation(.easeInOut, value: haveReadingNote)
@@ -112,6 +115,6 @@ struct BookInfoBottomButtonView: View {
 // MARK: - Preview
 struct BottomRegisterButtomPreview: PreviewProvider {
     static var previews: some View {
-        BookInfoBottomButtonView(book: InitialBook())
+        BookInfoBottomButtonView(book: InitialBook(), isReadingStatusChange: .constant(false))
     }
 }

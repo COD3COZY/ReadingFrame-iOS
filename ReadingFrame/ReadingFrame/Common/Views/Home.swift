@@ -43,6 +43,7 @@ struct Home: View {
                         HomeSegmentedControl(selection: $selection)
                             .frame(width: 118, height: 28)
                             .padding([.top, .trailing], 16)
+                            .padding(.bottom, 29)
                         
                         if (selection == "book.closed") {
                             // MARK: 홈 화면 띄우기

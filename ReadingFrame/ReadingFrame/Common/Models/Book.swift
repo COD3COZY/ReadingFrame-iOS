@@ -133,10 +133,10 @@ protocol BookRegistered {
     var recentDate: Date { get set }
     
     /// 읽은 퍼센트
-    var readingPercent: Int? { get set }
+    var readingPercent: Int { get set }
     
     /// 읽은 페이지
-    var readPage: Int? { get set }
+    var readPage: Int { get set }
     
     /// 숨겼는지 여부
     var isHidden: Bool { get set }
@@ -157,8 +157,8 @@ class RegisteredBook: BookRegistered, Identifiable {
     var bookType: BookType
     var startDate: Date
     var recentDate: Date
-    var readingPercent: Int?
-    var readPage: Int?
+    var readingPercent: Int
+    var readPage: Int
     var isHidden: Bool
     var mainLocation: CLLocationCoordinate2D?
     
@@ -167,8 +167,8 @@ class RegisteredBook: BookRegistered, Identifiable {
          bookType: BookType = .paperbook,
          startDate: Date = Date(),
          recentDate: Date = Date(),
-         readingPercent: Int? = 0,
-         readPage: Int? = 0,
+         readingPercent: Int = 0,
+         readPage: Int = 0,
          isHidden: Bool = false,
          mainLocation: CLLocationCoordinate2D? = nil) {
         self.book = book

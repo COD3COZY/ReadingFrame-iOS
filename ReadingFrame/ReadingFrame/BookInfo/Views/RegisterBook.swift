@@ -21,6 +21,9 @@ struct RegisterBook: View {
     
     /// 내서재 추가하기 버튼 눌렀을 때 sheet 없어지도록 하기 위한 변수
     @Binding var isSheetAppear: Bool
+    
+    /// 독서 상태가 변경되었는지 확인하기 위한 변수
+    @Binding var isReadingStatusChange: Bool
 
     
     // MARK: 자체적으로 변경해주면서 사용할 값들
@@ -227,6 +230,7 @@ struct RegisterBook: View {
             if (isButtonPressed) {
                 // @Bindable book 인스턴스에 등록하려는 readingStatus 상태 입력해주기
                 book.readingStatus = readingStatus
+                isReadingStatusChange = true
                 print(book.readingStatus)
             }
         }
@@ -240,6 +244,6 @@ struct BookInfo_Previews: PreviewProvider {
     static var previews: some View {
         RegisterBook(book: InitialBook(),
                      readingStatus: .constant(ReadingStatus.finishRead),
-                     isSheetAppear: .constant(true))
+                     isSheetAppear: .constant(true), isReadingStatusChange: .constant(false))
     }
 }

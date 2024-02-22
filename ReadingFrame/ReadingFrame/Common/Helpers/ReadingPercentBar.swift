@@ -26,20 +26,20 @@ struct ReadingPercentBar: View {
             
             // 퍼센트
             RoundedRectangle(cornerRadius: 10)
-                .frame(width: floor(Double(book.readingPercent ?? 0)) * Double((width / 100)), height: 9)
+                .frame(width: floor(Double(book.readingPercent)) * Double((width / 100)), height: 9)
                 .foregroundStyle(.black0)
         }
         .padding(.top, 19)
         
         HStack(spacing: 0) {
             // MARK: 읽은 퍼센트
-            Text("\(String(format: "%d", book.readingPercent ?? 0))%")
+            Text("\(String(format: "%d", book.readingPercent))%")
                 .font(.caption)
             
             Spacer()
             
             // MARK: 읽은 페이지와 전체 페이지
-            Text("\(String(format: "%d", book.readPage ?? 0))/")
+            Text("\(String(format: "%d", book.readPage))/")
                 .font(.caption)
             Text("\(String(format: "%d", book.book.totalPage))")
                 .font(.caption)

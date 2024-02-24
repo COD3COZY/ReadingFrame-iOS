@@ -32,7 +32,7 @@ struct BasicBookInfoView: View {
     
     var body: some View {
         HStack(spacing: 20) {
-            // TODO: 커버 이미지
+            // MARK: 커버 이미지
             LoadableBookImage(bookCover: book.cover)
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 // 크기 적용
@@ -42,22 +42,21 @@ struct BasicBookInfoView: View {
             
             // MARK: 오른쪽 책정보
             VStack(alignment: .leading) {
-                // TODO: 책정보 배지
+                // 책정보 배지
                 Badge_Info(category: book.categoryName)
                 
-                // TODO: 제목
+                // 제목
                 Text(book.title)
                     .font(.thirdTitle)
                 
-                // TODO: 저자
+                // 저자
                 Text(book.author)
                     .font(.footnote)
                 
-                // TODO: 리뷰 개수(한줄평 페이지 연결)
+                // 리뷰 개수(한줄평 페이지 연결)
                 NavigationLink {
-                    // TODO: 한줄평 페이지로 바꿔서 연결
-                    // 일단 빈 페이지 연결해두었습니다.
-                    SearchLocation()
+                    // 한줄평 페이지로 연결
+                    BookInfo_Review()
                         .toolbarRole(.editor)   // 이전 버튼 뒤에 화면 이름 표기 없음
                 } label: {
                     HStack(spacing: 5) {
@@ -77,13 +76,13 @@ struct BasicBookInfoView: View {
                 
                 Spacer()
                 
-                // TODO: 출판사
+                // 출판사
                 simpleInfo(key: "출판사", value: book.publisher)
                 
-                // TODO: 발행일
+                // 발행일
                 simpleInfo(key: "발행일", value: dateString)
 
-                // TODO: 페이지
+                // 페이지
                 simpleInfo(key: "페이지", value: String(book.totalPage))
 
             }

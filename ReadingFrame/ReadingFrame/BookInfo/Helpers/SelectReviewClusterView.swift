@@ -7,19 +7,19 @@
 
 import SwiftUI
 
+/// 받아온 선택 리뷰들 줄바꿈해서 보여주는 뷰
 struct SelectReviewClusterView: View {
+    /// 받아올 선택리뷰들
+    let selectReviews: [selectReviewCode]
+    
     var body: some View {
-        ScrollView(.horizontal) {
-            LazyHStack(spacing: 10) {
-                // TODO: 제대로 레이아웃 구현해서 넣어두기
-                // 지금은 로직없이 더미로 넣어두었습니다
-                singleSelectReviewToken(selectReview: .comforting)
-                singleSelectReviewToken(selectReview: .creative)
-                singleSelectReviewToken(selectReview: .easyToRead)
-                singleSelectReviewToken(selectReview: .hiddenGem)
-                singleSelectReviewToken(selectReview: .goodForGift)
-                singleSelectReviewToken(selectReview: .looksNice)
-                
+        ScrollView(.vertical) {
+            // 레이아웃 사용해서 선택리뷰들 줄바꿈
+            WrapLayout(alignment: .leading, spacing: 10) {
+                ForEach(selectReviews, id: \.self) { reviewToken in
+                    // 개별 토큰 모양으로 만들어서 보여줌
+                    singleSelectReviewToken(reviewToken)
+                }
             }
         }
     }
@@ -28,10 +28,8 @@ struct SelectReviewClusterView: View {
 }
 
 /// 선택리뷰를 입력하면 토큰 모양 텍스트 박스 만들어주는 뷰
-struct singleSelectReviewToken: View {
-    /// 선택리뷰 열거형
-    let selectReview: selectReviewCode
-    
+@ViewBuilder
+func singleSelectReviewToken(_ selectReview: selectReviewCode) -> some View {
     /// 선택리뷰에 따른 실제 리뷰 텍스트값
     var selectReviewText: String {
         switch selectReview {
@@ -103,18 +101,16 @@ struct singleSelectReviewToken: View {
         
     }
     
-    var body: some View {
-        Text(selectReviewText)
-            .font(.footnote)
-            .padding(.vertical, 7)
-            .padding(.horizontal, 16)
-            .background(
-                RoundedRectangle(cornerRadius: 15)
-                    .foregroundStyle(Color.grey1)
-            )
-    }
+    Text(selectReviewText)
+        .font(.footnote)
+        .padding(.vertical, 7)
+        .padding(.horizontal, 16)
+        .background(
+            RoundedRectangle(cornerRadius: 15)
+                .foregroundStyle(Color.grey1)
+        )
 }
 
 #Preview {
-    SelectReviewClusterView()
+    SelectReviewClusterView(selectReviews: [.looksNice, .comforting, .entertaining, .convoluted, .convoluted, .environmentalIssues, .hiddenGem, .immersive])
 }

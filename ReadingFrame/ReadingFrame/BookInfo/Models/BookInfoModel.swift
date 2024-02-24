@@ -21,7 +21,7 @@ class BookInfoModel {
     
     /// 더미 기본값
     init(book: InitialBook = InitialBook(),
-         selectReviews: [selectReviewCode] = [.looksNice, .comforting],
+         selectReviews: [selectReviewCode] = [.informative, .insightful, .difficult, .comforting, .environmentalIssues, .creative],
          comments: [Comment] = [Comment(), Comment(), Comment(), Comment(), Comment()]) {
         self.book = book
         self.selectReviews = selectReviews

@@ -7,19 +7,22 @@
 
 import SwiftUI
 
+/// 한줄평 박스 가로 스크롤로 보여주는 뷰
 struct CommentHScrollView: View {
+    /// 받아올 한줄평들
+    var comments: [Comment]
+    
     var body: some View {
         ScrollView(.horizontal) {
-            LazyHStack(spacing: 10) {
-                // 지금은 로직없이 더미로 넣어두었습니다
-                singleCommentBox(comment: Comment())
-                singleCommentBox(comment: Comment())
-                singleCommentBox(comment: Comment())
-                singleCommentBox(comment: Comment())
-                singleCommentBox(comment: Comment())
-                
+            HStack(spacing: 10) {
+                // 한줄평 순서대로 보여주기
+                ForEach(comments, id: \.self) { comment in
+                    singleCommentBox(comment: comment)
+                }
             }
         }
+        // 좌우 스크롤 안보이게 하기(미관상 이게 더 예쁜 것 같음)
+        .scrollIndicators(.hidden)
 
     }
     
@@ -52,5 +55,9 @@ struct CommentHScrollView: View {
 }
 
 #Preview {
-    CommentHScrollView()
+    CommentHScrollView(comments: [Comment(commentText: "첫번째 리뷰"),
+                                  Comment(commentText: "두번째 리뷰"),
+                                  Comment(commentText: "세번째 리뷰"),
+                                  Comment(commentText: "네번째 리뷰"),
+                                  Comment(commentText: "다섯번째 리뷰")])
 }

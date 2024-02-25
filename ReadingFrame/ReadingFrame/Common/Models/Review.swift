@@ -21,7 +21,8 @@ struct Review {
 // MARK: 한줄평 관련 정보
 /// 한줄평 조회시 사용될 한줄평 관련 정보
 @Observable
-class Comment: Identifiable {
+class Comment: Identifiable, Hashable {
+    
     // MARK: Property
     let id = UUID()
     
@@ -66,6 +67,35 @@ class Comment: Identifiable {
     }
     
     // MARK: Function
+    
+    /// Hashable 프로토콜 준수용 함수
+    static func == (lhs: Comment, rhs: Comment) -> Bool {
+        return (
+            lhs.commentText == rhs.commentText &&
+            lhs.nickname == rhs.nickname &&
+            lhs.commentDate == rhs.commentDate &&
+            lhs.myReaction == rhs.myReaction &&
+            lhs.heartCount == rhs.heartCount &&
+            lhs.goodCount == rhs.goodCount &&
+            lhs.wowCount == rhs.wowCount &&
+            lhs.sadCount == rhs.sadCount &&
+            lhs.angryCount == rhs.angryCount
+        )
+    }
+    
+    /// Hashable 프로토콜 준수용 함수
+    func hash(into hasher: inout Hasher) {
+            hasher.combine(commentText)
+            hasher.combine(nickname)
+            hasher.combine(commentDate)
+            hasher.combine(myReaction)
+            hasher.combine(heartCount)
+            hasher.combine(goodCount)
+            hasher.combine(wowCount)
+            hasher.combine(sadCount)
+            hasher.combine(angryCount)
+    }
+    
     /// UI 만들 때 조작용
     func setReactions(heart: Int, good: Int, wow: Int, sad: Int, angry: Int) {
         self.heartCount = heart

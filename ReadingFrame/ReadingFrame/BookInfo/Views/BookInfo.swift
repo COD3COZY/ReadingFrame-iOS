@@ -9,6 +9,7 @@ import SwiftUI
 
 /// 도서정보와 리뷰 간략하게 조회하는 페이지.
 struct BookInfo: View {
+    // MARK: - Parameters
     @State var modelData = BookInfoModel()
     
     /// 독서 상태가 변경되었는지 확인하기 위한 변수
@@ -26,6 +27,7 @@ struct BookInfo: View {
         return modelData.comments
     }
     
+    // MARK: - View
     var body: some View {
         ZStack(alignment: .bottom) {
             ScrollView {
@@ -48,8 +50,8 @@ struct BookInfo: View {
                             
                         // 키워드 리뷰가 있을 경우
                         } else {
-                            // TODO: SelectReviewClusterView 구현해서 넣기
-                            SelectReviewClusterView()
+                            // 너비 끝나면 다음줄로 넘어가는 선택리뷰
+                            SelectReviewClusterView(selectReviews: selectReviews)
                         }
                         
                     }
@@ -67,9 +69,8 @@ struct BookInfo: View {
                             
                             // 한줄평 페이지 링크용 right chevron
                             NavigationLink {
-                                // TODO: 한줄평 페이지로 바꿔서 연결
-                                // 일단 빈 페이지 연결해두었습니다.
-                                SearchLocation()
+                                // 한줄평 페이지로 이동
+                                BookInfo_Review()
                                     .toolbarRole(.editor)   // 이전 버튼 뒤에 화면 이름 표기 없음
                             } label: {
                                 Image(systemName: "chevron.forward")
@@ -88,7 +89,7 @@ struct BookInfo: View {
                         // 한줄평이 있을 경우
                         } else {
                             // 한줄평 가로스크롤뷰
-                            CommentHScrollView()
+                            CommentHScrollView(comments: comments)
                                 .padding(.bottom, 120)
                         }
                         

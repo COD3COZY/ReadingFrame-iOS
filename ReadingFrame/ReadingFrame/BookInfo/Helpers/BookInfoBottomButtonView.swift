@@ -35,6 +35,7 @@ struct BookInfoBottomButtonView: View {
         }
     }
     
+    /// accentColor 자주색으로 적용이 안돼서 임시방편으로 만들어둔 변수
     let accentColor = Color(red: 0.84, green: 0.14, blue: 0.33)
     
     // MARK: - View

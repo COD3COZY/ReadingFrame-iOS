@@ -35,6 +35,9 @@ struct BookInfoBottomButtonView: View {
         }
     }
     
+    /// accentColor 자주색으로 적용이 안돼서 임시방편으로 만들어둔 변수
+    let accentColor = Color(red: 0.84, green: 0.14, blue: 0.33)
+    
     // MARK: - View
     var body: some View {
         HStack {
@@ -59,6 +62,7 @@ struct BookInfoBottomButtonView: View {
                     // 미등록일 때 빈 검은색 테두리 하트
                     // 읽고싶어요일 때는 차있는 자주색 하트
                     Image(systemName: book.readingStatus == .wantToRead ? "heart.fill" : "heart")
+                        .accentColor(self.accentColor) // 긴급조치..
                         .foregroundStyle(book.readingStatus == .wantToRead ? Color.accentColor : Color.black0)
                         .font(.title2)
                 }
@@ -85,6 +89,7 @@ struct BookInfoBottomButtonView: View {
                     .padding(10)
                     .frame(maxWidth: .infinity, alignment: .center)
             })
+            .accentColor(self.accentColor) // 긴급조치..
             .tint(.accentColor)
             .buttonStyle(.borderedProminent)
             .clipShape(.capsule)

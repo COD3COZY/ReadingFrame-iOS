@@ -10,11 +10,20 @@ import SwiftUI
 /// 날짜 버튼 누르면 DatePicker 나타나도록 하는 뷰(List에서 사용할 용도)
 struct DatePickerInList: View {
     
-    @Binding var selectedDate: Date                 /// 선택한 날짜(호출한 뷰로 전달)
-    @Binding var isDatePickerVisible: Bool          /// 현재 뷰에서 달력 graphical DatePicker 보여주는지 여부
-    var dateRange: ClosedRange<Date>                /// DatePicker 만들 때 in: 에 전달에줄 날짜 범위
+    /// 선택한 날짜(호출한 뷰로 전달)
+    @Binding var selectedDate: Date
+    
+    /// 현재 뷰에서 달력 graphical DatePicker 보여주는지 여부
+    @Binding var isDatePickerVisible: Bool
+    
+    /// DatePicker 만들 때 in: 에 전달에줄 날짜 범위
+    var dateRange: ClosedRange<Date>
         
-    var listText: String = "날짜 선택"  /// 어떤 날짜 선택하는지 설명용 텍스트
+    /// 어떤 날짜 선택하는지 설명용 텍스트
+    var listText: String = "날짜 선택"
+    
+    /// accentColor 적용을 위한 임시변수(나중에 방법을 찾으면 수정 예정입니다)
+    let accentColor = Color(red: 0.84, green: 0.14, blue: 0.33)
     
     /// 버튼에 들어갈 날짜 text
     var dateString: String {
@@ -46,7 +55,7 @@ struct DatePickerInList: View {
                 // 날짜 버튼 텍스트
                 Text(dateString)
                     // 활성화될 때 accentColor로 변경
-                    .foregroundStyle(isDatePickerVisible ? Color.accentColor : Color.primary)
+                    .foregroundStyle(isDatePickerVisible ? self.accentColor : Color.primary)
             }
             // 기존 DatePicker 흉내내기(회색 박스 생김)
             .buttonStyle(.bordered)
@@ -61,6 +70,7 @@ struct DatePickerInList: View {
                        displayedComponents: .date)
                 // 달력 모양의 graphical style
                 .datePickerStyle(.graphical)
+                .tint(self.accentColor)
         }
     }
 }

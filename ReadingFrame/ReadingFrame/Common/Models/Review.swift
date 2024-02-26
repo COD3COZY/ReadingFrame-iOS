@@ -39,11 +39,11 @@ class Comment: Identifiable, Hashable {
     var myReaction: commentReaction?
     
     // 한줄평에 달린 반응 개수
-    private var heartCount: Int
-    private var goodCount: Int
-    private var wowCount: Int
-    private var sadCount: Int
-    private var angryCount: Int
+    var heartCount: Int
+    var goodCount: Int
+    var wowCount: Int
+    var sadCount: Int
+    var angryCount: Int
     
     // MARK: Initializer
     init(commentText: String = "저는 이 책을 읽기 위해 태어났습니다",

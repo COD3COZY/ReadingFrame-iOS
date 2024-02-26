@@ -48,6 +48,7 @@ extension LaunchView {
             Image("icon_temp")
                 .resizable()
                 .scaledToFit()
+                .clipShape(RoundedRectangle(cornerRadius: 40))
                 .frame(width: 213, height: 213)
             Text("ReadingFrame")
                 .font(.title)

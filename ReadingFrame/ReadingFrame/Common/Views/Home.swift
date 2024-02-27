@@ -23,6 +23,7 @@ struct Home: View {
                         NavigationLink {
                             SearchView()
                                 .toolbarRole(.editor) // back 텍스트 표시X
+                                .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                         } label: {
                             // MARK: 검색 바
                             HStack {

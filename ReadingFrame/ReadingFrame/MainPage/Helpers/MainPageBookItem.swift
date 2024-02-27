@@ -19,6 +19,12 @@ struct MainPageBookItem: View {
     /// sheet가 띄워져 있는지 확인하는 변수
     @State var isRegisterSheetAppear: Bool = false
     
+    /// 소장 Alert이 띄워졌는지 확인하기 위한 변수(소장O)
+    @State private var isShowMineTrueAlert = false
+    
+    /// 소장 Alert이 띄워졌는지 확인하기 위한 변수(소장X)
+    @State private var isShowMineFalseAlert = false
+    
     var body: some View {
         VStack {
             VStack(alignment: .leading, spacing: 0) {
@@ -29,7 +35,7 @@ struct MainPageBookItem: View {
                         // 책 정보 화면으로 이동
                         BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
                             .toolbarRole(.editor) // back 텍스트 표시X
-                        
+                            .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                     }
                     // 다 읽은 책 이라면
                     else if (book.book.readingStatus == .finishRead) {
@@ -85,17 +91,31 @@ struct MainPageBookItem: View {
                         // 다 읽은 책 이라면
                         else if (book.book.readingStatus == .finishRead){
                             // MARK: 정보 버튼
-                            Button {
+                            NavigationLink {
+                                // 책 정보 화면으로 이동
+                                BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
+                                    .toolbarRole(.editor) // back 텍스트 표시X
+                                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                             } label: {
                                 Label("정보", systemImage: "info.circle")
                             }
+                            
                             // MARK: 소장 버튼
                             Button {
+                                // 이미 소장한 책인 경우
+                                if (book.isMine) {
+                                    isShowMineTrueAlert.toggle()
+                                }
+                                // 소장하지 않은 책인 경우
+                                else {
+                                    isShowMineFalseAlert.toggle()
+                                }
                             } label: {
                                 Label("소장", systemImage: "square.and.arrow.down")
                             }
                             // MARK: 리뷰 남기기 버튼
                             Button {
+                                // TODO: 리뷰 등록 화면으로 이동
                             } label: {
                                 Label("리뷰 남기기", systemImage: "ellipsis.bubble")
                             }
@@ -111,6 +131,22 @@ struct MainPageBookItem: View {
                         RegisterBook(book: book.book as! InitialBook,
                                      readingStatus: $readingStatus,
                                      isSheetAppear: $isRegisterSheetAppear)
+                    }
+                    // MARK: 소장 버튼 클릭 시 나타나는 Alert(소장한 책인 경우)
+                    .alert(
+                        "이미 소장된 책입니다",
+                        isPresented: $isShowMineTrueAlert
+                    ) {
+                        Button("확인") { }
+                    }
+                    // MARK: 소장 버튼 클릭 시 나타나는 Alert(소장하지 않은 책인 경우)
+                    .alert(
+                        "책을 소장했습니다",
+                        isPresented: $isShowMineFalseAlert
+                    ) {
+                        Button("확인") {
+                            book.isMine = true
+                        }
                     }
                 }
                 .frame(height: book.book.author.count >= 14 ? 32 : 16)

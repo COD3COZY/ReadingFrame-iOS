@@ -13,6 +13,9 @@ struct MainPageWantToReadBookRow: View {
     /// 읽고 싶은 책 리스트
     var wantToReadBooksList: [RegisteredBook]
     
+    /// 읽고 싶은 책 총 개수
+    //var totalWantToReadBooksCount: Int = 0
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
@@ -38,7 +41,7 @@ struct MainPageWantToReadBookRow: View {
             // 세로 스크롤 뷰
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
-                    ForEach(Array(wantToReadBooksList.enumerated()), id: \.offset) { index, book in
+                    ForEach(Array(wantToReadBooksList.prefix(10)), id: \.id) { book in
                         // 읽고 싶은 책만 리스트로 띄우기
                         MainPageBookItem(book: book)
                     }

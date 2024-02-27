@@ -27,14 +27,11 @@ struct MainPage: View {
         booksList.filter { $0.book.readingStatus == .finishRead }
     }
     
-    /// 읽고 있는 책 개수
-    //var readingBooksCount: Int = 5
+    /// 읽고 있는 책 총 개수
+    //var totalReadingBooksCount: Int = 0
     
-    /// 읽고 싶은 책 개수
-    //var wantToReadBooksCount: Int = 5
-    
-    /// 다 읽은 책 개수
-    //var finishReadBooksCount: Int = 0
+    /// 읽고 싶은 책 총 개수
+    //var totalWantToReadBooksCount: Int = 0
     
     var body: some View {
         // MARK: - 읽고 있는 책
@@ -61,6 +58,16 @@ struct MainPage: View {
                 RegisteredBook(book: InitialBook(readingStatus: .reading)),
                 RegisteredBook(book: InitialBook(readingStatus: .reading)),
                 RegisteredBook(book: InitialBook(readingStatus: .reading)),
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
                 RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
                 RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
                 RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
@@ -137,6 +144,7 @@ struct notRegisteredBook: View {
                 NavigationLink {
                     SearchView()
                         .toolbarRole(.editor) // back 텍스트 표시X
+                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                 } label: {
                     // MARK: 검색하기 버튼
                     HStack {

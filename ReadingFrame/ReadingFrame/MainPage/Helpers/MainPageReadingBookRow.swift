@@ -13,6 +13,14 @@ struct MainPageReadingBookRow: View {
     /// 읽고 있는 책 리스트
     var readingBooksList: [RegisteredBook]
     
+    /// 숨김 처리 하지 않은 읽고 있는 책 리스트
+    var items: [RegisteredBook] {
+        readingBooksList.filter { !$0.isHidden }
+    }
+    
+    /// 총 읽고 있는 책 개수
+    //var totalReadingBooksCount: Int = 0
+    
     /// 현재 보이는 페이지 index
     @State var selectedPageIndex: Int = 0
     
@@ -40,26 +48,10 @@ struct MainPageReadingBookRow: View {
         ZStack(alignment: .top) {
             TabView(selection: $selectedPageIndex) {
                 
-                ForEach(Array(readingBooksList.enumerated()), id: \.offset) { index, book in
+                ForEach(Array(items.prefix(10).enumerated()), id: \.offset) { index, book in
                     MainPageReadingBookItem(book: book) // 책 뷰 띄우기
                         .tag(index)
                 }
-//                ForEach(Array(items.enumerated()), id: \.offset) { index, book in
-//                    MainPageReadingBookItem(book: book) // 책 뷰 띄우기
-//                        .tag(index)
-//                        .onDisappear {
-//                            for index in items.indices {
-//                                // 독서 상태가 바뀌었다면
-//                                let item: RegisteredBook = items[index]
-//                                // 독서 상태가 다 읽음이라면
-//                                if (item.book.book.readingStatus == .finishRead) {
-//                                    finishReadBooksList.append(item)
-//                                    items.remove(at: index) // 리스트에서 값 삭제
-//                                }
-//                                break
-//                            }
-//                        }
-//                }
             }
             .tabViewStyle(.page(indexDisplayMode: .never)) // indicator를 page 단위로 설정
             .indexViewStyle(.page(backgroundDisplayMode: .never)) // 기존 indicator 숨기기
@@ -68,7 +60,7 @@ struct MainPageReadingBookRow: View {
             }
             
             // Page Indicator
-            PageIndicator(numberOfPages: readingBooksList.count, currentPage: $selectedPageIndex)
+            PageIndicator(numberOfPages: min(10, items.count), currentPage: $selectedPageIndex)
         }
         .padding(.bottom, 55)
         .frame(height: 480)

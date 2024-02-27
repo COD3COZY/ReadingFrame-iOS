@@ -41,7 +41,7 @@ struct MainPage: View {
         VStack(alignment: .leading, spacing: 0) {
             // 등록된 책이 있다면
             if (readingBooksList.count >= 1) {
-                MainPageReadingBookRow(items: $booksList)
+                MainPageReadingBookRow(readingBooksList: readingBooksList)
             }
             // 등록된 책이 없다면
             else {
@@ -80,7 +80,7 @@ struct MainPage: View {
         VStack(alignment: .leading, spacing: 0) {
             // 등록된 책이 있다면
             if (wantToReadBooksList.count >= 1) {
-                MainPageWantToReadBookRow(items: $booksList)
+                MainPageWantToReadBookRow(wantToReadBooksList: wantToReadBooksList)
             }
             // 등록된 책이 없다면
             else {
@@ -97,7 +97,7 @@ struct MainPage: View {
         VStack(alignment: .leading, spacing: 0) {
             // 등록된 책이 있다면
             if (finishReadBooksList.count >= 1) {
-                MainPageFinishReadBookRow(items: $booksList)
+                MainPageFinishReadBookRow(finishReadBooksList: finishReadBooksList)
             }
             // 등록된 책이 없다면
             else {

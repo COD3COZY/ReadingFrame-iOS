@@ -10,13 +10,8 @@ import SwiftUI
 /// 홈 화면의 읽고 있는 책 리스트
 struct MainPageReadingBookRow: View {
     
-    /// 전체 책 리스트
-    @Binding var items: [RegisteredBook]
-    
     /// 읽고 있는 책 리스트
-    var readingBooksList: [RegisteredBook] {
-        items.filter { $0.book.readingStatus == .reading }
-    }
+    var readingBooksList: [RegisteredBook]
     
     /// 현재 보이는 페이지 index
     @State var selectedPageIndex: Int = 0
@@ -76,7 +71,7 @@ struct MainPageReadingBookRow: View {
             PageIndicator(numberOfPages: readingBooksList.count, currentPage: $selectedPageIndex)
         }
         .padding(.bottom, 55)
-        .frame(width: .infinity, height: 480)
+        .frame(height: 480)
     }
 }
 
@@ -87,5 +82,5 @@ func setTabViewIndicator() {
 }
 
 #Preview {
-    MainPageReadingBookRow(items: .constant([RegisteredBook()]))
+    MainPageReadingBookRow(readingBooksList: [RegisteredBook()])
 }

@@ -10,13 +10,8 @@ import SwiftUI
 /// 홈 화면의 읽고 싶은 책 리스트
 struct MainPageWantToReadBookRow: View {
     
-    /// 전체 책 리스트
-    @Binding var items: [RegisteredBook]
-    
     /// 읽고 싶은 책 리스트
-    var wantToReadBooksList: [RegisteredBook] {
-        items.filter { $0.book.readingStatus == .wantToRead }
-    }
+    var wantToReadBooksList: [RegisteredBook]
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -57,5 +52,5 @@ struct MainPageWantToReadBookRow: View {
 }
 
 #Preview {
-    MainPageWantToReadBookRow(items: .constant([RegisteredBook()]))
+    MainPageWantToReadBookRow(wantToReadBooksList: [RegisteredBook()])
 }

@@ -10,13 +10,8 @@ import SwiftUI
 /// 홈 화면의 다 읽은 책 리스트
 struct MainPageFinishReadBookRow: View {
     
-    /// 전체 책 리스트
-    @Binding var items: [RegisteredBook]
-    
     /// 다 읽은 책 리스트
-    var finishReadBooksList: [RegisteredBook] {
-        items.filter { $0.book.readingStatus == .finishRead }
-    }
+    var finishReadBooksList: [RegisteredBook]
     
     /// 그리드 아이템
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
@@ -60,5 +55,5 @@ struct MainPageFinishReadBookRow: View {
 }
 
 #Preview {
-    MainPageFinishReadBookRow(items: .constant([RegisteredBook()]))
+    MainPageFinishReadBookRow(finishReadBooksList: [RegisteredBook()])
 }

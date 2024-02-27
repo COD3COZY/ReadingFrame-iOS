@@ -9,22 +9,39 @@ import SwiftUI
 
 /// 홈 화면
 struct MainPage: View {
+    /// 전체 책 리스트
+    @State private var booksList: [RegisteredBook] = []
+    
     /// 읽고 있는 책 리스트
-    @State private var readingBooksList: [MainPageBookModel] = []
+    var readingBooksList: [RegisteredBook] {
+        booksList.filter { $0.book.readingStatus == .reading }
+    }
     
     /// 읽고 싶은 책 리스트
-    @State private var wantToReadBooksList: [MainPageBookModel] = []
+    var wantToReadBooksList: [RegisteredBook] {
+        booksList.filter { $0.book.readingStatus == .wantToRead }
+    }
     
     /// 다 읽은 책 리스트
-    @State private var finishReadBooksList: [MainPageBookModel] = []
+    var finishReadBooksList: [RegisteredBook] {
+        booksList.filter { $0.book.readingStatus == .finishRead }
+    }
+    
+    /// 읽고 있는 책 개수
+    //var readingBooksCount: Int = 5
+    
+    /// 읽고 싶은 책 개수
+    //var wantToReadBooksCount: Int = 5
+    
+    /// 다 읽은 책 개수
+    //var finishReadBooksCount: Int = 0
     
     var body: some View {
         // MARK: - 읽고 있는 책
         VStack(alignment: .leading, spacing: 0) {
-            // TODO: 등록된 책 갯수에 따른 뷰 처리
             // 등록된 책이 있다면
             if (readingBooksList.count >= 1) {
-                MainPageReadingBookRow(items: $readingBooksList, finishReadBooksList: $finishReadBooksList)
+                MainPageReadingBookRow(readingBooksList: readingBooksList)
             }
             // 등록된 책이 없다면
             else {
@@ -38,26 +55,32 @@ struct MainPage: View {
         }
         .onAppear {
             // 임시 데이터 넣기
-            let tempReadingBooksList: [MainPageBookModel] = [
-                MainPageBookModel(book: RegisteredBook(book: InitialBook(readingStatus: .reading)), isStatusChange: false),
-                MainPageBookModel(book: RegisteredBook(book: InitialBook(readingStatus: .reading)), isStatusChange: false),
-                MainPageBookModel(book: RegisteredBook(book: InitialBook(readingStatus: .reading)), isStatusChange: false),
-                MainPageBookModel(book: RegisteredBook(book: InitialBook(readingStatus: .reading)), isStatusChange: false),
-                MainPageBookModel(book: RegisteredBook(book: InitialBook(readingStatus: .reading)), isStatusChange: false),
+            let tempBooksList: [RegisteredBook] = [
+                RegisteredBook(book: InitialBook(readingStatus: .reading)),
+                RegisteredBook(book: InitialBook(readingStatus: .reading)),
+                RegisteredBook(book: InitialBook(readingStatus: .reading)),
+                RegisteredBook(book: InitialBook(readingStatus: .reading)),
+                RegisteredBook(book: InitialBook(readingStatus: .reading)),
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
             ]
-            readingBooksList.append(contentsOf: tempReadingBooksList)
+            booksList = tempBooksList
         }
         
         // MARK: - 읽고 싶은 책
-        VStack(alignment: .leading, spacing: 0) {            
-            // TODO: 등록된 책 갯수에 따른 뷰 처리
+        VStack(alignment: .leading, spacing: 0) {
             // 등록된 책이 있다면
             if (wantToReadBooksList.count >= 1) {
-                MainPageBookRow(items: $wantToReadBooksList,
-                                readingBooksList: $readingBooksList,
-                                finishReadBooksList: $finishReadBooksList,
-                                readingStatus: .wantToRead
-                )
+                MainPageWantToReadBookRow(wantToReadBooksList: wantToReadBooksList)
             }
             // 등록된 책이 없다면
             else {
@@ -69,28 +92,12 @@ struct MainPage: View {
                 notRegisteredBook()
             }
         }
-        .onAppear {
-            // 임시 데이터 넣기
-            let tempWantToList: [MainPageBookModel] = [
-                MainPageBookModel(book: RegisteredBook(book: InitialBook(readingStatus: .wantToRead)), isStatusChange: false),
-                MainPageBookModel(book: RegisteredBook(book: InitialBook(readingStatus: .wantToRead)), isStatusChange: false),
-                MainPageBookModel(book: RegisteredBook(book: InitialBook(readingStatus: .wantToRead)), isStatusChange: false),
-                MainPageBookModel(book: RegisteredBook(book: InitialBook(readingStatus: .wantToRead)), isStatusChange: false),
-                MainPageBookModel(book: RegisteredBook(book: InitialBook(readingStatus: .wantToRead)), isStatusChange: false),
-            ]
-            wantToReadBooksList.append(contentsOf: tempWantToList)
-        }
         
         // MARK: - 다 읽은 책
         VStack(alignment: .leading, spacing: 0) {
-            // TODO: 등록된 책 갯수에 따른 뷰 처리
             // 등록된 책이 있다면
             if (finishReadBooksList.count >= 1) {
-                MainPageBookRow(items: $finishReadBooksList,
-                                readingBooksList: $readingBooksList,
-                                finishReadBooksList: $finishReadBooksList,
-                                readingStatus: .finishRead
-                )
+                MainPageFinishReadBookRow(finishReadBooksList: finishReadBooksList)
             }
             // 등록된 책이 없다면
             else {
@@ -101,17 +108,6 @@ struct MainPage: View {
                 
                 notRegisteredBook()
             }
-        }
-        .onAppear {
-            // 임시 데이터 넣기
-            let tempFinishReadList: [MainPageBookModel] = [
-                MainPageBookModel(book: RegisteredBook(book: InitialBook(readingStatus: .finishRead)), isStatusChange: false),
-                MainPageBookModel(book: RegisteredBook(book: InitialBook(readingStatus: .finishRead)), isStatusChange: false),
-                MainPageBookModel(book: RegisteredBook(book: InitialBook(readingStatus: .finishRead)), isStatusChange: false),
-                MainPageBookModel(book: RegisteredBook(book: InitialBook(readingStatus: .finishRead)), isStatusChange: false),
-                MainPageBookModel(book: RegisteredBook(book: InitialBook(readingStatus: .finishRead)), isStatusChange: false),
-            ]
-            finishReadBooksList.append(contentsOf: tempFinishReadList)
         }
     }
 }

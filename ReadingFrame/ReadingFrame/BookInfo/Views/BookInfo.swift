@@ -12,9 +12,6 @@ struct BookInfo: View {
     // MARK: - Parameters
     @State var modelData = BookInfoModel()
     
-    /// 독서 상태가 변경되었는지 확인하기 위한 변수
-    @Binding var isReadingStatusChange: Bool
-    
     var book: InitialBook {
         return modelData.book
     }
@@ -102,7 +99,7 @@ struct BookInfo: View {
                 
             }
             // MARK: 고정위치 버튼 뷰
-            BookInfoBottomButtonView(book: book, isReadingStatusChange: $isReadingStatusChange)
+            BookInfoBottomButtonView(book: book)
 
         }
         // MARK: 네비게이션 바 설정
@@ -164,7 +161,7 @@ struct BookInfoNavigate_Preview: PreviewProvider {
         // 네비게이션 바 연결해주기 위해 NavigationStack 사용
         NavigationStack {
             NavigationLink("도서 정보 보기") {
-                BookInfo(isReadingStatusChange: .constant(false))
+                BookInfo()
                     .toolbarRole(.editor)   // 이전 버튼 뒤에 화면 이름 표기 없음
             }
             .navigationTitle("Home")
@@ -176,7 +173,7 @@ struct BookInfoNavigate_Preview: PreviewProvider {
 
 struct BookInfo_Preview: PreviewProvider {
     static var previews: some View {
-        BookInfo(isReadingStatusChange: .constant(false))
+        BookInfo()
     }
 }
 

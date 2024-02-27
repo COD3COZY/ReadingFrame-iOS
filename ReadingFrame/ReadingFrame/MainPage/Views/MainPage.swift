@@ -80,7 +80,7 @@ struct MainPage: View {
         VStack(alignment: .leading, spacing: 0) {
             // 등록된 책이 있다면
             if (wantToReadBooksList.count >= 1) {
-                MainPageBookRow(items: $booksList)
+                MainPageWantToReadBookRow(items: $booksList)
             }
             // 등록된 책이 없다면
             else {

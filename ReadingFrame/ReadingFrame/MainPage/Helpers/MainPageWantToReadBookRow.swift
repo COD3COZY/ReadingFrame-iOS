@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// 홈 화면의 읽고 싶은 책 리스트
-struct MainPageBookRow: View {
+struct MainPageWantToReadBookRow: View {
     
     /// 전체 책 리스트
     @Binding var items: [RegisteredBook]
@@ -57,5 +57,5 @@ struct MainPageBookRow: View {
 }
 
 #Preview {
-    MainPageBookRow(items: .constant([RegisteredBook()]))
+    MainPageWantToReadBookRow(items: .constant([RegisteredBook()]))
 }

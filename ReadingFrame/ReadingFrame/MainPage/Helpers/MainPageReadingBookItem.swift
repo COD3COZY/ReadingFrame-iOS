@@ -10,39 +10,37 @@ import SwiftUI
 /// 홈 화면의 읽고 있는 책 리스트에 들어가는 개별 뷰
 struct MainPageReadingBookItem: View {
     /// 읽고 싶은 책 객체
-    @Bindable var book: MainPageBookModel
+    @Bindable var book: RegisteredBook
     
-    /// 독서 상태가 변경되었는지 확인하기 위한 변수
-    @Binding var isReadingStatusChange: Bool
     
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             // MARK: 책 표지
             NavigationLink {
                 // 책 정보 화면으로 이동
-                BookInfo(isReadingStatusChange: $isReadingStatusChange)
+                BookInfo()
                     .toolbarRole(.editor) // back 텍스트 표시X
             } label: {
-                LoadableBookImage(bookCover: book.book.book.cover)
+                LoadableBookImage(bookCover: book.book.cover)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .frame(width: 144, height: 220)
                     .shadow(color: Color(white: 0, opacity: 0.2), radius: 18, x: 2, y: 2)
             }
             
             // MARK: 책 이름
-            Text("\(book.book.book.title)")
+            Text("\(book.book.title)")
                 .font(.headline)
                 .foregroundStyle(.black0)
                 .padding(.top, 20)
             
             // MARK: 저자
-            Text("\(book.book.book.author)")
+            Text("\(book.book.author)")
                 .font(.footnote)
                 .foregroundStyle(.greyText)
                 .padding(.top, 2)
             
             // MARK: 막대 그래프 및 퍼센트
-            ReadingPercentBar(book: book.book, width: 300)
+            ReadingPercentBar(book: book, width: 300)
             
             HStack(spacing: 10) {
                 // MARK: 책갈피 버튼
@@ -104,5 +102,5 @@ struct MainPageReadingBookItem: View {
 }
 
 #Preview {
-    MainPageReadingBookItem(book: MainPageBookModel(book: RegisteredBook(), isStatusChange: false), isReadingStatusChange: .constant(false))
+    MainPageReadingBookItem(book: RegisteredBook())
 }

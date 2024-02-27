@@ -7,13 +7,17 @@
 
 import SwiftUI
 
+/// 독자들의 한줄평 페이지
 struct BookInfo_Review: View {
     // MARK: - Property
     /// API 통해서 받아올 한줄평 데이터들. 지금은 일단 더미 데이터로 입력해두었습니다.
     @State var modelData = BookInfo_ReviewModel(comments:
-                                                    [Comment(commentText: "베스트셀러인 이유가 있는 것 같아요. 한 번쯤 읽어 보시기를 추천합니다!", nickname: "시나모롤"),
-                                                     Comment(commentText: "3번째 읽고 있습니다. 읽을 때마다 감동이 오는 것 같아요! 같은 책을 여러 번 읽는 건 처음이네요. 인생 책을 만난 기분입니다!", nickname: "독서왕"),
-                                                     Comment(commentText: "흠.. 저는 기대했던 것 보다는 별로였던 것 같아요.", nickname: "비니")])
+                                                    [Comment(commentText: "베스트셀러인 이유가 있는 것 같아요. 한 번쯤 읽어 보시기를 추천합니다!", nickname: "시나모롤", heartCount: 2, goodCount: 5),
+                                                     Comment(commentText: "3번째 읽고 있습니다. 읽을 때마다 감동이 오는 것 같아요! 같은 책을 여러 번 읽는 건 처음이네요. 인생 책을 만난 기분입니다!", nickname: "독서왕", heartCount: 2, goodCount: 5),
+                                                     Comment(commentText: "흠.. 저는 기대했던 것 보다는 별로였던 것 같아요.", nickname: "비니", goodCount: 1, wowCount: 2, sadCount: 5, angryCount: 2),
+                                                     Comment(commentText: "베스트셀러인 이유가 있는 것 같아요. 한 번쯤 읽어 보시기를 추천합니다!", nickname: "시나모롤", heartCount: 2, goodCount: 5),
+                                                      Comment(commentText: "3번째 읽고 있습니다. 읽을 때마다 감동이 오는 것 같아요! 같은 책을 여러 번 읽는 건 처음이네요. 인생 책을 만난 기분입니다!", nickname: "독서왕", heartCount: 2, goodCount: 5),
+                                                      Comment(commentText: "흠.. 저는 기대했던 것 보다는 별로였던 것 같아요.", nickname: "비니", heartCount: 2, goodCount: 5)])
     
     /// 정렬방식
     @State var orderType: OrderType = .reaction
@@ -41,19 +45,7 @@ struct BookInfo_Review: View {
             // MARK: 한줄평 리스트
             List(comments) { comment in
                 // TODO: 한줄평 하나 표시할 Row마다 View 만들어서 List로 보여주기
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(comment.nickname)
-                        .font(.subheadline.weight(.bold))
-                    Text(comment.commentDate.description)
-                        .font(.footnote)
-                        .foregroundStyle(.greyText)
-                        .padding(.bottom, 9)
-                    Text(comment.commentText)
-                        .font(.subheadline)
-                        .padding(.bottom, 12)
-                    CommentReactionView()
-                }
-                .padding(.vertical, 20)
+                CommentRowView(comment: comment)
             }
             .listStyle(.plain)
         }        

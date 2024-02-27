@@ -120,6 +120,7 @@ struct MainPageBookItem: View {
         }
         .frame(width: 173)
         .padding(.trailing, 12)
+        .padding(.bottom, 20)
     }
 }
 

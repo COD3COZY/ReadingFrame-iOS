@@ -1,33 +1,36 @@
 //
-//  MainPageBookRow.swift
+//  FinishReadBookRow.swift
 //  ReadingFrame
 //
-//  Created by 이윤지 on 2/14/24.
+//  Created by 이윤지 on 2/27/24.
 //
 
 import SwiftUI
 
-/// 홈 화면의 읽고 싶은 책 리스트
-struct MainPageBookRow: View {
+/// 홈 화면의 다 읽은 책 리스트
+struct MainPageFinishReadBookRow: View {
     
     /// 전체 책 리스트
     @Binding var items: [RegisteredBook]
     
-    /// 읽고 싶은 책 리스트
-    var wantToReadBooksList: [RegisteredBook] {
-        items.filter { $0.book.readingStatus == .wantToRead }
+    /// 다 읽은 책 리스트
+    var finishReadBooksList: [RegisteredBook] {
+        items.filter { $0.book.readingStatus == .finishRead }
     }
+    
+    /// 그리드 아이템
+    var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Text("읽고 싶은 책 \(wantToReadBooksList.count)")
+                Text("다 읽은 책 \(finishReadBooksList.count)")
                     .font(.thirdTitle)
                     .foregroundStyle(.black0)
                 
                 Spacer()
                 
-                // MARK: 읽고 싶은 책 상세 페이지로 이동
+                // MARK: 다 읽은 책 상세 페이지로 이동
                 Button {
                     
                 } label: {
@@ -41,9 +44,9 @@ struct MainPageBookRow: View {
             .padding(.bottom, 16)
             
             // 세로 스크롤 뷰
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack {
-                    ForEach(Array(wantToReadBooksList.enumerated()), id: \.offset) { index, book in
+            ScrollView(showsIndicators: false) {
+                LazyVGrid(columns: columns) {
+                    ForEach(Array(finishReadBooksList.enumerated()), id: \.offset) { index, book in
                         // 읽고 싶은 책만 리스트로 띄우기
                         MainPageBookItem(book: book)
                     }
@@ -52,10 +55,10 @@ struct MainPageBookRow: View {
                 .padding(.trailing, 4)
             }
         }
-        .padding(.bottom, 35)
+        .padding(.bottom, 55)
     }
 }
 
 #Preview {
-    MainPageBookRow(items: .constant([RegisteredBook()]))
+    MainPageFinishReadBookRow(items: .constant([RegisteredBook()]))
 }

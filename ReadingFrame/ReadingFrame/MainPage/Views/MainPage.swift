@@ -63,6 +63,15 @@ struct MainPage: View {
                 RegisteredBook(book: InitialBook(readingStatus: .reading)),
                 RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
                 RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
+                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
             ]
             booksList = tempBooksList
         }
@@ -88,7 +97,7 @@ struct MainPage: View {
         VStack(alignment: .leading, spacing: 0) {
             // 등록된 책이 있다면
             if (finishReadBooksList.count >= 1) {
-                
+                MainPageFinishReadBookRow(items: $booksList)
             }
             // 등록된 책이 없다면
             else {

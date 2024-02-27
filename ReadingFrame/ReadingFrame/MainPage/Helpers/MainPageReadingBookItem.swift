@@ -24,8 +24,8 @@ struct MainPageReadingBookItem: View {
                     .toolbarRole(.editor) // back 텍스트 표시X
             } label: {
                 LoadableBookImage(bookCover: book.book.book.cover)
-                    .frame(width: 144, height: 220)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .frame(width: 144, height: 220)
                     .shadow(color: Color(white: 0, opacity: 0.2), radius: 18, x: 2, y: 2)
             }
             

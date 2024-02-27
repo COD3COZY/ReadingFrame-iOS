@@ -15,10 +15,10 @@ class MainPageBookModel {
     var book: RegisteredBook
     
     /// 독서 상태 변경 여부
-    var isStatusChange: Bool = false
+    var isStatusChange: Bool
     
     /// 초기화
-    init(book: RegisteredBook, isStatusChange: Bool) {
+    init(book: RegisteredBook, isStatusChange: Bool = false) {
         self.book = book
         self.isStatusChange = isStatusChange
     }

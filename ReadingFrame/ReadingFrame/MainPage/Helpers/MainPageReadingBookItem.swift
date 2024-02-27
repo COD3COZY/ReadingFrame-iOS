@@ -18,7 +18,7 @@ struct MainPageReadingBookItem: View {
             // MARK: 책 표지
             NavigationLink {
                 // 책 정보 화면으로 이동
-                BookInfo()
+                BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
                     .toolbarRole(.editor) // back 텍스트 표시X
             } label: {
                 LoadableBookImage(bookCover: book.book.cover)

@@ -27,7 +27,7 @@ struct MainPageBookItem: View {
                     // 읽고 싶은 책이라면
                     if (book.book.readingStatus == .wantToRead) {
                         // 책 정보 화면으로 이동
-                        BookInfo()
+                        BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
                             .toolbarRole(.editor) // back 텍스트 표시X
                         
                     }

@@ -48,8 +48,11 @@ struct DatePickerInList: View {
             
             // 날짜 버튼
             Button {
-                // DatePicker 활성화 여부 변경
-                isDatePickerVisible.toggle()
+                // 전환 애니메이션 적용
+                withAnimation {
+                    // DatePicker 활성화 여부 변경
+                    isDatePickerVisible.toggle()
+                }
 
             } label: {
                 // 날짜 버튼 텍스트
@@ -71,6 +74,7 @@ struct DatePickerInList: View {
                 // 달력 모양의 graphical style
                 .datePickerStyle(.graphical)
                 .tint(self.accentColor)
+                .transition(.opacity)
         }
     }
 }

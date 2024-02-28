@@ -24,6 +24,9 @@ struct MainPageReadingBookItem: View {
     /// 소장 Alert이 띄워졌는지 확인하기 위한 변수(소장X)
     @State private var isShowMineFalseAlert = false
     
+    /// sheet가 띄워져 있는지 확인하는 변수
+    @State var isSheetAppear: Bool = false
+    
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             // MARK: 책 표지
@@ -56,8 +59,11 @@ struct MainPageReadingBookItem: View {
             
             HStack(spacing: 10) {
                 // MARK: 책갈피 버튼
-                ReadingLabel(label: "책갈피", image: "bookmark")
-                // TODO: 책갈피 추가 sheet 띄우기
+                Button {
+                    isSheetAppear.toggle() // sheet 보이기
+                } label: {
+                    ReadingLabel(label: "책갈피", image: "bookmark")
+                }
                 
                 // MARK: 독서노트 버튼
                 NavigationLink {
@@ -112,6 +118,11 @@ struct MainPageReadingBookItem: View {
                 }
             }
             .padding(.top, 15)
+            // MARK: 책갈피 버튼 클릭 시 나타나는 Sheet
+            .sheet(isPresented: $isSheetAppear) {
+                // 책갈피 등록 sheet 띄우기
+                EditBookmark(book: book, isSheetAppear: $isSheetAppear)
+            }
             // MARK: 다 읽음 버튼 클릭 시 나타나는 Alert
             .alert(
                 "책을 다 읽으셨나요?",

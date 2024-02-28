@@ -42,11 +42,8 @@ struct RegisterBook: View {
     /// 읽기 시작한 날 정할 수 있는 범위(100년 전 ~ 현재)
     /// - 설마 100년전에 읽던 책까지 우리 앱에 기록하지는 않을거잖아요?
     var startDateRange: ClosedRange<Date> {
-        let min = Calendar.current.date(byAdding: .year, value: -100, to: startDate)!
-        let max = Date()
-        return min...max
+        DateRange().dateRange(date: startDate)
     }
-    
     
     /// 다 읽은 날
     @State private var recentDate = Date()
@@ -74,14 +71,7 @@ struct RegisterBook: View {
         VStack(alignment: .leading) {
             
             // MARK: Drag Indicator
-            ZStack {
-                Capsule()
-                    .fill(.grey2)
-                    .frame(width: 42, height: 5)
-                    .padding(.top, 10)
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
-            
+            DragIndicator()
             
             List {
                 
@@ -184,7 +174,6 @@ struct RegisterBook: View {
             .listStyle(.insetGrouped)
             .scrollContentBackground(.hidden)   // 배경색 지우기
             .padding(-20)                       // 기본 적용되는 패딩 상쇄시키기
-            .animation(.easeInOut)              // 리스트 row 생겼다 없어질 때마다 애니메이션 효과 적용
             
             
             // MARK: 내 서재에 추가하기 버튼
@@ -205,6 +194,7 @@ struct RegisterBook: View {
                 print("    - author:", book.author)
                 print("    - categoryName:", book.categoryName)
                 print("    - totalPage:", book.totalPage)
+                
                 
                 // modal 닫기
                 isSheetAppear.toggle()

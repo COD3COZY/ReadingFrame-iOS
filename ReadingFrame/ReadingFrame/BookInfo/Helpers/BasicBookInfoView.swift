@@ -59,7 +59,7 @@ struct BasicBookInfoView: View {
                     BookInfo_Review()
                         .toolbarRole(.editor)   // 이전 버튼 뒤에 화면 이름 표기 없음
                 } label: {
-                    HStack(spacing: 5) {
+                    HStack(alignment: .center, spacing: 5) {
                         Image(systemName: "bubble")
                             .resizable()
                             .scaledToFit()
@@ -70,6 +70,12 @@ struct BasicBookInfoView: View {
                         Text(String(commentCount))
                             .font(.caption)
                             .foregroundStyle(Color.black)
+                        
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundStyle(Color.black0)
+                            .padding(.leading, -2)
                     }
                     .padding(.vertical, 5)
                 }

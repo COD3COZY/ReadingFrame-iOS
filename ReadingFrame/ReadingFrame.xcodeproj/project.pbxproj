@@ -13,6 +13,11 @@
 		C51556CA2B83C9FB006FD0F2 /* SelectReviewClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51556C92B83C9FB006FD0F2 /* SelectReviewClusterView.swift */; };
 		C518A8AB2B8132F800EBD1A8 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = C518A8AA2B8132F800EBD1A8 /* Review.swift */; };
 		C51C1DD12B83E7B500B45345 /* CommentHScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51C1DD02B83E7B500B45345 /* CommentHScrollView.swift */; };
+		C5338FA42B8DD76900D24B5F /* CommentReactionToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5338FA32B8DD76900D24B5F /* CommentReactionToken.swift */; };
+		C5338FA62B8DD89C00D24B5F /* EmojiSelectPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5338FA52B8DD89C00D24B5F /* EmojiSelectPopover.swift */; };
+		C5338FA82B8E1B1600D24B5F /* CommentRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5338FA72B8E1B1600D24B5F /* CommentRowView.swift */; };
+		C58F57172B8CF35D004085A5 /* BookInfo_ReviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58F57162B8CF35D004085A5 /* BookInfo_ReviewModel.swift */; };
+		C58F57192B8D001F004085A5 /* CommentReactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58F57182B8D001F004085A5 /* CommentReactionView.swift */; };
 		C595A1DE2B7A9DD6006D88EC /* AppTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C595A1DD2B7A9DD6006D88EC /* AppTabView.swift */; };
 		C595A1E02B7A9E59006D88EC /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C595A1DF2B7A9E59006D88EC /* MainPage.swift */; };
 		C595A1E82B7A9FFB006D88EC /* BookMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C595A1E72B7A9FFB006D88EC /* BookMap.swift */; };
@@ -54,6 +59,11 @@
 		C51556C92B83C9FB006FD0F2 /* SelectReviewClusterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectReviewClusterView.swift; sourceTree = "<group>"; };
 		C518A8AA2B8132F800EBD1A8 /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
 		C51C1DD02B83E7B500B45345 /* CommentHScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHScrollView.swift; sourceTree = "<group>"; };
+		C5338FA32B8DD76900D24B5F /* CommentReactionToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentReactionToken.swift; sourceTree = "<group>"; };
+		C5338FA52B8DD89C00D24B5F /* EmojiSelectPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiSelectPopover.swift; sourceTree = "<group>"; };
+		C5338FA72B8E1B1600D24B5F /* CommentRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRowView.swift; sourceTree = "<group>"; };
+		C58F57162B8CF35D004085A5 /* BookInfo_ReviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInfo_ReviewModel.swift; sourceTree = "<group>"; };
+		C58F57182B8D001F004085A5 /* CommentReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentReactionView.swift; sourceTree = "<group>"; };
 		C595A1DD2B7A9DD6006D88EC /* AppTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabView.swift; sourceTree = "<group>"; };
 		C595A1DF2B7A9E59006D88EC /* MainPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPage.swift; sourceTree = "<group>"; };
 		C595A1E72B7A9FFB006D88EC /* BookMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMap.swift; sourceTree = "<group>"; };
@@ -106,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				C51556C52B839367006FD0F2 /* BookInfoModel.swift */,
+				C58F57162B8CF35D004085A5 /* BookInfo_ReviewModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -240,6 +251,10 @@
 				C51556C72B83BA7E006FD0F2 /* BasicBookInfoView.swift */,
 				C51556C92B83C9FB006FD0F2 /* SelectReviewClusterView.swift */,
 				C51C1DD02B83E7B500B45345 /* CommentHScrollView.swift */,
+				C58F57182B8D001F004085A5 /* CommentReactionView.swift */,
+				C5338FA32B8DD76900D24B5F /* CommentReactionToken.swift */,
+				C5338FA52B8DD89C00D24B5F /* EmojiSelectPopover.swift */,
+				C5338FA72B8E1B1600D24B5F /* CommentRowView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -441,6 +456,7 @@
 				C5CEA8922B8A5CCA007A89A2 /* WrapLayout.swift in Sources */,
 				C518A8AB2B8132F800EBD1A8 /* Review.swift in Sources */,
 				E7A0DD2C2B7B52A7006004B5 /* Fonts.swift in Sources */,
+				C58F57192B8D001F004085A5 /* CommentReactionView.swift in Sources */,
 				E702A9B42B864D330081F65D /* ReadingNote.swift in Sources */,
 				E7A0DD302B7B6B5B006004B5 /* HomeSegmentedControl.swift in Sources */,
 				E702A9AC2B85FB2F0081F65D /* ReadingLabel.swift in Sources */,
@@ -449,6 +465,7 @@
 				E71631612B7CD08B00BCD302 /* MainPageWantToReadBookRow.swift in Sources */,
 				E702A9B02B86219C0081F65D /* PageIndicator.swift in Sources */,
 				E7A0DD2E2B7B617E006004B5 /* SearchView.swift in Sources */,
+				C5338FA42B8DD76900D24B5F /* CommentReactionToken.swift in Sources */,
 				C51C1DD12B83E7B500B45345 /* CommentHScrollView.swift in Sources */,
 				C5DF2B862B7FC94D0069B64D /* Badge_Info.swift in Sources */,
 				C51556CA2B83C9FB006FD0F2 /* SelectReviewClusterView.swift in Sources */,
@@ -463,7 +480,10 @@
 				C595A1DE2B7A9DD6006D88EC /* AppTabView.swift in Sources */,
 				E702A9AE2B8605D10081F65D /* MainPageReadingBookRow.swift in Sources */,
 				E71631632B7CF1A900BCD302 /* LoadableBookImage.swift in Sources */,
+				C5338FA82B8E1B1600D24B5F /* CommentRowView.swift in Sources */,
 				E702A9AA2B85F0ED0081F65D /* ReadingPercentBar.swift in Sources */,
+				C5338FA62B8DD89C00D24B5F /* EmojiSelectPopover.swift in Sources */,
+				C58F57172B8CF35D004085A5 /* BookInfo_ReviewModel.swift in Sources */,
 				C5CEA8942B8A66D8007A89A2 /* BookInfo_Review.swift in Sources */,
 				C595A2042B7BDE87006D88EC /* DatePickerInList.swift in Sources */,
 				C51556C82B83BA7E006FD0F2 /* BasicBookInfoView.swift in Sources */,

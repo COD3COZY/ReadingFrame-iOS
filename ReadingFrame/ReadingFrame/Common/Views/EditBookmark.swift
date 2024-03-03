@@ -19,6 +19,9 @@ struct EditBookmark: View {
     /// 취소 버튼 클릭 시 나타나는 Alert 변수
     @State var isShowCancelAlert: Bool = false
     
+    /// 완료 버튼 클릭 시 마지막으로 읽은 페이지가 범위 밖이면 나타나는 Alert 변수
+    @State var isShowOutOfRangeAlert: Bool = false
+    
     /// 날짜
     @State private var date = Date()
     
@@ -54,7 +57,7 @@ struct EditBookmark: View {
                 } label: {
                     Text("취소")
                         .font(.body)
-                        .foregroundStyle(.red0)
+                        .foregroundStyle(Color.accentColor)
                 }
                 
                 Spacer()
@@ -71,16 +74,47 @@ struct EditBookmark: View {
                     
                     // 마지막으로 읽은 페이지가 입력됐다면
                     if (!bookMarkPage.isEmpty) {
-                        isSheetAppear.toggle() // sheet 닫기
+                        /// 페이지 비교할 수 있도록 숫자로 변환한 변수
+                        var bookMarkLastReadNumber = Int(bookMarkPage) ?? 0
                         
-                        isTapCompleteBtn.toggle() // 완료 버튼 클릭
+                        // 책종류에 따라 분류: 종이책
+                        if book.bookType == .paperbook {
+                            // 입력된 페이지 값 검사
+                            if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber < book.book.totalPage) {
+                                // 정상적인 범위 내의 페이지가 입력되었다면
+                                isSheetAppear.toggle() // sheet 닫기
+                                
+                                isTapCompleteBtn.toggle() // 완료 버튼 클릭
+                            } else {
+                                // 범위 밖의 페이지가 입력되었다면 알람 띄워주기
+                                isShowOutOfRangeAlert.toggle()
+                            }
+                            
+                        // 전자책 & 오디오북
+                        } else {
+                            // 입력된 퍼센트 값 검사
+                            if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber < 100) {
+                                // 정상적인 범위 내의 퍼센트가 입력되었다면
+                                isSheetAppear.toggle() // sheet 닫기
+                                
+                                isTapCompleteBtn.toggle() // 완료 버튼 클릭
+                            } else {
+                                // 범위 밖의 퍼센트가 입력되었다면 알람 띄워주기
+                                isShowOutOfRangeAlert.toggle()
+                            }
+                        }
                     }
+                    // fin. 완료버튼 action
+                    
                 } label: {
                     Text("완료")
                         .font(.body)
                         .fontWeight(.bold)
-                        .foregroundStyle(.red0)
+                        // 필수정보 입력됐으면 accentColor, 아니라면 회색으로
+                        .foregroundStyle(bookMarkPage.isEmpty ? Color.greyText : Color.accentColor)
                 }
+                // 필수정보 입력되지 않으면 완료 버튼 비활성화
+                .disabled(bookMarkPage.isEmpty)
             }
             .padding(.top, 21)
             // MARK: 취소 버튼 클릭 시 나타나는 Alert
@@ -95,6 +129,17 @@ struct EditBookmark: View {
                 }
             } message: {
                 Text("수정된 내용은 반영되지 않습니다.")
+            }
+            // MARK: 완료 버튼 클릭했는데 입력된 페이지/퍼센트 범위 바깥일 경우 나타나는 Alert
+            .alert(
+                "읽은 정도를 저장할 수 없습니다.",
+                isPresented: $isShowOutOfRangeAlert
+            ) {
+                Button("확인") {
+                    isShowOutOfRangeAlert.toggle() // sheet 닫기
+                }
+            } message: {
+                Text("입력하신 정보를 저장할 수 없습니다. 책의 범위 안에서 입력해주세요.")
             }
             
             List {
@@ -113,7 +158,9 @@ struct EditBookmark: View {
                         HStack {
                             Text("마지막으로 읽은")
                             
-                            TextField("~value", text: $bookMarkPage)
+                            // 종이책이면 ~\(totalPage), 전자책 오디오북이면 0~100
+                            TextField(book.bookType == .paperbook ? "~\(book.book.totalPage)" : "0~100", text: $bookMarkPage)
+                                .keyboardType(.numberPad) // 텍스트필드 눌렀을 때 숫자 키보드 뜨도록 함
                                 .foregroundStyle(.black0)
                                 .multilineTextAlignment(.trailing)
                                 .focused($isFocused)
@@ -123,7 +170,8 @@ struct EditBookmark: View {
                                     }
                                 }
                             
-                            Text("p")
+                            // 종이책이면 p, 전자책 오디오북이면 %
+                            Text(book.bookType == .paperbook ? "p" : "%")
                         }
                     }
                 } header: {

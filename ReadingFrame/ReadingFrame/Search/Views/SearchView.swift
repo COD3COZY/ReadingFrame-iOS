@@ -42,22 +42,7 @@ struct searchResults: View {
     var body: some View {
         // 검색어를 안 입력했다면
         if (searchText.isEmpty) {
-            Spacer()
-            
-            VStack {
-                Image("character_main")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 89)
-                
-                Text("찾고 있는 책을 검색해 보세요.")
-                    .foregroundStyle(.greyText)
-                    .padding(.top, 25)
-            }
-            .padding(.bottom, 176)
-            
-            Spacer()
-            
+            GreyLogoAndTextView(text: "찾고 있는 책을 검색해 보세요.")            
         }
         // 검색어를 입력했다면
         else {

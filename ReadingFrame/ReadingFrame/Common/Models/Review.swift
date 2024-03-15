@@ -45,6 +45,10 @@ class Comment: Identifiable, Hashable {
     var sadCount: Int
     var angryCount: Int
     
+    /// 임시변수 UI용) 유저가 한줄평을 삭제(하거나 신고)했을 때 해당 한줄평이 리스트 페이지에서 안보이도록
+    /// API에 반영하면서 화면에서도 바로 삭제되는 것 보여주도록
+    var isVisible: Bool = true
+    
     // MARK: Initializer
     init(commentText: String = "저는 이 책을 읽기 위해 태어났습니다",
          nickname: String = "사용자",

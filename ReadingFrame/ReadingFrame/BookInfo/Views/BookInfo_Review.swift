@@ -27,7 +27,8 @@ struct BookInfo_Review: View {
     
     /// 한줄평 데이터들
     var comments: [Comment] {
-        return modelData.comments
+        // 임시변수 isVisible 변수가 true인 한줄평만 보여주기
+        return modelData.comments.filter { $0.isVisible }
     }
 
     
@@ -44,8 +45,10 @@ struct BookInfo_Review: View {
     
             // MARK: 한줄평 리스트
             List(comments) { comment in
-                // TODO: 한줄평 하나 표시할 Row마다 View 만들어서 List로 보여주기
+                // 한줄평 하나 표시할 Row마다 View 만들어서 List로 보여주기
                 CommentRowView(comment: comment)
+                    // 유저가 한줄평 삭제했을 때 애니메이션 효과 적용되면서 리스트에서 사라지도록
+                    .animation(.easeOut, value: comment.isVisible)
             }
             .listStyle(.plain)
         }        

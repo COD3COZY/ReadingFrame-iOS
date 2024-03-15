@@ -30,12 +30,27 @@ struct CommentRowView: View {
     var isMyReview: Bool {
         // TODO: 내 닉네임과 comment 닉네임이 일치하는지 검사
         // 지금은 일단 dummy로 독서왕으로 설정
+        // (나중에 UserDefaults를 이용하던지 해서) 현재 앱의 유저 닉네임 데이터와 비교하기
         if (comment.nickname == "독서왕") {
             return true
         } else {
             return false
         }
     }
+    
+    // Alert 보여주기용 변수들
+    /// 신고 - 스팸/도배성 리뷰 alert 보여줄지 여부
+    @State private var showSpamComplaintAlert = false
+    
+    /// 신고 - 부적절한 리뷰 alert 보여줄지 여부
+    @State private var showInappropriateComplaintAlert = false
+    
+    /// 이미 이미 신고한 리뷰입니다 alert 보여줄지 여부
+    @State private var showAlreadyComplaintAlert = false
+
+    /// 리뷰를 정말 삭제하시겠습니까 alert 보여줄지 여부
+    @State private var showReviewDeleteAlert = false
+
     
     // MARK: - Body
     var body: some View {
@@ -58,19 +73,43 @@ struct CommentRowView: View {
                 
                 // MARK: 메뉴 or 삭제 버튼
                 if isMyReview {
-                    // 내가 쓴 리뷰라면 삭제 '버튼' 보여주기
-                    Button(action: {
-                        print("내가 쓴 한줄평 삭제")
-                        // TODO: 삭제하시겠습니까 알람창 띄워주기
-                    }) {
+                    // MARK: 내가 쓴 리뷰라면 삭제 '버튼'
+                    Button(action: { }) {
                         Image(systemName: "xmark")
                             .font(.body)
                             .foregroundStyle(.black0)
                     }
+                    // list의 row에 포함된 버튼에서는 action 대신 onTapGesture 사용해서 버튼 부분에만 의도한 액션이 작동되도록 함(버튼 이외 다른 부분 눌러도 삭제 알람 뜨는 이슈 존재)
+                    .onTapGesture {
+                        print("내가 쓴 한줄평 삭제")
+                        // 리뷰를 정말 삭제하시겠습니까 알람창 띄워주기
+                        self.showReviewDeleteAlert.toggle()
+                    }
+                    
+                    // 버튼 눌렀을 때 띄워줄 alert
+                    .alert(isPresented: $showReviewDeleteAlert) {
+                        /// 리뷰 삭제하시겠습니까 alert의 "예" 버튼
+                        let doDeleteButton = Alert.Button.destructive(Text("예")) {
+                            // 화면상에서 리뷰 삭제하기
+                            withAnimation(.easeOut) {
+                                self.comment.isVisible = false
+                            }
+                            
+                            // TODO: API 상에서 한줄평 삭제
+                            
+                        }
+                        
+                        return Alert(title: Text("리뷰를 정말 삭제하시겠습니까?"),
+                                     message: Text("삭제된 리뷰는 복구할 수 없습니다."),
+                                     primaryButton: .default(Text("아니요")),
+                                     secondaryButton: doDeleteButton)
+                    }
                 } else {
-                    // 내가 쓴 리뷰가 아니라면 신고 메뉴 보여주기
+                    // MARK: 내가 쓴 리뷰가 아니라면 신고 메뉴
                     Menu {
+                        // > 신고하기
                         Menu("신고하기") {
+                            // 세부 메뉴 1: 부적절한 리뷰
                             Button("부적절한 리뷰", action: {
                                 print("부적절한 리뷰입니다.")
                                 // TODO: 신고 알람창 띄우기
@@ -78,6 +117,8 @@ struct CommentRowView: View {
                                 // 신고하겠다는 확인 들어오면
                                 // TODO: 신고하기 API 호출하기 reportType: 0
                             })
+                            
+                            // 세부 메뉴 2: 스팸/도배성 리뷰
                             Button("스팸/도배성 리뷰", action: {
                                 print("스팸/도배성 리뷰입니다.")
                                 // TODO: 신고 알람창 띄우기

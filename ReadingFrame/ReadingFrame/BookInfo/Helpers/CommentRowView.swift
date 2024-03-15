@@ -86,7 +86,7 @@ struct CommentRowView: View {
                         self.showReviewDeleteAlert.toggle()
                     }
                     
-                    // 버튼 눌렀을 때 띄워줄 alert
+                    // 삭제 버튼 눌렀을 때 띄워줄 alert
                     .alert(isPresented: $showReviewDeleteAlert) {
                         /// 리뷰 삭제하시겠습니까 alert의 "예" 버튼
                         let doDeleteButton = Alert.Button.destructive(Text("예")) {
@@ -110,31 +110,64 @@ struct CommentRowView: View {
                         // > 신고하기
                         Menu("신고하기") {
                             // 세부 메뉴 1: 부적절한 리뷰
-                            Button("부적절한 리뷰", action: {
+                            Button("부적절한 리뷰") {
                                 print("부적절한 리뷰입니다.")
-                                // TODO: 신고 알람창 띄우기
                                 
-                                // 신고하겠다는 확인 들어오면
-                                // TODO: 신고하기 API 호출하기 reportType: 0
-                            })
+                                // 신고 알람창 띄우기
+                                self.showInappropriateComplaintAlert.toggle()
+                            }
+                            
                             
                             // 세부 메뉴 2: 스팸/도배성 리뷰
-                            Button("스팸/도배성 리뷰", action: {
+                            Button("스팸/도배성 리뷰") {
                                 print("스팸/도배성 리뷰입니다.")
-                                // TODO: 신고 알람창 띄우기
                                 
-                                // 신고하겠다는 확인 들어오면
-                                // TODO: 신고하기 API 호출하기 reportType: 1
-                            })
+                                // 신고 알람창 띄우기
+                                self.showSpamComplaintAlert.toggle()
+                            }
                         }
                     } label: {
                         Image(systemName: "ellipsis")
                             .font(.body)
                             .foregroundStyle(.black0)
                     }
-                    
                 }
-            }
+                
+                // 부적절한 리뷰로 신고하기 alert
+                ZStack {}
+                    .alert(isPresented: $showInappropriateComplaintAlert) {
+                        // 부적절한 리뷰로 신고하기 '예' 버튼
+                        let reportComplaintButton = Alert.Button.destructive(Text("예")) {
+                            // 신고하겠다는 확인 들어오면
+                            // TODO: 신고하기 API 호출하기 reportType: 0
+                            
+                            print("부적절한 리뷰로 신고")
+                        }
+                        
+                        return Alert(title: Text("해당 리뷰를 부적절한 리뷰로 신고하시겠습니까?"),
+                                     message: Text("허위 신고 시 불이익을 받을 수 있습니다."),
+                                     primaryButton: .default(Text("아니요")),
+                                     secondaryButton: reportComplaintButton)
+                    }
+                
+                // 스팸/도배성 리뷰로 신고하기 alert
+                ZStack {}
+                    .alert(isPresented: $showSpamComplaintAlert) {
+                        
+                        // 부적절한 리뷰로 신고하기 '예' 버튼
+                        let reportComplaintButton = Alert.Button.destructive(Text("예")) {
+                            // 신고하겠다는 확인 들어오면
+                            // TODO: 신고하기 API 호출하기 reportType: 1
+                            
+                            print("스팸/도배성 리뷰로 신고")
+                        }
+                        
+                        return Alert(title: Text("해당 리뷰를 스팸/도배성 리뷰로 신고하시겠습니까?"),
+                                     message: Text("허위 신고 시 불이익을 받을 수 있습니다."),
+                                     primaryButton: .default(Text("아니요")),
+                                     secondaryButton: reportComplaintButton)
+                    }
+            } // HStack 끝
             
             // MARK: 한줄평 텍스트
             Text(comment.commentText)

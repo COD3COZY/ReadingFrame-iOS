@@ -55,7 +55,9 @@ struct ReadingItemView: View {
                 .padding(.top, 2)
             
             // MARK: 막대 그래프 및 퍼센트
-            ReadingPercentBar(book: book, width: 300)
+            ReadingPercentBar(book: book)
+                .padding([.leading, .trailing], 45)
+                .frame(height: 55)
             
             HStack(spacing: 10) {
                 // MARK: 책갈피 버튼

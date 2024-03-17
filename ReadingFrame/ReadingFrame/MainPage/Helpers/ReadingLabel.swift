@@ -17,6 +17,7 @@ struct ReadingLabel: View {
     
     var body: some View {
         Label(label, systemImage: image)
+            .font(.footnote)
             .foregroundStyle(.black0)
             .padding(EdgeInsets(top: 6, leading: 14.5, bottom: 6, trailing: 14.5))
             .background(.white)

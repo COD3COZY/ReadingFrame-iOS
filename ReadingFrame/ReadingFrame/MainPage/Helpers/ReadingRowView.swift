@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// 홈 화면의 읽고 있는 책 리스트
-struct MainPageReadingBookRow: View {
+struct ReadingRowView: View {
     
     /// 읽고 있는 책 리스트
     var readingBooksList: [RegisteredBook]
@@ -49,7 +49,7 @@ struct MainPageReadingBookRow: View {
             TabView(selection: $selectedPageIndex) {
                 
                 ForEach(Array(items.prefix(10).enumerated()), id: \.offset) { index, book in
-                    MainPageReadingBookItem(book: book) // 책 뷰 띄우기
+                    ReadingItemView(book: book) // 책 뷰 띄우기
                         .tag(index)
                 }
             }
@@ -74,5 +74,5 @@ func setTabViewIndicator() {
 }
 
 #Preview {
-    MainPageReadingBookRow(readingBooksList: [RegisteredBook()])
+    ReadingRowView(readingBooksList: [RegisteredBook()])
 }

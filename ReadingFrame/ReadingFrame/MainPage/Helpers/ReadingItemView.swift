@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// 홈 화면의 읽고 있는 책 리스트에 들어가는 개별 뷰
-struct MainPageReadingBookItem: View {
+struct ReadingItemView: View {
     /// 읽고 싶은 책 객체
     @Bindable var book: RegisteredBook
     
@@ -171,5 +171,5 @@ struct MainPageReadingBookItem: View {
 }
 
 #Preview {
-    MainPageReadingBookItem(book: RegisteredBook())
+    ReadingItemView(book: RegisteredBook())
 }

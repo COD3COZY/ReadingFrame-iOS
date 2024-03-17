@@ -20,6 +20,8 @@ struct CommentHScrollView: View {
                     singleCommentBox(comment: comment)
                 }
             }
+            // BookInfo 다른 아이템들과 여백 동일하게 보이기 위해 적용(처음 한줄평의 leading과 마지막 한줄평 trailing)
+            .padding(.horizontal, 16)
         }
         // 좌우 스크롤 안보이게 하기(미관상 이게 더 예쁜 것 같음)
         .scrollIndicators(.hidden)

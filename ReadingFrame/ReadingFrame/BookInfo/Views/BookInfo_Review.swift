@@ -11,8 +11,8 @@ import SwiftUI
 struct BookInfo_Review: View {
     // MARK: - Property
     /// API 통해서 받아올 한줄평 데이터들. 지금은 일단 더미 데이터로 입력해두었습니다.
-    @State var modelData = BookInfo_ReviewModel(comments:
-                                                    [Comment(commentText: "베스트셀러인 이유가 있는 것 같아요. 한 번쯤 읽어 보시기를 추천합니다!", nickname: "시나모롤", heartCount: 2, goodCount: 5),
+    @State var modelData = BookInfo_ReviewModel(comments: /*[]*/
+                                                     [Comment(commentText: "베스트셀러인 이유가 있는 것 같아요. 한 번쯤 읽어 보시기를 추천합니다!", nickname: "시나모롤", heartCount: 2, goodCount: 5),
                                                      Comment(commentText: "3번째 읽고 있습니다. 읽을 때마다 감동이 오는 것 같아요! 같은 책을 여러 번 읽는 건 처음이네요. 인생 책을 만난 기분입니다!", nickname: "독서왕", heartCount: 2, goodCount: 5),
                                                      Comment(commentText: "흠.. 저는 기대했던 것 보다는 별로였던 것 같아요.", nickname: "비니", goodCount: 1, wowCount: 2, sadCount: 5, angryCount: 2),
                                                      Comment(commentText: "베스트셀러인 이유가 있는 것 같아요. 한 번쯤 읽어 보시기를 추천합니다!", nickname: "시나모롤", heartCount: 2, goodCount: 5),
@@ -27,7 +27,8 @@ struct BookInfo_Review: View {
     
     /// 한줄평 데이터들
     var comments: [Comment] {
-        return modelData.comments
+        // 임시변수 isVisible 변수가 true인 한줄평만 보여주기
+        return modelData.comments.filter { $0.isVisible }
     }
 
     
@@ -38,17 +39,27 @@ struct BookInfo_Review: View {
             // MARK: 반응순 최신순 버튼
             HStack {
                 Spacer()
-                sortTypeView(orderType: $orderType)
+                SortTypeView(orderType: $orderType)
             }
             .padding([.top, .horizontal], 16)
-    
+            
             // MARK: 한줄평 리스트
-            List(comments) { comment in
-                // TODO: 한줄평 하나 표시할 Row마다 View 만들어서 List로 보여주기
-                CommentRowView(comment: comment)
+            // 한줄평이 없다면 작성된 리뷰 없다는 화면 보여주기
+            if (self.comments.isEmpty) {
+                GreyLogoAndTextView(text: "아직 작성된 리뷰가 없어요")
             }
-            .listStyle(.plain)
-        }        
+            // 한줄평이 있다면 한줄평 리스트 보여주기
+            else {
+                List(comments) { comment in
+                    // 한줄평 하나 표시할 Row마다 View 만들어서 List로 보여주기
+                    CommentRowView(comment: comment)
+                    // 유저가 한줄평 삭제했을 때 애니메이션 효과 적용되면서 리스트에서 사라지도록
+                        .animation(.easeOut, value: comment.isVisible)
+                }
+                .listStyle(.plain)
+                
+            }
+        }
         // MARK: 네비게이션 바 설정
         .navigationTitle("독자들의 한줄평")
         .navigationBarTitleDisplayMode(.inline)
@@ -57,7 +68,7 @@ struct BookInfo_Review: View {
 }
 
 /// 반응순/최신순 선택하기 버튼
-struct sortTypeView: View {
+struct SortTypeView: View {
     
     /// 정렬방식 받아와서 바꿔주기
     @Binding var orderType: OrderType

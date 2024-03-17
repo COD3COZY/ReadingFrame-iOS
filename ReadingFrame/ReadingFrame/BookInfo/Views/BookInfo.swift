@@ -87,7 +87,10 @@ struct BookInfo: View {
                         } else {
                             // 한줄평 가로스크롤뷰
                             CommentHScrollView(comments: comments)
+                            // 내서재 추가하기 버튼 위로까지 컨텐츠 보여주기
                                 .padding(.bottom, 120)
+                            // 화면상 뜨는 공간 없이 가로스크롤
+                                .padding(.horizontal, -16)
                         }
                         
                     }

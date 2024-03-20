@@ -54,6 +54,8 @@
 		E7A0DD2C2B7B52A7006004B5 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD2B2B7B52A7006004B5 /* Fonts.swift */; };
 		E7A0DD2E2B7B617E006004B5 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD2D2B7B617E006004B5 /* SearchView.swift */; };
 		E7A0DD302B7B6B5B006004B5 /* HomeSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD2F2B7B6B5B006004B5 /* HomeSegmentedControl.swift */; };
+		E7F6D81C2BA6D8C000181586 /* ReadingItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F6D81B2BA6D8C000181586 /* ReadingItemDetailView.swift */; };
+		E7F6D81E2BA6D92E00181586 /* BookRowDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F6D81D2BA6D92E00181586 /* BookRowDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -107,6 +109,8 @@
 		E7A0DD2B2B7B52A7006004B5 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		E7A0DD2D2B7B617E006004B5 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		E7A0DD2F2B7B6B5B006004B5 /* HomeSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSegmentedControl.swift; sourceTree = "<group>"; };
+		E7F6D81B2BA6D8C000181586 /* ReadingItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingItemDetailView.swift; sourceTree = "<group>"; };
+		E7F6D81D2BA6D92E00181586 /* BookRowDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRowDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -353,6 +357,8 @@
 				E716315E2B7C982600BCD302 /* BookItemView.swift */,
 				E71631602B7CD08B00BCD302 /* WantToReadRowView.swift */,
 				E751B56D2B8E0D3100880123 /* FinishReadRowView.swift */,
+				E7F6D81B2BA6D8C000181586 /* ReadingItemDetailView.swift */,
+				E7F6D81D2BA6D92E00181586 /* BookRowDetailView.swift */,
 				E702A9AB2B85FB2F0081F65D /* ReadingLabel.swift */,
 				E702A9AF2B86219C0081F65D /* PageIndicator.swift */,
 			);
@@ -468,12 +474,14 @@
 				C5CEA8922B8A5CCA007A89A2 /* WrapLayout.swift in Sources */,
 				C518A8AB2B8132F800EBD1A8 /* Review.swift in Sources */,
 				E7A0DD2C2B7B52A7006004B5 /* Fonts.swift in Sources */,
+				E7F6D81C2BA6D8C000181586 /* ReadingItemDetailView.swift in Sources */,
 				C58F57192B8D001F004085A5 /* CommentReactionView.swift in Sources */,
 				E702A9B42B864D330081F65D /* ReadingNote.swift in Sources */,
 				E7A0DD302B7B6B5B006004B5 /* HomeSegmentedControl.swift in Sources */,
 				E702A9AC2B85FB2F0081F65D /* ReadingLabel.swift in Sources */,
 				E751B5722B8EC6B000880123 /* DragIndicator.swift in Sources */,
 				E751B56E2B8E0D3100880123 /* FinishReadRowView.swift in Sources */,
+				E7F6D81E2BA6D92E00181586 /* BookRowDetailView.swift in Sources */,
 				E716315F2B7C982600BCD302 /* BookItemView.swift in Sources */,
 				E71631612B7CD08B00BCD302 /* WantToReadRowView.swift in Sources */,
 				E702A9B02B86219C0081F65D /* PageIndicator.swift in Sources */,

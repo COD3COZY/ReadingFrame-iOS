@@ -26,8 +26,9 @@ struct WantToReadRowView: View {
                 Spacer()
                 
                 // MARK: 읽고 싶은 책 상세 페이지로 이동
-                Button {
-                    
+                NavigationLink {
+                    BookRowDetailView(readingStatus: .wantToRead, bookList: wantToReadBooksList)
+                        .toolbarRole(.editor)
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.title3)

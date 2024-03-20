@@ -26,8 +26,9 @@ struct FinishReadRowView: View {
                 Spacer()
                 
                 // MARK: 다 읽은 책 상세 페이지로 이동
-                Button {
-                    
+                NavigationLink {
+                    BookRowDetailView(readingStatus: .finishRead, bookList: finishReadBooksList)
+                        .toolbarRole(.editor)
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.title3)
@@ -42,7 +43,7 @@ struct FinishReadRowView: View {
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns) {
                     ForEach(Array(finishReadBooksList.enumerated()), id: \.offset) { index, book in
-                        // 읽고 싶은 책만 리스트로 띄우기
+                        // 다 읽은 책 리스트로 띄우기
                         BookItemView(book: book)
                     }
                 }

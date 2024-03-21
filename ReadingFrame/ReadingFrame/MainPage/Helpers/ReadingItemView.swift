@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// 홈 화면의 읽고 있는 책 리스트에 들어가는 개별 뷰
-struct MainPageReadingBookItem: View {
+struct ReadingItemView: View {
     /// 읽고 싶은 책 객체
     @Bindable var book: RegisteredBook
     
@@ -55,7 +55,9 @@ struct MainPageReadingBookItem: View {
                 .padding(.top, 2)
             
             // MARK: 막대 그래프 및 퍼센트
-            ReadingPercentBar(book: book, width: 300)
+            ReadingPercentBar(book: book)
+                .padding([.leading, .trailing], 45)
+                .frame(height: 55)
             
             HStack(spacing: 10) {
                 // MARK: 책갈피 버튼
@@ -171,5 +173,5 @@ struct MainPageReadingBookItem: View {
 }
 
 #Preview {
-    MainPageReadingBookItem(book: RegisteredBook())
+    ReadingItemView(book: RegisteredBook())
 }

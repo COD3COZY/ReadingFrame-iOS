@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// 홈 화면의 다 읽은 책 리스트
-struct MainPageFinishReadBookRow: View {
+struct FinishReadRowView: View {
     
     /// 다 읽은 책 리스트
     var finishReadBooksList: [RegisteredBook]
@@ -26,8 +26,9 @@ struct MainPageFinishReadBookRow: View {
                 Spacer()
                 
                 // MARK: 다 읽은 책 상세 페이지로 이동
-                Button {
-                    
+                NavigationLink {
+                    BookRowDetailView(readingStatus: .finishRead, bookList: finishReadBooksList)
+                        .toolbarRole(.editor)
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.title3)
@@ -42,8 +43,8 @@ struct MainPageFinishReadBookRow: View {
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns) {
                     ForEach(Array(finishReadBooksList.enumerated()), id: \.offset) { index, book in
-                        // 읽고 싶은 책만 리스트로 띄우기
-                        MainPageBookItem(book: book)
+                        // 다 읽은 책 리스트로 띄우기
+                        BookItemView(book: book)
                     }
                 }
                 .padding(.leading, 16)
@@ -55,5 +56,5 @@ struct MainPageFinishReadBookRow: View {
 }
 
 #Preview {
-    MainPageFinishReadBookRow(finishReadBooksList: [RegisteredBook()])
+    FinishReadRowView(finishReadBooksList: [RegisteredBook()])
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// 홈 화면의 읽고 싶은 책 리스트
-struct MainPageWantToReadBookRow: View {
+struct WantToReadRowView: View {
     
     /// 읽고 싶은 책 리스트
     var wantToReadBooksList: [RegisteredBook]
@@ -26,8 +26,9 @@ struct MainPageWantToReadBookRow: View {
                 Spacer()
                 
                 // MARK: 읽고 싶은 책 상세 페이지로 이동
-                Button {
-                    
+                NavigationLink {
+                    BookRowDetailView(readingStatus: .wantToRead, bookList: wantToReadBooksList)
+                        .toolbarRole(.editor)
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.title3)
@@ -43,7 +44,7 @@ struct MainPageWantToReadBookRow: View {
                 LazyHStack {
                     ForEach(Array(wantToReadBooksList.prefix(10)), id: \.id) { book in
                         // 읽고 싶은 책만 리스트로 띄우기
-                        MainPageBookItem(book: book)
+                        BookItemView(book: book)
                     }
                 }
                 .padding(.leading, 16)
@@ -55,5 +56,5 @@ struct MainPageWantToReadBookRow: View {
 }
 
 #Preview {
-    MainPageWantToReadBookRow(wantToReadBooksList: [RegisteredBook()])
+    WantToReadRowView(wantToReadBooksList: [RegisteredBook()])
 }

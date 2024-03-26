@@ -51,13 +51,20 @@ struct BookRowDetailView: View {
             
             // MARK: 책 리스트
             List {
-                ForEach(bookList) { book in
+                ForEach(Array(bookList.enumerated()), id: \.offset) { index, book in
                     // 읽고 있는 책 리스트로 띄우기
                     ReadingItemDetailView(book: book)
                         .listRowSeparator(.hidden) // list 구분선 제거
                         .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                        .swipeActions(edge: .trailing) {
+                            Button(role: .destructive) {
+                                bookList.remove(at: index)
+                            } label: {
+                                Image(systemName: "trash.fill")
+                            }
+                            .tint(.red0)
+                        }
                 }
-                .onDelete(perform: delete)
             }
             .listStyle(.plain)
             .padding(.top, 15)

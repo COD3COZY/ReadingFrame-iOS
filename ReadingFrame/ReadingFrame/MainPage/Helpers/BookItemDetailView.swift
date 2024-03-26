@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-/// 읽고 있는 책 상세 페이지의 리스트에 들어갈 아이템 뷰
-struct ReadingItemDetailView: View {
+/// 모든 책 상세 페이지의 리스트에 들어갈 아이템 뷰
+struct BookItemDetailView: View {
     
     /// 책 객체
     @Bindable var book: RegisteredBook
@@ -288,5 +288,5 @@ struct ReadingItemDetailView: View {
 }
 
 #Preview {
-    ReadingItemDetailView(book: RegisteredBook(), readingStatus: .reading)
+    BookItemDetailView(book: RegisteredBook(), readingStatus: .reading)
 }

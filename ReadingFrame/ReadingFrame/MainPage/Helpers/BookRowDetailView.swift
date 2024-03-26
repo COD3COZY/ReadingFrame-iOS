@@ -80,7 +80,7 @@ struct BookRowDetailView: View {
                 if (readingStatus == .reading) {
                     ForEach(notHideBookList, id: \.id) { book in
                         // 독서 상태가 안 바뀐 것만 리스트로 띄우기
-                        ReadingItemDetailView(book: book, readingStatus: readingStatus)
+                        BookItemDetailView(book: book, readingStatus: readingStatus)
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
                                     if let tempIndex = bookList.firstIndex(where: { $0.id == book.id }) {
@@ -100,7 +100,7 @@ struct BookRowDetailView: View {
                     ForEach(Array(bookList.enumerated()), id: \.offset) { index, book in
                         // 독서 상태가 안 바뀐 것만 리스트로 띄우기
                         if (book.book.readingStatus == readingStatus) {
-                            ReadingItemDetailView(book: book, readingStatus: readingStatus)
+                            BookItemDetailView(book: book, readingStatus: readingStatus)
                                 .swipeActions(edge: .trailing) {
                                     Button(role: .destructive) {
                                         bookList.remove(at: index)
@@ -133,7 +133,7 @@ struct BookRowDetailView: View {
                     // MARK: 홈 화면에서 숨긴 책 리스트
                     ForEach(hideBookList, id: \.id) { book in
                         // 숨기기 상태가 안 바뀐 것만 리스트로 띄우기
-                        ReadingItemDetailView(book: book, readingStatus: readingStatus)
+                        BookItemDetailView(book: book, readingStatus: readingStatus)
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
                                     if let tempIndex = bookList.firstIndex(where: { $0.id == book.id }) {

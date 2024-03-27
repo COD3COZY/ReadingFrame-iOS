@@ -40,20 +40,23 @@ struct BasicBookInfoView: View {
                 // 그림자
                 .shadow(color: Color(red: 0.47, green: 0.47, blue: 0.47).opacity(0.3), radius: 7.5, x: 0, y: 0)
             
-            // MARK: 오른쪽 책정보
-            VStack(alignment: .leading) {
-                // 책정보 배지
+            // 오른쪽 책정보
+            VStack(alignment: .leading, spacing: 0) {
+                // MARK: 책정보 배지
                 Badge_Info(category: book.categoryName)
+                    .padding(.bottom, 12)
                 
-                // 제목
+                // MARK: 제목
                 Text(book.title)
                     .font(.thirdTitle)
+                    .padding(.bottom, 5)
                 
-                // 저자
+                // MARK: 저자
                 Text(book.author)
                     .font(.footnote)
+                    .padding(.bottom, 10)
                 
-                // 리뷰 개수(한줄평 페이지 연결)
+                // MARK: 리뷰 개수(한줄평 페이지 연결)
                 NavigationLink {
                     // 한줄평 페이지로 연결
                     BookInfo_Review()
@@ -82,13 +85,15 @@ struct BasicBookInfoView: View {
                 
                 Spacer()
                 
-                // 출판사
+                // MARK: 출판사
                 simpleInfo(key: "출판사", value: book.publisher)
+                    .padding(.bottom, 6)
                 
-                // 발행일
+                // MARK: 발행일
                 simpleInfo(key: "발행일", value: dateString)
+                    .padding(.bottom, 6)
 
-                // 페이지
+                // MARK: 페이지
                 simpleInfo(key: "페이지", value: String(book.totalPage))
 
             }

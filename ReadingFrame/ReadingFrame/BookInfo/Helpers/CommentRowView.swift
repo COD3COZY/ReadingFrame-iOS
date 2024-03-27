@@ -45,6 +45,9 @@ struct CommentRowView: View {
     /// 신고 - 부적절한 리뷰 alert 보여줄지 여부
     @State private var showInappropriateComplaintAlert = false
     
+    /// 해당 리뷰가 이미 신고한 리뷰인지 알려주는 변수 (API 호출 이후에는 없어질 수도 있음)
+    @State private var isAlreadyComplained = false
+    
     /// 이미 이미 신고한 리뷰입니다 alert 보여줄지 여부
     @State private var showAlreadyComplaintAlert = false
 
@@ -105,7 +108,7 @@ struct CommentRowView: View {
                                      secondaryButton: doDeleteButton)
                     }
                 } else {
-                    // MARK: 내가 쓴 리뷰가 아니라면 신고 메뉴
+                    // MARK: 신고 메뉴) 내가 쓴 리뷰가 아니라면
                     Menu {
                         // > 신고하기
                         Menu("신고하기") {
@@ -133,41 +136,85 @@ struct CommentRowView: View {
                     }
                 }
                 
-                // 부적절한 리뷰로 신고하기 alert
-                ZStack {}
-                    .alert(isPresented: $showInappropriateComplaintAlert) {
-                        // 부적절한 리뷰로 신고하기 '예' 버튼
-                        let reportComplaintButton = Alert.Button.destructive(Text("예")) {
-                            // 신고하겠다는 확인 들어오면
-                            // TODO: 신고하기 API 호출하기 reportType: 0
-                            
-                            print("부적절한 리뷰로 신고")
-                        }
-                        
-                        return Alert(title: Text("해당 리뷰를 부적절한 리뷰로 신고하시겠습니까?"),
-                                     message: Text("허위 신고 시 불이익을 받을 수 있습니다."),
-                                     primaryButton: .default(Text("아니요")),
-                                     secondaryButton: reportComplaintButton)
-                    }
                 
-                // 스팸/도배성 리뷰로 신고하기 alert
-                ZStack {}
-                    .alert(isPresented: $showSpamComplaintAlert) {
-                        
-                        // 부적절한 리뷰로 신고하기 '예' 버튼
-                        let reportComplaintButton = Alert.Button.destructive(Text("예")) {
-                            // 신고하겠다는 확인 들어오면
-                            // TODO: 신고하기 API 호출하기 reportType: 1
-                            
-                            print("스팸/도배성 리뷰로 신고")
-                        }
-                        
-                        return Alert(title: Text("해당 리뷰를 스팸/도배성 리뷰로 신고하시겠습니까?"),
-                                     message: Text("허위 신고 시 불이익을 받을 수 있습니다."),
-                                     primaryButton: .default(Text("아니요")),
-                                     secondaryButton: reportComplaintButton)
-                    }
+                
             } // HStack 끝
+            
+            // MARK: 우측상단 더보기/삭제 버튼 alert들 모음
+            // 부적절한 리뷰로 신고하기 alert
+            .alert("해당 리뷰를 부적절한 리뷰로 신고하시겠습니까?", isPresented: $showInappropriateComplaintAlert) {
+                // 버튼1: 취소
+                Button(role: .cancel, action: {}) {
+                    Text("아니요")
+                }
+                
+                // 버튼2: 신고
+                Button(role: .destructive) {
+                    // 신고하겠다는 확인 들어오면
+                    // TODO: 신고하기 API 호출하기 reportType: 0
+                    
+                    // TODO: API 호출 결과로 이전에 신고한 적이 있는 리뷰라는 응답이 왔으면 이미 신고한 리뷰라는 알람창 띄워주기
+                    if isAlreadyComplained {
+                        self.showAlreadyComplaintAlert.toggle()
+                        
+                        print("이미 신고한 리뷰입니다")
+                        print("showAlreadyComplaintAlert: \(showAlreadyComplaintAlert)")
+                    }
+                    
+                    // TODO: 지우기
+                    // 신고한 적 있는 리뷰 확인을 위한 코드: 일단 API 연결하기 전이니까 테스트용으로 이 뷰 안에서 값 변경했습니다
+                    isAlreadyComplained = true
+                    print("기존에 신고했던 리뷰로 처리됨")
+                    print("부적절한 리뷰로 신고")
+                    
+                } label: {
+                    Text("예")
+                }
+            } message: {
+                Text("허위 신고 시 불이익을 받을 수 있습니다.")
+            }
+            
+            // 스팸/도배성 리뷰로 신고하기 alert
+            .alert("해당 리뷰를 스팸/도배성 리뷰로 신고하시겠습니까?", isPresented: $showSpamComplaintAlert) {
+                
+                Button(role: .cancel, action: {}) {
+                    Text("아니요")
+                }
+                
+                Button(role: .destructive) {
+                    // 신고하겠다는 확인 들어오면
+                    // TODO: 신고하기 API 호출하기 reportType: 1
+                    print("신고하기 API 호출")
+                    
+                    // TODO: API 호출 결과로 이전에 신고한 적이 있는 리뷰라는 응답이 왔으면 이미 신고한 리뷰라는 알람창 띄워주기
+                    if isAlreadyComplained {
+                        self.showAlreadyComplaintAlert.toggle()
+                        
+                        print("이미 신고한 리뷰입니다")
+                        print("showAlreadyComplaintAlert: \(showAlreadyComplaintAlert)")
+                    }
+                    
+                    // TODO: 지우기
+                    // 신고한 적 있는 리뷰 확인을 위한 코드: 일단 API 연결하기 전이니까 테스트용으로 이 뷰 안에서 값 변경했습니다
+                    isAlreadyComplained = true
+                    print("기존에 신고했던 리뷰로 처리됨")
+                    print("스팸/도배성 리뷰로 신고")
+                    
+                } label: {
+                    Text("예")
+                }
+            } message: {
+                Text("허위 신고 시 불이익을 받을 수 있습니다.")
+            }
+            
+            // 이미 신고한 리뷰입니다 alert
+            .alert("이미 신고한 리뷰입니다", isPresented: $showAlreadyComplaintAlert) {
+                Button(action: {}) {
+                    Text("확인")
+                }
+            } message: {
+                Text("같은 리뷰는 한 번만 신고할 수 있습니다.")
+            }
             
             // MARK: 한줄평 텍스트
             Text(comment.commentText)

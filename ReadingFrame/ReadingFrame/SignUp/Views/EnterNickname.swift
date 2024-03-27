@@ -41,7 +41,7 @@ struct EnterNickname: View {
                     
                     HStack(spacing: 8) {
                         // MARK: 닉네임 입력하는 텍스트 필드
-                        TextField("닉네임", text: $nickname)
+                        TextField("ex. 독서왕", text: $nickname)
                             .textFieldStyle(NicknameTextfieldStyle())
                         
                         // MARK: 중복검사 버튼

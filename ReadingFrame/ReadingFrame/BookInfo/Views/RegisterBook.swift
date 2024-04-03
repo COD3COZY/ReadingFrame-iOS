@@ -61,9 +61,6 @@ struct RegisterBook: View {
     /// 내 서재 등록하기 버튼 눌러서 등록할 때 true로 바꿔줄 프로퍼티
     @State var isButtonPressed: Bool = false
     
-    /// accentColor 적용을 위한 임시변수(나중에 방법을 찾으면 수정 예정입니다)
-    let accentColor = Color(red: 0.84, green: 0.14, blue: 0.33)
-
     
     
     // MARK: - View
@@ -135,7 +132,7 @@ struct RegisterBook: View {
                     Toggle(isOn: $isMine, label: {
                         Text("소장한 책")
                     })
-                    .tint(self.accentColor) // 토글 색깔 디자인 커스텀 적용
+                    .tint(Color.main) // 토글 색깔 디자인 커스텀 적용
                 }
                 
                 // section3: 날짜 입력하는 rows

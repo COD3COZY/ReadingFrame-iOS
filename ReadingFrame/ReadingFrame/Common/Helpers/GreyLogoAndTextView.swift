@@ -15,7 +15,7 @@ struct GreyLogoAndTextView: View {
         VStack(alignment: .center, spacing: 25) {
             Spacer()
             
-            Image("character_main")
+            Image("character_R")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 90, height: 120)

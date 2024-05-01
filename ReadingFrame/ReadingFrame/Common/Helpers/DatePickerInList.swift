@@ -21,10 +21,7 @@ struct DatePickerInList: View {
         
     /// 어떤 날짜 선택하는지 설명용 텍스트
     var listText: String = "날짜 선택"
-    
-    /// accentColor 적용을 위한 임시변수(나중에 방법을 찾으면 수정 예정입니다)
-    let accentColor = Color(red: 0.84, green: 0.14, blue: 0.33)
-    
+        
     /// 버튼에 들어갈 날짜 text
     var dateString: String {
         // DateFormatter 형식 지정
@@ -58,7 +55,7 @@ struct DatePickerInList: View {
                 // 날짜 버튼 텍스트
                 Text(dateString)
                     // 활성화될 때 accentColor로 변경
-                    .foregroundStyle(isDatePickerVisible ? self.accentColor : Color.primary)
+                    .foregroundStyle(isDatePickerVisible ? Color.main : Color.primary)
             }
             // 기존 DatePicker 흉내내기(회색 박스 생김)
             .buttonStyle(.bordered)
@@ -73,7 +70,7 @@ struct DatePickerInList: View {
                        displayedComponents: .date)
                 // 달력 모양의 graphical style
                 .datePickerStyle(.graphical)
-                .tint(self.accentColor)
+                .tint(Color.main)
                 .transition(.opacity)
         }
     }

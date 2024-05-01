@@ -26,7 +26,7 @@ struct EnterProfile: View {
                     .foregroundStyle(.greyText)
                     .padding(.vertical, 30)
                 
-                // TODO: 선택한 색상과 캐릭터 반영되는 프로필 이미지
+                // 선택한 색상과 캐릭터 반영되는 프로필 이미지
                 // R, I, P일 경우
                 if (characterChoose == .R || characterChoose == .I || characterChoose == .P) {
                     ZStack {
@@ -77,7 +77,7 @@ struct EnterProfile: View {
                         .font(.subheadline)
                         .foregroundStyle(.black0)
                     
-                    // TODO: 색상 5개 그리드
+                    // 색상 5개 그리드
                     HStack(spacing: 10) {
                         // 자주색
                         Circle()

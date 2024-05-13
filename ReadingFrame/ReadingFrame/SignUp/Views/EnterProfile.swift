@@ -18,13 +18,14 @@ struct EnterProfile: View {
     @State var characterChoose: ProfileCharacter = .R
     
     var body: some View {
-        ScrollView {
+        ZStack (alignment: .bottom) {
             VStack {
                 // MARK: 선택에 따라 프로필 보여주는 구역
                 Text("사용하실 프로필을 선택해주세요")
                     .font(.subheadline)
                     .foregroundStyle(.greyText)
-                    .padding(.vertical, 30)
+                    .padding(.top, 30)
+                    .padding(.bottom, 20)
                 
                 // 선택한 색상과 캐릭터 반영되는 프로필 이미지
                 // R, I, P일 경우
@@ -35,38 +36,43 @@ struct EnterProfile: View {
                             .renderingMode(.template)
                             .aspectRatio(contentMode: .fit)
                             .foregroundStyle(colorChoose) // 여기에 선택한 색상
-                            .frame(maxWidth: 130, maxHeight: 130)
-//                            .clipShape(Circle().inset(by:))
-
-                        Circle()
-                            .foregroundStyle(Color.clear)
-                            .frame(maxWidth: 180, maxHeight: 180)
-                            .overlay(
-                                Circle()
-                                    .stroke(.black0, lineWidth: 2)
-                            )
+                            .frame(width: 170, height: 170)
+                        // 전체 캐릭터 모양에 그림자가 적용되도록 함
+                            .background(Color.white)
+                            .mask {
+                                if characterChoose == .R {
+                                    Image("character_R_fill")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 170, height: 170)
+                                }
+                                if characterChoose == .I {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 58, height: 170)
+                                }
+                                if characterChoose == .P {
+                                    Image("character_P_fill")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 170, height: 170)
+                                    
+                                }
+                            }
+                            .shadow(color: Color(red: 0.47, green: 0.47, blue: 0.47).opacity(0.25), radius: 7.5, x: 0, y: 15)
                     }
-                    .padding(.bottom, 30)
-                
-                // A, M일 경우
+                    .padding(.bottom, 20)
+                    
+                    // A, M일 경우
                 } else {
                     ZStack {
                         Image(characterChoose.rawValue + "_" + colorName)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: characterChoose == .M ? 130 : 130, height: characterChoose == .M ? 130 : 130)
-//                            .clipShape(Circle().inset(by: characterChoose == .M ? -20 : -5))
-
-                        Circle()
-                            .foregroundStyle(Color.clear)
-                            .frame(width: 180, height: 180)
-                            .overlay(
-                                Circle()
-                                    .stroke(.black0, lineWidth: 2)
-                            )
+                            .frame(width: 170, height: 170)
+                            .shadow(color: Color(red: 0.47, green: 0.47, blue: 0.47).opacity(0.25), radius: 7.5, x: 0, y: 15)
                     }
-                    .padding(.bottom, 30)
-
+                    .padding(.bottom, 20)
+                    
                 }
                 
                 // 프로필 선택 회색박스
@@ -177,6 +183,9 @@ struct EnterProfile: View {
                         HStack(alignment: .top, spacing: 20) {
                             // R
                             Image("chooseProfile_R")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 100, height: 100)
                                 .onTapGesture {
                                     withAnimation {
                                         self.characterChoose = .R
@@ -191,6 +200,9 @@ struct EnterProfile: View {
                             
                             // A
                             Image("chooseProfile_A")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 100, height: 100)
                                 .onTapGesture {
                                     withAnimation {
                                         self.characterChoose = .A
@@ -205,6 +217,9 @@ struct EnterProfile: View {
                             
                             // M
                             Image("chooseProfile_M")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 100, height: 100)
                                 .onTapGesture {
                                     withAnimation {
                                         self.characterChoose = .M
@@ -219,6 +234,9 @@ struct EnterProfile: View {
                             
                             // I
                             Image("chooseProfile_I")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 100, height: 100)
                                 .onTapGesture {
                                     withAnimation {
                                         self.characterChoose = .I
@@ -233,6 +251,9 @@ struct EnterProfile: View {
                             
                             // P
                             Image("chooseProfile_P")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 100, height: 100)
                                 .onTapGesture {
                                     withAnimation {
                                         self.characterChoose = .P
@@ -253,33 +274,35 @@ struct EnterProfile: View {
                     .padding(.vertical, -10)
                     
                     Spacer()
-                    
-                    // MARK: 가입 완료 버튼
-                    NavigationLink {
-                        MainPage()
-                    } label: {
-                        Text("가입 완료")
-                            .font(.headline)
-                            .foregroundStyle(.white)
-                            .padding(14)
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                RoundedRectangle(cornerRadius: 40)
-                                    .foregroundStyle(Color.main)
-                            )
-                    }
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.top, 90)
-                    .padding(.bottom, 30)
-                    
                 }
                 .padding([.top, .horizontal], 30)
+                .padding(.bottom, 70) // SE 캐릭터 선택지 잘 보이도록 조금 밀어줌(임시, 더 좋은 방법 찾으면 변경하도록 하겠습니다!)
                 .background(
                     RoundedRectangle(cornerRadius: 40)
                         .foregroundStyle(Color.grey1)
                 )
                 
             }
+            
+            
+            // MARK: 가입 완료 버튼
+            NavigationLink {
+                MainPage()
+            } label: {
+                Text("가입 완료")
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .padding(14)
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        RoundedRectangle(cornerRadius: 40)
+                            .foregroundStyle(Color.main)
+                    )
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.horizontal)
+            .padding(.bottom, 26)
+
         }
         .ignoresSafeArea(edges: .bottom)
         

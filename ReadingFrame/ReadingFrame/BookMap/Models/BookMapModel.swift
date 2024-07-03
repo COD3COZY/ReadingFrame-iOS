@@ -34,6 +34,33 @@ struct Location: Identifiable, Equatable {
     
 }
 
+/// 특정 위치기록과 관련된 정보
+/// - BookLocationListView와 SingleBookLocationInfo에서 사용
+struct LocationInfo: Identifiable, Equatable {
+    /// 책갈피 or 대표위치 아이콘
+    let locationType: LocationType
+    
+    /// 책제목
+    let bookTitle: String
+    
+    /// 기록 날짜
+    let date: String
+    
+    /// (책갈피에만) 기록된 페이지
+    let readPage: Int?
+    
+    /// 장소 이름(대표 주소 이름)
+    let placeName: String
+    
+    /// 마커랑 연결하기 위한 ID
+    let id: Int
+    
+    // Equatable 프로토콜 준수용
+    static func == (lhs: LocationInfo, rhs: LocationInfo) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
 enum LocationType {
     /// 대표위치
     case main

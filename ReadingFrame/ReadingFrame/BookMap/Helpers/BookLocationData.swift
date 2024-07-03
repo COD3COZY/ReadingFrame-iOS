@@ -19,5 +19,13 @@ class BookLocationData {
         Location(CLLocationCoordinate2D(latitude: 41.8986, longitude: 12.4769), .bookmark),
         Location(CLLocationCoordinate2D(latitude: 41.9009, longitude: 12.4833), .main)
     ]
+    
+    static let locationInfos: [LocationInfo] = [
+        LocationInfo(locationType: .bookmark, bookTitle: "천 개의 파랑", date: "2023.11.02", readPage: 104, placeName: "서울여자대학교 도서관", id: 0),
+        LocationInfo(locationType: .bookmark, bookTitle: "천 개의 파랑", date: "2023.11.02", readPage: 104, placeName: "서울여자대학교 도서관", id: 1),
+        LocationInfo(locationType: .main, bookTitle: "천 개의 파랑", date: "2023.11.02", readPage: nil, placeName: "서울여자대학교 도서관", id: 2),
+        LocationInfo(locationType: .bookmark, bookTitle: "천 개의 파랑", date: "2023.11.02", readPage: 104, placeName: "서울여자대학교 도서관", id: 3),
+        LocationInfo(locationType: .main, bookTitle: "천 개의 파랑", date: "2023.11.02", readPage: nil, placeName: "서울여자대학교 도서관", id: 4),
+    ]
 }
 

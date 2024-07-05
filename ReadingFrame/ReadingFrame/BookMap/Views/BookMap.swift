@@ -13,6 +13,9 @@ import MapKit
 struct BookMap: View {
     @StateObject private var bookMapVM = BookMapViewModel()
     
+    /// 책지도 bottomsheet용
+    @State private var showSheet: Bool = false
+    
     var annotations : [Location] {
         return bookMapVM.locations
     }
@@ -23,15 +26,42 @@ struct BookMap: View {
             mapLayer
 //                .ignoresSafeArea()
                 .tint(.accentColor)
-            
-            // TODO: 책위치정보 List 띄우기
-            
+                        
             VStack {
+                Text("책 지도")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, maxHeight: 40, alignment: .center)
+                    .background(.white)
+                
                 Spacer()
+                
                 moveCurrentLocationButton
+                    .padding(.bottom, 60)
+                    .padding(.trailing, 14)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
             }
-            .frame(maxWidth: .infinity, alignment: .trailing)
-            .padding()
+        }
+        // 책위치정보List bottom sheet 부분
+        .task {
+            // BookMap 열릴 때 sheet도 같이 보이도록
+            showSheet = true
+        }
+        .onDisappear() {
+            // BookMap 사라질 때 sheet도 없애기
+            showSheet = false
+        }
+        .sheet(isPresented: $showSheet) {
+            BookLocationListView()
+                .padding(.top, 16)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                .presentationDetents([.height(45), .medium, .large])
+                .presentationCornerRadius(20)
+                .presentationBackground(
+                    .white
+                )
+                .presentationBackgroundInteraction(.enabled(upThrough: .large))
+                .interactiveDismissDisabled()
+                .bottomMaskForSheet() // 탭바 위에 sheet 뜨도록 함
         }
     }
 }
@@ -67,3 +97,6 @@ extension BookMap {
     }
 }
 
+#Preview {
+    BookMap()
+}

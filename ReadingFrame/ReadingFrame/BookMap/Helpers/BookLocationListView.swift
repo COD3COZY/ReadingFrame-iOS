@@ -12,22 +12,25 @@ struct BookLocationListView: View {
     
     var body: some View {
         VStack {
-            DragIndicator()
-            
+            ScrollView {
             Text("최근 읽은")
                 .font(.headline)
-                .padding(.vertical, 16)
+                .padding(.top, 16)
+                .padding(.bottom, 16)
             
-            LazyVStack {
-                ForEach(locationInfos) { locationInfo in
-                    BookLocationListRow(locationInfo: locationInfo)
-                    // TODO: 누르면 지도랑 연동시켜서 위치 이동하기
+                LazyVStack {
+                    ForEach(locationInfos) { locationInfo in
+                        BookLocationListRow(locationInfo: locationInfo)
+                        // TODO: 누르면 지도랑 연동시켜서 위치 이동하기
+                    }
+                    
+                    // TODO: 더보기 버튼 추가
                 }
-                
-                // TODO: 더보기 버튼 추가
             }
-            Spacer()
+            // TODO: 일단 hidden으로 숨겨놓고 나중에 필요할 것 같으면 보이도록 바꾸기
+            .scrollIndicators(.hidden)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
 }
 

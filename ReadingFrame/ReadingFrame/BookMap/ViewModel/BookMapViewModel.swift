@@ -17,9 +17,13 @@ class BookMapViewModel: ObservableObject {
     /// 현재 강조되는 한 개 위치
     @Published var selectedLocation: Location? {
         didSet {
-            updateMapRegion(location: selectedLocation!)
+            guard let selected = selectedLocation else { return }
+            updateMapRegion(location: selected)
         }
     }
+    
+    /// 현재 리스트에서 선택된 하나의 위치정보
+    @Published var selectedLocationInfo: LocationInfo?
     
     /// 지도 영역 보여주기 위한 MKCoordinateRegion
     @Published var mapRegion: MKCoordinateRegion = MKCoordinateRegion()
@@ -37,8 +41,8 @@ class BookMapViewModel: ObservableObject {
     init() {
         let locations = BookLocationData.locations
         self.locations = locations
-//        self.selectedLocation = locations.first!
-        
+
+        // TODO: 현위치 지도 초기화면 띄우기(비동기..)
         self.mapRegion = MKCoordinateRegion(center: locations.first!.coordinates, span: mapSpan)
     }
     
@@ -62,9 +66,7 @@ class BookMapViewModel: ObservableObject {
     
     /// 선택한 Location 위치로 이동
     func movetoSelectLocation(location: Location) {
-        withAnimation(.easeInOut) {
-            selectedLocation = location
-        }
+        selectedLocation = location
     }
     
     /// 현재 위치로 지도 이동
@@ -72,17 +74,29 @@ class BookMapViewModel: ObservableObject {
         locationManager.getCurrentLocation()
         print("현재 위치: \(self.currentLocation?.latitude), \(self.currentLocation?.latitude)")
         if let currentLocation = self.currentLocation {
+            updateMapRegion(location: currentLocation)
+        }
+    }
+    
+    
+    /// id 바탕으로 위치 선택하고 이동
+    func moveSelectLocation(id: Int) {
+        if let matchIndex = locations.firstIndex(where: { $0.id == id
+        }) {
             withAnimation(.easeInOut) {
-                updateMapRegion(location: currentLocation)
+                selectedLocation = locations[matchIndex]
             }
         }
     }
     
 
-    // TODO: annotation 밖 지도 누르면 모두 annotation 모두 비활성화
-//    func deactivateAll() {
-//    
-//    }
+    // annotation 밖 지도 누르면 모두 annotation 모두 비활성화
+    func deactivateAll() {
+        withAnimation {
+            selectedLocation = nil
+            selectedLocationInfo = nil
+        }
+    }
     
 }
 

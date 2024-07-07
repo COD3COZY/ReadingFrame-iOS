@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-
-import SwiftUI
 import MapKit
 
 struct BookMap: View {
@@ -19,19 +17,36 @@ struct BookMap: View {
     var annotations : [Location] {
         return bookMapVM.locations
     }
+    
+    var selectedLocationInfo: LocationInfo? {
+        bookMapVM.selectedLocationInfo
+    }
 
     // MARK: - 뷰
     var body: some View {
         ZStack {
             mapLayer
-//                .ignoresSafeArea()
                 .tint(.accentColor)
+            
                         
             VStack {
                 Text("책 지도")
                     .font(.headline)
                     .frame(maxWidth: .infinity, maxHeight: 40, alignment: .center)
                     .background(.white)
+                
+                // TODO: 선택해제 방법 찾아서 대체하기
+                // 선택해제 임시버튼
+                Button {
+                    bookMapVM.deactivateAll()
+                } label: {
+                    Text("선택해제")
+                        .padding(15)
+                        .background(
+                            RoundedRectangle(cornerRadius: 30)
+                                .foregroundStyle(Color.white)
+                        )
+                }
                 
                 Spacer()
                 
@@ -51,10 +66,13 @@ struct BookMap: View {
             showSheet = false
         }
         .sheet(isPresented: $showSheet) {
-            BookLocationListView()
+            BookLocationListView(selectedLocationInfo: $bookMapVM.selectedLocationInfo)
                 .padding(.top, 16)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .presentationDetents([.height(45), .medium, .large])
+                // TODO: modal 크기 안정화
+                // 선택된 게 있으면 modal 크기 100으로 보여주도록 설정
+                // 선택된 게 없으면 modal 크기 다양하게 보여주도록 설정
+                .presentationDetents(selectedLocationInfo != nil ? [.height(100), .large] : [.height(45), .medium, .large])
                 .presentationCornerRadius(20)
                 .presentationBackground(
                     .white
@@ -62,6 +80,12 @@ struct BookMap: View {
                 .presentationBackgroundInteraction(.enabled(upThrough: .large))
                 .interactiveDismissDisabled()
                 .bottomMaskForSheet() // 탭바 위에 sheet 뜨도록 함
+                .onChange(of: bookMapVM.selectedLocationInfo) { oldValue, newValue in
+                    // 리스트에서 LocationInfo 선택되면 지도상에도 반영하기
+                    if let locationInfo = selectedLocationInfo {
+                        bookMapVM.moveSelectLocation(id: locationInfo.id)
+                    }
+                }
         }
     }
 }
@@ -76,7 +100,12 @@ extension BookMap {
             MapAnnotation(coordinate: location.coordinates) {
                 AnnotationView(type: location.locationType, isSelected: bookMapVM.selectedLocation == location)
                     .onTapGesture {
-                        bookMapVM.movetoSelectLocation(location: location)
+                        // 지도 위치 이동
+                        withAnimation {
+                            bookMapVM.movetoSelectLocation(location: location)
+                            // 리스트에서 id가 동일한 항목 선택
+                            bookMapVM.selectedLocationInfo = BookLocationData.locationInfos.first(where: { $0.id == location.id })
+                        }
                     }
             }
         })

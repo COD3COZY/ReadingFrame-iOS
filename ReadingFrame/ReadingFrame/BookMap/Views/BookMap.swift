@@ -27,6 +27,14 @@ struct BookMap: View {
         ZStack {
             mapLayer
                 .tint(.accentColor)
+                .onTapGesture {
+                    if !bookMapVM.isAnnotationSelected {
+                        bookMapVM.deselectAll()
+                    } else {
+                        bookMapVM.isAnnotationSelected = false
+                        print("selected false")
+                    }
+                }
             
                         
             VStack {
@@ -34,19 +42,6 @@ struct BookMap: View {
                     .font(.headline)
                     .frame(maxWidth: .infinity, maxHeight: 40, alignment: .center)
                     .background(.white)
-                
-                // TODO: 선택해제 방법 찾아서 대체하기
-                // 선택해제 임시버튼
-                Button {
-                    bookMapVM.deactivateAll()
-                } label: {
-                    Text("선택해제")
-                        .padding(15)
-                        .background(
-                            RoundedRectangle(cornerRadius: 30)
-                                .foregroundStyle(Color.white)
-                        )
-                }
                 
                 Spacer()
                 
@@ -95,15 +90,24 @@ extension BookMap {
         Map(coordinateRegion: $bookMapVM.mapRegion,
             showsUserLocation: true,
             userTrackingMode: .none,
+            // annotation
             annotationItems: bookMapVM.locations,
             annotationContent: { location in
             MapAnnotation(coordinate: location.coordinates) {
                 AnnotationView(type: location.locationType, isSelected: bookMapVM.selectedLocation == location)
                     .onTapGesture {
+                        self.bookMapVM.isAnnotationSelected = true
+                        
+                        // 0.1초 후에 isAnnotationSelected를 false로 설정
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            self.bookMapVM.isAnnotationSelected = false
+                        }
+                        
                         // 지도 위치 이동
                         withAnimation {
                             bookMapVM.movetoSelectLocation(location: location)
-                            // 리스트에서 id가 동일한 항목 선택
+                            // 위치에 맞는 리스트 띄우기
+                            // TODO: API 호출
                             bookMapVM.selectedLocationInfo = BookLocationData.locationInfos.first(where: { $0.id == location.id })
                         }
                     }

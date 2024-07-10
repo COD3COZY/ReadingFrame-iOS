@@ -12,7 +12,7 @@ import SwiftUI
 
 class BookMapViewModel: ObservableObject {
     /// 모든 위치 정보 배열
-    @Published var locations: [Location] = []
+    var locations: [Location] = []
     
     /// 현재 강조되는 한 개 위치
     @Published var selectedLocation: Location? {
@@ -36,6 +36,9 @@ class BookMapViewModel: ObservableObject {
     var currentLocation: CLLocationCoordinate2D? {
         self.locationManager.currentLocation
     }
+    
+    /// annotation과 지도가 동시에 눌렸을 때 선택해제되지 않고 annotation 선택되도록 하기 위한 변수
+    @Published var isAnnotationSelected: Bool = false
         
     
     init() {
@@ -91,7 +94,7 @@ class BookMapViewModel: ObservableObject {
     
 
     // annotation 밖 지도 누르면 모두 annotation 모두 비활성화
-    func deactivateAll() {
+    func deselectAll() {
         withAnimation {
             selectedLocation = nil
             selectedLocationInfo = nil

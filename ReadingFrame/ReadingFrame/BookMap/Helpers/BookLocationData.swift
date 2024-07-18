@@ -21,12 +21,17 @@ class BookLocationData {
     ]
     
     static let locationInfos: [LocationInfo] = [
-        LocationInfo(locationType: .bookmark, bookTitle: "천 개의 파랑0", date: "2023.11.02", readPage: 104, placeName: "서울여자대학교 도서관", id: 0),
-        LocationInfo(locationType: .main, bookTitle: "천 개의 파랑1", date: "2023.11.02", readPage: 104, placeName: "화랑대 근처", id: 1),
-        LocationInfo(locationType: .bookmark, bookTitle: "천 개의 파랑2", date: "2023.11.02", readPage: nil, placeName: "과기대", id: 2),
-        LocationInfo(locationType: .main, bookTitle: "천 개의 파랑3", date: "2023.11.02", readPage: 104, placeName: "콜로세움", id: 3),
-        LocationInfo(locationType: .bookmark, bookTitle: "천 개의 파랑4", date: "2023.11.02", readPage: nil, placeName: "판테온", id: 4),
-        LocationInfo(locationType: .main, bookTitle: "천 개의 파랑5", date: "2023.11.02", readPage: nil, placeName: "트레비 분수", id: 5),
+        LocationInfo(locationType: .bookmark, bookTitle: "천 개의 파랑0", date: "2023.11.02", readPage: 104, placeName: "서울여자대학교 도서관", id: 0, locationID: 0),
+        LocationInfo(locationType: .main, bookTitle: "천 개의 파랑1", date: "2023.11.02", readPage: nil, placeName: "화랑대 근처", id: 1, locationID: 1),
+        LocationInfo(locationType: .bookmark, bookTitle: "천 개의 파랑1", date: "2023.11.02", readPage: 104, placeName: "화랑대 근처", id: 6, locationID: 1),
+        LocationInfo(locationType: .main, bookTitle: "천 개의 파랑1", date: "2023.11.02", readPage: nil, placeName: "화랑대 근처", id: 7, locationID: 1),
+        LocationInfo(locationType: .bookmark, bookTitle: "천 개의 파랑2", date: "2023.11.02", readPage: 104, placeName: "과기대", id: 2, locationID: 2),
+        LocationInfo(locationType: .main, bookTitle: "천 개의 파랑3", date: "2023.11.02", readPage: nil, placeName: "콜로세움", id: 3, locationID: 3),
+        LocationInfo(locationType: .bookmark, bookTitle: "천 개의 파랑4", date: "2023.11.02", readPage: 104, placeName: "판테온", id: 4, locationID: 4),
+        LocationInfo(locationType: .main, bookTitle: "천 개의 파랑5", date: "2023.11.02", readPage: nil, placeName: "트레비 분수", id: 5, locationID: 5),
+        LocationInfo(locationType: .bookmark, bookTitle: "천 개의 파랑5", date: "2023.11.02", readPage: 104, placeName: "트레비 분수", id: 8, locationID: 5),
+        LocationInfo(locationType: .bookmark, bookTitle: "천 개의 파랑5", date: "2023.11.02", readPage: 104, placeName: "트레비 분수", id: 9, locationID: 5),
+        LocationInfo(locationType: .bookmark, bookTitle: "천 개의 파랑5", date: "2023.11.02", readPage: 104, placeName: "트레비 분수", id: 10, locationID: 5),
     ]
 }
 

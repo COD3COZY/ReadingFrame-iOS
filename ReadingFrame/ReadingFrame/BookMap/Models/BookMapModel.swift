@@ -52,8 +52,11 @@ struct LocationInfo: Identifiable, Equatable {
     /// 장소 이름(대표 주소 이름)
     let placeName: String
     
-    /// 마커랑 연결하기 위한 ID
+    /// 위치정보 자체 ID
     let id: Int
+    
+    /// 마커랑 연결하기 위한 ID
+    let locationID: Int
     
     // Equatable 프로토콜 준수용
     static func == (lhs: LocationInfo, rhs: LocationInfo) -> Bool {

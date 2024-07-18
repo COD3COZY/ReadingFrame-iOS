@@ -82,8 +82,6 @@ struct BookLocationListRow: View {
                 }
             }
             .padding(16)
-            
-            Divider() // TODO: VStack 말고 리스트로 구현하게 되면 빼주기
         }
     }
 }
@@ -93,7 +91,7 @@ struct BookLocationListRow: View {
         Color.blue.opacity(0.3)
             .ignoresSafeArea()
         
-            BookLocationListRow(locationInfo: LocationInfo(locationType: .main, bookTitle: "천 개의 파랑", date: "2023.11.02", readPage: nil, placeName: "서울여자대학교 도서관", id: 3))
+        BookLocationListRow(locationInfo: LocationInfo(locationType: .main, bookTitle: "천 개의 파랑", date: "2023.11.02", readPage: nil, placeName: "서울여자대학교 도서관", id: 3, locationID: 3))
             .background(Color.white)
     }
 }

@@ -8,6 +8,7 @@
 import Foundation
 import MapKit
 import SwiftUI
+import Combine
 
 
 class BookMapViewModel: ObservableObject {
@@ -52,9 +53,13 @@ class BookMapViewModel: ObservableObject {
     /// 현재 위치 구하기용 location manager
     @Published var locationManager = LocationManager()
     
+    /// 현재위치값
     var currentLocation: CLLocationCoordinate2D? {
         self.locationManager.currentLocation
     }
+    
+    /// 유저 위치 초기위치 설정을 위한 Combine용
+    private var cancellables = Set<AnyCancellable>()
     
     /// annotation과 지도가 동시에 눌렸을 때 선택해제되지 않고 annotation 선택되도록 하기 위한 변수
     @Published var isAnnotationSelected: Bool = false
@@ -70,11 +75,13 @@ class BookMapViewModel: ObservableObject {
         self.recentlocationInfos = BookLocationData.locationInfos
 
         // TODO: 현위치 지도 초기화면 띄우기(비동기..)
-        self.mapRegion = MKCoordinateRegion(center: locations.first!.coordinates, span: mapSpan)
-//        Task {
-//            await initializeMapRegion()
-//        }
-//        self.movetoCurrentLocation()
+        locationManager.$currentLocation
+            .compactMap { $0 }
+            .first()
+            .sink { [weak self] location in
+                self?.updateMapRegion(location: location, span: self?.mapSpan ?? MKCoordinateSpan())
+            }
+            .store(in: &cancellables)
     }
     
     // MARK: - Methods

@@ -47,8 +47,6 @@ struct BookMap: View {
                         .padding(.bottom, 60)
                         .padding(.trailing, 14)
                         .frame(maxWidth: .infinity, alignment: .trailing)
-//                    .disabled(bookMapVM.currentLocation == nil)
-//                    .opacity(bookMapVM.currentLocation == nil ? 0.5 : 1)
                 }
             }
             // 책위치정보List bottom sheet 부분

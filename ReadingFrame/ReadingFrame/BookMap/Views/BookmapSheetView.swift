@@ -11,20 +11,16 @@ import SwiftUI
 struct BookmapSheetView: View {
     @ObservedObject var bookmapVM: BookMapViewModel
     
+    /// 한 책에 대한 리스트뷰 SingleBookLocationInfoView 보여줄지 말지 결정하는 변수
     @State var showSingleInfoView: Bool = false
     
+    /// sheet 크기 결정용 변수
     @Binding var detents: PresentationDetent
     
+    /// BookMap 책지도 화면 크기
     let parentGeometrySize: CGSize
     
-    
-//    /// sheet 크기 결정용 변수
-//    @State var sheetSize: PresentationDetent
-//    
-//    func updateSheetSize(to newSize: PresentationDetent) {
-//        sheetSize = newSize
-//    }
-    
+
     var body: some View {
         GeometryReader { geometry in
             VStack {
@@ -93,7 +89,7 @@ struct BookmapSheetView: View {
 extension BookmapSheetView {
     /// 최근 읽은 전체 리스트
     private var recentLocationList: some View {
-        LazyVStack {
+        VStack {
             Text("최근 읽은")
                 .font(.headline)
                 .padding(.top, 16)
@@ -120,13 +116,11 @@ extension BookmapSheetView {
                 }
             }
         }
-        // TODO: 일단 hidden으로 숨겨놓고 나중에 필요할 것 같으면 보이도록 바꾸기
-        .scrollIndicators(.hidden)
-    }    
+    }
     
     /// 위치기반 검색 리스트
     private var foundLocationList: some View {
-        LazyVStack {
+        VStack {
             // TODO: placename 보여주는건 어떤감? 회의때 얘기해보고 정하기
             Text(bookmapVM.foundInfoList!.first!.placeName)
                 .font(.headline)
@@ -156,7 +150,9 @@ extension BookmapSheetView {
                 }
             }
         }
-        // TODO: 일단 hidden으로 숨겨놓고 나중에 필요할 것 같으면 보이도록 바꾸기
-        .scrollIndicators(.hidden)
     }
+}
+
+#Preview {
+    BookmapSheetView(bookmapVM: BookMapViewModel(), showSingleInfoView: false, detents: .constant(.medium), parentGeometrySize: CGSize(width: 390, height: 844))
 }

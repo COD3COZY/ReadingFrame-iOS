@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MapKit
 
 /// 책등록(서재로 읽는중이나 다읽은 책으로 등록할 때) modal로 띄울 화면.
 struct RegisterBook: View {
@@ -29,6 +30,9 @@ struct RegisterBook: View {
     
     /// 대표위치 입력 sheet 띄울지 결정 여부
     @State private var showSearchLocation: Bool = false
+    
+    /// 선택된 위치
+    @State private var pickedPlace: MKPlacemark? = nil
     
     /// 소장여부
     @State private var isMine: Bool = false
@@ -117,13 +121,13 @@ struct RegisterBook: View {
                             // 버튼 잘 작동되는지 확인용 코드(주석 가능)
                             print("showSearchLocation: ", showSearchLocation)
                         }) {
-                            Text("구매/대여한 위치")
-                                .foregroundStyle(.greyText)
+                            Text(pickedPlace == nil ? "구매/대여한 위치" : (pickedPlace?.name ?? ""))
+                                .foregroundStyle(pickedPlace == nil ? .greyText : .black0)
                         }
                         // sheet modal 보여주기 위한 코드
                         // (일단 화면 띄우기만 하고 위치 받아오기는 나중에 하겠습니다)
                         .sheet(isPresented: $showSearchLocation) {
-                            SearchLocation()
+                            SearchLocation(showingSearchLocation: $showSearchLocation, pickedPlaceMark: $pickedPlace)
                         }
                         
                     }

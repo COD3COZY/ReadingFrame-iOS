@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import MapKit
 
 /// 홈 화면, 독서 노트 화면에서 사용하는 새로운 책갈피 추가 화면
 struct EditBookmark: View {
-    
+    // MARK: - Properties
     /// 전달받은 책 객체
     @Bindable var book: RegisteredBook
     
@@ -39,12 +40,16 @@ struct EditBookmark: View {
     /// 위치 입력 sheet 띄움 여부를 결정하는 변수
     @State private var showSearchLocation: Bool = false
     
+    /// 선택된 위치
+    @State private var pickedPlace: MKPlacemark? = nil
+    
     /// 완료 버튼 클릭 여부 변수
     @State private var isTapCompleteBtn: Bool = false
     
     /// 키보드 포커스 여부 변수
     @FocusState private var isFocused: Bool
     
+    // MARK: - View
     var body: some View {
         VStack(alignment: .leading) {
             // MARK: Drag Indicator
@@ -190,12 +195,12 @@ struct EditBookmark: View {
                         showSearchLocation.toggle() // 위치 등록 sheet 띄우기
                         isFocused.toggle() // textfield 포커스 삭제
                     } label: {
-                        Text("책갈피한 위치")
-                            .foregroundStyle(.greyText)
+                        Text(pickedPlace == nil ? "책갈피한 위치" : (pickedPlace?.name ?? ""))
+                            .foregroundStyle(pickedPlace == nil ? .greyText : .black0)
                     }
                     .sheet(isPresented: $showSearchLocation) {
                         // TODO: 위치 등록 화면으로 이동
-                        SearchLocation()
+                        SearchLocation(showingSearchLocation: $showSearchLocation, pickedPlaceMark: $pickedPlace)
                     }
                 } header: {
                     Text("선택 정보")

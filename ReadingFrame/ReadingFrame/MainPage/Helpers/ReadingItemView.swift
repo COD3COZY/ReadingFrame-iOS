@@ -70,7 +70,7 @@ struct ReadingItemView: View {
                 // MARK: 독서노트 버튼
                 NavigationLink {
                     // 독서노트 화면으로 이동
-                    ReadingNote()
+                    ReadingNote(book: book)
                         .toolbarRole(.editor) // back 텍스트 표시X
                         .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                 } label: {

@@ -53,7 +53,14 @@ struct EditBookmark: View {
             HStack {
                 // MARK: 취소 버튼
                 Button {
-                    isShowCancelAlert.toggle() // sheet 닫기 여부 alert 띄우기
+                    // 입력한 값이 있다면
+                    if (!bookMarkPage.isEmpty) {
+                        isShowCancelAlert.toggle() // sheet 닫기 여부 alert 띄우기
+                    }
+                    // 입력한 값이 없다면
+                    else {
+                        isSheetAppear.toggle() // sheet 닫기
+                    }
                 } label: {
                     Text("취소")
                         .font(.body)
@@ -75,12 +82,12 @@ struct EditBookmark: View {
                     // 마지막으로 읽은 페이지가 입력됐다면
                     if (!bookMarkPage.isEmpty) {
                         /// 페이지 비교할 수 있도록 숫자로 변환한 변수
-                        var bookMarkLastReadNumber = Int(bookMarkPage) ?? 0
+                        let bookMarkLastReadNumber = Int(bookMarkPage) ?? 0
                         
                         // 책종류에 따라 분류: 종이책
                         if book.bookType == .paperbook {
                             // 입력된 페이지 값 검사
-                            if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber < book.book.totalPage) {
+                            if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber <= book.book.totalPage) {
                                 // 정상적인 범위 내의 페이지가 입력되었다면
                                 isSheetAppear.toggle() // sheet 닫기
                                 
@@ -93,7 +100,7 @@ struct EditBookmark: View {
                         // 전자책 & 오디오북
                         } else {
                             // 입력된 퍼센트 값 검사
-                            if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber < 100) {
+                            if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber <= 100) {
                                 // 정상적인 범위 내의 퍼센트가 입력되었다면
                                 isSheetAppear.toggle() // sheet 닫기
                                 
@@ -117,6 +124,7 @@ struct EditBookmark: View {
                 .disabled(bookMarkPage.isEmpty)
             }
             .padding(.top, 21)
+            .padding(.horizontal, 16)
             // MARK: 취소 버튼 클릭 시 나타나는 Alert
             .alert(
                 "저장하지 않고 나가시겠습니까?",
@@ -179,8 +187,8 @@ struct EditBookmark: View {
                         .font(.footnote)
                         .foregroundStyle(.black0)
                         .padding(.top, 30)
-                        .padding(.leading, -15)
                         .padding(.bottom, 15)
+                        .listRowInsets(EdgeInsets())
                 }
                 
                 // MARK: - 선택 정보
@@ -202,15 +210,13 @@ struct EditBookmark: View {
                         .font(.footnote)
                         .foregroundStyle(.black0)
                         .padding(.top, 30)
-                        .padding(.leading, -15)
                         .padding(.bottom, 15)
+                        .listRowInsets(EdgeInsets())
                 }
-                
-            } // list
-            .scrollContentBackground(.hidden) // 배경색 지우기
-            .padding(-20) // 기존 여백 삭제
+            }
+            .listStyle(.insetGrouped)
+            .scrollContentBackground(.hidden)
         } // top vstack
-        .padding([.leading, .trailing], 16)
         .background(.grey1)
         .onDisappear() {
             if (isTapCompleteBtn) {

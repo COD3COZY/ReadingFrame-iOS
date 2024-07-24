@@ -58,18 +58,32 @@
 		E702A9AE2B8605D10081F65D /* ReadingRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E702A9AD2B8605D10081F65D /* ReadingRowView.swift */; };
 		E702A9B02B86219C0081F65D /* PageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E702A9AF2B86219C0081F65D /* PageIndicator.swift */; };
 		E702A9B42B864D330081F65D /* ReadingNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E702A9B32B864D330081F65D /* ReadingNote.swift */; };
+		E70719E62C32393900841A6F /* BookmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70719E52C32393900841A6F /* BookmarkView.swift */; };
+		E70764392C3AD27900373B8D /* MemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70764382C3AD27900373B8D /* MemoView.swift */; };
+		E707643B2C3ADEA000373B8D /* CharacterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E707643A2C3ADEA000373B8D /* CharacterView.swift */; };
+		E707643D2C3AF30D00373B8D /* EditAllRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = E707643C2C3AF30D00373B8D /* EditAllRecord.swift */; };
 		E716315F2B7C982600BCD302 /* BookItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E716315E2B7C982600BCD302 /* BookItemView.swift */; };
 		E71631612B7CD08B00BCD302 /* WantToReadRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71631602B7CD08B00BCD302 /* WantToReadRowView.swift */; };
 		E71631632B7CF1A900BCD302 /* LoadableBookImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71631622B7CF1A900BCD302 /* LoadableBookImage.swift */; };
+		E7384CFB2C1284DE001B814B /* CustomDropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7384CFA2C1284DE001B814B /* CustomDropDownMenu.swift */; };
+		E7384CFD2C128E4B001B814B /* CustomDropDownModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7384CFC2C128E4B001B814B /* CustomDropDownModifier.swift */; };
+		E7384CFF2C128E95001B814B /* CustomDropDownHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7384CFE2C128E95001B814B /* CustomDropDownHelper.swift */; };
 		E751B56E2B8E0D3100880123 /* FinishReadRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E751B56D2B8E0D3100880123 /* FinishReadRowView.swift */; };
 		E751B5702B8EC61A00880123 /* EditBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = E751B56F2B8EC61A00880123 /* EditBookmark.swift */; };
 		E751B5722B8EC6B000880123 /* DragIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E751B5712B8EC6B000880123 /* DragIndicator.swift */; };
 		E751B5742B8ED1D100880123 /* DateRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = E751B5732B8ED1D100880123 /* DateRange.swift */; };
+		E75AE6742BE2634A0056EC26 /* HalfCricleGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75AE6732BE2634A0056EC26 /* HalfCricleGraph.swift */; };
+		E75D6B042BEB12100080EBA0 /* RoundedRadiusBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75D6B032BEB12100080EBA0 /* RoundedRadiusBox.swift */; };
+		E75D6B092BEB5B7E0080EBA0 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75D6B082BEB5B7E0080EBA0 /* Bookmark.swift */; };
 		E790FA2A2B81F25200EA38C6 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = E790FA292B81F25200EA38C6 /* Home.swift */; };
 		E7A0DD2A2B7B4B12006004B5 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD292B7B4B12006004B5 /* SearchBar.swift */; };
 		E7A0DD2C2B7B52A7006004B5 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD2B2B7B52A7006004B5 /* Fonts.swift */; };
 		E7A0DD2E2B7B617E006004B5 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD2D2B7B617E006004B5 /* SearchView.swift */; };
 		E7A0DD302B7B6B5B006004B5 /* HomeSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD2F2B7B6B5B006004B5 /* HomeSegmentedControl.swift */; };
+		E7A756662C07360800CF52A4 /* Memo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A756652C07360800CF52A4 /* Memo.swift */; };
+		E7A756682C0741BC00CF52A4 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A756672C0741BC00CF52A4 /* Character.swift */; };
+		E7C24DA52C50EB8600D05937 /* MCEmojiPicker in Frameworks */ = {isa = PBXBuildFile; productRef = E7C24DA42C50EB8600D05937 /* MCEmojiPicker */; };
+		E7C24DAA2C50F10600D05937 /* TabReadingNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C24DA92C50F10600D05937 /* TabReadingNote.swift */; };
 		E7F6D81C2BA6D8C000181586 /* BookItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F6D81B2BA6D8C000181586 /* BookItemDetailView.swift */; };
 		E7F6D81E2BA6D92E00181586 /* BookRowDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F6D81D2BA6D92E00181586 /* BookRowDetailView.swift */; };
 /* End PBXBuildFile section */
@@ -129,18 +143,31 @@
 		E702A9AD2B8605D10081F65D /* ReadingRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingRowView.swift; sourceTree = "<group>"; };
 		E702A9AF2B86219C0081F65D /* PageIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageIndicator.swift; sourceTree = "<group>"; };
 		E702A9B32B864D330081F65D /* ReadingNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingNote.swift; sourceTree = "<group>"; };
+		E70719E52C32393900841A6F /* BookmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkView.swift; sourceTree = "<group>"; };
+		E70764382C3AD27900373B8D /* MemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoView.swift; sourceTree = "<group>"; };
+		E707643A2C3ADEA000373B8D /* CharacterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterView.swift; sourceTree = "<group>"; };
+		E707643C2C3AF30D00373B8D /* EditAllRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAllRecord.swift; sourceTree = "<group>"; };
 		E716315E2B7C982600BCD302 /* BookItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookItemView.swift; sourceTree = "<group>"; };
 		E71631602B7CD08B00BCD302 /* WantToReadRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WantToReadRowView.swift; sourceTree = "<group>"; };
 		E71631622B7CF1A900BCD302 /* LoadableBookImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableBookImage.swift; sourceTree = "<group>"; };
+		E7384CFA2C1284DE001B814B /* CustomDropDownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDropDownMenu.swift; sourceTree = "<group>"; };
+		E7384CFC2C128E4B001B814B /* CustomDropDownModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDropDownModifier.swift; sourceTree = "<group>"; };
+		E7384CFE2C128E95001B814B /* CustomDropDownHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDropDownHelper.swift; sourceTree = "<group>"; };
 		E751B56D2B8E0D3100880123 /* FinishReadRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishReadRowView.swift; sourceTree = "<group>"; };
 		E751B56F2B8EC61A00880123 /* EditBookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBookmark.swift; sourceTree = "<group>"; };
 		E751B5712B8EC6B000880123 /* DragIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragIndicator.swift; sourceTree = "<group>"; };
 		E751B5732B8ED1D100880123 /* DateRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRange.swift; sourceTree = "<group>"; };
+		E75AE6732BE2634A0056EC26 /* HalfCricleGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfCricleGraph.swift; sourceTree = "<group>"; };
+		E75D6B032BEB12100080EBA0 /* RoundedRadiusBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedRadiusBox.swift; sourceTree = "<group>"; };
+		E75D6B082BEB5B7E0080EBA0 /* Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
 		E790FA292B81F25200EA38C6 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		E7A0DD292B7B4B12006004B5 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		E7A0DD2B2B7B52A7006004B5 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		E7A0DD2D2B7B617E006004B5 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		E7A0DD2F2B7B6B5B006004B5 /* HomeSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSegmentedControl.swift; sourceTree = "<group>"; };
+		E7A756652C07360800CF52A4 /* Memo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memo.swift; sourceTree = "<group>"; };
+		E7A756672C0741BC00CF52A4 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		E7C24DA92C50F10600D05937 /* TabReadingNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabReadingNote.swift; sourceTree = "<group>"; };
 		E7F6D81B2BA6D8C000181586 /* BookItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookItemDetailView.swift; sourceTree = "<group>"; };
 		E7F6D81D2BA6D92E00181586 /* BookRowDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRowDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -150,6 +177,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7C24DA52C50EB8600D05937 /* MCEmojiPicker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,6 +360,9 @@
 			children = (
 				C595A1FA2B7B8A3F006D88EC /* Book.swift */,
 				C518A8AA2B8132F800EBD1A8 /* Review.swift */,
+				E75D6B082BEB5B7E0080EBA0 /* Bookmark.swift */,
+				E7A756652C07360800CF52A4 /* Memo.swift */,
+				E7A756672C0741BC00CF52A4 /* Character.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -440,6 +471,8 @@
 		E702A9B12B864D0C0081F65D /* ReadingNote */ = {
 			isa = PBXGroup;
 			children = (
+				E75D6B052BEB3DD10080EBA0 /* Models */,
+				E75AE6722BE263340056EC26 /* Helpers */,
 				E702A9B22B864D270081F65D /* Views */,
 			);
 			path = ReadingNote;
@@ -449,6 +482,8 @@
 			isa = PBXGroup;
 			children = (
 				E702A9B32B864D330081F65D /* ReadingNote.swift */,
+				E707643C2C3AF30D00373B8D /* EditAllRecord.swift */,
+				E7C24DA92C50F10600D05937 /* TabReadingNote.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -485,6 +520,28 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		E75AE6722BE263340056EC26 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				E75AE6732BE2634A0056EC26 /* HalfCricleGraph.swift */,
+				E75D6B032BEB12100080EBA0 /* RoundedRadiusBox.swift */,
+				E7384CFA2C1284DE001B814B /* CustomDropDownMenu.swift */,
+				E7384CFC2C128E4B001B814B /* CustomDropDownModifier.swift */,
+				E7384CFE2C128E95001B814B /* CustomDropDownHelper.swift */,
+				E70719E52C32393900841A6F /* BookmarkView.swift */,
+				E70764382C3AD27900373B8D /* MemoView.swift */,
+				E707643A2C3ADEA000373B8D /* CharacterView.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		E75D6B052BEB3DD10080EBA0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		E7A0DD282B7B49F2006004B5 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -518,6 +575,9 @@
 			dependencies = (
 			);
 			name = ReadingFrame;
+			packageProductDependencies = (
+				E7C24DA42C50EB8600D05937 /* MCEmojiPicker */,
+			);
 			productName = ReadingFrame;
 			productReference = C5BE52212B68F53E00FF07F8 /* ReadingFrame.app */;
 			productType = "com.apple.product-type.application";
@@ -547,6 +607,9 @@
 				ko,
 			);
 			mainGroup = C5BE52182B68F53E00FF07F8;
+			packageReferences = (
+				E7C24DA32C50EB8600D05937 /* XCRemoteSwiftPackageReference "MCEmojiPicker" */,
+			);
 			productRefGroup = C5BE52222B68F53E00FF07F8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -586,8 +649,10 @@
 				E702A9B42B864D330081F65D /* ReadingNote.swift in Sources */,
 				E7A0DD302B7B6B5B006004B5 /* HomeSegmentedControl.swift in Sources */,
 				E702A9AC2B85FB2F0081F65D /* ReadingLabel.swift in Sources */,
+				E70764392C3AD27900373B8D /* MemoView.swift in Sources */,
 				E751B5722B8EC6B000880123 /* DragIndicator.swift in Sources */,
 				E751B56E2B8E0D3100880123 /* FinishReadRowView.swift in Sources */,
+				E707643D2C3AF30D00373B8D /* EditAllRecord.swift in Sources */,
 				E7F6D81E2BA6D92E00181586 /* BookRowDetailView.swift in Sources */,
 				C52EC59D2C3081EE004F6BDB /* BookMapModel.swift in Sources */,
 				E716315F2B7C982600BCD302 /* BookItemView.swift in Sources */,
@@ -596,6 +661,7 @@
 				C5BAF29D2BA49F0800DC33FE /* GreyLogoAndTextView.swift in Sources */,
 				E7A0DD2E2B7B617E006004B5 /* SearchView.swift in Sources */,
 				C5529F1B2BBD7AB300C3E614 /* EnterProfile.swift in Sources */,
+				E75D6B092BEB5B7E0080EBA0 /* Bookmark.swift in Sources */,
 				C5338FA42B8DD76900D24B5F /* CommentReactionToken.swift in Sources */,
 				C5EB7CEF2C4794DE0038C237 /* SingleBookLocationInfoView.swift in Sources */,
 				C51C1DD12B83E7B500B45345 /* CommentHScrollView.swift in Sources */,
@@ -604,10 +670,15 @@
 				C51556CA2B83C9FB006FD0F2 /* SelectReviewClusterView.swift in Sources */,
 				E7A0DD2A2B7B4B12006004B5 /* SearchBar.swift in Sources */,
 				C5A136372C350C5A0061D674 /* BookLocationListRow.swift in Sources */,
+				E7A756662C07360800CF52A4 /* Memo.swift in Sources */,
+				E7C24DAA2C50F10600D05937 /* TabReadingNote.swift in Sources */,
+				E7A756682C0741BC00CF52A4 /* Character.swift in Sources */,
 				C595A2022B7BCB10006D88EC /* SelectBookTypeView.swift in Sources */,
 				C5BE52272B68F53E00FF07F8 /* LaunchView.swift in Sources */,
+				E7384CFB2C1284DE001B814B /* CustomDropDownMenu.swift in Sources */,
 				C5BE52252B68F53E00FF07F8 /* ReadingFrameApp.swift in Sources */,
 				C5A136352C350B8F0061D674 /* BookmapSheetView.swift in Sources */,
+				E7384CFF2C128E95001B814B /* CustomDropDownHelper.swift in Sources */,
 				C595A1EC2B7AA01E006D88EC /* MyPage.swift in Sources */,
 				E790FA2A2B81F25200EA38C6 /* Home.swift in Sources */,
 				C54B931B2C4FF772008B73E0 /* recentlySearchedLocationsData.swift in Sources */,
@@ -618,6 +689,10 @@
 				C595A1DE2B7A9DD6006D88EC /* AppTabView.swift in Sources */,
 				C54B931E2C4FF7A4008B73E0 /* SearchLocationModel.swift in Sources */,
 				E702A9AE2B8605D10081F65D /* ReadingRowView.swift in Sources */,
+				E7384CFD2C128E4B001B814B /* CustomDropDownModifier.swift in Sources */,
+				E70719E62C32393900841A6F /* BookmarkView.swift in Sources */,
+				E707643B2C3ADEA000373B8D /* CharacterView.swift in Sources */,
+				E75D6B042BEB12100080EBA0 /* RoundedRadiusBox.swift in Sources */,
 				E71631632B7CF1A900BCD302 /* LoadableBookImage.swift in Sources */,
 				E751B5742B8ED1D100880123 /* DateRange.swift in Sources */,
 				C5338FA82B8E1B1600D24B5F /* CommentRowView.swift in Sources */,
@@ -625,6 +700,7 @@
 				C5338FA62B8DD89C00D24B5F /* EmojiSelectPopover.swift in Sources */,
 				C58F57172B8CF35D004085A5 /* BookInfo_ReviewModel.swift in Sources */,
 				C54B93222C4FF841008B73E0 /* SearchMapViewHelper.swift in Sources */,
+				E75AE6742BE2634A0056EC26 /* HalfCricleGraph.swift in Sources */,
 				C5CEA8942B8A66D8007A89A2 /* BookInfo_Review.swift in Sources */,
 				C595A2042B7BDE87006D88EC /* DatePickerInList.swift in Sources */,
 				C51556C82B83BA7E006FD0F2 /* BasicBookInfoView.swift in Sources */,
@@ -869,6 +945,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E7C24DA32C50EB8600D05937 /* XCRemoteSwiftPackageReference "MCEmojiPicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/izyumkin/MCEmojiPicker";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E7C24DA42C50EB8600D05937 /* MCEmojiPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E7C24DA32C50EB8600D05937 /* XCRemoteSwiftPackageReference "MCEmojiPicker" */;
+			productName = MCEmojiPicker;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C5BE52192B68F53E00FF07F8 /* Project object */;
 }

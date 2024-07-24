@@ -280,7 +280,7 @@ struct BookItemDetailView: View {
         // 읽는 중, 다 읽은 책이라면
         else {
             // TODO: 독서노트 화면으로 이동
-            ReadingNote()
+            ReadingNote(book: book)
                 .toolbarRole(.editor) // back 텍스트 표시X
                 .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
         }

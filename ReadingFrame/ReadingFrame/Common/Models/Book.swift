@@ -143,6 +143,21 @@ protocol BookRegistered {
     
     /// 대표위치
     var mainLocation: CLLocationCoordinate2D? { get set }
+    
+    /// 대표 장소명
+    var mainPlace: String? { get set }
+    
+    /// 리뷰
+    var reviews: Review? { get set }
+    
+    /// 책갈피 리스트
+    var bookmarks: Array<Bookmark>? { get set }
+    
+    /// 메모 리스트
+    var memos: Array<Memo>? { get set }
+    
+    /// 인물사전 리스트
+    var characters: Array<Character>? { get set }
 }
 
 /// 구조체) 읽는중, 다읽은 책으로 등록한 책
@@ -161,16 +176,28 @@ class RegisteredBook: BookRegistered, Identifiable {
     var readPage: Int
     var isHidden: Bool
     var mainLocation: CLLocationCoordinate2D?
+    var mainPlace: String?
+    var reviews: Review?
+    var bookmarks: Array<Bookmark>?
+    var memos: Array<Memo>?
+    var characters: Array<Character>?
     
-    init(book: Book = InitialBook(),
-         isMine: Bool = false,
-         bookType: BookType = .paperbook,
-         startDate: Date = Date(),
-         recentDate: Date = Date(),
-         readingPercent: Int = 0,
-         readPage: Int = 0,
-         isHidden: Bool = false,
-         mainLocation: CLLocationCoordinate2D? = nil) {
+    init(
+        book: Book = InitialBook(),
+        isMine: Bool = false,
+        bookType: BookType = .paperbook,
+        startDate: Date = Date(),
+        recentDate: Date = Date(),
+        readingPercent: Int = 0,
+        readPage: Int = 0,
+        isHidden: Bool = false,
+        mainLocation: CLLocationCoordinate2D? = nil,
+        mainPlace: String? = nil,
+        reviews: Review? = nil,
+        bookmarks: Array<Bookmark>? = nil,
+        memos: Array<Memo>? = nil,
+        characters: Array<Character>? = nil
+    ) {
         self.book = book
         self.isMine = isMine
         self.bookType = bookType
@@ -180,6 +207,11 @@ class RegisteredBook: BookRegistered, Identifiable {
         self.readPage = readPage
         self.isHidden = isHidden
         self.mainLocation = mainLocation
+        self.mainPlace = mainPlace
+        self.reviews = reviews
+        self.bookmarks = bookmarks
+        self.memos = memos
+        self.characters = characters
     }
 }
 

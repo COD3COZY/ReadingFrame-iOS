@@ -18,4 +18,14 @@ public struct DateRange {
         
         return min...max
     }
+    
+    /// 날짜 스타일 반환 함수(date -> string)
+    public func dateToString(date: Date = Date(), style: String = "yyyy.MM.dd") -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = style
+        
+        let dateToString = dateFormatter.string(from: date)
+        
+        return dateToString
+    }
 }

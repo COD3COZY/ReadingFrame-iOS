@@ -13,6 +13,8 @@ import Observation
 struct Review {
     var selectReviews: [selectReviewCode]
     
+    var reviewDate: Date
+    
     var keyword: String?
     
     var comment: String?

@@ -40,7 +40,7 @@ struct BookItemView: View {
                     // 다 읽은 책 이라면
                     else if (book.book.readingStatus == .finishRead) {
                         // 독서 노트 화면으로 이동
-                        ReadingNote()
+                        ReadingNote(book: book)
                             .toolbarRole(.editor) // back 텍스트 표시X
                     }
                 } label: {

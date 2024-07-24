@@ -10,12 +10,27 @@ import SwiftUI
 /// 받아온 선택 리뷰들 줄바꿈해서 보여주는 뷰
 struct SelectReviewClusterView: View {
     /// 받아올 선택리뷰들
-    let selectReviews: [selectReviewCode]
+    var selectReviews: [selectReviewCode]
+    
+    /// 리뷰 한단어
+    var keyword: String? = nil
     
     var body: some View {
         ScrollView(.vertical) {
             // 레이아웃 사용해서 선택리뷰들 줄바꿈
             WrapLayout(alignment: .leading, spacing: 10) {
+                if let keywords = keyword, !keywords.isEmpty {
+                    Text("# \(keyword ?? "")")
+                        .font(.footnote)
+                        .foregroundStyle(.white)
+                        .padding(.vertical, 7)
+                        .padding(.horizontal, 16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 15)
+                                .foregroundStyle(Color.black0)
+                        )
+                }
+                
                 ForEach(selectReviews, id: \.self) { reviewToken in
                     // 개별 토큰 모양으로 만들어서 보여줌
                     singleSelectReviewToken(reviewToken)
@@ -112,5 +127,5 @@ func singleSelectReviewToken(_ selectReview: selectReviewCode) -> some View {
 }
 
 #Preview {
-    SelectReviewClusterView(selectReviews: [.looksNice, .comforting, .entertaining, .convoluted, .convoluted, .environmentalIssues, .hiddenGem, .immersive])
+    SelectReviewClusterView(selectReviews: [.looksNice, .comforting, .entertaining, .convoluted, .convoluted, .environmentalIssues, .hiddenGem, .immersive], keyword: "한단어")
 }

@@ -386,8 +386,14 @@ struct ReadingNote: View {
                             // 책갈피가 1개라도 있다면 더보기 버튼 띄우기
                             if (book.bookmarks?.count ?? 0 > 0) {
                                 // MARK: 책갈피 목록 더보기 버튼
-                                Image(systemName: "chevron.right")
-                                    .foregroundStyle(.black0)
+                                NavigationLink {
+                                    TabReadingNote(book: book, selectedTab: .bookmark)
+                                        .toolbarRole(.editor) // back 텍스트 표시X
+                                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                                } label: {
+                                    Image(systemName: "chevron.right")
+                                        .foregroundStyle(.black0)
+                                }
                             }
                         }
                         .padding(.top, 35)
@@ -455,9 +461,15 @@ struct ReadingNote: View {
                             
                             // 메모가 1개라도 있다면 더보기 버튼 띄우기
                             if (book.memos?.count ?? 0 > 0) {
-                                // MARK: 책갈피 목록 더보기 버튼
-                                Image(systemName: "chevron.right")
-                                    .foregroundStyle(.black0)
+                                // MARK: 메모 목록 더보기 버튼
+                                NavigationLink {
+                                    TabReadingNote(book: book, selectedTab: .memo)
+                                        .toolbarRole(.editor) // back 텍스트 표시X
+                                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                                } label: {
+                                    Image(systemName: "chevron.right")
+                                        .foregroundStyle(.black0)
+                                }
                             }
                         }
                         .padding(.top, 35)
@@ -521,8 +533,14 @@ struct ReadingNote: View {
                             // 인물사전이 1개라도 있다면 더보기 버튼 띄우기
                             if (book.characters?.count ?? 0 > 0) {
                                 // MARK: 인물사전 목록 더보기 버튼
-                                Image(systemName: "chevron.right")
-                                    .foregroundStyle(.black0)
+                                NavigationLink {
+                                    TabReadingNote(book: book, selectedTab: .character)
+                                        .toolbarRole(.editor) // back 텍스트 표시X
+                                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                                } label: {
+                                    Image(systemName: "chevron.right")
+                                        .foregroundStyle(.black0)
+                                }
                             }
                         }
                         .padding(.top, 35)
@@ -536,6 +554,13 @@ struct ReadingNote: View {
                                     LazyHStack(spacing: 10) {
                                         ForEach(characters.indices, id: \.self) { index in
                                             CharacterView(character: characters[index])
+                                                .padding(.vertical, 15)
+                                                .padding(.horizontal, 10)
+                                                .frame(width: 126, height: 180)
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: 15)
+                                                        .fill(.white)
+                                                )
                                         }
                                         
                                         // 인물사전 추가하기 버튼

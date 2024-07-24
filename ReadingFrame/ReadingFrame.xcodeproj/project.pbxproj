@@ -69,6 +69,7 @@
 		E7A756662C07360800CF52A4 /* Memo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A756652C07360800CF52A4 /* Memo.swift */; };
 		E7A756682C0741BC00CF52A4 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A756672C0741BC00CF52A4 /* Character.swift */; };
 		E7C24DA52C50EB8600D05937 /* MCEmojiPicker in Frameworks */ = {isa = PBXBuildFile; productRef = E7C24DA42C50EB8600D05937 /* MCEmojiPicker */; };
+		E7C24DAA2C50F10600D05937 /* TabReadingNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C24DA92C50F10600D05937 /* TabReadingNote.swift */; };
 		E7F6D81C2BA6D8C000181586 /* BookItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F6D81B2BA6D8C000181586 /* BookItemDetailView.swift */; };
 		E7F6D81E2BA6D92E00181586 /* BookRowDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F6D81D2BA6D92E00181586 /* BookRowDetailView.swift */; };
 /* End PBXBuildFile section */
@@ -138,6 +139,7 @@
 		E7A0DD2F2B7B6B5B006004B5 /* HomeSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSegmentedControl.swift; sourceTree = "<group>"; };
 		E7A756652C07360800CF52A4 /* Memo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memo.swift; sourceTree = "<group>"; };
 		E7A756672C0741BC00CF52A4 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		E7C24DA92C50F10600D05937 /* TabReadingNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabReadingNote.swift; sourceTree = "<group>"; };
 		E7F6D81B2BA6D8C000181586 /* BookItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookItemDetailView.swift; sourceTree = "<group>"; };
 		E7F6D81D2BA6D92E00181586 /* BookRowDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRowDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -399,6 +401,7 @@
 			children = (
 				E702A9B32B864D330081F65D /* ReadingNote.swift */,
 				E707643C2C3AF30D00373B8D /* EditAllRecord.swift */,
+				E7C24DA92C50F10600D05937 /* TabReadingNote.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -580,6 +583,7 @@
 				C51556CA2B83C9FB006FD0F2 /* SelectReviewClusterView.swift in Sources */,
 				E7A0DD2A2B7B4B12006004B5 /* SearchBar.swift in Sources */,
 				E7A756662C07360800CF52A4 /* Memo.swift in Sources */,
+				E7C24DAA2C50F10600D05937 /* TabReadingNote.swift in Sources */,
 				E7A756682C0741BC00CF52A4 /* Character.swift in Sources */,
 				C595A2022B7BCB10006D88EC /* SelectBookTypeView.swift in Sources */,
 				C5BE52272B68F53E00FF07F8 /* LaunchView.swift in Sources */,

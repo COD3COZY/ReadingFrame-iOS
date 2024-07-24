@@ -32,13 +32,6 @@ struct CharacterView: View {
                 .lineLimit(3)
                 .frame(height: 54, alignment: .top)
         }
-        .padding(.vertical, 15)
-        .padding(.horizontal, 10)
-        .frame(width: 126, height: 180)
-        .background(
-            RoundedRectangle(cornerRadius: 15)
-                .fill(.white)
-        )
     }
 }
 

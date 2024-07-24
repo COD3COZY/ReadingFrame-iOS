@@ -194,9 +194,24 @@ class RegisteredBook: BookRegistered, Identifiable {
         mainLocation: CLLocationCoordinate2D? = nil,
         mainPlace: String? = nil,
         reviews: Review? = nil,
-        bookmarks: Array<Bookmark>? = nil,
-        memos: Array<Memo>? = nil,
-        characters: Array<Character>? = nil
+        bookmarks: Array<Bookmark>? = [Bookmark(id: "1", date: Date(), markPage: 26, markPercent: 23, location: "도서관"),
+                                       Bookmark(id: "2", date: Date(), markPage: 26, markPercent: 23, location: "도서관"),
+    Bookmark(id: "2", date: Date(), markPage: 26, markPercent: 23, location: "도서관"),
+    Bookmark(id: "3", date: Date(), markPage: 26, markPercent: 23, location: "도서관"),
+    Bookmark(id: "4", date: Date(), markPage: 26, markPercent: 23, location: "도서관"),
+    Bookmark(id: "5", date: Date(), markPage: 26, markPercent: 23, location: "도서관"),
+    Bookmark(id: "6", date: Date(), markPage: 26, markPercent: 23, location: "도서관"),
+    Bookmark(id: "7", date: Date(), markPage: 26, markPercent: 23, location: "도서관"),
+    Bookmark(id: "8", date: Date(), markPage: 26, markPercent: 23, location: "도서관"),
+    Bookmark(id: "9", date: Date(), markPage: 26, markPercent: 23, location: "도서관"),
+    Bookmark(id: "10", date: Date(), markPage: 26, markPercent: 23, location: "도서관"),
+    Bookmark(id: "11", date: Date(), markPage: 26, markPercent: 23, location: "도서관"),
+    Bookmark(id: "12", date: Date(), markPage: 26, markPercent: 23, location: "도서관")],
+        memos: Array<Memo>? = [Memo(id: "1", date: Date(), markPage: 24, markPercent: 24, memo: "메모"),
+                                       Memo(id: "1", date: Date(), markPage: 24, markPercent: 24, memo: "메모")],
+        characters: Array<Character>? = [Character(emoji: Int("🍎".unicodeScalars.first!.value), name: "사과", preview: "사과입니다.", description: "맛있는 사과"),
+                                                 Character(emoji: Int("🥕".unicodeScalars.first!.value), name: "당근", preview: "당근입니다.", description: "맛있는 당근"),
+                                                 Character(emoji: Int("🐶".unicodeScalars.first!.value), name: "강아지", preview: "강아지입니다.", description: "귀여운 말티즈"),]
     ) {
         self.book = book
         self.isMine = isMine

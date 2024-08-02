@@ -15,7 +15,7 @@ struct EditAllRecord: View {
     
     /// picker 메뉴
     var records = ["책갈피", "메모", "인물사전"]
-    @State private var selectedTab: String = "책갈피"
+    @State var selectedTab: String = "책갈피"
     
     /// 취소&완료 버튼 클릭 시 sheet 없어지도록 하기 위한 변수
     @Binding var isSheetAppear: Bool

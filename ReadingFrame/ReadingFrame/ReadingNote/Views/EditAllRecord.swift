@@ -20,6 +20,9 @@ struct EditAllRecord: View {
     /// 취소&완료 버튼 클릭 시 sheet 없어지도록 하기 위한 변수
     @Binding var isSheetAppear: Bool
     
+    /// Picker 보임 여부
+    @State var isPickerAppear: Bool = true
+    
     /// 취소 버튼 클릭 시 나타나는 Alert 변수
     @State var isShowCancelAlert: Bool = false
     
@@ -111,9 +114,17 @@ struct EditAllRecord: View {
                 
                 Spacer()
                 
-                Text("기록하기")
-                    .font(.headline)
-                    .foregroundStyle(.black0)
+                if (isPickerAppear) {
+                    Text("기록하기")
+                        .font(.headline)
+                        .foregroundStyle(.black0)
+                }
+                else {
+                    Text("\(selectedTab)")
+                        .font(.headline)
+                        .foregroundStyle(.black0)
+                }
+                
                 
                 Spacer()
                 
@@ -239,24 +250,26 @@ struct EditAllRecord: View {
             }
             
             // MARK: 상단 Picker
-            Picker("", selection: $selectedTab) {
-                ForEach(records, id: \.self) {
-                    Text($0)
-                        .font(.headline)
-                        .foregroundStyle(.black0)
+            if (isPickerAppear) {
+                Picker("", selection: $selectedTab) {
+                    ForEach(records, id: \.self) {
+                        Text($0)
+                            .font(.headline)
+                            .foregroundStyle(.black0)
+                    }
                 }
+                .onChange(of: selectedTab, { oldValue, newValue in
+                    // 탭이 바뀔 경우, 기존에 입력된 정보 초기화
+                    selectedDate = Date()
+                    bookMarkPage = ""
+                    inputMemo = ""
+                    characterName = ""
+                    characterPreview = ""
+                    characterDescription = ""
+                })
+                .pickerStyle(.segmented)
+                .padding(.top, 21)
             }
-            .onChange(of: selectedTab, { oldValue, newValue in
-                // 탭이 바뀔 경우, 기존에 입력된 정보 초기화
-                selectedDate = Date()
-                bookMarkPage = ""
-                inputMemo = ""
-                characterName = ""
-                characterPreview = ""
-                characterDescription = ""
-            })
-            .pickerStyle(.segmented)
-            .padding(.top, 21)
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {

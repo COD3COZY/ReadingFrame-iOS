@@ -31,6 +31,9 @@ struct ReadingNote: View {
     /// 기록하기 sheet가 띄워져 있는지 확인하는 변수
     @State var isRecordSheetAppear: Bool = false
     
+    /// 기록하기 sheet의 picker 띄움 여부 변수
+    @State var isPickerAppear: Bool = true
+    
     /// 기록하기 바텀 시트 변수
     @State var selectedTab: String = "책갈피"
     
@@ -670,6 +673,7 @@ struct ReadingNote: View {
             Button {
                 isRecordSheetAppear.toggle()
                 selectedTab = "책갈피"
+                isPickerAppear.toggle()
             } label: {
                 Text("기록하기")
                     .font(.headline)
@@ -688,7 +692,8 @@ struct ReadingNote: View {
             EditAllRecord(
                 book: book,
                 selectedTab: selectedTab,
-                isSheetAppear: $isRecordSheetAppear
+                isSheetAppear: $isRecordSheetAppear,
+                isPickerAppear: isPickerAppear
             )
         }
     }

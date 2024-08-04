@@ -66,7 +66,9 @@ struct BookMap: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                     // modal 크기
                     .presentationDetents(
-                        [.height(45), .height(100), .fraction(1/3), .large],
+                        // 한 row만 보이는 뷰일 때는 .height(100), .large만 남기도록
+                        // 다른 뷰에서는 다양한 높이 지원
+                        ((bookMapVM.foundInfoList == nil && bookMapVM.selectedLocation != nil) ? [.height(100), .large] : [.height(45), .fraction(1/3), .large]),
                         selection: $detents // 이 기특한 친구가 modal 크기 정해줌
                     )
                     .presentationCornerRadius(20)

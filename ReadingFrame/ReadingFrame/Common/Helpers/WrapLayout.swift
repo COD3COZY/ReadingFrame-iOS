@@ -12,6 +12,10 @@ struct WrapLayout: Layout {
     // MARK: Layout Properties
     
     var alignment: Alignment = .leading
+    /// Horizontal spacing
+    var horizontalSpacing: CGFloat = 10
+    /// Vertical spacing
+    var verticalSpacing: CGFloat = 10
     
     /// Horizontal spacing
     var horizontalSpacing: CGFloat = 10
@@ -38,6 +42,7 @@ struct WrapLayout: Layout {
         
         /// 높이 정해주기 위해 rows 불러오기
         let rows = generateRows(maxWidth, proposal, subviews)
+
         
         // row와 그 row마다 붙여주는 인덱스, 순서대로
         for (index, row) in rows.enumerated() {

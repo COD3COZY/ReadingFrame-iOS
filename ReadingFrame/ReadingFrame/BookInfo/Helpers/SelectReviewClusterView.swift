@@ -18,7 +18,7 @@ struct SelectReviewClusterView: View {
     var body: some View {
         ScrollView(.vertical) {
             // 레이아웃 사용해서 선택리뷰들 줄바꿈
-            WrapLayout(alignment: .leading, spacing: 10) {
+            WrapLayout(alignment: .leading) {
                 if let keywords = keyword, !keywords.isEmpty {
                     Text("# \(keyword ?? "")")
                         .font(.footnote)

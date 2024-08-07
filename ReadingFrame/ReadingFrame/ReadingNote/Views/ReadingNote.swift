@@ -408,23 +408,29 @@ struct ReadingNote: View {
                         // MARK: - 책갈피 리스트
                         if (book.bookmarks != nil) {
                             if let bookmarks = book.bookmarks, !bookmarks.isEmpty {
-                                LazyVStack(spacing: 20) {
-                                    ForEach(bookmarks.indices, id: \.self) { index in
-                                        BookmarkView(bookmark: bookmarks[index])
-                                        
-                                        // 마지막 값이 아닌 경우에만 구분선 추가
-                                        if index != bookmarks.count - 1 {
-                                            Divider()
-                                                .background(.grey2)
-                                                .padding(.horizontal, 16)
+                                NavigationLink {
+                                    TabReadingNote(book: book, selectedTab: .bookmark)
+                                        .toolbarRole(.editor) // back 텍스트 표시X
+                                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                                } label: {
+                                    LazyVStack(spacing: 20) {
+                                        ForEach(bookmarks.indices, id: \.self) { index in
+                                            BookmarkView(bookmark: bookmarks[index])
+                                            
+                                            // 마지막 값이 아닌 경우에만 구분선 추가
+                                            if index != bookmarks.count - 1 {
+                                                Divider()
+                                                    .background(.grey2)
+                                                    .padding(.horizontal, 16)
+                                            }
                                         }
                                     }
+                                    .padding(.vertical, 20)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 15)
+                                            .fill(.white)
+                                    )
                                 }
-                                .padding(.vertical, 20)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 15)
-                                        .fill(.white)
-                                )
                                 .padding(.top, 20)
                                 .padding(.horizontal, 16)
                             }
@@ -487,7 +493,13 @@ struct ReadingNote: View {
                             if let memos = book.memos, !memos.isEmpty {
                                 LazyVStack(spacing: 8) {
                                     ForEach(memos.indices, id: \.self) { index in
-                                        MemoView(memo: memos[index])
+                                        NavigationLink {
+                                            TabReadingNote(book: book, selectedTab: .memo)
+                                                .toolbarRole(.editor) // back 텍스트 표시X
+                                                .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                                        } label: {
+                                            MemoView(memo: memos[index])
+                                        }
                                     }
                                 }
                                 .padding(.top, 20)
@@ -559,14 +571,20 @@ struct ReadingNote: View {
                                 ScrollView(.horizontal) {
                                     LazyHStack(spacing: 10) {
                                         ForEach(characters.indices, id: \.self) { index in
-                                            CharacterView(character: characters[index])
-                                                .padding(.vertical, 15)
-                                                .padding(.horizontal, 10)
-                                                .frame(width: 126, height: 180)
-                                                .background(
-                                                    RoundedRectangle(cornerRadius: 15)
-                                                        .fill(.white)
-                                                )
+                                            NavigationLink {
+                                                CharacterDetail(character: characters[index])
+                                                    .toolbarRole(.editor) // back 텍스트 표시X
+                                                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                                            } label: {
+                                                CharacterView(character: characters[index])
+                                                    .padding(.vertical, 15)
+                                                    .padding(.horizontal, 10)
+                                                    .frame(width: 126, height: 180)
+                                                    .background(
+                                                        RoundedRectangle(cornerRadius: 15)
+                                                            .fill(.white)
+                                                    )
+                                            }
                                         }
                                         
                                         // 인물사전 추가하기 버튼

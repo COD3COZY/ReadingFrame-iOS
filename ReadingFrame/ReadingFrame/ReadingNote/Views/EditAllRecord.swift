@@ -125,7 +125,6 @@ struct EditAllRecord: View {
                         .foregroundStyle(.black0)
                 }
                 
-                
                 Spacer()
                 
                 // MARK: 완료 버튼
@@ -302,41 +301,9 @@ struct EditAllRecord: View {
                         )
                     }
                     
-                    // MARK: 마지막으로 읽은 페이지 또는 메모 페이지
-                    if (selectedTab != "인물사전") {
-                        VStack {
-                            HStack {
-                                if (selectedTab == "책갈피") {
-                                    Text("마지막으로 읽은")
-                                }
-                                else if (selectedTab == "메모") {
-                                    Text("페이지")
-                                }
-                                
-                                // 종이책이면 ~\(totalPage), 전자책 오디오북이면 0~100
-                                TextField(book.bookType == .paperbook ? "~\(book.book.totalPage)" : "0~100", text: $bookMarkPage)
-                                    .keyboardType(.numberPad) // 텍스트필드 눌렀을 때 숫자 키보드 뜨도록 함
-                                    .foregroundStyle(.black0)
-                                    .multilineTextAlignment(.trailing)
-                                    .focused($isFocused)
-                                    .onAppear {
-                                        DispatchQueue.main.async {
-                                            isFocused = false
-                                        }
-                                    }
-                                
-                                // 종이책이면 p, 전자책 오디오북이면 %
-                                Text(book.bookType == .paperbook ? "p" : "%")
-                            }
-                        }
-                        .padding(.vertical, 13)
-                        .padding(.leading, 16)
-                        .padding(.trailing, 20)
-                        .background(
-                            RoundedRectangle(cornerRadius: 15)
-                                .fill(.white)
-                        )
-                        .padding(.top, 10)
+                    // MARK: 마지막으로 읽은 페이지
+                    if (selectedTab == "책갈피") {
+                        pageView(book: book, text: "마지막으로 읽은", bookMarkPage: bookMarkPage, isFocused: _isFocused)
                     }
                     
                     // MARK: 메모
@@ -419,14 +386,12 @@ struct EditAllRecord: View {
                     }
                     
                     // MARK: 선택 정보
-                    if (selectedTab != "메모") {
-                        Text("선택 정보")
-                            .font(.footnote)
-                            .foregroundStyle(.black0)
-                            .padding(.top, 30)
-                            .padding(.bottom, 15)
-                            .listRowInsets(EdgeInsets())
-                    }
+                    Text("선택 정보")
+                        .font(.footnote)
+                        .foregroundStyle(.black0)
+                        .padding(.top, 30)
+                        .padding(.bottom, 15)
+                        .listRowInsets(EdgeInsets())
                     
                     // MARK: 위치 등록 버튼
                     if (selectedTab == "책갈피") {
@@ -448,6 +413,11 @@ struct EditAllRecord: View {
                             // TODO: 위치 등록 화면으로 이동
                             SearchLocation()
                         }
+                    }
+                    
+                    // MARK: 메모 페이지
+                    if (selectedTab == "메모") {
+                        pageView(book: book, text: "페이지", bookMarkPage: bookMarkPage, isFocused: _isFocused)
                     }
                     
                     if (selectedTab == "인물사전") {
@@ -524,6 +494,45 @@ struct EditAllRecord: View {
                 .fill(.grey1)
         )
         .ignoresSafeArea(edges: .bottom)
+    }
+}
+
+/// 페이지 입력 필드
+struct pageView: View {
+    var book: RegisteredBook
+    var text: String
+    @State var bookMarkPage: String
+    @FocusState var isFocused: Bool
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Text(text)
+                
+                // 종이책이면 ~\(totalPage), 전자책 오디오북이면 0~100
+                TextField(book.bookType == .paperbook ? "~\(book.book.totalPage)" : "0~100", text: $bookMarkPage)
+                    .keyboardType(.numberPad) // 텍스트필드 눌렀을 때 숫자 키보드 뜨도록 함
+                    .foregroundStyle(.black0)
+                    .multilineTextAlignment(.trailing)
+                    .focused($isFocused)
+                    .onAppear {
+                        DispatchQueue.main.async {
+                            isFocused = false
+                        }
+                    }
+                
+                // 종이책이면 p, 전자책 오디오북이면 %
+                Text(book.bookType == .paperbook ? "p" : "%")
+            }
+        }
+        .padding(.vertical, 13)
+        .padding(.leading, 16)
+        .padding(.trailing, 20)
+        .background(
+            RoundedRectangle(cornerRadius: 15)
+                .fill(.white)
+        )
+        .padding(.top, 10)
     }
 }
 

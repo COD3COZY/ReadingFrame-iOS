@@ -23,6 +23,7 @@ struct TabReadingNote: View {
     
     @State var isRecordSheetAppear: Bool = false // 기록하기 sheet가 띄워져 있는지 확인하는 변수
     @State var isPickerAppear: Bool = false // 기록하기 sheet의 picker 띄움 여부 변수
+    @State private var searchText: String = "" // 사용자가 입력한 검색어
     
     // MARK: - BODY
     var body: some View {
@@ -31,30 +32,38 @@ struct TabReadingNote: View {
                 // 탭바 및 애니메이션
                 tabAnimate()
                 
-                // MARK: 리스트 조회 방법
-                HStack(spacing: 5) {
-                    Spacer()
-                    
-                    Button {
+                if (selectedTab != .character) {
+                    // MARK: 리스트 조회 방법
+                    HStack(spacing: 5) {
+                        Spacer()
                         
-                    } label: {
-                        Text("페이지순")
-                            .font(.caption)
-                            .foregroundStyle(.black0)
+                        Button {
+                            
+                        } label: {
+                            Text("페이지순")
+                                .font(.caption)
+                                .foregroundStyle(.black0)
+                        }
+                        Circle()
+                            .frame(width: 3, height: 3)
+                        Button {
+                            
+                        } label: {
+                            Text("최신순")
+                                .font(.caption)
+                                .foregroundStyle(.greyText)
+                        }
                     }
-                    Circle()
-                        .frame(width: 3, height: 3)
-                    Button {
-                        
-                    } label: {
-                        Text("최신순")
-                            .font(.caption)
-                            .foregroundStyle(.greyText)
-                    }
+                    .padding(.top, 14)
+                    .padding(.trailing, 19)
+                    .padding(.bottom, 8)
                 }
-                .padding(.top, 14)
-                .padding(.trailing, 19)
-                .padding(.bottom, 8)
+                else {
+                    // MARK: 인물사전 검색
+                    SearchBar(searchText: $searchText, placeholder: "인물의 이름, 한줄소개를 입력하세요")
+                        .padding(.top, 15)
+                        .padding(.horizontal, 16)
+                }
                 
                 List {
                     // 스크롤 내부 뷰

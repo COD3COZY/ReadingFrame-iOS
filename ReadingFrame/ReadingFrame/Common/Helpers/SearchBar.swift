@@ -13,11 +13,14 @@ struct SearchBar: View {
     /// 사용자가 입력한 검색어
     @Binding var searchText: String
     
+    /// 검색창의 플레이스 홀더
+    var placeholder: String
+    
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
             
-            TextField("제목, 작가를 입력하세요", text: $searchText)
+            TextField(placeholder, text: $searchText)
             
             // 검색어가 있다면
             if (!searchText.isEmpty) {
@@ -38,5 +41,5 @@ struct SearchBar: View {
 }
 
 #Preview {
-    SearchBar(searchText: .constant(""))
+    SearchBar(searchText: .constant(""), placeholder: "제목, 작가를 입력하세요")
 }

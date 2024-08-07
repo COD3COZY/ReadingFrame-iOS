@@ -7,6 +7,7 @@
 
 import MCEmojiPicker
 import SwiftUI
+import MapKit
 
 /// 독서노트의 기록하기 시트 화면
 struct EditAllRecord: View {
@@ -39,6 +40,9 @@ struct EditAllRecord: View {
     var dateRange: ClosedRange<Date> {
         DateRange().dateRange(date: selectedDate)
     }
+    
+    /// 선택된 위치
+    @State private var pickedPlace: MKPlacemark? = nil
     
     /// 사용자가 입력한 책갈피 페이지
     @State private var bookMarkPage: String = ""
@@ -410,8 +414,8 @@ struct EditAllRecord: View {
                                 .fill(.white)
                         )
                         .sheet(isPresented: $showSearchLocation) {
-                            // TODO: 위치 등록 화면으로 이동
-                            SearchLocation()
+                            // 위치 등록 화면으로 이동
+                            SearchLocation(showingSearchLocation: $showSearchLocation, pickedPlaceMark: $pickedPlace)
                         }
                     }
                     

@@ -217,28 +217,43 @@ class RegisteredBook: BookRegistered, Identifiable {
 
 // MARK: - 책관련 열거형 타입들
 /// 책종류
-enum BookType {
-    case paperbook  // 종이책
-    case eBook      // 전자책
-    case audioBook  // 오디오북
+enum BookType: Int, CaseIterable {
+    /// 종이책
+    case paperbook
+    /// 전자책
+    case eBook
+    /// 오디오북
+    case audioBook
 }
 
 /// 독서상태
-enum ReadingStatus: Int {
-    case unregistered   = -1    // 미등록
-    case wantToRead     = 0     // 읽고싶은
-    case reading        = 1     // 읽는중
-    case finishRead     = 2     // 다읽음
+enum ReadingStatus: Int, CaseIterable {
+    /// 미등록
+    case unregistered   = -1
+    /// 읽고싶은
+    case wantToRead     = 0
+    /// 읽는중
+    case reading        = 1
+    /// 다읽음
+    case finishRead     = 2
 }
 
 /// 카테고리(장르)
-enum CategoryName: Int {
-    case humanSocial        // 인문사회
-    case literature         // 문학
-    case essays             // 에세이
-    case science            // 과학
-    case selfImprovement    // 자기계발
-    case art                // 예술
-    case foreign            // 원서
-    case etc                // 기타
+enum CategoryName: Int, CaseIterable {
+    /// 인문사회
+    case humanSocial
+    /// 문학
+    case literature
+    /// 에세이
+    case essays
+    /// 과학
+    case science
+    /// 자기계발
+    case selfImprovement
+    /// 예술
+    case art
+    /// 원서
+    case foreign
+    /// 기타
+    case etc
 }

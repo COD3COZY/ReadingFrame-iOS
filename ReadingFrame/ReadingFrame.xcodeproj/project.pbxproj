@@ -79,6 +79,10 @@
 		E75AE6742BE2634A0056EC26 /* HalfCricleGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75AE6732BE2634A0056EC26 /* HalfCricleGraph.swift */; };
 		E75D6B042BEB12100080EBA0 /* RoundedRadiusBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75D6B032BEB12100080EBA0 /* RoundedRadiusBox.swift */; };
 		E75D6B092BEB5B7E0080EBA0 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75D6B082BEB5B7E0080EBA0 /* Bookmark.swift */; };
+		E77394842C637B8D0057760A /* SearchBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77394832C637B8D0057760A /* SearchBadge.swift */; };
+		E77394872C6385B80057760A /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77394862C6385B80057760A /* Badge.swift */; };
+		E773948A2C638CCD0057760A /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77394892C638CCD0057760A /* BadgeView.swift */; };
+		E77E0B8A2C736E8B00626110 /* BadgeRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0B892C736E8B00626110 /* BadgeRowView.swift */; };
 		E790FA2A2B81F25200EA38C6 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = E790FA292B81F25200EA38C6 /* Home.swift */; };
 		E7A0DD2A2B7B4B12006004B5 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD292B7B4B12006004B5 /* SearchBar.swift */; };
 		E7A0DD2C2B7B52A7006004B5 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD2B2B7B52A7006004B5 /* Fonts.swift */; };
@@ -169,6 +173,10 @@
 		E75AE6732BE2634A0056EC26 /* HalfCricleGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfCricleGraph.swift; sourceTree = "<group>"; };
 		E75D6B032BEB12100080EBA0 /* RoundedRadiusBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedRadiusBox.swift; sourceTree = "<group>"; };
 		E75D6B082BEB5B7E0080EBA0 /* Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
+		E77394832C637B8D0057760A /* SearchBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBadge.swift; sourceTree = "<group>"; };
+		E77394862C6385B80057760A /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
+		E77394892C638CCD0057760A /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
+		E77E0B892C736E8B00626110 /* BadgeRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeRowView.swift; sourceTree = "<group>"; };
 		E790FA292B81F25200EA38C6 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		E7A0DD292B7B4B12006004B5 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		E7A0DD2B2B7B52A7006004B5 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
@@ -499,6 +507,7 @@
 				E702A9B12B864D0C0081F65D /* ReadingNote */,
 				C595A1E52B7A9FE9006D88EC /* BookMap */,
 				C595A1E92B7AA00F006D88EC /* MyPage */,
+				E77394812C637B740057760A /* Badge */,
 				C5BB8B632B7CF3A500A49858 /* SearchLocation */,
 				C595A1DC2B7A89D8006D88EC /* Resources */,
 				C5BE522A2B68F54000FF07F8 /* Preview Content */,
@@ -587,6 +596,41 @@
 			children = (
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		E77394812C637B740057760A /* Badge */ = {
+			isa = PBXGroup;
+			children = (
+				E77394852C6385680057760A /* Models */,
+				E77394822C637B820057760A /* Views */,
+				E77394882C638CC00057760A /* Helpers */,
+			);
+			path = Badge;
+			sourceTree = "<group>";
+		};
+		E77394822C637B820057760A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E77394832C637B8D0057760A /* SearchBadge.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E77394852C6385680057760A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E77394862C6385B80057760A /* Badge.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E77394882C638CC00057760A /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				E77394892C638CCD0057760A /* BadgeView.swift */,
+				E77E0B892C736E8B00626110 /* BadgeRowView.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		E7A0DD282B7B49F2006004B5 /* Helpers */ = {
@@ -683,6 +727,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E773948A2C638CCD0057760A /* BadgeView.swift in Sources */,
 				C595A2002B7BAC7A006D88EC /* RegisterBook.swift in Sources */,
 				C52EC5A12C3082D6004F6BDB /* AnnotationView.swift in Sources */,
 				C595A1FB2B7B8A3F006D88EC /* Book.swift in Sources */,
@@ -696,6 +741,7 @@
 				E702A9B42B864D330081F65D /* ReadingNote.swift in Sources */,
 				E7C24DB02C5CF89600D05937 /* CharacterDetail.swift in Sources */,
 				E7A0DD302B7B6B5B006004B5 /* HomeSegmentedControl.swift in Sources */,
+				E77394872C6385B80057760A /* Badge.swift in Sources */,
 				E702A9AC2B85FB2F0081F65D /* ReadingLabel.swift in Sources */,
 				E70764392C3AD27900373B8D /* MemoView.swift in Sources */,
 				E751B5722B8EC6B000880123 /* DragIndicator.swift in Sources */,
@@ -741,6 +787,7 @@
 				E7384CFD2C128E4B001B814B /* CustomDropDownModifier.swift in Sources */,
 				E70719E62C32393900841A6F /* BookmarkView.swift in Sources */,
 				E707643B2C3ADEA000373B8D /* CharacterView.swift in Sources */,
+				E77E0B8A2C736E8B00626110 /* BadgeRowView.swift in Sources */,
 				E75D6B042BEB12100080EBA0 /* RoundedRadiusBox.swift in Sources */,
 				E71631632B7CF1A900BCD302 /* LoadableBookImage.swift in Sources */,
 				E751B5742B8ED1D100880123 /* DateRange.swift in Sources */,
@@ -754,6 +801,7 @@
 				C595A2042B7BDE87006D88EC /* DatePickerInList.swift in Sources */,
 				C51556C82B83BA7E006FD0F2 /* BasicBookInfoView.swift in Sources */,
 				C54B932E2C500FCD008B73E0 /* BookShelfView.swift in Sources */,
+				E77394842C637B8D0057760A /* SearchBadge.swift in Sources */,
 				C5BB8B662B7CF3CE00A49858 /* SearchLocation.swift in Sources */,
 				C54B932B2C500AD0008B73E0 /* BookshelfModel.swift in Sources */,
 				C5DF2B842B7F8E740069B64D /* BookInfo.swift in Sources */,

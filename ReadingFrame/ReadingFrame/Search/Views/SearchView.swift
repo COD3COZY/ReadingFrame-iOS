@@ -17,7 +17,7 @@ struct SearchView: View {
         GeometryReader { geometry in
             ScrollView() {
                 VStack {
-                    SearchBar(searchText: $searchText)
+                    SearchBar(searchText: $searchText, placeholder: "제목, 작가를 입력하세요")
                     
                     searchResults(searchText: $searchText)
                 }

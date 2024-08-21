@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C50F7A0B2C71D70100D65BFB /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50F7A0A2C71D70100D65BFB /* Login.swift */; };
+		C50F7A0E2C73907200D65BFB /* XAuthTokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50F7A0D2C73907200D65BFB /* XAuthTokenService.swift */; };
 		C51556C32B830402006FD0F2 /* BookInfoBottomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51556C22B830402006FD0F2 /* BookInfoBottomButtonView.swift */; };
 		C51556C62B839367006FD0F2 /* BookInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51556C52B839367006FD0F2 /* BookInfoModel.swift */; };
 		C51556C82B83BA7E006FD0F2 /* BasicBookInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51556C72B83BA7E006FD0F2 /* BasicBookInfoView.swift */; };
@@ -93,6 +95,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C50F7A0A2C71D70100D65BFB /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		C50F7A0D2C73907200D65BFB /* XAuthTokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XAuthTokenService.swift; sourceTree = "<group>"; };
 		C51556C22B830402006FD0F2 /* BookInfoBottomButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInfoBottomButtonView.swift; sourceTree = "<group>"; };
 		C51556C52B839367006FD0F2 /* BookInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInfoModel.swift; sourceTree = "<group>"; };
 		C51556C72B83BA7E006FD0F2 /* BasicBookInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicBookInfoView.swift; sourceTree = "<group>"; };
@@ -192,6 +196,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C50F7A082C71D6E200D65BFB /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				C50F7A092C71D6F200D65BFB /* Views */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		C50F7A092C71D6F200D65BFB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C50F7A0A2C71D70100D65BFB /* Login.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C50F7A0C2C73905500D65BFB /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				C50F7A0D2C73907200D65BFB /* XAuthTokenService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		C51556C42B839355006FD0F2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -311,6 +339,7 @@
 		C595A1E12B7A9FB7006D88EC /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				C50F7A0C2C73905500D65BFB /* Services */,
 				C595A1F92B7B8A16006D88EC /* Models */,
 				C595A1E22B7A9FC0006D88EC /* Views */,
 				E7A0DD282B7B49F2006004B5 /* Helpers */,
@@ -484,6 +513,7 @@
 		C5BE52232B68F53E00FF07F8 /* ReadingFrame */ = {
 			isa = PBXGroup;
 			children = (
+				C50F7A082C71D6E200D65BFB /* Login */,
 				C54B93232C500893008B73E0 /* BookShelf */,
 				C561F1D22BAB04E1005A680B /* SignUp */,
 				C5BE52332B68F68100FF07F8 /* Info.plist */,
@@ -710,6 +740,7 @@
 				C5EB7CEF2C4794DE0038C237 /* SingleBookLocationInfoView.swift in Sources */,
 				C51C1DD12B83E7B500B45345 /* CommentHScrollView.swift in Sources */,
 				C54B93182C4FF6BD008B73E0 /* SearchLocationManager.swift in Sources */,
+				C50F7A0E2C73907200D65BFB /* XAuthTokenService.swift in Sources */,
 				C5DF2B862B7FC94D0069B64D /* Badge_Info.swift in Sources */,
 				C51556CA2B83C9FB006FD0F2 /* SelectReviewClusterView.swift in Sources */,
 				E7A0DD2A2B7B4B12006004B5 /* SearchBar.swift in Sources */,
@@ -749,6 +780,7 @@
 				C5CEA8942B8A66D8007A89A2 /* BookInfo_Review.swift in Sources */,
 				C595A2042B7BDE87006D88EC /* DatePickerInList.swift in Sources */,
 				C51556C82B83BA7E006FD0F2 /* BasicBookInfoView.swift in Sources */,
+				C50F7A0B2C71D70100D65BFB /* Login.swift in Sources */,
 				C54B932E2C500FCD008B73E0 /* BookShelfView.swift in Sources */,
 				C5BB8B662B7CF3CE00A49858 /* SearchLocation.swift in Sources */,
 				C54B932B2C500AD0008B73E0 /* BookshelfModel.swift in Sources */,

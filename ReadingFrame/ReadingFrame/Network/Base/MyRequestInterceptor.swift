@@ -13,7 +13,7 @@ final class MyRequestInterceptor: RequestInterceptor {
     // 네트워크 호출 시, api 전처리를 한 뒤 서버로 보냄
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         guard urlRequest.url?.absoluteString.hasPrefix(APIConstants.baseURL) == true,
-              let xAuthToken = KeychainWrapper.standard.string(forKey: "xAuthToken") else {
+              let xAuthToken = KeyChain.shared.getToken() else {
             completion(.success(urlRequest))
             return
         }

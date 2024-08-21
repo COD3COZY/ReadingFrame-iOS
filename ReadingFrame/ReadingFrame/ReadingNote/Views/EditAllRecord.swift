@@ -16,10 +16,13 @@ struct EditAllRecord: View {
     
     /// picker 메뉴
     var records = ["책갈피", "메모", "인물사전"]
-    @State private var selectedTab: String = "책갈피"
+    @State var selectedTab: String = "책갈피"
     
     /// 취소&완료 버튼 클릭 시 sheet 없어지도록 하기 위한 변수
     @Binding var isSheetAppear: Bool
+    
+    /// Picker 보임 여부
+    @State var isPickerAppear: Bool = true
     
     /// 취소 버튼 클릭 시 나타나는 Alert 변수
     @State var isShowCancelAlert: Bool = false
@@ -115,9 +118,16 @@ struct EditAllRecord: View {
                 
                 Spacer()
                 
-                Text("기록하기")
-                    .font(.headline)
-                    .foregroundStyle(.black0)
+                if (isPickerAppear) {
+                    Text("기록하기")
+                        .font(.headline)
+                        .foregroundStyle(.black0)
+                }
+                else {
+                    Text("\(selectedTab)")
+                        .font(.headline)
+                        .foregroundStyle(.black0)
+                }
                 
                 Spacer()
                 
@@ -243,24 +253,26 @@ struct EditAllRecord: View {
             }
             
             // MARK: 상단 Picker
-            Picker("", selection: $selectedTab) {
-                ForEach(records, id: \.self) {
-                    Text($0)
-                        .font(.headline)
-                        .foregroundStyle(.black0)
+            if (isPickerAppear) {
+                Picker("", selection: $selectedTab) {
+                    ForEach(records, id: \.self) {
+                        Text($0)
+                            .font(.headline)
+                            .foregroundStyle(.black0)
+                    }
                 }
+                .onChange(of: selectedTab, { oldValue, newValue in
+                    // 탭이 바뀔 경우, 기존에 입력된 정보 초기화
+                    selectedDate = Date()
+                    bookMarkPage = ""
+                    inputMemo = ""
+                    characterName = ""
+                    characterPreview = ""
+                    characterDescription = ""
+                })
+                .pickerStyle(.segmented)
+                .padding(.top, 21)
             }
-            .onChange(of: selectedTab, { oldValue, newValue in
-                // 탭이 바뀔 경우, 기존에 입력된 정보 초기화
-                selectedDate = Date()
-                bookMarkPage = ""
-                inputMemo = ""
-                characterName = ""
-                characterPreview = ""
-                characterDescription = ""
-            })
-            .pickerStyle(.segmented)
-            .padding(.top, 21)
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
@@ -293,41 +305,9 @@ struct EditAllRecord: View {
                         )
                     }
                     
-                    // MARK: 마지막으로 읽은 페이지 또는 메모 페이지
-                    if (selectedTab != "인물사전") {
-                        VStack {
-                            HStack {
-                                if (selectedTab == "책갈피") {
-                                    Text("마지막으로 읽은")
-                                }
-                                else if (selectedTab == "메모") {
-                                    Text("페이지")
-                                }
-                                
-                                // 종이책이면 ~\(totalPage), 전자책 오디오북이면 0~100
-                                TextField(book.bookType == .paperbook ? "~\(book.book.totalPage)" : "0~100", text: $bookMarkPage)
-                                    .keyboardType(.numberPad) // 텍스트필드 눌렀을 때 숫자 키보드 뜨도록 함
-                                    .foregroundStyle(.black0)
-                                    .multilineTextAlignment(.trailing)
-                                    .focused($isFocused)
-                                    .onAppear {
-                                        DispatchQueue.main.async {
-                                            isFocused = false
-                                        }
-                                    }
-                                
-                                // 종이책이면 p, 전자책 오디오북이면 %
-                                Text(book.bookType == .paperbook ? "p" : "%")
-                            }
-                        }
-                        .padding(.vertical, 13)
-                        .padding(.leading, 16)
-                        .padding(.trailing, 20)
-                        .background(
-                            RoundedRectangle(cornerRadius: 15)
-                                .fill(.white)
-                        )
-                        .padding(.top, 10)
+                    // MARK: 마지막으로 읽은 페이지
+                    if (selectedTab == "책갈피") {
+                        pageView(book: book, text: "마지막으로 읽은", bookMarkPage: bookMarkPage, isFocused: _isFocused)
                     }
                     
                     // MARK: 메모
@@ -410,14 +390,12 @@ struct EditAllRecord: View {
                     }
                     
                     // MARK: 선택 정보
-                    if (selectedTab != "메모") {
-                        Text("선택 정보")
-                            .font(.footnote)
-                            .foregroundStyle(.black0)
-                            .padding(.top, 30)
-                            .padding(.bottom, 15)
-                            .listRowInsets(EdgeInsets())
-                    }
+                    Text("선택 정보")
+                        .font(.footnote)
+                        .foregroundStyle(.black0)
+                        .padding(.top, 30)
+                        .padding(.bottom, 15)
+                        .listRowInsets(EdgeInsets())
                     
                     // MARK: 위치 등록 버튼
                     if (selectedTab == "책갈피") {
@@ -439,6 +417,11 @@ struct EditAllRecord: View {
                             // 위치 등록 화면으로 이동
                             SearchLocation(showingSearchLocation: $showSearchLocation, pickedPlaceMark: $pickedPlace)
                         }
+                    }
+                    
+                    // MARK: 메모 페이지
+                    if (selectedTab == "메모") {
+                        pageView(book: book, text: "페이지", bookMarkPage: bookMarkPage, isFocused: _isFocused)
                     }
                     
                     if (selectedTab == "인물사전") {
@@ -515,6 +498,45 @@ struct EditAllRecord: View {
                 .fill(.grey1)
         )
         .ignoresSafeArea(edges: .bottom)
+    }
+}
+
+/// 페이지 입력 필드
+struct pageView: View {
+    var book: RegisteredBook
+    var text: String
+    @State var bookMarkPage: String
+    @FocusState var isFocused: Bool
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Text(text)
+                
+                // 종이책이면 ~\(totalPage), 전자책 오디오북이면 0~100
+                TextField(book.bookType == .paperbook ? "~\(book.book.totalPage)" : "0~100", text: $bookMarkPage)
+                    .keyboardType(.numberPad) // 텍스트필드 눌렀을 때 숫자 키보드 뜨도록 함
+                    .foregroundStyle(.black0)
+                    .multilineTextAlignment(.trailing)
+                    .focused($isFocused)
+                    .onAppear {
+                        DispatchQueue.main.async {
+                            isFocused = false
+                        }
+                    }
+                
+                // 종이책이면 p, 전자책 오디오북이면 %
+                Text(book.bookType == .paperbook ? "p" : "%")
+            }
+        }
+        .padding(.vertical, 13)
+        .padding(.leading, 16)
+        .padding(.trailing, 20)
+        .background(
+            RoundedRectangle(cornerRadius: 15)
+                .fill(.white)
+        )
+        .padding(.top, 10)
     }
 }
 

@@ -31,6 +31,12 @@ struct ReadingNote: View {
     /// 기록하기 sheet가 띄워져 있는지 확인하는 변수
     @State var isRecordSheetAppear: Bool = false
     
+    /// 기록하기 sheet의 picker 띄움 여부 변수
+    @State var isPickerAppear: Bool = true
+    
+    /// 기록하기 바텀 시트 변수
+    @State var selectedTab: String = "책갈피"
+    
     var body: some View {
         ScrollView {
             ZStack(alignment: .topLeading) {
@@ -402,23 +408,29 @@ struct ReadingNote: View {
                         // MARK: - 책갈피 리스트
                         if (book.bookmarks != nil) {
                             if let bookmarks = book.bookmarks, !bookmarks.isEmpty {
-                                LazyVStack(spacing: 20) {
-                                    ForEach(bookmarks.indices, id: \.self) { index in
-                                        BookmarkView(bookmark: bookmarks[index])
-                                        
-                                        // 마지막 값이 아닌 경우에만 구분선 추가
-                                        if index != bookmarks.count - 1 {
-                                            Divider()
-                                                .background(.grey2)
-                                                .padding(.horizontal, 16)
+                                NavigationLink {
+                                    TabReadingNote(book: book, selectedTab: .bookmark)
+                                        .toolbarRole(.editor) // back 텍스트 표시X
+                                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                                } label: {
+                                    LazyVStack(spacing: 20) {
+                                        ForEach(bookmarks.indices, id: \.self) { index in
+                                            BookmarkView(bookmark: bookmarks[index])
+                                            
+                                            // 마지막 값이 아닌 경우에만 구분선 추가
+                                            if index != bookmarks.count - 1 {
+                                                Divider()
+                                                    .background(.grey2)
+                                                    .padding(.horizontal, 16)
+                                            }
                                         }
                                     }
+                                    .padding(.vertical, 20)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 15)
+                                            .fill(.white)
+                                    )
                                 }
-                                .padding(.vertical, 20)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 15)
-                                        .fill(.white)
-                                )
                                 .padding(.top, 20)
                                 .padding(.horizontal, 16)
                             }
@@ -481,7 +493,13 @@ struct ReadingNote: View {
                             if let memos = book.memos, !memos.isEmpty {
                                 LazyVStack(spacing: 8) {
                                     ForEach(memos.indices, id: \.self) { index in
-                                        MemoView(memo: memos[index])
+                                        NavigationLink {
+                                            TabReadingNote(book: book, selectedTab: .memo)
+                                                .toolbarRole(.editor) // back 텍스트 표시X
+                                                .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                                        } label: {
+                                            MemoView(memo: memos[index])
+                                        }
                                     }
                                 }
                                 .padding(.top, 20)
@@ -553,18 +571,29 @@ struct ReadingNote: View {
                                 ScrollView(.horizontal) {
                                     LazyHStack(spacing: 10) {
                                         ForEach(characters.indices, id: \.self) { index in
-                                            CharacterView(character: characters[index])
-                                                .padding(.vertical, 15)
-                                                .padding(.horizontal, 10)
-                                                .frame(width: 126, height: 180)
-                                                .background(
-                                                    RoundedRectangle(cornerRadius: 15)
-                                                        .fill(.white)
-                                                )
+                                            NavigationLink {
+                                                CharacterDetail(character: characters[index])
+                                                    .toolbarRole(.editor) // back 텍스트 표시X
+                                                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                                            } label: {
+                                                CharacterView(character: characters[index])
+                                                    .padding(.vertical, 15)
+                                                    .padding(.horizontal, 10)
+                                                    .frame(width: 126, height: 180)
+                                                    .background(
+                                                        RoundedRectangle(cornerRadius: 15)
+                                                            .fill(.white)
+                                                    )
+                                            }
                                         }
                                         
                                         // 인물사전 추가하기 버튼
-                                        characterAddBtn()
+                                        Button {
+                                            isRecordSheetAppear.toggle()
+                                            selectedTab = "인물사전"
+                                        } label: {
+                                            characterAddBtn()
+                                        }
                                     }
                                     .padding(.horizontal, 16)
                                 }
@@ -575,10 +604,15 @@ struct ReadingNote: View {
                         }
                         // 인물사전이 없다면
                         else {
-                            // 인물사전 추가하기 버튼 띄우기
-                            characterAddBtn()
-                                .padding(.top, 20)
-                                .padding(.horizontal, 16)
+                            // 인물사전 추가하기 버튼
+                            Button {
+                                isRecordSheetAppear.toggle()
+                                selectedTab = "인물사전"
+                            } label: {
+                                characterAddBtn()
+                                    .padding(.top, 20)
+                                    .padding(.horizontal, 16)
+                            }
                         }
                         
                     }
@@ -656,6 +690,8 @@ struct ReadingNote: View {
         ZStack {
             Button {
                 isRecordSheetAppear.toggle()
+                selectedTab = "책갈피"
+                isPickerAppear.toggle()
             } label: {
                 Text("기록하기")
                     .font(.headline)
@@ -671,7 +707,12 @@ struct ReadingNote: View {
         // MARK: 기록하기 버튼 클릭 시 나타나는 Sheet
         .sheet(isPresented: $isRecordSheetAppear) {
             // 책갈피 등록 sheet 띄우기
-            EditAllRecord(book: book, isSheetAppear: $isRecordSheetAppear)
+            EditAllRecord(
+                book: book,
+                selectedTab: selectedTab,
+                isSheetAppear: $isRecordSheetAppear,
+                isPickerAppear: isPickerAppear
+            )
         }
     }
     

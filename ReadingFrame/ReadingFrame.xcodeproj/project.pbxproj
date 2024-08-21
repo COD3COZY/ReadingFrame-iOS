@@ -85,6 +85,23 @@
 		E77394872C6385B80057760A /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77394862C6385B80057760A /* Badge.swift */; };
 		E773948A2C638CCD0057760A /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77394892C638CCD0057760A /* BadgeView.swift */; };
 		E77E0B8A2C736E8B00626110 /* BadgeRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0B892C736E8B00626110 /* BadgeRowView.swift */; };
+		E77E0B8F2C7390A400626110 /* BaseAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0B8E2C7390A400626110 /* BaseAPI.swift */; };
+		E77E0B972C74587A00626110 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E77E0B962C74587A00626110 /* Alamofire */; };
+		E77E0B9C2C745CA700626110 /* CommonResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0B9B2C745CA700626110 /* CommonResponse.swift */; };
+		E77E0B9F2C745E4D00626110 /* KakaoSignUpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0B9E2C745E4D00626110 /* KakaoSignUpRequest.swift */; };
+		E77E0BA22C74602800626110 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BA12C74602800626110 /* APIConstants.swift */; };
+		E77E0BA42C74611000626110 /* NetworkResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BA32C74611000626110 /* NetworkResult.swift */; };
+		E77E0BA62C747A0B00626110 /* KakaoSignUpResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BA52C747A0B00626110 /* KakaoSignUpResponse.swift */; };
+		E77E0BAA2C747B1200626110 /* KakaoLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BA92C747B1200626110 /* KakaoLoginRequest.swift */; };
+		E77E0BAD2C747B4900626110 /* KakaoLoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BAC2C747B4900626110 /* KakaoLoginResponse.swift */; };
+		E77E0BB12C747FD900626110 /* APIEventLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BB02C747FD900626110 /* APIEventLogger.swift */; };
+		E77E0BB42C7488C800626110 /* HTTPHeaderField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BB32C7488C800626110 /* HTTPHeaderField.swift */; };
+		E77E0BB62C748AC400626110 /* TargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BB52C748AC400626110 /* TargetType.swift */; };
+		E77E0BB82C7499A500626110 /* KakaoSignUpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BB72C7499A500626110 /* KakaoSignUpService.swift */; };
+		E77E0BBC2C749C7900626110 /* SignUpAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BBB2C749C7900626110 /* SignUpAPI.swift */; };
+		E77E0BBE2C75DE7400626110 /* MyRequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BBD2C75DE7400626110 /* MyRequestInterceptor.swift */; };
+		E77E0BC32C75E62100626110 /* KakaoLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BC22C75E62100626110 /* KakaoLoginService.swift */; };
+		E77E0BC52C75E71800626110 /* LoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BC42C75E71800626110 /* LoginAPI.swift */; };
 		E790FA2A2B81F25200EA38C6 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = E790FA292B81F25200EA38C6 /* Home.swift */; };
 		E7A0DD2A2B7B4B12006004B5 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD292B7B4B12006004B5 /* SearchBar.swift */; };
 		E7A0DD2C2B7B52A7006004B5 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD2B2B7B52A7006004B5 /* Fonts.swift */; };
@@ -181,6 +198,22 @@
 		E77394862C6385B80057760A /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		E77394892C638CCD0057760A /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
 		E77E0B892C736E8B00626110 /* BadgeRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeRowView.swift; sourceTree = "<group>"; };
+		E77E0B8E2C7390A400626110 /* BaseAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAPI.swift; sourceTree = "<group>"; };
+		E77E0B9B2C745CA700626110 /* CommonResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonResponse.swift; sourceTree = "<group>"; };
+		E77E0B9E2C745E4D00626110 /* KakaoSignUpRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoSignUpRequest.swift; sourceTree = "<group>"; };
+		E77E0BA12C74602800626110 /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
+		E77E0BA32C74611000626110 /* NetworkResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkResult.swift; sourceTree = "<group>"; };
+		E77E0BA52C747A0B00626110 /* KakaoSignUpResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoSignUpResponse.swift; sourceTree = "<group>"; };
+		E77E0BA92C747B1200626110 /* KakaoLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginRequest.swift; sourceTree = "<group>"; };
+		E77E0BAC2C747B4900626110 /* KakaoLoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginResponse.swift; sourceTree = "<group>"; };
+		E77E0BB02C747FD900626110 /* APIEventLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEventLogger.swift; sourceTree = "<group>"; };
+		E77E0BB32C7488C800626110 /* HTTPHeaderField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPHeaderField.swift; sourceTree = "<group>"; };
+		E77E0BB52C748AC400626110 /* TargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetType.swift; sourceTree = "<group>"; };
+		E77E0BB72C7499A500626110 /* KakaoSignUpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoSignUpService.swift; sourceTree = "<group>"; };
+		E77E0BBB2C749C7900626110 /* SignUpAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpAPI.swift; sourceTree = "<group>"; };
+		E77E0BBD2C75DE7400626110 /* MyRequestInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRequestInterceptor.swift; sourceTree = "<group>"; };
+		E77E0BC22C75E62100626110 /* KakaoLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginService.swift; sourceTree = "<group>"; };
+		E77E0BC42C75E71800626110 /* LoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAPI.swift; sourceTree = "<group>"; };
 		E790FA292B81F25200EA38C6 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		E7A0DD292B7B4B12006004B5 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		E7A0DD2B2B7B52A7006004B5 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
@@ -200,6 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7C24DA52C50EB8600D05937 /* MCEmojiPicker in Frameworks */,
+				E77E0B972C74587A00626110 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,6 +561,7 @@
 				C5BE52322B68F60300FF07F8 /* ReadingFrame.entitlements */,
 				C5BE52242B68F53E00FF07F8 /* ReadingFrameApp.swift */,
 				C595A1E12B7A9FB7006D88EC /* Common */,
+				E77E0B8B2C738F0200626110 /* Network */,
 				C595A1ED2B7B1EFC006D88EC /* Launch */,
 				C561F1D22BAB04E1005A680B /* SignUp */,
 				C50F7A082C71D6E200D65BFB /* Login */,
@@ -663,6 +698,141 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		E77E0B8B2C738F0200626110 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				E77E0BB22C7488B100626110 /* Base */,
+				E77E0B8C2C738F6300626110 /* Api */,
+				E77E0B8D2C73904800626110 /* Model */,
+				E77E0B9A2C745C6700626110 /* Service */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		E77E0B8C2C738F6300626110 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				E77E0BBA2C749C6300626110 /* SignUp */,
+				E77E0BB92C749C5900626110 /* Login */,
+			);
+			path = Api;
+			sourceTree = "<group>";
+		};
+		E77E0B8D2C73904800626110 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E77E0B982C745C4B00626110 /* Request */,
+				E77E0B992C745C5000626110 /* Response */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		E77E0B982C745C4B00626110 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				E77E0B9D2C745E1700626110 /* SignUp */,
+				E77E0BA82C747B0000626110 /* Login */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		E77E0B992C745C5000626110 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				E77E0BA72C747A1000626110 /* SignUp */,
+				E77E0BAB2C747B3B00626110 /* Login */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		E77E0B9A2C745C6700626110 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				E77E0BAF2C747C9600626110 /* SignUp */,
+				E77E0BAE2C747C8F00626110 /* Login */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		E77E0B9D2C745E1700626110 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				E77E0B9E2C745E4D00626110 /* KakaoSignUpRequest.swift */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		E77E0BA72C747A1000626110 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				E77E0BA52C747A0B00626110 /* KakaoSignUpResponse.swift */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		E77E0BA82C747B0000626110 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				E77E0BA92C747B1200626110 /* KakaoLoginRequest.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		E77E0BAB2C747B3B00626110 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				E77E0BAC2C747B4900626110 /* KakaoLoginResponse.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		E77E0BAE2C747C8F00626110 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				E77E0BC22C75E62100626110 /* KakaoLoginService.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		E77E0BAF2C747C9600626110 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				E77E0BB72C7499A500626110 /* KakaoSignUpService.swift */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		E77E0BB22C7488B100626110 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				E77E0BA12C74602800626110 /* APIConstants.swift */,
+				E77E0BB02C747FD900626110 /* APIEventLogger.swift */,
+				E77E0B8E2C7390A400626110 /* BaseAPI.swift */,
+				E77E0B9B2C745CA700626110 /* CommonResponse.swift */,
+				E77E0BB32C7488C800626110 /* HTTPHeaderField.swift */,
+				E77E0BA32C74611000626110 /* NetworkResult.swift */,
+				E77E0BBD2C75DE7400626110 /* MyRequestInterceptor.swift */,
+				E77E0BB52C748AC400626110 /* TargetType.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		E77E0BB92C749C5900626110 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				E77E0BC42C75E71800626110 /* LoginAPI.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		E77E0BBA2C749C6300626110 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				E77E0BBB2C749C7900626110 /* SignUpAPI.swift */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
 		E7A0DD282B7B49F2006004B5 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -698,6 +868,7 @@
 			name = ReadingFrame;
 			packageProductDependencies = (
 				E7C24DA42C50EB8600D05937 /* MCEmojiPicker */,
+				E77E0B962C74587A00626110 /* Alamofire */,
 			);
 			productName = ReadingFrame;
 			productReference = C5BE52212B68F53E00FF07F8 /* ReadingFrame.app */;
@@ -730,6 +901,7 @@
 			mainGroup = C5BE52182B68F53E00FF07F8;
 			packageReferences = (
 				E7C24DA32C50EB8600D05937 /* XCRemoteSwiftPackageReference "MCEmojiPicker" */,
+				E77E0B952C74587A00626110 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = C5BE52222B68F53E00FF07F8 /* Products */;
 			projectDirPath = "";
@@ -759,6 +931,7 @@
 			files = (
 				E773948A2C638CCD0057760A /* BadgeView.swift in Sources */,
 				C595A2002B7BAC7A006D88EC /* RegisterBook.swift in Sources */,
+				E77E0B9C2C745CA700626110 /* CommonResponse.swift in Sources */,
 				C52EC5A12C3082D6004F6BDB /* AnnotationView.swift in Sources */,
 				C595A1FB2B7B8A3F006D88EC /* Book.swift in Sources */,
 				C56B56062BB95DA80084F2DD /* EnterNickname.swift in Sources */,
@@ -768,14 +941,18 @@
 				E7A0DD2C2B7B52A7006004B5 /* Fonts.swift in Sources */,
 				E7F6D81C2BA6D8C000181586 /* BookItemDetailView.swift in Sources */,
 				C58F57192B8D001F004085A5 /* CommentReactionView.swift in Sources */,
+				E77E0BBC2C749C7900626110 /* SignUpAPI.swift in Sources */,
 				E702A9B42B864D330081F65D /* ReadingNote.swift in Sources */,
 				E7C24DB02C5CF89600D05937 /* CharacterDetail.swift in Sources */,
 				E7A0DD302B7B6B5B006004B5 /* HomeSegmentedControl.swift in Sources */,
 				E77394872C6385B80057760A /* Badge.swift in Sources */,
+				E77E0BB82C7499A500626110 /* KakaoSignUpService.swift in Sources */,
+				E77E0B8F2C7390A400626110 /* BaseAPI.swift in Sources */,
 				E702A9AC2B85FB2F0081F65D /* ReadingLabel.swift in Sources */,
 				E70764392C3AD27900373B8D /* MemoView.swift in Sources */,
 				E751B5722B8EC6B000880123 /* DragIndicator.swift in Sources */,
 				E751B56E2B8E0D3100880123 /* FinishReadRowView.swift in Sources */,
+				E77E0BA42C74611000626110 /* NetworkResult.swift in Sources */,
 				E707643D2C3AF30D00373B8D /* EditAllRecord.swift in Sources */,
 				E7F6D81E2BA6D92E00181586 /* BookRowDetailView.swift in Sources */,
 				C52EC59D2C3081EE004F6BDB /* BookMapModel.swift in Sources */,
@@ -792,12 +969,14 @@
 				C54B93182C4FF6BD008B73E0 /* SearchLocationManager.swift in Sources */,
 				C50F7A0E2C73907200D65BFB /* XAuthTokenService.swift in Sources */,
 				C5DF2B862B7FC94D0069B64D /* Badge_Info.swift in Sources */,
+				E77E0BB12C747FD900626110 /* APIEventLogger.swift in Sources */,
 				C51556CA2B83C9FB006FD0F2 /* SelectReviewClusterView.swift in Sources */,
 				E7A0DD2A2B7B4B12006004B5 /* SearchBar.swift in Sources */,
 				C5A136372C350C5A0061D674 /* BookLocationListRow.swift in Sources */,
 				E7A756662C07360800CF52A4 /* Memo.swift in Sources */,
 				E7C24DAA2C50F10600D05937 /* TabReadingNote.swift in Sources */,
 				E7A756682C0741BC00CF52A4 /* Character.swift in Sources */,
+				E77E0BA22C74602800626110 /* APIConstants.swift in Sources */,
 				C595A2022B7BCB10006D88EC /* SelectBookTypeView.swift in Sources */,
 				C5BE52272B68F53E00FF07F8 /* LaunchView.swift in Sources */,
 				E7384CFB2C1284DE001B814B /* CustomDropDownMenu.swift in Sources */,
@@ -805,20 +984,26 @@
 				C5A136352C350B8F0061D674 /* BookmapSheetView.swift in Sources */,
 				E7384CFF2C128E95001B814B /* CustomDropDownHelper.swift in Sources */,
 				C595A1EC2B7AA01E006D88EC /* MyPage.swift in Sources */,
+				E77E0B9F2C745E4D00626110 /* KakaoSignUpRequest.swift in Sources */,
+				E77E0BC32C75E62100626110 /* KakaoLoginService.swift in Sources */,
 				E790FA2A2B81F25200EA38C6 /* Home.swift in Sources */,
 				C54B931B2C4FF772008B73E0 /* recentlySearchedLocationsData.swift in Sources */,
+				E77E0BBE2C75DE7400626110 /* MyRequestInterceptor.swift in Sources */,
 				C595A1E82B7A9FFB006D88EC /* BookMap.swift in Sources */,
 				C54B93262C500A35008B73E0 /* BookShelf.swift in Sources */,
 				C51556C32B830402006FD0F2 /* BookInfoBottomButtonView.swift in Sources */,
 				C52EC59F2C308258004F6BDB /* LocationManager.swift in Sources */,
 				C53A34B22C37D99A008A88F0 /* BottomSheetHelper.swift in Sources */,
 				C595A1DE2B7A9DD6006D88EC /* AppTabView.swift in Sources */,
+				E77E0BB42C7488C800626110 /* HTTPHeaderField.swift in Sources */,
 				C54B931E2C4FF7A4008B73E0 /* SearchLocationModel.swift in Sources */,
 				E702A9AE2B8605D10081F65D /* ReadingRowView.swift in Sources */,
 				E7384CFD2C128E4B001B814B /* CustomDropDownModifier.swift in Sources */,
+				E77E0BA62C747A0B00626110 /* KakaoSignUpResponse.swift in Sources */,
 				E70719E62C32393900841A6F /* BookmarkView.swift in Sources */,
 				E707643B2C3ADEA000373B8D /* CharacterView.swift in Sources */,
 				E77E0B8A2C736E8B00626110 /* BadgeRowView.swift in Sources */,
+				E77E0BC52C75E71800626110 /* LoginAPI.swift in Sources */,
 				E75D6B042BEB12100080EBA0 /* RoundedRadiusBox.swift in Sources */,
 				E71631632B7CF1A900BCD302 /* LoadableBookImage.swift in Sources */,
 				E751B5742B8ED1D100880123 /* DateRange.swift in Sources */,
@@ -831,9 +1016,11 @@
 				C5CEA8942B8A66D8007A89A2 /* BookInfo_Review.swift in Sources */,
 				C595A2042B7BDE87006D88EC /* DatePickerInList.swift in Sources */,
 				C51556C82B83BA7E006FD0F2 /* BasicBookInfoView.swift in Sources */,
+				E77E0BAA2C747B1200626110 /* KakaoLoginRequest.swift in Sources */,
 				C50F7A0B2C71D70100D65BFB /* Login.swift in Sources */,
 				C54B932E2C500FCD008B73E0 /* BookShelfView.swift in Sources */,
 				E77394842C637B8D0057760A /* SearchBadge.swift in Sources */,
+				E77E0BB62C748AC400626110 /* TargetType.swift in Sources */,
 				C5BB8B662B7CF3CE00A49858 /* SearchLocation.swift in Sources */,
 				C54B932B2C500AD0008B73E0 /* BookshelfModel.swift in Sources */,
 				C5DF2B842B7F8E740069B64D /* BookInfo.swift in Sources */,
@@ -842,6 +1029,7 @@
 				E751B5702B8EC61A00880123 /* EditBookmark.swift in Sources */,
 				C54B93282C500A54008B73E0 /* BookShelfListByType.swift in Sources */,
 				E702A9A82B85CAF50081F65D /* ReadingItemView.swift in Sources */,
+				E77E0BAD2C747B4900626110 /* KakaoLoginResponse.swift in Sources */,
 				C595A1E02B7A9E59006D88EC /* MainPage.swift in Sources */,
 				C52EC59B2C308181004F6BDB /* BookLocationData.swift in Sources */,
 			);
@@ -1079,6 +1267,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E77E0B952C74587A00626110 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.1;
+			};
+		};
 		E7C24DA32C50EB8600D05937 /* XCRemoteSwiftPackageReference "MCEmojiPicker" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/izyumkin/MCEmojiPicker";
@@ -1090,6 +1286,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E77E0B962C74587A00626110 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E77E0B952C74587A00626110 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
 		E7C24DA42C50EB8600D05937 /* MCEmojiPicker */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E7C24DA32C50EB8600D05937 /* XCRemoteSwiftPackageReference "MCEmojiPicker" */;

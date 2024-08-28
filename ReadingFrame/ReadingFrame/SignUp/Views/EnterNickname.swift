@@ -10,7 +10,7 @@ import SwiftUI
 struct EnterNickname: View {
     // MARK: - Properties
     /// API 전송을 위한 회원가입 정보
-    @State var signupInfo: SignUpInfo
+    @StateObject var signupInfo: SignUpInfo
     
     /// 유저가 입력할 닉네임
     @State var nickname: String = ""
@@ -97,7 +97,7 @@ struct EnterNickname: View {
 
 
 #Preview {
-    EnterNickname(signupInfo: AppleSignUpInfo(userIdentifier: "", idToken: ""))
+    EnterNickname(signupInfo: SignUpInfo(socialLoginType: .apple))
 }
 
 // MARK: - View Parts

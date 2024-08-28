@@ -41,9 +41,8 @@ struct Login: View {
                     
                 } else {
                     // 회원가입이 필요한 상태라면 닉네임 입력 화면으로 넘어가기
-                    // TODO: 카카오 로그인인지, 애플 로그인인지 회원가입 로직에 알려줘야함..
                     NavigationStack {
-                        EnterNickname(signupInfo: self.signupInfo ?? AppleSignUpInfo(userIdentifier: "", idToken: ""))
+                        EnterNickname(signupInfo: self.signupInfo ?? SignUpInfo(socialLoginType: .apple))
                     }
                 }
             } else {
@@ -117,23 +116,38 @@ extension Login {
                 print("userID: \(String(describing: userIdentifier))")
                 print("user idToken: \(String(decoding: idToken!, as: UTF8.self))")
                 
-                // TODO: 애플로그인 API 호출: 서버에 애플로그인 정보 보내기
+                // 키체인에 userIdentifier, idToken 저장
+                // userIdentifier 저장
+                if KeyChain.shared.addKeychainItem(key: KeychainKeys.appleUserIdentifier, value: userIdentifier) {
+                    print("appleUserIdentifier 키체인에 저장 완!")
+                }
                 
-                // TODO: 서버에서 토큰 받으면 -> 토큰 활용해서 홈화면으로 이동
-                // 아직 구현이 안된 부분이라서 일단 애플 로그인버튼 누르면 회원가입 로직으로 넘어가도록 처리
-                if false {
-                    // 홈화면
-                    isLoggedIn = true
-                } else {
-                    // TODO: 서버에서 토큰 못받으면 -> 회원가입 로직으로 이동
+                // idToken 저장
+                if KeyChain.shared.addKeychainItem(key: KeychainKeys.appleIdentityToken, value: String(decoding: idToken!, as: UTF8.self)) {
+                    print("appleIdentityToken 키체인에 저장 완!")
+                }
+                
+                
+                // 기존 키체인에 닉네임이 있는지 확인
+                if let appleNickname = KeyChain.shared.getKeychainItem(key: KeychainKeys.appleNickname) {
+                    // 닉네임이 있으면: 로그인 로직
+                    // TODO: 애플로그인 API 호출
                     
+                } else {
+                    // 닉네임이 없으면: 회원가입 로직
                     // 회원가입 화면으로 넘기기 위한 signUpInfo 저장
-                    self.signupInfo = AppleSignUpInfo(userIdentifier: userIdentifier, idToken: String(decoding: idToken!, as: UTF8.self))
+                    self.signupInfo = SignUpInfo(socialLoginType: .apple)
                     
                     // 회원가입 로직으로 전환
                     haveToSignUp = true
                 }
                 
+                
+                // TODO: 서버에서 토큰 받으면 -> 토큰 활용해서 홈화면으로 이동
+                if false {
+                    // 홈화면 이동
+                    isLoggedIn = true
+                }
                 
             case .failure(let error):
                 print(error.localizedDescription)

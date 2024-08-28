@@ -71,7 +71,8 @@ extension LaunchView {
         if let token = KeyChain.shared.getToken() {
             print("토큰 있다")
             print(token)
-            // TODO: 토큰 있다면 AppTabView로 전환
+            
+            // 토큰 있다면 AppTabView로 전환
             isLoggedIn = true
             
         } else {

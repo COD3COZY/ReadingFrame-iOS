@@ -10,7 +10,7 @@ import SwiftUI
 struct EnterProfile: View {
     // MARK: - Properties
     /// API 전송을 위한 회원가입 정보
-    @State var signupInfo: SignUpInfo
+    @StateObject var signupInfo: SignUpInfo
     
     /// 선택한 색상(기본은 메인 자주색)
     @State var colorChoose: Color = Color.main
@@ -47,7 +47,7 @@ enum ProfileCharacter: String {
 }
 
 #Preview {
-    EnterProfile(signupInfo: AppleSignUpInfo(userIdentifier: "", idToken: ""))
+    EnterProfile(signupInfo: SignUpInfo(socialLoginType: .kakao))
 }
 
 // MARK: - View Parts
@@ -355,16 +355,25 @@ extension EnterProfile {
                 print("signupInfo.profileImageCode:  \(signupInfo.profileImageCode)")
                 print("signupInfo.socialLoginType:  \(signupInfo.socialLoginType)")
                 
+                
                 // MARK: 회원가입 API 호출
                 if signupInfo.socialLoginType == .kakao {
                     // TODO: 카카오 회원가입 API 호출
+                    // - keychain에서 email 불러오기
                     
                 } else {
                     // TODO: 애플 회원가입 API 호출
-                    
+                    // - keychain에서 UserIdentifier, idToken 불러오기
                 }
                 
-                // 가입 성공 시: 메인화면으로 넘어가기
+                // 응답 성공 시
+                // 닉네임 키체인에 저장
+                // 카카오, 애플 유형에 따라 key 다르게 저장
+                if KeyChain.shared.addKeychainItem(key: signupInfo.socialLoginType == .kakao ? KeychainKeys.kakaoNickname : KeychainKeys.appleNickname, value: signupInfo.nickname) {
+                    print("닉네임 키체인에 저장 완!")
+                }
+                
+                // 메인화면으로 넘어가기
                 // 일단 버튼 누르면 넘어가도록 처리
                 withAnimation {
                     isSignUpCompleted = true

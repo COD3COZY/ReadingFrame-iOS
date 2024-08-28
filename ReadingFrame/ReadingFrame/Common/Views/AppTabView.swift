@@ -50,6 +50,7 @@ struct AppTabView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

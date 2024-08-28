@@ -10,11 +10,8 @@ import SwiftUI
 struct BookShelf: View {
     // MARK: - Properties
     /// 서재 정렬 어떤 타입으로 할건지(책 종류별, 독서상태별, 장르별)
-    @State var bookshelfType: BookshelfType = .booktype
-    
-    /// 서재 타입
-    let bookshelfTypes: [BookshelfType] = [.booktype, .readingStatus, .genre]
-    
+    @Binding var bookshelfType: BookshelfType
+        
     // 책장 이름
     var bookshelfNames: [String] {
         switch bookshelfType {
@@ -27,14 +24,18 @@ struct BookShelf: View {
         }
     }
     
-    let countByShelf: [Int] = [0, 2, 37, 23, 4, 15, 36, 25]
+    /// 각 책장별 책의 개수
+    let categoryCount: [Int] = [15, 0, 37, 23, 4, 15, 36, 25]
+    
+    /// 각 책장에 꽃혀있는 책이 몇 페이지인지 저장하는 배열
+    /// 1. 읽고싶은(3권): 200, 150, 230 / 읽는중(1권): 300 / 다읽음(2권): 130, 150 이라면
+    /// 2. [[200, 150, 230], [300], [130, 150]]
+    let totalPages: [[Int]]
     
     
     // MARK: - View
     var body: some View {
-        ScrollView {
-            shelfTypePicker
-            
+        ScrollView {            
             ForEach(bookshelfNames.indices, id: \.self) { index in
                 
                 VStack {
@@ -42,14 +43,14 @@ struct BookShelf: View {
                         // 책장이름
                         Text(bookshelfNames[index])
                         
-                        // TODO: 해당 책 개수
-                        Text(String(countByShelf[index]))
+                        // 해당 책 개수
+                        Text(String(categoryCount[index]))
                             .fontDesign(.rounded)
                             .fontWeight(.bold)
                         
                         Spacer()
                         
-                        // TODO: 버튼-화면연결 chevron
+                        // 버튼-화면연결 chevron
                         NavigationLink {
                             BookShelfListByType()
                         } label: {
@@ -61,7 +62,8 @@ struct BookShelf: View {
                     }
                     .padding()
                     
-                    BookShelfView(categoryCount: countByShelf[index])
+                    // 책 꽃혀있는 책장 부분
+                    BookShelfView(categoryCount: categoryCount[index], totalPages: mapPageWidths(totalPages: totalPages[index]))
                 }
                 .padding(.bottom, 25)
                 
@@ -71,78 +73,39 @@ struct BookShelf: View {
 }
 
 #Preview {
-    BookShelf()
+    BookShelf(bookshelfType: .constant(.genre), totalPages: [
+        [150, 200, 200],    // 인문사회
+        [300, 250, 250],    // 문학
+        [300, 300, 200],    // 에세이
+        [150, 200, 200],    // 과학
+        [150, 200, 200],    // 자기계발
+        [150, 200, 200],    // 예술
+        [150, 200, 200],    // 원서
+        [150, 200, 200]     // 기타
+    ])
 }
 
+// MARK: - Function
 extension BookShelf {
-    // MARK: - View parts
-    private var shelfTypePicker: some View {
-        Picker("서재 보기", selection: $bookshelfType) {
-            ForEach(bookshelfTypes, id: \.self) { shelfType in
-                Text(getBookshelfTypeName(shelfType))
+    /// 책 페이지 수에 따라 UI에 반영될 책 한 권의 너비 계산해주는 함수
+    func mapPageWidths(totalPages: [Int]) -> [CGFloat] {
+        // 책 한권 width에 해당하는 값으로 바꾼 배열
+        let pages: [CGFloat] = totalPages.map { value in
+            switch value {
+            case 0...199:
+                return 15
+            case 200...299:
+                return 20
+            case 300...399:
+                return 30
+            case 400...499:
+                return 40
+            case 400...799:
+                return 50
+            default:
+                return 80
             }
         }
-        .pickerStyle(.menu)
-        .padding()
-        .tint(Color.black0)
-    }
-    
-    private var shelfNameBar: some View {
-        HStack {
-            // TODO: 책장이름
-            Text("종이책")
-            
-            // TODO: 해당 책 개수
-            Text(String(4))
-            
-            Spacer()
-            
-            // TODO: 버튼-화면연결 chevron
-            NavigationLink {
-                BookShelfListByType()
-            } label: {
-                Image(systemName: "chevron.right")
-            }
-
-        }
-    }
-    
-    private var singleBookshelf: some View {
-        VStack {
-            ForEach(Array(bookshelfNames.enumerated()), id: \.element) { index, name in
-                
-//                HStack {
-//                    // TODO: 책장이름
-//                    Text(name)
-//                    
-//                    // TODO: 해당 책 개수
-//                    Text(String(Int.random(in: 1...10)))
-//                    
-//                    Spacer()
-//                    
-//                    // TODO: 버튼-화면연결 chevron
-//                    NavigationLink {
-//                        BookShelfListByType()
-//                    } label: {
-//                        Image(systemName: "chevron.right")
-//                    }
-//                    
-//                }
-                
-//                BookShelfView(categoryCount: 15)
-            }
-        }
-    }
-    
-    // MARK: - Functions
-    func getBookshelfTypeName(_ shelftype: BookshelfType) -> String {
-        switch shelftype {
-        case .booktype:
-            return "책 유형별"
-        case .readingStatus:
-            return "독서상태별"
-        case .genre:
-            return "장르별"
-        }
+        return pages
     }
 }

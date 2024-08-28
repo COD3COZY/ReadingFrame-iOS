@@ -18,26 +18,24 @@ struct LaunchView: View {
     
     // MARK: - View
     var body: some View {
-        ZStack {
-            if isLoading {
-                // MARK: Launch screen UI
-                SplashScreenView
-                    .onAppear {
-                        // 런칭처리하는 코드
-                        LaunchSomething()
-                    }
-            } else {
-                // MARK: 런칭 끝나고 보여줄 화면
-                if isLoggedIn {
-                    // 로그인 만료되지 않은 경우에는 메인화면으로 이동
-                    AppTabView()
-                    
-                } else {
-                    // 로그인 필요할 경우 로그인 화면으로 이동
-                    Login()
+        if isLoading {
+            // MARK: Launch screen UI
+            SplashScreenView
+                .onAppear {
+                    // 런칭처리하는 코드
+                    LaunchSomething()
                 }
+        } else {
+            // MARK: 런칭 끝나고 보여줄 화면
+            if isLoggedIn {
+                // 로그인 만료되지 않은 경우에는 메인화면으로 이동
+                AppTabView()
                 
+            } else {
+                // 로그인 필요할 경우 로그인 화면으로 이동
+                Login()
             }
+            
         }
     }
     
@@ -83,7 +81,10 @@ extension LaunchView {
         }
         
         // 런칭 처리 완료. 로딩 끝내기
-        self.isLoading = false
+        // 시간이 너무 짧게 걸려서 일단 2초정도는 스플래시 보여주려고 합니다
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.isLoading = false
+        }
     }
 }
 

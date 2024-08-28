@@ -116,7 +116,7 @@ class BookMapViewModel: ObservableObject {
     /// 현재 위치로 지도 이동
     func movetoCurrentLocation() {
         locationManager.getCurrentLocation()
-        print("현재 위치: \(self.currentLocation?.latitude), \(self.currentLocation?.latitude)")
+        print("현재 위치: \(String(describing: self.currentLocation?.latitude)), \(String(describing: self.currentLocation?.latitude))")
         if let currentLocation = self.currentLocation {
             updateMapRegion(location: currentLocation)
         }

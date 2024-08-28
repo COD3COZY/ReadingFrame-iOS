@@ -8,10 +8,22 @@
 import SwiftUI
 
 struct Home: View {
-    
+    // MARK: - Properties
     /// segmented control 변수
     @State var selection: String = "book.closed"
     
+    /// 서재 정렬 어떤 타입으로 할건지(책 종류별, 독서상태별, 장르별)
+    @State var bookshelfType: BookshelfType = .booktype
+    
+    // TODO: API 호출받은 값으로 입력하도록 수정하기
+    /// 각 책장에 꽃혀있는 책이 몇 페이지인지 저장하는 배열
+    let totalPages: [[Int]] = [
+        [231, 117, 351, 142, 142, 105, 276, 125, 230, 272, 145, 358, 383, 134, 193],
+        [],
+        [105, 104, 321, 248, 158, 108, 317, 280, 161, 224, 156, 161, 354, 320, 143, 285, 385, 368, 102, 279, 104, 321]
+    ]
+    
+    // MARK: - View
     var body: some View {
         NavigationStack {
             ScrollView() {
@@ -40,18 +52,29 @@ struct Home: View {
                         }
                         .padding([.leading, .trailing], 16)
                         
-                        // MARK: 홈 화면, 책장 화면 전환 버튼
-                        HomeSegmentedControl(selection: $selection)
-                            .frame(width: 118, height: 28)
-                            .padding([.top, .trailing], 16)
-                            .padding(.bottom, 29)
+                        HStack {
+                            // segmented control에서 책장 선택하면 책장 종류 선택하는 picker 보이도록
+                            if selection == "books.vertical" {
+                                // MARK: 책장 종류 picker
+                                BookshelfTypePicker(bookshelfType: $bookshelfType)
+                            }
+                            
+                            Spacer()
+                            
+                            // MARK: 홈 화면, 책장 화면 전환 버튼
+                            HomeSegmentedControl(selection: $selection)
+                                .frame(width: 118, height: 28)
+                                .padding([.top, .trailing], 16)
+                                .padding(.bottom, 29)
+                        }
                         
                         if (selection == "book.closed") {
                             // MARK: 홈 화면 띄우기
                             MainPage()
                         }
                         else {
-                            // TODO: 책장 화면 띄우기
+                            // MARK: 책장 화면 띄우기
+                            BookShelf(bookshelfType: $bookshelfType, totalPages: totalPages)
                         }
                     }
                     .padding(.top, 10)

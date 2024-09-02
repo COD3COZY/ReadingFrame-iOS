@@ -201,7 +201,9 @@ struct BookItemDetailView: View {
                     // MARK: 진행률
                     if (readingStatus == .reading) {
                         // 읽고 있는 책일 때만 진행률 띄우기
-                        ReadingPercentBar(book: book)
+                        ReadingPercentBar(readPage: book.readPage,
+                                          totalPage: book.book.totalPage,
+                                          readingPercent: book.readingPercent)
                             .frame(height: 55)
                     }
                 }

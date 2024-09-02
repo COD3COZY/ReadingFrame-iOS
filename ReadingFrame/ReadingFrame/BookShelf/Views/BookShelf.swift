@@ -9,18 +9,21 @@ import SwiftUI
 
 struct BookShelf: View {
     // MARK: - Properties
-    /// 서재 정렬 어떤 타입으로 할건지(책 종류별, 독서상태별, 장르별)
-    @Binding var bookshelfType: BookshelfType
-        
-    // 책장 이름
-    var bookshelfNames: [String] {
-        switch bookshelfType {
+    /// 서재 정렬 어떤 타입으로 할건지 분류기준(책 종류별, 독서상태별, 장르별)
+    @Binding var bookshelfSort: BookshelfSort
+    
+    /// bookshelfType에 따라서 결정되는 서가들
+    var bookshelfType: [BookEnum] {
+        switch bookshelfSort {
+        // 책종류별(종이책, 전자책, 오디오북)
         case .booktype:
-            ["종이책", "전자책", "오디오북"]
+            BookType.allCases as [BookType]
+        // 독서상태별(읽고싶은, 읽는중, 다읽은)
         case .readingStatus:
-            ["읽고싶은", "읽는 중", "다 읽음"]
+            [ReadingStatus.wantToRead, ReadingStatus.reading, ReadingStatus.finishRead] as [ReadingStatus]
+        // 장르별(인문사회, 문학, 에세이, 과학, 자기계발, 예술, 원서, 기타)
         case .genre:
-            ["인문사회", "문학", "에세이", "과학", "자기계발", "예술", "원서", "기타"]
+            CategoryName.allCases as [CategoryName]
         }
     }
         
@@ -35,12 +38,14 @@ struct BookShelf: View {
     // MARK: - View
     var body: some View {
         ScrollView {            
-            ForEach(bookshelfNames.indices, id: \.self) { index in
+            ForEach(bookshelfType.indices, id: \.self) { index in
+                
+                let currentBookshelf = bookshelfType[index]
                 
                 VStack {
                     HStack {
                         // 책장이름
-                        Text(bookshelfNames[index])
+                        Text(currentBookshelf.name)
                         
                         // 해당 책 개수
                         Text(String(totalPages[index].count))
@@ -51,7 +56,8 @@ struct BookShelf: View {
                         
                         // 버튼-화면연결 chevron
                         NavigationLink {
-                            BookShelfListByType()
+                            BookShelfListByType(bookshelfSubtype: currentBookshelf)
+                                .toolbarRole(.editor) // back 텍스트 표시X
                         } label: {
                             Image(systemName: "chevron.right")
                                 .foregroundStyle(Color.black0)
@@ -68,7 +74,7 @@ struct BookShelf: View {
                 
             }
         }
-        .onChange(of: bookshelfType) { oldValue, newValue in
+        .onChange(of: bookshelfSort) { oldValue, newValue in
             // TODO: 책장 보기 타입 변화에 맞춰서 책장 초기조회 API 호출
             totalPages = BookShelf.temp_randomTotalPage(newValue)
         }
@@ -76,14 +82,14 @@ struct BookShelf: View {
 }
 
 #Preview {
-    BookShelf(bookshelfType: .constant(.genre))
+    BookShelf(bookshelfSort: .constant(.genre))
 }
 
 // MARK: - Function
 extension BookShelf {
     // TODO: API 호출 구현하면 없애기!
     /// 서가 개수에 따라 랜덤으로 totalPage 배열 만들어주는 함수
-    static func temp_randomTotalPage(_ shelfType: BookshelfType = .booktype) -> [[Int]] {
+    static func temp_randomTotalPage(_ shelfType: BookshelfSort = .booktype) -> [[Int]] {
         print("temp_randomTotalPage() 호출")
         
         var totalPageArray: [[Int]] = []

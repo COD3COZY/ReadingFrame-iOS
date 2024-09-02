@@ -13,7 +13,7 @@ struct Home: View {
     @State var selection: String = "book.closed"
     
     /// 서재 정렬 어떤 타입으로 할건지(책 종류별, 독서상태별, 장르별)
-    @State var bookshelfType: BookshelfType = .booktype
+    @State var bookshelfType: BookshelfSort = .booktype
 
     
     // MARK: - View
@@ -49,7 +49,7 @@ struct Home: View {
                             // segmented control에서 책장 선택하면 책장 종류 선택하는 picker 보이도록
                             if selection == "books.vertical" {
                                 // MARK: 책장 종류 picker
-                                BookshelfTypePicker(bookshelfType: $bookshelfType)
+                                BookshelfTypePicker(bookshelfSort: $bookshelfType)
                             }
                             
                             Spacer()
@@ -67,7 +67,7 @@ struct Home: View {
                         }
                         else {
                             // MARK: 책장 화면 띄우기
-                            BookShelf(bookshelfType: $bookshelfType)
+                            BookShelf(bookshelfSort: $bookshelfType)
                         }
                     }
                     .padding(.top, 10)

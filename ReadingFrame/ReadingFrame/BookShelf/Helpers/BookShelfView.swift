@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 책 페이지 따라서 책등이랑 나무판만 있는 서가 UI
 struct BookShelfView: View {
     // MARK: - Properties
 

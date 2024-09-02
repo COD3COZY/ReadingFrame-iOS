@@ -55,7 +55,9 @@ struct ReadingItemView: View {
                 .padding(.top, 2)
             
             // MARK: 막대 그래프 및 퍼센트
-            ReadingPercentBar(book: book)
+            ReadingPercentBar(readPage: book.readPage, 
+                              totalPage: book.book.totalPage,
+                              readingPercent: book.readingPercent)
                 .padding([.leading, .trailing], 45)
                 .frame(height: 55)
             

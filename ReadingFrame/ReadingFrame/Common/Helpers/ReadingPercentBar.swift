@@ -9,8 +9,15 @@ import SwiftUI
 
 /// 읽고 있는 책의 막대 그래프 및 퍼센트 정보 뷰
 struct ReadingPercentBar: View {
-    /// 책 객제
-    @Bindable var book: RegisteredBook
+    
+    /// 읽은 페이지
+    let readPage: Int
+    
+    /// 책 전체 페이지
+    let totalPage: Int
+    
+    /// 읽은 퍼센트
+    let readingPercent: Int
     
     var body: some View {
         // MARK: 막대 그래프
@@ -25,22 +32,22 @@ struct ReadingPercentBar: View {
                     
                     // 퍼센트
                     RoundedRectangle(cornerRadius: 10)
-                        .frame(width: CGFloat(floor(Double(book.readingPercent)) / 100 * Double(geometry.size.width)), height: 9)
+                        .frame(width: CGFloat(floor(Double(readingPercent)) / 100 * Double(geometry.size.width)), height: 9)
                         .foregroundStyle(.black0)
                 }
                 .padding(.top, 19)
                 
                 HStack(spacing: 0) {
                     // MARK: 읽은 퍼센트
-                    Text("\(String(format: "%d", book.readingPercent))%")
+                    Text("\(String(format: "%d", readingPercent))%")
                         .font(.caption)
                     
                     Spacer()
                     
                     // MARK: 읽은 페이지와 전체 페이지
-                    Text("\(String(format: "%d", book.readPage))/")
+                    Text("\(String(format: "%d", readPage))/")
                         .font(.caption)
-                    Text("\(String(format: "%d", book.book.totalPage))")
+                    Text("\(String(format: "%d", totalPage))")
                         .font(.caption)
                 }
                 .foregroundStyle(.black0)
@@ -51,5 +58,5 @@ struct ReadingPercentBar: View {
 }
 
 #Preview {
-    ReadingPercentBar(book: RegisteredBook())
+    ReadingPercentBar(readPage: 100, totalPage: 200, readingPercent: 50)
 }

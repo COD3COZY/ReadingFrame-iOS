@@ -21,36 +21,8 @@ struct BookShelfView: View {
     /// 책장에 꽃여있을 책 개수
     let categoryCount: Int
     
-    @State var rowCounts: [Int] = []
-    
     /// 각 책당 몇페이지짜리의 책인지만 있는 배열
-    // 일단 더미값 넣어둠
-    var pageWidths: [CGFloat] {
-        // 랜덤 페이지값
-        var randomInts: [Int] = []
-        for _ in 0..<categoryCount {
-            randomInts.append(Int.random(in: 100...400))
-        }
-        
-        // 책 한권 width에 해당하는 값으로 바꾼 배열
-        let pages: [CGFloat] = randomInts.map { value in
-            switch value {
-            case 0...199:
-                return 15
-            case 200...299:
-                return 20
-            case 300...399:
-                return 30
-            case 400...499:
-                return 40
-            case 400...799:
-                return 50
-            default:
-                return 80
-            }
-        }
-        return pages
-    }
+    let totalPages: [CGFloat]
     
     /// 책 한 권의 높이를 이 중에 랜덤으로 선택하기 위한 배열
     let pageHeights: [CGFloat] = [90, 95, 100, 105, 110]
@@ -90,7 +62,7 @@ struct BookShelfView: View {
                     // MARK: 책들 UI only
                     // 레이아웃 사용해서 책들 줄바꿈
                     WrapLayout(alignment: .bottom, horizontalSpacing: 0, verticalSpacing: 30, isForBookshelf: true) {
-                        ForEach(Array(pageWidths.enumerated()), id: \.offset) { index, width in
+                        ForEach(Array(totalPages.enumerated()), id: \.offset) { index, width in
                             VStack(spacing: 0) {
                                 // 책 한 권용 사각형 모양
                                 RoundedRectangle(cornerRadius: 2)
@@ -120,7 +92,7 @@ struct BookShelfView: View {
 }
 
 #Preview {
-    BookShelfView(categoryCount: 50)
+    BookShelfView(categoryCount: 50, totalPages: [15, 20, 20, 15, 30])
 }
 
 

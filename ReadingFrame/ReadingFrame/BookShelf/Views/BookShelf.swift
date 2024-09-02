@@ -23,14 +23,13 @@ struct BookShelf: View {
             ["인문사회", "문학", "에세이", "과학", "자기계발", "예술", "원서", "기타"]
         }
     }
-    
-    /// 각 책장별 책의 개수
-    let categoryCount: [Int] = [15, 0, 37, 23, 4, 15, 36, 25]
-    
+        
+    // TODO: API 호출받은 값으로 입력하도록 수정하기
+    // API 호출 전에 일단 함수로 서가 개수에 맞는 랜덤 배열 만들어서 할당시켜두었습니다
     /// 각 책장에 꽃혀있는 책이 몇 페이지인지 저장하는 배열
     /// 1. 읽고싶은(3권): 200, 150, 230 / 읽는중(1권): 300 / 다읽음(2권): 130, 150 이라면
     /// 2. [[200, 150, 230], [300], [130, 150]]
-    let totalPages: [[Int]]
+    @State var totalPages: [[Int]] = BookShelf.temp_randomTotalPage()
     
     
     // MARK: - View
@@ -44,7 +43,7 @@ struct BookShelf: View {
                         Text(bookshelfNames[index])
                         
                         // 해당 책 개수
-                        Text(String(categoryCount[index]))
+                        Text(String(totalPages[index].count))
                             .fontDesign(.rounded)
                             .fontWeight(.bold)
                         
@@ -63,49 +62,61 @@ struct BookShelf: View {
                     .padding()
                     
                     // 책 꽃혀있는 책장 부분
-                    BookShelfView(categoryCount: categoryCount[index], totalPages: mapPageWidths(totalPages: totalPages[index]))
+                    BookShelfView(totalPages: totalPages[index])
                 }
                 .padding(.bottom, 25)
                 
             }
         }
+        .onChange(of: bookshelfType) { oldValue, newValue in
+            // TODO: 책장 보기 타입 변화에 맞춰서 책장 초기조회 API 호출
+            totalPages = BookShelf.temp_randomTotalPage(newValue)
+        }
     }
 }
 
 #Preview {
-    BookShelf(bookshelfType: .constant(.genre), totalPages: [
-        [150, 200, 200],    // 인문사회
-        [300, 250, 250],    // 문학
-        [300, 300, 200],    // 에세이
-        [150, 200, 200],    // 과학
-        [150, 200, 200],    // 자기계발
-        [150, 200, 200],    // 예술
-        [150, 200, 200],    // 원서
-        [150, 200, 200]     // 기타
-    ])
+    BookShelf(bookshelfType: .constant(.genre))
 }
 
 // MARK: - Function
 extension BookShelf {
-    /// 책 페이지 수에 따라 UI에 반영될 책 한 권의 너비 계산해주는 함수
-    func mapPageWidths(totalPages: [Int]) -> [CGFloat] {
-        // 책 한권 width에 해당하는 값으로 바꾼 배열
-        let pages: [CGFloat] = totalPages.map { value in
-            switch value {
-            case 0...199:
-                return 15
-            case 200...299:
-                return 20
-            case 300...399:
-                return 30
-            case 400...499:
-                return 40
-            case 400...799:
-                return 50
-            default:
-                return 80
+    // TODO: API 호출 구현하면 없애기!
+    /// 서가 개수에 따라 랜덤으로 totalPage 배열 만들어주는 함수
+    static func temp_randomTotalPage(_ shelfType: BookshelfType = .booktype) -> [[Int]] {
+        print("temp_randomTotalPage() 호출")
+        
+        var totalPageArray: [[Int]] = []
+        
+        // 서가 개수
+        var shelfCount: Int {
+            switch shelfType {
+            // 책유형/독서상태별일 때는 3개
+            case .booktype, .readingStatus:
+                return 3
+            // 장르별일 때 8개
+            case .genre:
+                return 8
             }
         }
-        return pages
+        
+        // 서가 개수만큼 반복
+        for i in 1...8 {
+            var tempArray: [Int] = []
+            if i <= shelfCount {
+                // 책 개수만큼 반복
+                for _ in 1...Int.random(in: 5...50) {
+                    // 랜덤 페이지 추가
+                    tempArray.append(Int.random(in: 80...400))
+                }
+                totalPageArray.append(tempArray)
+            } else {
+                // fatal error 방지용. 서가 3개일 때도 0 배열들로 8개 배열 개수 맞추기
+                tempArray.append(0)
+                totalPageArray.append(tempArray)
+            }
+        }
+        print(totalPageArray)
+        return totalPageArray
     }
 }

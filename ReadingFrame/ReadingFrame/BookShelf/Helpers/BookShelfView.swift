@@ -18,14 +18,16 @@ struct BookShelfView: View {
     /// 책장 바닥 색상
     let floorColor = Color(red: 0.3, green: 0.2, blue: 0)
     
-    /// 책장에 꽃여있을 책 개수
-    let categoryCount: Int
-    
-    /// 각 책당 몇페이지짜리의 책인지만 있는 배열
-    let totalPages: [CGFloat]
+    /// 각 책당 몇페이지짜리의 책인지 저장하는 배열
+    let totalPages: [Int]
     
     /// 책 한 권의 높이를 이 중에 랜덤으로 선택하기 위한 배열
     let pageHeights: [CGFloat] = [90, 95, 100, 105, 110]
+    
+    /// 책 UI에 보여줄 때의 크기 계산해서 저장하는 배열
+    var pageWidths: [CGFloat] {
+        mapPageWidths(totalPages: self.totalPages)
+    }
     
     /// 책들만 있는 레이아웃 크기 측정을 위한 변수
     @State private var contentHeight: CGFloat = 0
@@ -43,17 +45,13 @@ struct BookShelfView: View {
                     VStack(spacing: 0) {
                         // 0권부터 1줄까지
                         if contentHeight < 120 {
-                            Rectangle()
-                                .frame(width: .infinity, height: 10)
-                                .foregroundStyle(floorColor)
+                            floorRectangle
                                 .padding(.top, 110)
 
                         // 서가 2줄 이상부터 여기로 적용됨
                         } else {
                             ForEach(0..<Int(contentHeight / 120), id: \.self) { index in
-                                Rectangle()
-                                    .frame(width: .infinity, height: 10)
-                                    .foregroundStyle(floorColor)
+                                floorRectangle
                                     .padding(.top, index == 0 ? 110 : 130)
                             }
                         }
@@ -62,7 +60,9 @@ struct BookShelfView: View {
                     // MARK: 책들 UI only
                     // 레이아웃 사용해서 책들 줄바꿈
                     WrapLayout(alignment: .bottom, horizontalSpacing: 0, verticalSpacing: 30, isForBookshelf: true) {
-                        ForEach(Array(totalPages.enumerated()), id: \.offset) { index, width in
+                        
+                        // 책 한 권 한 권 만들어주는 반복문
+                        ForEach(Array(pageWidths.enumerated()), id: \.offset) { index, width in
                             VStack(spacing: 0) {
                                 // 책 한 권용 사각형 모양
                                 RoundedRectangle(cornerRadius: 2)
@@ -92,7 +92,7 @@ struct BookShelfView: View {
 }
 
 #Preview {
-    BookShelfView(categoryCount: 50, totalPages: [15, 20, 20, 15, 30])
+    BookShelfView(totalPages: [150, 200, 200, 150,150, 200, 200, 150,150, 200, 200, 150,150, 200, 200, 150,150, 200, 200, 150,150, 200, 200, 150,150, 200, 200, 150,150, 200, 200, 150,150, 200, 200, 150,150, 200, 200, 150,150, 200, 200, 150,150, 200, 200, 150,150, 200, 200, 150,150, 200, 200, 150, 300])
 }
 
 
@@ -100,5 +100,38 @@ struct HeightPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
         value = max(value, nextValue())
+    }
+}
+
+extension BookShelfView {
+    // MARK: - View Parts
+    /// 서가 바닥용 나무판 rectangle UI 요소
+    private var floorRectangle: some View {
+        Rectangle()
+            .frame(width: UIScreen.main.bounds.width, height: 10)
+            .foregroundStyle(floorColor)
+    }
+    
+    // MARK: - Methods
+    /// 책 페이지 수에 따라 UI에 반영될 책 한 권의 너비 계산해주는 함수
+    func mapPageWidths(totalPages: [Int]) -> [CGFloat] {
+        // 책 한권 width에 해당하는 값으로 바꾼 배열
+        let pages: [CGFloat] = totalPages.map { value in
+            switch value {
+            case 0...199:
+                return 15
+            case 200...299:
+                return 20
+            case 300...399:
+                return 30
+            case 400...499:
+                return 40
+            case 400...799:
+                return 50
+            default:
+                return 80
+            }
+        }
+        return pages
     }
 }

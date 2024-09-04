@@ -9,12 +9,16 @@ import Foundation
 import Alamofire
 
 /// 카카오&애플 회원가입 API
-struct SignUpAPI {
+class SignUpAPI: BaseAPI {
     static let shared = SignUpAPI()
+    
+    private override init() {
+        super.init()
+    }
     
     /// 카카오 회원가입 API
     func signUpKakao(request: KakaoSignUpRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
-        AF.request(KakaoSignUpService.signUpKakako(request), interceptor: MyRequestInterceptor()).responseData { (response) in
+        AFManager.request(KakaoSignUpService.signUpKakako(request), interceptor: MyRequestInterceptor()).responseData { (response) in
             switch response.result {
             case .success:
                 guard let statusCode = response.response?.statusCode
@@ -25,7 +29,7 @@ struct SignUpAPI {
                 else {
                     return
                 }
-                completion(judgeData(status: statusCode, data: data))
+                completion(self.judgeData(status: statusCode, data: data))
             case .failure(let err):
                 print(err)
                 completion(.networkFail)

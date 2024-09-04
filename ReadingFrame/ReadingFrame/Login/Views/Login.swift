@@ -7,6 +7,9 @@
 
 import SwiftUI
 import AuthenticationServices
+import KakaoSDKAuth
+import KakaoSDKCommon
+import KakaoSDKUser
 
 struct Login: View {
     /// 로그인 되었는지 확인하는 변수
@@ -90,7 +93,7 @@ extension Login {
                 }
         }
     }
-    
+
     private var appleLoginButton: some View {
         SignInWithAppleButton { (request) in
             
@@ -184,6 +187,112 @@ extension Login {
 extension Login {
     // TODO: 카카오 로그인 구현하기
     func kakaoLogin() {
-        // 여기에 로직 입력하면 될 것 같습니다~.~
+        // 카카오톡 앱 설치 여부 확인
+        if (UserApi.isKakaoTalkLoginAvailable()) {
+            // 카카오톡 앱을 통한 로그인 실행
+            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+                if let error = error {
+                    print("Kakao Login Error: \(error)")
+                }
+                
+                // KeyChain에 카카오 닉네임이 저장되어 있다면
+                if let email = KeyChain.shared.getKeychainItem(key: .kakaoNickname) {
+                    // 카카오 로그인 API 연결
+                    LoginAPI.shared.loginKakao(request: KakaoLoginRequest(email: email)) {(networkResult) -> (Void) in
+                        switch networkResult {
+                        // 성공
+                        case .success(let data):
+                            if let loginResult = data as? KakaoLoginResponse {
+                                KeyChain.shared.addToken(token: loginResult.xAuthToken) // KeyChain에 토큰 저장
+                                isLoggedIn = true
+                            }
+                        // 오류
+                        case .requestErr(_):
+                            print("requestErr")
+                        case .pathErr:
+                            print("pathErr")
+                        case .serverErr:
+                            print("serverErr")
+                        case .networkFail:
+                            print("networkFail")
+                        }
+                    }
+                }
+                // KeyChain에 카카오 이메일이 저장되어 있지 않다면
+                else {
+                    // 카카오 이메일 정보 가져오기
+                    UserApi.shared.me {(user, error) in
+                        if let error = error {
+                            print("Kakao Data Error: \(error)")
+                        }
+                        
+                        print(user?.kakaoAccount?.email ?? "no email..")
+                        
+                        // 카카오 이메일 저장
+                        if let email = user?.kakaoAccount?.email {
+                            KeyChain.shared.addKeychainItem(key: .kakaoEmail, value: email)
+                            
+                            self.signupInfo = SignUpInfo(socialLoginType: .kakao)
+                            
+                            // 회원가입 로직으로 전환
+                            haveToSignUp = true
+                        }
+                    }
+                }
+            }
+        }
+        // 사파리를 통한 카카오 로그인 진행
+        else {
+            UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
+                if let error = error {
+                    print(error)
+                }
+                
+                // KeyChain에 카카오 닉네임이 저장되어 있다면
+                if let email = KeyChain.shared.getKeychainItem(key: .kakaoNickname) {
+                    // 카카오 로그인 API 연결
+                    LoginAPI.shared.loginKakao(request: KakaoLoginRequest(email: email)) {(networkResult) -> (Void) in
+                        switch networkResult {
+                        // 성공
+                        case .success(let data):
+                            if let loginResult = data as? KakaoLoginResponse {
+                                KeyChain.shared.addToken(token: loginResult.xAuthToken) // KeyChain에 토큰 저장
+                                isLoggedIn = true
+                            }
+                        // 오류
+                        case .requestErr(_):
+                            print("requestErr")
+                        case .pathErr:
+                            print("pathErr")
+                        case .serverErr:
+                            print("serverErr")
+                        case .networkFail:
+                            print("networkFail")
+                        }
+                    }
+                }
+                // KeyChain에 카카오 이메일이 저장되어 있지 않다면
+                else {
+                    // 카카오 이메일 정보 가져오기
+                    UserApi.shared.me {(user, error) in
+                        if let error = error {
+                            print("Kakao Data Error: \(error)")
+                        }
+                        
+                        print(user?.kakaoAccount?.email ?? "no email..")
+                        
+                        // 카카오 이메일 저장
+                        if let email = user?.kakaoAccount?.email {
+                            KeyChain.shared.addKeychainItem(key: .kakaoEmail, value: email)
+                            
+                            self.signupInfo = SignUpInfo(socialLoginType: .kakao)
+                            
+                            // 회원가입 로직으로 전환
+                            haveToSignUp = true
+                        }
+                    }
+                }
+            }
+        }
     }
 }

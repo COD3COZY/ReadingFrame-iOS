@@ -17,7 +17,7 @@ class BaseAPI {
     }
     
     // 네트워크 요청
-    let AlamofireManager: Session = {
+    let AFManager: Session = {
         var session = AF
         let configuration = URLSessionConfiguration.af.default
         configuration.timeoutIntervalForRequest = TimeInterval(TimeOut.requestTimeOut)

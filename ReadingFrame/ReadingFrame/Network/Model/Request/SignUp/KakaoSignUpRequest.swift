@@ -11,4 +11,5 @@ import Foundation
 struct KakaoSignUpRequest: Encodable {
     let nickname: String
     let profileImageCode: String
+    let email: String
 }

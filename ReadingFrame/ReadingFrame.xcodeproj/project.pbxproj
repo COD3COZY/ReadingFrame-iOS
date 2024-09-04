@@ -75,6 +75,9 @@
 		E716315F2B7C982600BCD302 /* BookItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E716315E2B7C982600BCD302 /* BookItemView.swift */; };
 		E71631612B7CD08B00BCD302 /* WantToReadRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71631602B7CD08B00BCD302 /* WantToReadRowView.swift */; };
 		E71631632B7CF1A900BCD302 /* LoadableBookImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71631622B7CF1A900BCD302 /* LoadableBookImage.swift */; };
+		E72060C32C7E0FC2007D3707 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E72060C22C7E0FC2007D3707 /* KakaoSDKAuth */; };
+		E72060C52C7E0FC2007D3707 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = E72060C42C7E0FC2007D3707 /* KakaoSDKCommon */; };
+		E72060C72C7E0FC2007D3707 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = E72060C62C7E0FC2007D3707 /* KakaoSDKUser */; };
 		E7384CFB2C1284DE001B814B /* CustomDropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7384CFA2C1284DE001B814B /* CustomDropDownMenu.swift */; };
 		E7384CFD2C128E4B001B814B /* CustomDropDownModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7384CFC2C128E4B001B814B /* CustomDropDownModifier.swift */; };
 		E7384CFF2C128E95001B814B /* CustomDropDownHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7384CFE2C128E95001B814B /* CustomDropDownHelper.swift */; };
@@ -240,8 +243,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E72060C52C7E0FC2007D3707 /* KakaoSDKCommon in Frameworks */,
 				E7C24DA52C50EB8600D05937 /* MCEmojiPicker in Frameworks */,
 				E77E0B972C74587A00626110 /* Alamofire in Frameworks */,
+				E72060C72C7E0FC2007D3707 /* KakaoSDKUser in Frameworks */,
+				E72060C32C7E0FC2007D3707 /* KakaoSDKAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -897,6 +903,9 @@
 			packageProductDependencies = (
 				E7C24DA42C50EB8600D05937 /* MCEmojiPicker */,
 				E77E0B962C74587A00626110 /* Alamofire */,
+				E72060C22C7E0FC2007D3707 /* KakaoSDKAuth */,
+				E72060C42C7E0FC2007D3707 /* KakaoSDKCommon */,
+				E72060C62C7E0FC2007D3707 /* KakaoSDKUser */,
 			);
 			productName = ReadingFrame;
 			productReference = C5BE52212B68F53E00FF07F8 /* ReadingFrame.app */;
@@ -930,6 +939,7 @@
 			packageReferences = (
 				E7C24DA32C50EB8600D05937 /* XCRemoteSwiftPackageReference "MCEmojiPicker" */,
 				E77E0B952C74587A00626110 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				E72060C12C7E0FC2007D3707 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
 			productRefGroup = C5BE52222B68F53E00FF07F8 /* Products */;
 			projectDirPath = "";
@@ -1213,6 +1223,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1256,6 +1267,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1299,6 +1311,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E72060C12C7E0FC2007D3707 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.22.5;
+			};
+		};
 		E77E0B952C74587A00626110 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -1318,6 +1338,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E72060C22C7E0FC2007D3707 /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E72060C12C7E0FC2007D3707 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
+		};
+		E72060C42C7E0FC2007D3707 /* KakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E72060C12C7E0FC2007D3707 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommon;
+		};
+		E72060C62C7E0FC2007D3707 /* KakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E72060C12C7E0FC2007D3707 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKUser;
+		};
 		E77E0B962C74587A00626110 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E77E0B952C74587A00626110 /* XCRemoteSwiftPackageReference "Alamofire" */;

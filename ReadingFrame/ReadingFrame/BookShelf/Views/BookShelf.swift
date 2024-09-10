@@ -68,7 +68,13 @@ struct BookShelf: View {
                     .padding()
                     
                     // 책 꽃혀있는 책장 부분
-                    BookShelfView(totalPages: totalPages[index])
+                    // 버튼-화면연결 chevron
+                    NavigationLink {
+                        BookShelfListByType(bookshelfSubtype: currentBookshelf)
+                            .toolbarRole(.editor) // back 텍스트 표시X
+                    } label: {
+                        BookShelfView(totalPages: totalPages[index])
+                    }
                 }
                 .padding(.bottom, 25)
                 

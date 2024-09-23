@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -237,6 +237,10 @@
 		E7F6D81B2BA6D8C000181586 /* BookItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookItemDetailView.swift; sourceTree = "<group>"; };
 		E7F6D81D2BA6D92E00181586 /* BookRowDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRowDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		C5B4752E2C9FFC8E007560AD /* Review */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Review; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		C5BE521E2B68F53E00FF07F8 /* Frameworks */ = {
@@ -604,6 +608,7 @@
 				C54B93232C500893008B73E0 /* BookShelf */,
 				C595A1FC2B7BABD6006D88EC /* BookInfo */,
 				E702A9B12B864D0C0081F65D /* ReadingNote */,
+				C5B4752E2C9FFC8E007560AD /* Review */,
 				C595A1E52B7A9FE9006D88EC /* BookMap */,
 				C595A1E92B7AA00F006D88EC /* MyPage */,
 				E77394812C637B740057760A /* Badge */,
@@ -898,6 +903,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				C5B4752E2C9FFC8E007560AD /* Review */,
 			);
 			name = ReadingFrame;
 			packageProductDependencies = (

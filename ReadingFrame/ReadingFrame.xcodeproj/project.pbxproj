@@ -157,7 +157,7 @@
 		C5529F1A2BBD7AB300C3E614 /* EnterProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterProfile.swift; sourceTree = "<group>"; };
 		C56B56052BB95DA80084F2DD /* EnterNickname.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterNickname.swift; sourceTree = "<group>"; };
 		C576DD522C79828F001AFFFA /* NicknameTextfieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameTextfieldStyle.swift; sourceTree = "<group>"; };
-		C576DD552C7F0CEF001AFFFA /* SignUpModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SignUpModel.swift; path = ReadingFrame/BookInfo/Models/SignUpModel.swift; sourceTree = SOURCE_ROOT; };
+		C576DD552C7F0CEF001AFFFA /* SignUpModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SignUpModel.swift; path = ReadingFrame/SignUp/Models/SignUpModel.swift; sourceTree = SOURCE_ROOT; };
 		C58F57162B8CF35D004085A5 /* BookInfo_ReviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInfo_ReviewModel.swift; sourceTree = "<group>"; };
 		C58F57182B8D001F004085A5 /* CommentReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentReactionView.swift; sourceTree = "<group>"; };
 		C595A1DD2B7A9DD6006D88EC /* AppTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabView.swift; sourceTree = "<group>"; };
@@ -381,7 +381,7 @@
 		C561F1D22BAB04E1005A680B /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
-				C576DD542C7F0CCE001AFFFA /* Models */,
+				E7ACEAA12CA2DE210079F2F1 /* Models */,
 				C561F1D32BAB04F1005A680B /* Views */,
 				C576DD512C79827C001AFFFA /* Helpers */,
 				E7ACEA9B2CA2A9F90079F2F1 /* ViewModels */,
@@ -404,14 +404,6 @@
 				C576DD522C79828F001AFFFA /* NicknameTextfieldStyle.swift */,
 			);
 			path = Helpers;
-			sourceTree = "<group>";
-		};
-		C576DD542C7F0CCE001AFFFA /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				C576DD552C7F0CEF001AFFFA /* SignUpModel.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		C595A1DC2B7A89D8006D88EC /* Resources */ = {
@@ -910,6 +902,14 @@
 				E7ACEA9F2CA2B08B0079F2F1 /* LoginViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		E7ACEAA12CA2DE210079F2F1 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C576DD552C7F0CEF001AFFFA /* SignUpModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

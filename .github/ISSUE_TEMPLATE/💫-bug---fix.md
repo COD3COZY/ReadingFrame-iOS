@@ -2,8 +2,8 @@
 name: "\U0001F4AB BUG & FIX"
 about: BUG 및 FIX 작업 사항을 입력해주세요.
 title: "[Fix] "
-labels: BUG
-assignees: msseock, yooonji08
+labels: ''
+assignees: ''
 
 ---
 

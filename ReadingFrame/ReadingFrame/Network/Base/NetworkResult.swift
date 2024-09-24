@@ -15,12 +15,12 @@ enum NetworkResult<T> {
     /// 요청 에러
     case requestErr(T)
     
-    /// 경로 에러
+    /// 디코딩 실패
     case pathErr
     
     /// 서버 내부 에러
-    case serverErr
+    case serverErr(T)
     
     /// 네트워크 연결 실패
-    case networkFail
+    case networkFail(T)
 }

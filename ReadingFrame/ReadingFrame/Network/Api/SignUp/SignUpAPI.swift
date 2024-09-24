@@ -31,8 +31,7 @@ class SignUpAPI: BaseAPI {
                 }
                 completion(self.judgeData(status: statusCode, data: data))
             case .failure(let err):
-                print(err)
-                completion(.networkFail)
+                completion(.networkFail(err))
             }
         }
     }
@@ -42,7 +41,7 @@ class SignUpAPI: BaseAPI {
         let decoder = JSONDecoder()
         guard let decodedData = try? decoder.decode(CommonResponse<KakaoSignUpResponse>.self, from: data)
         else {
-            return .pathErr
+            return .pathErr // 디코딩 오류
         }
         
         switch status {
@@ -53,9 +52,9 @@ class SignUpAPI: BaseAPI {
         case 400..<500:
             return .requestErr(decodedData.message)
         case 500:
-            return .serverErr
+            return .serverErr(decodedData.message)
         default:
-            return .networkFail
+            return .networkFail(decodedData.message)
         }
     }
 }

@@ -9,12 +9,16 @@ import Foundation
 import Alamofire
 
 /// 카카오&애플 로그인 API
-struct LoginAPI {
+class LoginAPI: BaseAPI {
     static let shared = LoginAPI()
+    
+    private override init() {
+        super.init()
+    }
     
     /// 카카오 로그인 API
     func loginKakao(request: KakaoLoginRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
-        AF.request(KakaoLoginService.loginKakao(request), interceptor: MyRequestInterceptor()).responseData { (response) in
+        AFManager.request(KakaoLoginService.loginKakao(request), interceptor: MyRequestInterceptor()).responseData { (response) in
             switch response.result {
             case .success:
                 guard let statusCode = response.response?.statusCode
@@ -25,10 +29,9 @@ struct LoginAPI {
                 else {
                     return
                 }
-                completion(judgeData(status: statusCode, data: data))
+                completion(self.judgeData(status: statusCode, data: data))
             case .failure(let err):
-                print(err)
-                completion(.networkFail)
+                completion(.networkFail(err))
             }
         }
     }
@@ -42,16 +45,16 @@ struct LoginAPI {
         }
         
         switch status {
-            // 로그인 성공
+        // 로그인 성공
         case 200:
             print(decodedData.message)
             return .success(decodedData.data ?? decodedData.message)
         case 400..<500:
             return .requestErr(decodedData.message)
         case 500:
-            return .serverErr
+            return .serverErr(decodedData.message)
         default:
-            return .networkFail
+            return .networkFail(decodedData.message)
         }
     }
 }

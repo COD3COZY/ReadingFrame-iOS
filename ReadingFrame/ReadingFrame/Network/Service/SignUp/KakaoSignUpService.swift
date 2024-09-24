@@ -18,7 +18,7 @@ extension KakaoSignUpService: TargetType {
     var method: HTTPMethod {
         switch self {
         case .signUpKakako:
-            return .get
+            return .post
         }
     }
     
@@ -32,7 +32,7 @@ extension KakaoSignUpService: TargetType {
     var parameters: RequestParams {
         switch self {
         case .signUpKakako(let request):
-            return .body(request)
+            return .requestBody(request)
         }
     }
 }

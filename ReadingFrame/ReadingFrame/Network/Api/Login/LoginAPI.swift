@@ -18,7 +18,7 @@ class LoginAPI: BaseAPI {
     
     /// 카카오 로그인 API
     func loginKakao(request: KakaoLoginRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
-        AFManager.request(KakaoLoginService.loginKakao(request), interceptor: MyRequestInterceptor()).responseData { (response) in
+        AFManager.request(LoginService.loginKakao(request), interceptor: MyRequestInterceptor()).responseData { (response) in
             switch response.result {
             case .success:
                 guard let statusCode = response.response?.statusCode

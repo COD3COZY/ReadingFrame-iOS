@@ -18,7 +18,7 @@ class SignUpAPI: BaseAPI {
     
     /// 카카오 회원가입 API
     func signUpKakao(request: KakaoSignUpRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
-        AFManager.request(KakaoSignUpService.signUpKakako(request), interceptor: MyRequestInterceptor()).responseData { (response) in
+        AFManager.request(SignUpService.signUpKakako(request), interceptor: MyRequestInterceptor()).responseData { (response) in
             switch response.result {
             case .success:
                 guard let statusCode = response.response?.statusCode

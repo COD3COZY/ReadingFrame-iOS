@@ -115,6 +115,11 @@
 		E7A0DD302B7B6B5B006004B5 /* HomeSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0DD2F2B7B6B5B006004B5 /* HomeSegmentedControl.swift */; };
 		E7A756662C07360800CF52A4 /* Memo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A756652C07360800CF52A4 /* Memo.swift */; };
 		E7A756682C0741BC00CF52A4 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A756672C0741BC00CF52A4 /* Character.swift */; };
+		E7ACEA962CA299AB0079F2F1 /* NicknameValidateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7ACEA952CA299AB0079F2F1 /* NicknameValidateService.swift */; };
+		E7ACEA982CA29AC50079F2F1 /* NicknameValidateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7ACEA972CA29AC50079F2F1 /* NicknameValidateRequest.swift */; };
+		E7ACEA9A2CA29BF60079F2F1 /* NicknameValidateAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7ACEA992CA29BF60079F2F1 /* NicknameValidateAPI.swift */; };
+		E7ACEA9D2CA2AA380079F2F1 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7ACEA9C2CA2AA380079F2F1 /* SignUpViewModel.swift */; };
+		E7ACEAA02CA2B08B0079F2F1 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7ACEA9F2CA2B08B0079F2F1 /* LoginViewModel.swift */; };
 		E7C24DA52C50EB8600D05937 /* MCEmojiPicker in Frameworks */ = {isa = PBXBuildFile; productRef = E7C24DA42C50EB8600D05937 /* MCEmojiPicker */; };
 		E7C24DAA2C50F10600D05937 /* TabReadingNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C24DA92C50F10600D05937 /* TabReadingNote.swift */; };
 		E7C24DB02C5CF89600D05937 /* CharacterDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C24DAF2C5CF89600D05937 /* CharacterDetail.swift */; };
@@ -230,6 +235,11 @@
 		E7A0DD2F2B7B6B5B006004B5 /* HomeSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSegmentedControl.swift; sourceTree = "<group>"; };
 		E7A756652C07360800CF52A4 /* Memo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memo.swift; sourceTree = "<group>"; };
 		E7A756672C0741BC00CF52A4 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		E7ACEA952CA299AB0079F2F1 /* NicknameValidateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameValidateService.swift; sourceTree = "<group>"; };
+		E7ACEA972CA29AC50079F2F1 /* NicknameValidateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameValidateRequest.swift; sourceTree = "<group>"; };
+		E7ACEA992CA29BF60079F2F1 /* NicknameValidateAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameValidateAPI.swift; sourceTree = "<group>"; };
+		E7ACEA9C2CA2AA380079F2F1 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		E7ACEA9F2CA2B08B0079F2F1 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		E7C24DA92C50F10600D05937 /* TabReadingNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabReadingNote.swift; sourceTree = "<group>"; };
 		E7C24DAF2C5CF89600D05937 /* CharacterDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetail.swift; sourceTree = "<group>"; };
 		E7F6D81B2BA6D8C000181586 /* BookItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookItemDetailView.swift; sourceTree = "<group>"; };
@@ -256,6 +266,7 @@
 			isa = PBXGroup;
 			children = (
 				C50F7A092C71D6F200D65BFB /* Views */,
+				E7ACEA9E2CA2B0780079F2F1 /* ViewModels */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -373,6 +384,7 @@
 				C576DD542C7F0CCE001AFFFA /* Models */,
 				C561F1D32BAB04F1005A680B /* Views */,
 				C576DD512C79827C001AFFFA /* Helpers */,
+				E7ACEA9B2CA2A9F90079F2F1 /* ViewModels */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -789,6 +801,7 @@
 			isa = PBXGroup;
 			children = (
 				E77E0B9E2C745E4D00626110 /* KakaoSignUpRequest.swift */,
+				E7ACEA972CA29AC50079F2F1 /* NicknameValidateRequest.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -829,6 +842,7 @@
 			isa = PBXGroup;
 			children = (
 				E77E0BB72C7499A500626110 /* SignUpService.swift */,
+				E7ACEA952CA299AB0079F2F1 /* NicknameValidateService.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -860,6 +874,7 @@
 			isa = PBXGroup;
 			children = (
 				E77E0BBB2C749C7900626110 /* SignUpAPI.swift */,
+				E7ACEA992CA29BF60079F2F1 /* NicknameValidateAPI.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -879,6 +894,22 @@
 				C5BAF29C2BA49F0800DC33FE /* GreyLogoAndTextView.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		E7ACEA9B2CA2A9F90079F2F1 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				E7ACEA9C2CA2AA380079F2F1 /* SignUpViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		E7ACEA9E2CA2B0780079F2F1 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				E7ACEA9F2CA2B08B0079F2F1 /* LoginViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1010,6 +1041,7 @@
 				C51556CA2B83C9FB006FD0F2 /* SelectReviewClusterView.swift in Sources */,
 				E7A0DD2A2B7B4B12006004B5 /* SearchBar.swift in Sources */,
 				C5A136372C350C5A0061D674 /* BookLocationListRow.swift in Sources */,
+				E7ACEA9A2CA29BF60079F2F1 /* NicknameValidateAPI.swift in Sources */,
 				E7A756662C07360800CF52A4 /* Memo.swift in Sources */,
 				E7C24DAA2C50F10600D05937 /* TabReadingNote.swift in Sources */,
 				E7A756682C0741BC00CF52A4 /* Character.swift in Sources */,
@@ -1027,10 +1059,12 @@
 				E790FA2A2B81F25200EA38C6 /* Home.swift in Sources */,
 				C54B931B2C4FF772008B73E0 /* recentlySearchedLocationsData.swift in Sources */,
 				E77E0BBE2C75DE7400626110 /* MyRequestInterceptor.swift in Sources */,
+				E7ACEA962CA299AB0079F2F1 /* NicknameValidateService.swift in Sources */,
 				C595A1E82B7A9FFB006D88EC /* BookMap.swift in Sources */,
 				C54B93262C500A35008B73E0 /* BookShelf.swift in Sources */,
 				C51556C32B830402006FD0F2 /* BookInfoBottomButtonView.swift in Sources */,
 				C52EC59F2C308258004F6BDB /* LocationManager.swift in Sources */,
+				E7ACEAA02CA2B08B0079F2F1 /* LoginViewModel.swift in Sources */,
 				C53A34B22C37D99A008A88F0 /* BottomSheetHelper.swift in Sources */,
 				C595A1DE2B7A9DD6006D88EC /* AppTabView.swift in Sources */,
 				E77E0BB42C7488C800626110 /* HTTPHeaderField.swift in Sources */,
@@ -1045,6 +1079,7 @@
 				E75D6B042BEB12100080EBA0 /* RoundedRadiusBox.swift in Sources */,
 				E71631632B7CF1A900BCD302 /* LoadableBookImage.swift in Sources */,
 				E751B5742B8ED1D100880123 /* DateRange.swift in Sources */,
+				E7ACEA9D2CA2AA380079F2F1 /* SignUpViewModel.swift in Sources */,
 				C5338FA82B8E1B1600D24B5F /* CommentRowView.swift in Sources */,
 				E702A9AA2B85F0ED0081F65D /* ReadingPercentBar.swift in Sources */,
 				C5338FA62B8DD89C00D24B5F /* EmojiSelectPopover.swift in Sources */,
@@ -1052,6 +1087,7 @@
 				C54B93222C4FF841008B73E0 /* SearchMapViewHelper.swift in Sources */,
 				E75AE6742BE2634A0056EC26 /* HalfCricleGraph.swift in Sources */,
 				C5CEA8942B8A66D8007A89A2 /* BookInfo_Review.swift in Sources */,
+				E7ACEA982CA29AC50079F2F1 /* NicknameValidateRequest.swift in Sources */,
 				C595A2042B7BDE87006D88EC /* DatePickerInList.swift in Sources */,
 				C51556C82B83BA7E006FD0F2 /* BasicBookInfoView.swift in Sources */,
 				E77E0BAA2C747B1200626110 /* KakaoLoginRequest.swift in Sources */,

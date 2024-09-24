@@ -40,6 +40,9 @@ struct EnterNickname: View {
     /// 중복검사결과 alert 띄우기용 변수
     @State var showDuplicateTestResultAlert: Bool = false
     
+    /// 뷰모델
+    @ObservedObject var viewModel = SignUpViewModel()
+    
     // MARK: - View
     var body: some View {
         ZStack {
@@ -118,17 +121,18 @@ extension EnterNickname {
     /// 중복검사 버튼
     private var checkDuplicateButton: some View {
         Button {
-            // TODO: API 호출해서 중복 검사하기
-            
-            // TODO: API 결과에 따라서 중복여부 처리
-            // API 호출 받기 전에 일단 중복확인 버튼 누르면 사용하능하도록 처리
-            self.isDuplicate = false
-            
-            // 중복 아니라면 signUpInfo의 nickname에 현재 유저가 입력한 닉네임 입력해주기
-            self.signupInfo.nickname = self.nickname
-            
-            // 중복여부 alert 띄워주기
-            self.showDuplicateTestResultAlert.toggle()
+            // 닉네임 중복검사 API 호출
+            viewModel.validateNickname(nickname: nickname) { success in
+                if success {
+                    self.isDuplicate = false
+                    
+                    // 중복 아니라면 signUpInfo의 nickname에 현재 유저가 입력한 닉네임 입력해주기
+                    self.signupInfo.nickname = self.nickname
+                    
+                    // 중복여부 alert 띄워주기
+                    self.showDuplicateTestResultAlert.toggle()
+                }
+            }
         } label: {
             Text("중복확인")
                 .foregroundStyle(.black0)

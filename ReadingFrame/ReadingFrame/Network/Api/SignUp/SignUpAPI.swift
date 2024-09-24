@@ -18,43 +18,23 @@ class SignUpAPI: BaseAPI {
     
     /// 카카오 회원가입 API
     func signUpKakao(request: KakaoSignUpRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
-        AFManager.request(SignUpService.signUpKakako(request), interceptor: MyRequestInterceptor()).responseData { (response) in
+        AFManager.request(SignUpService.signUpKakako(request)).responseData { (response) in
             switch response.result {
             case .success:
                 guard let statusCode = response.response?.statusCode
                 else {
                     return
                 }
-                guard let data = response.value
+                guard let data = response.data
                 else {
                     return
                 }
-                completion(self.judgeData(status: statusCode, data: data))
+                completion(self.judgeData(by: statusCode, data, KakaoSignUpResponse.self))
             case .failure(let err):
-                completion(.networkFail(err))
+                completion(.networkFail(err.localizedDescription))
             }
         }
     }
     
-    /// 카카오 회원가입 응답 분기 처리
-    private func judgeData(status: Int, data: Data) -> NetworkResult<Any> {
-        let decoder = JSONDecoder()
-        guard let decodedData = try? decoder.decode(CommonResponse<KakaoSignUpResponse>.self, from: data)
-        else {
-            return .pathErr // 디코딩 오류
-        }
-        
-        switch status {
-        // 회원가입 성공
-        case 200:
-            print(decodedData.message)
-            return .success(decodedData.data ?? decodedData.message)
-        case 400..<500:
-            return .requestErr(decodedData.message)
-        case 500:
-            return .serverErr(decodedData.message)
-        default:
-            return .networkFail(decodedData.message)
-        }
-    }
+    /// 애플 회원가입 API
 }

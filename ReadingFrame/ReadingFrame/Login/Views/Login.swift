@@ -24,6 +24,9 @@ struct Login: View {
     /// - 회원가입이 필요하다면 생성시켜주면 됩니다
     @State var signupInfo: SignUpInfo?
     
+    /// 뷰모델
+    @ObservedObject var viewModel = LoginViewModel()
+    
     var body: some View {
         VStack {
             if isLoggedIn == false {
@@ -198,23 +201,11 @@ extension Login {
                 // KeyChain에 카카오 닉네임이 저장되어 있다면
                 if let email = KeyChain.shared.getKeychainItem(key: .kakaoNickname) {
                     // 카카오 로그인 API 연결
-                    LoginAPI.shared.loginKakao(request: KakaoLoginRequest(email: email)) {(networkResult) -> (Void) in
-                        switch networkResult {
-                        // 성공
-                        case .success(let data):
-                            if let loginResult = data as? KakaoLoginResponse {
-                                KeyChain.shared.addToken(token: loginResult.xAuthToken) // KeyChain에 토큰 저장
-                                isLoggedIn = true
-                            }
-                        // 오류
-                        case .requestErr(_):
-                            print("requestErr")
-                        case .pathErr:
-                            print("pathErr")
-                        case .serverErr:
-                            print("serverErr")
-                        case .networkFail:
-                            print("networkFail")
+                    viewModel.loginKakao(request: KakaoLoginRequest(email: email)) { success in
+                        if success {
+                            isLoggedIn = true
+                        } else {
+                            print("로그인 실패")
                         }
                     }
                 }
@@ -251,23 +242,11 @@ extension Login {
                 // KeyChain에 카카오 닉네임이 저장되어 있다면
                 if let email = KeyChain.shared.getKeychainItem(key: .kakaoNickname) {
                     // 카카오 로그인 API 연결
-                    LoginAPI.shared.loginKakao(request: KakaoLoginRequest(email: email)) {(networkResult) -> (Void) in
-                        switch networkResult {
-                        // 성공
-                        case .success(let data):
-                            if let loginResult = data as? KakaoLoginResponse {
-                                KeyChain.shared.addToken(token: loginResult.xAuthToken) // KeyChain에 토큰 저장
-                                isLoggedIn = true
-                            }
-                        // 오류
-                        case .requestErr(_):
-                            print("requestErr")
-                        case .pathErr:
-                            print("pathErr")
-                        case .serverErr:
-                            print("serverErr")
-                        case .networkFail:
-                            print("networkFail")
+                    viewModel.loginKakao(request: KakaoLoginRequest(email: email)) { success in
+                        if success {
+                            isLoggedIn = true
+                        } else {
+                            print("로그인 실패")
                         }
                     }
                 }

@@ -13,7 +13,7 @@ struct APIConstants {
     static let baseURL = devURL
     
     /// 실서버 URL
-    static let prodURL = ""
+    static let prodURL = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as! String
     
     /// 테스트 서버 URL
     static let devURL = "http://127.0.0.1:8080"

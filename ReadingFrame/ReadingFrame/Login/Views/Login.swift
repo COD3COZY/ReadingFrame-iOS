@@ -36,7 +36,16 @@ struct Login: View {
                     // 회원가입으로 넘어가기 야매 버튼
                     // TODO: 이 버튼 없애고 정식 로직 밟기
                     Button {
-                        haveToSignUp.toggle()
+                        //haveToSignUp.toggle()
+                        // 회원탈퇴
+                        UserApi.shared.unlink {(error) in
+                            if let error = error {
+                                print(error)
+                            }
+                            else {
+                                print("unlink() success.")
+                            }
+                        }
                     } label: {
                         Text("회원가입으로 넘어가기")
                     }
@@ -199,9 +208,9 @@ extension Login {
                 }
                 
                 // KeyChain에 카카오 닉네임이 저장되어 있다면
-                if let email = KeyChain.shared.getKeychainItem(key: .kakaoNickname) {
+                if let nickname = KeyChain.shared.getKeychainItem(key: .kakaoNickname) {
                     // 카카오 로그인 API 연결
-                    viewModel.loginKakao(request: KakaoLoginRequest(email: email)) { success in
+                    viewModel.loginKakao(request: KakaoLoginRequest(email: KeyChain.shared.getKeychainItem(key: .kakaoEmail)!)) { success in
                         if success {
                             isLoggedIn = true
                         } else {
@@ -240,9 +249,9 @@ extension Login {
                 }
                 
                 // KeyChain에 카카오 닉네임이 저장되어 있다면
-                if let email = KeyChain.shared.getKeychainItem(key: .kakaoNickname) {
+                if let nickname = KeyChain.shared.getKeychainItem(key: .kakaoNickname) {
                     // 카카오 로그인 API 연결
-                    viewModel.loginKakao(request: KakaoLoginRequest(email: email)) { success in
+                    viewModel.loginKakao(request: KakaoLoginRequest(email: KeyChain.shared.getKeychainItem(key: .kakaoEmail)!)) { success in
                         if success {
                             isLoggedIn = true
                         } else {

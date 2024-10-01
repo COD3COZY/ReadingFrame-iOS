@@ -12,6 +12,10 @@ import SwiftUI
 /// - 리뷰 편집으로 넘어오는 경우 현재 화면을 불러올 때 유저가 선택한 키워드들을 selected 배열에 입력, isEditMode = true 로 입력해서 화면 생성해주시면 됩니다.
 struct EditReview_Select: View {
     // MARK: - Properties
+    /// 작성할 리뷰 객체
+    @StateObject var review: Review = .init()
+    
+    /// 선택리뷰 카테고리
     var selectReview_categorys: [String] = ["내용 및 구성", "감상", "기타"]
     
     /// 선택리뷰: 내용 및 구성, 감상, 기타
@@ -20,16 +24,17 @@ struct EditReview_Select: View {
         [.touching, .leaveLingering, .comforting, .sad, .difficult, .easyToRead, .entertaining, .insightful, .informative, .immersive, .angering, .intense], // 감상
         [.trustworthyAuthor, .hiddenGem, .polarising, .wantToOwn, .recommend, .readMultiple, .goodForGift, .looksNice, .wantSequel] // 기타
     ]
-    
-    /// 선택한 선택지들
-    /// - 편집 모드일 때는 여기에 선택했던 리뷰들이 입력됩니다.
-    @State private var selected: [selectReviewCode] = []
-    
+        
     /// 애니메이션을 위한 Namespace 변수
     @Namespace private var animation
     
     /// 편집 모드인지 여부 (리뷰 편집 모드 또는 초기 생성 모드)
     @State var isEditMode: Bool = false
+    
+    /// 버튼 활성화 조건: 선택된 토큰이 1개 이상 5개 이하일 때만 활성화
+    var isButtonDisabled: Bool {
+        review.selectReviews.count < 1 || review.selectReviews.count > 5
+    }
     
     // MARK: - View
     var body: some View {
@@ -47,9 +52,14 @@ struct EditReview_Select: View {
             }
             
             // 다음 단계로 이동하거나 완료 버튼
-            moveButton
+            conditionalButton
         }
         .navigationTitle("리뷰 작성") // 네비게이션 바 타이틀
+        .navigationBarTitleDisplayMode(.inline) // 상단에 바 뜨는 모양
+        .task {
+            print("---SelectReview 입력 페이지 task ----")
+            print("Review객체정보\n- selected: \(review.selectReviews)\n- keyword: \(review.keyword ?? "없어요. 없다니까요")\n- comment: \(review.comment ?? "없어요, 없다니까요")")
+        }
     }
 }
 
@@ -80,13 +90,13 @@ extension EditReview_Select {
         ScrollView(.horizontal) {
             HStack(spacing: 10) {
                 // 선택된 토큰들을 보여주는 ForEach
-                ForEach(selected, id: \.self) { token in
+                ForEach(review.selectReviews, id: \.self) { token in
                     TokenView(token)
                         .matchedGeometryEffect(id: token, in: animation) // 애니메이션 효과 추가
                         .onTapGesture {
                             // 선택된 토큰을 제거
                             withAnimation(.snappy) {
-                                selected.removeAll { $0 == token }
+                                review.selectReviews.removeAll { $0 == token }
                             }
                         }
                 }
@@ -107,10 +117,8 @@ extension EditReview_Select {
                 ForEach(selectReview_categorys.indices, id: \.self) { index in
                     // 카테고리별 토큰을 보여주는 뷰
                     SelectReviewCategoryView(
-                        selectReview_categorys[index],
-                        selectReviews[index],
-                        selected: $selected, // 선택된 토큰 배열을 바인딩
-                        animation: animation // 애니메이션 효과
+                        name: selectReview_categorys[index],
+                        tokenSet: selectReviews[index]
                     )
                 }
             }
@@ -124,59 +132,48 @@ extension EditReview_Select {
     
     // MARK: 다음/완료 버튼 섹션
     /// 다음 단계로 이동하거나 완료하는 버튼 섹션
-    private var moveButton: some View {
+    private var conditionalButton: some View {
         HStack {
             Spacer()
             
-            // 버튼 활성화 조건: 선택된 토큰이 1개 이상 5개 이하일 때만 활성화
-            let isDisabled = selected.count < 1 || selected.count > 5
-            let buttonText = isEditMode ? "완료" : "다음"
-            
-            // 이동조건 미충족시 버튼
-            if isDisabled {
-                Button(action: {}) {
-                    HStack {
-                        Text(buttonText)
-                            .font(.headline)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                        
-                        if !isEditMode {
-                            Image(systemName: "chevron.right")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
-                                .foregroundColor(.white)
-                        }
-                    }
+            NavigationLink {
+                if isEditMode {
+                    // 수정 모드: 전체확인 페이지
+                    EditReview_CheckReviews(review: self.review)
+                        .toolbarRole(.editor) // back 텍스트 표시X
+                } else {
+                    // 초기 입력 모드: 키워드리뷰 페이지
+                    EditReview_Keyword(review: self.review)
+                        .toolbarRole(.editor) // back 텍스트 표시X
                 }
-                .padding(.vertical, 15)
-                .padding(.horizontal, 25)
-                .background(RoundedRectangle(cornerRadius: 40).fill(Color.greyText))
-                .disabled(true)
-                
-            } else {
-                // TODO: 이동조건 충족되면, 모드에 맞춰 화면 이동시키기
-                NavigationLink(destination: isEditMode ? BookMap() /* 전체확인 페이지 */ : BookMap() /* 키워드리뷰 페이지 */) {
-                    HStack {
-                        Text(buttonText)
-                            .font(.headline)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                        
-                        if !isEditMode {
-                            Image(systemName: "chevron.right")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
-                                .foregroundColor(.white)
-                        }
-                    }
-                    .padding(.vertical, 15)
-                    .padding(.horizontal, 25)
-                    .background(RoundedRectangle(cornerRadius: 40).fill(Color.main))
-                }
+            } label: {
+                moveButton
             }
+            .disabled(isButtonDisabled)
         }
         .padding(16)
+    }
+    
+    private var moveButton: some View {
+        HStack {
+            Text(isEditMode ? "완료" : "다음")
+                .font(.headline)
+                .fontWeight(.semibold)
+                .foregroundColor(.white)
+            
+            if !isEditMode {
+                Image(systemName: "chevron.right")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+            }
+        }
+        .padding(.vertical, 15)
+        .padding(.horizontal, 25)
+        .background(
+            RoundedRectangle(cornerRadius: 40)
+                .fill(isButtonDisabled ? Color.greyText : Color.main)
+        )
     }
 }
 
@@ -189,12 +186,12 @@ extension EditReview_Select {
                 .font(.callout)
                 .fontWeight(.semibold)
         }
-        .foregroundStyle(selected.contains(token) ? Color.white : Color.black0) // 선택된 토큰의 색상을 흰색으로 변경
+        .foregroundStyle(review.selectReviews.contains(token) ? Color.white : Color.black0) // 선택된 토큰의 색상을 흰색으로 변경
         .padding(.vertical, 10)
         .padding(.horizontal, 20)
         .background {
             Capsule()
-                .fill(selected.contains(token) ? Color.black0 : Color.white) // 선택된 경우 배경을 검정색으로 변경
+                .fill(review.selectReviews.contains(token) ? Color.black0 : Color.white) // 선택된 경우 배경을 검정색으로 변경
                 .shadow(color: .black.opacity(0.15), radius: 2, x: 0, y: 0)
         }
     }
@@ -202,32 +199,36 @@ extension EditReview_Select {
     // MARK: 카테고리별 토큰 선택 뷰
     /// 선택 리뷰 토큰들을 카테고리별로 세로로 나열하여 선택할 수 있는 뷰
     @ViewBuilder
-    func SelectReviewCategoryView(_ name: String, _ tokenSet: [selectReviewCode], selected: Binding<[selectReviewCode]>, animation: Namespace.ID) -> some View {
-        let filteredTokens = tokenSet.filter { !selected.wrappedValue.contains($0) } // 이미 선택된 토큰을 제외한 나머지 필터링
-        
+    func SelectReviewCategoryView(name: String, tokenSet: [selectReviewCode]) -> some View {
         VStack(alignment: .leading, spacing: 0) {
+            // 선택리뷰 카테고리 제목
             Text(name)
                 .font(.headline)
                 .foregroundStyle(Color.black0)
                 .padding(.bottom, 20)
             
+            // 카테고리별 토큰 선택지
             ScrollView {
                 VStack(alignment: .leading, spacing: 15) {
-                    ForEach(filteredTokens, id: \.self) { token in
+                    ForEach(tokenSet, id: \.self) { token in
                         TokenView(token)
                             .onTapGesture {
-                                // 상단 리스트에 선택된 토큰을 추가
                                 withAnimation(.snappy) {
-                                    selected.wrappedValue.insert(token, at: 0)
+                                    if review.selectReviews.contains(token) {
+                                        // 이미 선택된 거라면 해제
+                                        review.selectReviews.removeAll(where: { $0 == token })
+                                    } else {
+                                        // 선택 안돼있던 거라면 추가
+                                        review.selectReviews.insert(token, at: review.selectReviews.endIndex)
+                                    }
                                 }
                             }
-                            .matchedGeometryEffect(id: token, in: animation) // 애니메이션 효과 추가
                     }
                 }
-                .padding(10)
-                .padding(.bottom, 70) // 스크롤 시 버튼과 겹치지 않도록 여백 추가
+                .padding(10) // 리스트 초기에도 그림자까지 보이도록
+                .padding(.bottom, 70) // 스크롤 다 올리면 토큰과 화면 이동 버튼이 충돌하지 않도록
             }
-            .padding(-10) // 사각형 위치 조정
+            .padding(-10) // 사각형 위치는 왼쪽 정렬에서 벗어나지 않도록
         }
     }
 }

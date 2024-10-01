@@ -10,14 +10,21 @@ import Observation
 
 // MARK: 개인용 책 등록용 3종류 리뷰
 /// 사용자가 개별 책에 등록하는 3종 리뷰
-struct Review {
-    var selectReviews: [selectReviewCode]
+class Review: ObservableObject {
+    /// 선택리뷰들
+    /// - 처음 생성 시에는 비어있음
+    @Published var selectReviews: [selectReviewCode] = []
     
-    var reviewDate: Date
+    /// 리뷰 남기는 일시
+    @Published var reviewDate: Date = Date()
     
-    var keyword: String?
+    /// 이 책을 기억하고 싶은 단어 한 가지
+    /// - DB) 15글자 제한
+    @Published var keyword: String?
     
-    var comment: String?
+    /// 한줄평
+    /// - DB) 200자 제한
+    @Published var comment: String?
 }
 
 // MARK: 한줄평 관련 정보

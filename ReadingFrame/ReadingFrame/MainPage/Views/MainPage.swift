@@ -40,7 +40,7 @@ struct MainPage: View {
         VStack(alignment: .leading, spacing: 0) {
             // 등록된 책이 있다면
             if (viewModel.wantToReadBooksCount >= 1) {
-                WantToReadRowView(wantToReadBooksList: viewModel.wantToReadBooksList)
+                WantToReadRowView(viewModel: viewModel)
             }
             // 등록된 책이 없다면
             else {
@@ -63,7 +63,7 @@ struct MainPage: View {
         VStack(alignment: .leading, spacing: 0) {
             // 등록된 책이 있다면
             if (viewModel.finishReadBooksCount >= 1) {
-                FinishReadRowView(finishReadBooksList: viewModel.finishReadBooksList)
+                FinishReadRowView(viewModel: viewModel)
             }
             // 등록된 책이 없다면
             else {

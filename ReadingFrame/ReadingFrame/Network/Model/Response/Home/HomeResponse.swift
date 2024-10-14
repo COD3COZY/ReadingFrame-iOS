@@ -9,13 +9,13 @@ import Foundation
 
 /// 홈 조회 Response 모델
 struct HomeResponse: Codable {
-    var booksList: [HomeBookList]? // 전체 책 리스트
+    var booksList: [HomeBooks]? // 전체 책 리스트
     let wantToReadBooksCount: Int // 읽고 싶은 책 개수
     let readingBooksCount: Int // 읽고 있는 책 개수
 }
 
 /// 홈 조회 전체 책 리스트 Response 모델
-struct HomeBookList: Codable {
+struct HomeBooks: Codable {
     var readingStatus: Int // 독서 상태
     var isbn: String // ISBN
     var cover: String // 표지 이미지 URL

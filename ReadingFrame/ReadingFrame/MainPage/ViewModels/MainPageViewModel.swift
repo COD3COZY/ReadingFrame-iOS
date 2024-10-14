@@ -19,16 +19,16 @@ final class MainPageViewModel: ObservableObject {
     @Published var readingBooksCount: Int = 0
     
     /// 전체 책 리스트
-    @Published var booksList: [RegisteredBook] = []
+    @Published var homeBooksList: [RegisteredBook] = []
     
     /// 읽고 있는 책 리스트
-    @Published var readingBooksList: [RegisteredBook] = []
+    @Published var homeReadingBooks: [RegisteredBook] = []
     
     /// 읽고 싶은 책 리스트
-    @Published var wantToReadBooksList: [RegisteredBook] = []
+    @Published var homeWantToReadBooks: [RegisteredBook] = []
     
     /// 다 읽은 책 리스트
-    @Published var finishReadBooksList: [RegisteredBook] = []
+    @Published var homeFinishReadBooks: [RegisteredBook] = []
     
     init() {
         getHome { isSuccess in
@@ -41,7 +41,7 @@ final class MainPageViewModel: ObservableObject {
     
     /// 숨김 처리 하지 않은 읽고 있는 책 리스트
     func notHiddenReadingBooksList() -> [RegisteredBook] {
-        readingBooksList.filter { !$0.isHidden }
+        homeReadingBooks.filter { !$0.isHidden }
     }
     
     // 독서 상태가 바뀌지 않은 책 리스트
@@ -71,7 +71,7 @@ final class MainPageViewModel: ObservableObject {
             case .success(let data):
                 if let data = data as? HomeResponse {
                     if let tempList = data.booksList {
-                        self.booksList = tempList.map { list in
+                        self.homeBooksList = tempList.map { list in
                             RegisteredBook(
                                 book: InitialBook(
                                     ISBN: list.isbn,
@@ -88,13 +88,13 @@ final class MainPageViewModel: ObservableObject {
                         }
                     }
                     
-                    self.readingBooksList = self.booksList.filter { $0.book.readingStatus == .reading }
-                    self.wantToReadBooksList = self.booksList.filter { $0.book.readingStatus == .wantToRead }
-                    self.finishReadBooksList = self.booksList.filter { $0.book.readingStatus == .finishRead }
+                    self.homeReadingBooks = self.homeBooksList.filter { $0.book.readingStatus == .reading }
+                    self.homeWantToReadBooks = self.homeBooksList.filter { $0.book.readingStatus == .wantToRead }
+                    self.homeFinishReadBooks = self.homeBooksList.filter { $0.book.readingStatus == .finishRead }
                     
                     self.readingBooksCount = data.readingBooksCount
                     self.wantToReadBooksCount = data.wantToReadBooksCount
-                    self.finishReadBooksCount = self.finishReadBooksList.count
+                    self.finishReadBooksCount = self.homeFinishReadBooks.count
                     completion(true)
                 }
             case .requestErr(let message):

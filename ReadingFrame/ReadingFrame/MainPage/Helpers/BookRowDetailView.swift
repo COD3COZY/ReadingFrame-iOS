@@ -9,24 +9,14 @@ import SwiftUI
 
 /// 읽고 있는 책, 읽고 싶은 책, 다 읽은 책 상세 페이지의 리스트 뷰
 struct BookRowDetailView: View {
-    var readingStatus: ReadingStatus // 독서 상태 여부
-    @State var bookList: [RegisteredBook] // 각 책 리스트(추후 api연동 시 삭제될 변수)
-    @State private var selectedItem: String? // 사용자가 삭제하려고 하는 책 아이템
+    /// 독서 상태 여부/
+    var readingStatus: ReadingStatus
     
-    // 독서 상태가 바뀌지 않은 책 리스트
-    var tempBookList: [RegisteredBook] {
-        bookList.filter { $0.book.readingStatus == readingStatus }
-    }
+    /// 홈 화면 뷰모델
+    @ObservedObject var viewModel: MainPageViewModel
     
-    // 홈 화면에서 숨긴 책 리스트
-    var hideBookList: [RegisteredBook] {
-        bookList.filter { $0.isHidden == true && $0.book.readingStatus == readingStatus}
-    }
-    
-    // 홈 화면에서 숨기지 않은 책 리스트
-    var notHideBookList: [RegisteredBook] {
-        bookList.filter { $0.isHidden == false && $0.book.readingStatus == readingStatus }
-    }
+    /// 사용자가 삭제하려고 하는 책 아이템
+    @State private var selectedItem: String?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

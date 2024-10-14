@@ -19,9 +19,16 @@ struct FinishReadRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Text("다 읽은 책 \(finishReadBooksList.count)")
-                    .font(.thirdTitle)
-                    .foregroundStyle(.black0)
+                HStack(spacing: 5) {
+                    Text("다 읽은 책")
+                        .font(.thirdTitle)
+                        .foregroundStyle(.black0)
+                    
+                    Text("\(finishReadBooksList.count)")
+                        .font(.thirdTitle)
+                        .fontDesign(.rounded)
+                        .foregroundStyle(.black0)
+                }
                 
                 Spacer()
                 

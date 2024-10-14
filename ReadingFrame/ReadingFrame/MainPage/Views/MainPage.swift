@@ -9,92 +9,51 @@ import SwiftUI
 
 /// 홈 화면
 struct MainPage: View {
-    /// 전체 책 리스트
-    @State private var booksList: [RegisteredBook] = []
-    
-    /// 읽고 있는 책 리스트
-    var readingBooksList: [RegisteredBook] {
-        booksList.filter { $0.book.readingStatus == .reading }
-    }
-    
-    /// 읽고 싶은 책 리스트
-    var wantToReadBooksList: [RegisteredBook] {
-        booksList.filter { $0.book.readingStatus == .wantToRead }
-    }
-    
-    /// 다 읽은 책 리스트
-    var finishReadBooksList: [RegisteredBook] {
-        booksList.filter { $0.book.readingStatus == .finishRead }
-    }
-    
-    /// 읽고 있는 책 총 개수
-    //var totalReadingBooksCount: Int = 0
-    
-    /// 읽고 싶은 책 총 개수
-    //var totalWantToReadBooksCount: Int = 0
+    /// 홈 화면 뷰모델
+    @StateObject var viewModel: MainPageViewModel
     
     var body: some View {
         // MARK: - 읽고 있는 책
         VStack(alignment: .leading, spacing: 0) {
             // 등록된 책이 있다면
-            if (readingBooksList.count >= 1) {
-                ReadingRowView(readingBooksList: readingBooksList)
+            if (viewModel.readingBooksCount >= 1) {
+                ReadingRowView(viewModel: viewModel)
             }
             // 등록된 책이 없다면
             else {
-                Text("읽고 있는 책 0")
-                    .font(.thirdTitle)
-                    .foregroundStyle(.black0)
-                    .padding([.leading, .bottom], 16)
+                HStack(spacing: 5) {
+                    Text("읽고 있는 책")
+                        .font(.thirdTitle)
+                        .foregroundStyle(.black0)
+                    Text("0")
+                        .font(.thirdTitle)
+                        .fontDesign(.rounded)
+                        .foregroundStyle(.black0)
+                }
+                .padding([.leading, .bottom], 16)
                 
                 notRegisteredBook()
             }
-        }
-        .onAppear {
-            // 임시 데이터 넣기
-            let tempBooksList: [RegisteredBook] = [
-                RegisteredBook(book: InitialBook(readingStatus: .reading)),
-                RegisteredBook(book: InitialBook(readingStatus: .reading)),
-                RegisteredBook(book: InitialBook(readingStatus: .reading)),
-                RegisteredBook(book: InitialBook(readingStatus: .reading)),
-                RegisteredBook(book: InitialBook(readingStatus: .reading)),
-                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .wantToRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
-                RegisteredBook(book: InitialBook(readingStatus: .finishRead)),
-            ]
-            booksList = tempBooksList
         }
         
         // MARK: - 읽고 싶은 책
         VStack(alignment: .leading, spacing: 0) {
             // 등록된 책이 있다면
-            if (wantToReadBooksList.count >= 1) {
-                WantToReadRowView(wantToReadBooksList: wantToReadBooksList)
+            if (viewModel.wantToReadBooksCount >= 1) {
+                WantToReadRowView(wantToReadBooksList: viewModel.wantToReadBooksList)
             }
             // 등록된 책이 없다면
             else {
-                Text("읽고 싶은 책 0")
-                    .font(.thirdTitle)
-                    .foregroundStyle(.black0)
-                    .padding([.leading, .bottom], 16)
+                HStack(spacing: 5) {
+                    Text("읽고 싶은 책")
+                        .font(.thirdTitle)
+                        .foregroundStyle(.black0)
+                    Text("0")
+                        .font(.thirdTitle)
+                        .fontDesign(.rounded)
+                        .foregroundStyle(.black0)
+                }
+                .padding([.leading, .bottom], 16)
                 
                 notRegisteredBook()
             }
@@ -103,15 +62,21 @@ struct MainPage: View {
         // MARK: - 다 읽은 책
         VStack(alignment: .leading, spacing: 0) {
             // 등록된 책이 있다면
-            if (finishReadBooksList.count >= 1) {
-                FinishReadRowView(finishReadBooksList: finishReadBooksList)
+            if (viewModel.finishReadBooksCount >= 1) {
+                FinishReadRowView(finishReadBooksList: viewModel.finishReadBooksList)
             }
             // 등록된 책이 없다면
             else {
-                Text("다 읽은 책 0")
-                    .font(.thirdTitle)
-                    .foregroundStyle(.black0)
-                    .padding([.leading, .bottom], 16)
+                HStack(spacing: 5) {
+                    Text("다 읽은 책")
+                        .font(.thirdTitle)
+                        .foregroundStyle(.black0)
+                    Text("0")
+                        .font(.thirdTitle)
+                        .fontDesign(.rounded)
+                        .foregroundStyle(.black0)
+                }
+                .padding([.leading, .bottom], 16)
                 
                 notRegisteredBook()
             }
@@ -165,5 +130,5 @@ struct notRegisteredBook: View {
 }
 
 #Preview {
-    MainPage()
+    MainPage(viewModel: MainPageViewModel())
 }

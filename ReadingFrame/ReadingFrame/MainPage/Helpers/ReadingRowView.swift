@@ -9,32 +9,30 @@ import SwiftUI
 
 /// 홈 화면의 읽고 있는 책 리스트
 struct ReadingRowView: View {
-    
-    /// 읽고 있는 책 리스트
-    var readingBooksList: [RegisteredBook]
-    
-    /// 숨김 처리 하지 않은 읽고 있는 책 리스트
-    var items: [RegisteredBook] {
-        readingBooksList.filter { !$0.isHidden }
-    }
-    
-    /// 총 읽고 있는 책 개수
-    //var totalReadingBooksCount: Int = 0
+    /// 홈 화면 뷰모델
+    @ObservedObject var viewModel: MainPageViewModel
     
     /// 현재 보이는 페이지 index
     @State var selectedPageIndex: Int = 0
     
     var body: some View {
         HStack {
-            Text("읽고 있는 책 \(readingBooksList.count)")
-                .font(.thirdTitle)
-                .foregroundStyle(.black0)
+            HStack(spacing: 5) {
+                Text("읽고 있는 책")
+                    .font(.thirdTitle)
+                    .foregroundStyle(.black0)
+                
+                Text("\(viewModel.readingBooksCount)")
+                    .font(.thirdTitle)
+                    .fontDesign(.rounded)
+                    .foregroundStyle(.black0)
+            }
             
             Spacer()
             
             // MARK: 읽고 있는 책 상세 페이지로 이동
             NavigationLink {
-                BookRowDetailView(readingStatus: .reading, bookList: readingBooksList)
+                BookRowDetailView(readingStatus: .reading, viewModel: viewModel)
                     .toolbarRole(.editor)
             } label: {
                 Image(systemName: "chevron.right")
@@ -49,7 +47,7 @@ struct ReadingRowView: View {
         ZStack(alignment: .top) {
             TabView(selection: $selectedPageIndex) {
                 
-                ForEach(Array(items.prefix(10).enumerated()), id: \.offset) { index, book in
+                ForEach(Array(viewModel.notHiddenReadingBooksList().prefix(10).enumerated()), id: \.offset) { index, book in
                     ReadingItemView(book: book) // 책 뷰 띄우기
                         .tag(index)
                 }
@@ -61,7 +59,7 @@ struct ReadingRowView: View {
             }
             
             // Page Indicator
-            PageIndicator(numberOfPages: min(10, items.count), currentPage: $selectedPageIndex)
+            PageIndicator(numberOfPages: min(10, viewModel.notHiddenReadingBooksList().count), currentPage: $selectedPageIndex)
         }
         .padding(.bottom, 55)
         .frame(height: 480)
@@ -75,5 +73,5 @@ func setTabViewIndicator() {
 }
 
 #Preview {
-    ReadingRowView(readingBooksList: [RegisteredBook()])
+    ReadingRowView(viewModel: MainPageViewModel())
 }

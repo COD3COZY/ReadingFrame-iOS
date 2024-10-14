@@ -124,7 +124,7 @@ protocol BookRegistered {
     var isMine: Bool { get set }
     
     /// 책유형
-    var bookType: BookType { get set }
+    var bookType: BookType? { get set }
     
     /// 시작 날짜
     var startDate: Date { get set }
@@ -169,7 +169,7 @@ class RegisteredBook: BookRegistered, Identifiable {
         
     // 책 등록할 때 추가되는 책관련 정보
     var isMine: Bool
-    var bookType: BookType
+    var bookType: BookType?
     var startDate: Date
     var recentDate: Date
     var readingPercent: Int

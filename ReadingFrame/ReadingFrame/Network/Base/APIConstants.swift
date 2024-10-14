@@ -26,6 +26,9 @@ struct APIConstants {
     
     /// 카카오 로그인 API
     static let loginKakaoURL = "/sign-in/kakao"
+    
+    /// 메인 화면 조회 API
+    static let homeURL = "/home"
 }
 
 /// 한글 인코딩

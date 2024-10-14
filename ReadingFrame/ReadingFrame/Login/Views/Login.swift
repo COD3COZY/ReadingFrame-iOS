@@ -147,6 +147,7 @@ extension Login {
                 if let appleNickname = KeyChain.shared.getKeychainItem(key: KeychainKeys.appleNickname) {
                     // 닉네임이 있으면: 로그인 로직
                     // TODO: 애플로그인 API 호출
+                    print(appleNickname)
                     
                 } else {
                     // 닉네임이 없으면: 회원가입 로직
@@ -159,7 +160,8 @@ extension Login {
                 
                 
                 // TODO: 서버에서 토큰 받으면 -> 토큰 활용해서 홈화면으로 이동
-                if false {
+                // 일단 false 되는 로직으로 만들어두었습니다.
+                if isLoggedIn {
                     // 홈화면 이동
                     isLoggedIn = true
                 }

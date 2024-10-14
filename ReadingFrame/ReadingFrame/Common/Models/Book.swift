@@ -216,18 +216,52 @@ class RegisteredBook: BookRegistered, Identifiable {
 }
 
 // MARK: - 책관련 열거형 타입들
+/// 책과 관련된 Enum에 공통으로 존재하는 코드만으로 프로토콜 자료형으로 사용할 수 있도록
+protocol BookEnum {
+    /// String값으로 디스플레이를 위한 이름
+    var name: String { get }
+    /// bookshelfCode
+    /// - bookshelfType + CategoryCode
+    var code: String { get }
+}
+
 /// 책종류
-enum BookType: Int, CaseIterable {
+enum BookType: Int, BookEnum, CaseIterable {
     /// 종이책
     case paperbook
     /// 전자책
     case eBook
     /// 오디오북
     case audioBook
+    
+    /// 책종류 이름
+    var name: String {
+        switch self {
+        case .paperbook:
+            "종이책"
+        case .eBook:
+            "전자책"
+        case .audioBook:
+            "오디오북"
+        }
+    }
+    
+    /// BookshelfCode
+    var code: String {
+        switch self {
+        case .paperbook:
+            "00"
+        case .eBook:
+            "01"
+        case .audioBook:
+            "02"
+        }
+    }
 }
 
 /// 독서상태
-enum ReadingStatus: Int, CaseIterable {
+enum ReadingStatus: Int, BookEnum, CaseIterable {
+    
     /// 미등록
     case unregistered   = -1
     /// 읽고싶은
@@ -236,10 +270,39 @@ enum ReadingStatus: Int, CaseIterable {
     case reading        = 1
     /// 다읽음
     case finishRead     = 2
+    
+    /// 독서상태 이름
+    var name: String {
+        switch self {
+        case .wantToRead:
+            "읽고싶은"
+        case .reading:
+            "읽는 중"
+        case .finishRead:
+            "다 읽음"
+        case .unregistered:
+            ""
+        }
+    }
+    
+    /// BookshelfCode
+    var code: String {
+    switch self {
+    case .wantToRead:
+        "10"
+    case .reading:
+        "11"
+    case .finishRead:
+        "12"
+    case .unregistered:
+        ""
+    }
+}
+
 }
 
 /// 카테고리(장르)
-enum CategoryName: Int, CaseIterable {
+enum CategoryName: Int, BookEnum, CaseIterable {
     /// 인문사회
     case humanSocial
     /// 문학
@@ -256,4 +319,49 @@ enum CategoryName: Int, CaseIterable {
     case foreign
     /// 기타
     case etc
+    
+    /// 카테고리 이름
+    var name: String {
+        switch self {
+        case .humanSocial:
+            "인문사회"
+        case .literature:
+            "문학"
+        case .essays:
+            "에세이"
+        case .science:
+            "과학"
+        case .selfImprovement:
+            "자기계발"
+        case .art:
+            "예술"
+        case .foreign:
+            "원서"
+        case .etc:
+            "기타"
+        }
+    }
+    
+    /// BookshelfCode
+    var code: String {
+        switch self {
+        case .humanSocial:
+            "20"
+        case .literature:
+            "21"
+        case .essays:
+            "22"
+        case .science:
+            "23"
+        case .selfImprovement:
+            "24"
+        case .art:
+            "25"
+        case .foreign:
+            "26"
+        case .etc:
+            "27"
+        }
+    }
+
 }

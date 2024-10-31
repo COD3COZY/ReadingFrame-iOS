@@ -183,7 +183,7 @@ class RegisteredBook: BookRegistered, Identifiable {
     var characters: Array<Character>?
     
     init(
-        book: Book = InitialBook(),
+        book: Book = InitialBook(readingStatus: .reading),
         isMine: Bool = false,
         bookType: BookType = .paperbook,
         startDate: Date = Date(),

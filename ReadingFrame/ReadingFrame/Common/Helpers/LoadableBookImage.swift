@@ -40,5 +40,5 @@ struct LoadableBookImage: View {
 }
 
 #Preview {
-    LoadableBookImage(bookCover: InitialBook().cover)
+    LoadableBookImage(bookCover: "https://image.aladin.co.kr/product/31911/97/cover500/k942833843_1.jpg")
 }

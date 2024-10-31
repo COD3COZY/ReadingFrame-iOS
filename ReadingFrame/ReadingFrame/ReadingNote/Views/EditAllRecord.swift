@@ -310,7 +310,7 @@ struct EditAllRecord: View {
                         pageView(book: book, text: "마지막으로 읽은", bookMarkPage: bookMarkPage, isFocused: _isFocused)
                     }
                     
-                    // MARK: 메모
+                    // MARK: - 메모
                     if (selectedTab == "메모") {
                         VStack(alignment: .trailing, spacing: 6) {
                             ZStack(alignment: .topLeading) {
@@ -345,6 +345,7 @@ struct EditAllRecord: View {
                         .padding(.top, 10)
                     }
                     
+                    // MARK: - 인물사전
                     if (selectedTab == "인물사전") {
                         VStack(alignment: .center, spacing: 15) {
                             // MARK: 이모지

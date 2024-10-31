@@ -664,7 +664,6 @@
 		E702A9B12B864D0C0081F65D /* ReadingNote */ = {
 			isa = PBXGroup;
 			children = (
-				E75D6B052BEB3DD10080EBA0 /* Models */,
 				E75AE6722BE263340056EC26 /* Helpers */,
 				E702A9B22B864D270081F65D /* Views */,
 			);
@@ -727,13 +726,6 @@
 				E707643A2C3ADEA000373B8D /* CharacterView.swift */,
 			);
 			path = Helpers;
-			sourceTree = "<group>";
-		};
-		E75D6B052BEB3DD10080EBA0 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		E77394812C637B740057760A /* Badge */ = {

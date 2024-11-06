@@ -168,7 +168,7 @@ enum commentReaction: Int {
 }
 
 /// 선택리뷰 열거형. raw value는 정수입니다.
-enum selectReviewCode: Int {
+enum selectReviewCode: Int, Codable {
     // MARK: 내용 및 구성
     /// 창의적이에요
     case creative

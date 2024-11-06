@@ -17,13 +17,24 @@ enum readingNoteTab : String, CaseIterable {
 struct TabReadingNote: View {
     // MARK: - PROPERTY
     @Bindable var book: RegisteredBook
+    
+    /// 선택된 탭이 뭔지
     @State var selectedTab: readingNoteTab = .bookmark
+    
+    /// 탭바 애니메이션 구현용
     @Namespace private var animation
+    
+    /// 인물사전 2열 그리드 만들기 위한 변수
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     
-    @State var isRecordSheetAppear: Bool = false // 기록하기 sheet가 띄워져 있는지 확인하는 변수
-    @State var isPickerAppear: Bool = false // 기록하기 sheet의 picker 띄움 여부 변수
-    @State private var searchText: String = "" // 사용자가 입력한 검색어
+    /// 기록하기 sheet가 띄워져 있는지 확인하는 변수
+    @State var isRecordSheetAppear: Bool = false
+    
+    /// 기록하기 sheet의 picker 띄움 여부 변수
+    @State var isPickerAppear: Bool = false
+    
+    /// 사용자가 입력한 검색어
+    @State private var searchText: String = ""
     
     // MARK: - BODY
     var body: some View {
@@ -65,106 +76,23 @@ struct TabReadingNote: View {
                         .padding(.horizontal, 16)
                 }
                 
-                List {
-                    // 스크롤 내부 뷰
-                    switch selectedTab {
-                        // 책갈피를 클릭했다면
-                    case .bookmark:
-                        // 값이 없다면
-                        if ((book.bookmarks?.isEmpty) == nil) {
-                            HStack {
-                                Spacer()
-                                GreyLogoAndTextView(text: "아직 등록된 책갈피가 없어요.")
-                                Spacer()
-                            }
-                            .padding(.top, 180)
-                            .listRowInsets(EdgeInsets()) // 기본 패딩 제거
-                        }
-                        
-                        if let bookmarks = book.bookmarks {
-                            // 값이 있다면
-                            if !bookmarks.isEmpty {
-                                ForEach(Array(bookmarks.enumerated()), id: \.offset) { index, item in
-                                    BookmarkView(bookmark: item)
-                                        .padding(.vertical, 24)
-                                        .swipeActions(edge: .trailing) {
-                                            Button(role: .destructive) {
-                                                book.bookmarks?.remove(at: index)
-                                            } label: {
-                                                Image(systemName: "trash.fill")
-                                            }
-                                            .tint(.red0)
-                                        }
-                                        .listRowInsets(EdgeInsets()) // 전체 패딩 제거
-                                }
-                            }
-                        }
-                        // 메모를 클릭했다면
-                    case .memo:
-                        // 값이 없다면
-                        if ((book.memos?.isEmpty) == nil) {
-                            HStack {
-                                Spacer()
-                                GreyLogoAndTextView(text: "아직 작성된 메모가 없어요.")
-                                Spacer()
-                            }
-                            .padding(.top, 180)
-                            .listRowInsets(EdgeInsets()) // 기본 패딩 제거
-                        }
-                        
-                        if let memos = book.memos {
-                            // 값이 있다면
-                            if !memos.isEmpty {
-                                ForEach(Array(memos.enumerated()), id: \.offset) { index, item in
-                                    MemoView(memo: item)
-                                        .padding(.vertical, 24)
-                                        .swipeActions(edge: .trailing) {
-                                            Button(role: .destructive) {
-                                                book.memos?.remove(at: index)
-                                            } label: {
-                                                Image(systemName: "trash.fill")
-                                            }
-                                            .tint(.red0)
-                                        }
-                                        .listRowInsets(EdgeInsets()) // 전체 패딩 제거
-                                }
-                            }
-                        }
-                        // 인물사전을 클릭했다면
-                    case .character:
-                        // 값이 없다면
-                        if ((book.characters?.isEmpty) == nil) {
-                            HStack {
-                                Spacer()
-                                GreyLogoAndTextView(text: "아직 등록된 인물사전이 없어요.")
-                                Spacer()
-                            }
-                            .padding(.top, 180)
-                            .listRowInsets(EdgeInsets()) // 기본 패딩 제거
-                        }
-                        
-                        if let characters = book.characters {
-                            // 값이 있다면
-                            if !characters.isEmpty {
-                                LazyVGrid(columns: columns, spacing: 10) {
-                                    ForEach(Array(characters.enumerated()), id: \.offset) { index, item in
-                                        CharacterView(character: item)
-                                            .padding(16)
-                                            .frame(maxWidth: .infinity)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 15)
-                                                    .fill(.white)
-                                                    .stroke(Color.grey2, lineWidth: 2)
-                                            )
-                                            .listRowInsets(EdgeInsets()) // 전체 패딩 제거
-                                    }
-                                }
-                            }
-                        }
-                        
-                    } //: switch-case
-                } //: List
-                .listStyle(.plain)
+                // 스크롤 내부 뷰
+                switch selectedTab {
+                    
+                // 책갈피를 클릭했다면: 책갈피 탭 뷰
+                case .bookmark:
+                    bookmarkTabView
+                    
+                // 메모를 클릭했다면: 메모 탭 뷰
+                case .memo:
+                    memoTabView
+                    
+                // 인물사전을 클릭했다면: 인물사전 탭 뷰
+                case .character:
+                    characterTabView
+                    
+                } //: switch-case
+
             } //: VStack
             
             VStack {
@@ -247,5 +175,128 @@ struct TabReadingNote: View {
 
 // MARK: - PREVIEW
 #Preview {
-    TabReadingNote(book: RegisteredBook())
+    TabReadingNote(book: RegisteredBook( /*bookmarks: [
+        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 1, location: "위치"),
+        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 2, location: "위치"),
+        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 3, location: "위치"),
+        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 4, location: "위치"),
+        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 5, location: "위치"),
+        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 6, location: "위치"),
+        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 7, location: "위치"),
+        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 8, location: "위치"),
+        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 9, location: "위치"),
+        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 0, location: "위치")
+    ]*/
+        characters: [
+            Character(emoji: 129401, name: "얼굴", preview: "어쩌구저쩌구라고 합니다 하지만 슬픈 얼굴이지요 너무 슬퍼서 울고 있는 얼굴입니다 하지만", description: "어쩌구룰루"),
+            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
+            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
+            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
+            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
+            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
+            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
+            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
+            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루")
+        ]
+                                       ))
+}
+
+extension TabReadingNote {
+    // MARK: - 책갈피 탭 뷰
+    private var bookmarkTabView: some View {
+        VStack {
+            // 책갈피가 있다면
+            if let bookmarks = book.bookmarks, !bookmarks.isEmpty {
+                List {
+                    ForEach(Array(bookmarks.enumerated()), id: \.offset) { index, item in
+                        BookmarkView(bookmark: item)
+                            .padding(.vertical, 24)
+                        // TODO: 리스트 길어질 때 어떻게 기록하기 버튼 안가려질 수 있을지 방법 찾기
+//                            .padding(.bottom, index == bookmarks.count - 1 ? 100 : 0) // 기록하기 버튼 눌러도 마지막 리스트 항목이 가려지지 않도록
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    book.bookmarks?.remove(at: index)
+                                } label: {
+                                    Image(systemName: "trash.fill")
+                                }
+                                .tint(.red0)
+                            }
+                            .listRowInsets(EdgeInsets()) // 전체 패딩 제거
+                        
+                    }
+                }
+                .listStyle(.plain)
+            }
+            // 책갈피가 없다면
+            else {
+                GreyLogoAndTextView(text: "아직 등록된 책갈피가 없어요.")
+            }
+        }
+    }
+    
+    // MARK: - 메모 탭 뷰
+    private var memoTabView: some View {
+        VStack {
+            // 메모가 있다면
+            if let memos = book.memos, !memos.isEmpty {
+                List {
+                    ForEach(Array(memos.enumerated()), id: \.offset) { index, item in
+                        MemoView(memo: item)
+                            .padding(.vertical, 24)
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    book.memos?.remove(at: index)
+                                } label: {
+                                    Image(systemName: "trash.fill")
+                                }
+                                .tint(.red0)
+                            }
+                            .listRowInsets(EdgeInsets()) // 전체 패딩 제거
+                    }
+                }
+            }
+            // 메모가 없다면
+            else {
+                GreyLogoAndTextView(text: "아직 작성된 메모가 없어요.")
+            }
+        }
+    }
+    
+    // MARK: - 인물사전 탭 뷰
+    private var characterTabView: some View {
+        VStack {
+            // 인물사전에 값이 있다면
+            if let characters = book.characters, !characters.isEmpty {
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 10) {
+                        ForEach(Array(characters.enumerated()), id: \.offset) { index, item in
+                            
+                            // 누르면 상세 페이지로 연결되는 인물사전 카드 형태의 버튼
+                            NavigationLink {
+                                CharacterDetail(character: item)
+                            } label: {
+                                CharacterView(character: item)
+                                    .padding(16)
+                                    .frame(maxWidth: .infinity)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 15)
+                                            .fill(.white)
+                                            .stroke(Color.grey2, lineWidth: 2)
+                                    )
+                                    .listRowInsets(EdgeInsets()) // 전체 패딩 제거
+                            }
+                        }
+                    }
+                    .padding(.top, 5)
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 100)
+                }
+                .padding(.top, 10)
+            }
+            // 인물사전에 값이 없다면
+            else {
+                GreyLogoAndTextView(text: "아직 등록된 인물사전이 없어요.")
+            }
+        }
+    }
 }

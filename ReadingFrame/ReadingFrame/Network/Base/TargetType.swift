@@ -12,7 +12,7 @@ import Alamofire
 protocol TargetType: URLRequestConvertible {
     var baseURL: String { get } // 기본 URL
     var method: HTTPMethod { get } // HTTP 메서드
-    var path: String { get } // path
+    var endPoint: String { get } // 엔드포인트
     var parameters: RequestParams { get } // 요청 파라미터
 }
 
@@ -52,31 +52,32 @@ extension TargetType {
     func asURLRequest() throws -> URLRequest {
         // 파라미터 설정
         switch parameters {
-        case .path(let endpoint):
+        case .path(let path):
             // url 설정
-            let url = try (baseURL + path + endpoint).encodeURL()!.asURL()
+            let url = try (baseURL + endPoint + path).encodeURL()!.asURL()
             var urlRequest = try URLRequest(url: url, method: method)
             urlRequest.setValue(ContentType.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
-            print("기존 path: \(path) 닉네임: \(endpoint) url: \((baseURL + path + endpoint).encodeURL()!)")
             
             return urlRequest
             
         case .query(let query):
             // url 설정
-            let url = try baseURL.encodeURL()!.asURL()
+            let url = try baseURL.asURL()
             var urlRequest = try URLRequest(url: url, method: method)
             urlRequest.setValue(ContentType.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
             
             let params = query.toDictionary()
             // parameter 중 nil값 처리
             let queryParams = params.compactMap { (key, value) -> URLQueryItem? in
-                if let value = value as? String, !value.isEmpty {
-                    let encoding = value.encodeURL()
-                    return URLQueryItem(name: key, value: encoding)
+                if let stringValue = value as? String, !stringValue.isEmpty {
+                    return URLQueryItem(name: key, value: stringValue)
+                }
+                else if let longValue = value as? Int64 {
+                    return URLQueryItem(name: key, value: String(longValue))
                 }
                 return nil
             }
-            var components = URLComponents(string: url.appendingPathComponent(path.encodeURL()!).absoluteString)
+            var components = URLComponents(string: url.appendingPathComponent(endPoint.encodeURL()!).absoluteString)
             components?.queryItems = queryParams
             urlRequest.url = components?.url
             
@@ -84,20 +85,22 @@ extension TargetType {
             
         case .queryBody(let query, let body):
             // url 설정
-            let url = try baseURL.encodeURL()!.asURL()
+            let url = try baseURL.asURL()
             var urlRequest = try URLRequest(url: url, method: method)
             urlRequest.setValue(ContentType.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
             
             let params = query.toDictionary()
             // parameter 중 nil값 처리
             let queryParams = params.compactMap { (key, value) -> URLQueryItem? in
-                if let value = value as? String, !value.isEmpty {
-                    let encoding = value.encodeURL()
-                    return URLQueryItem(name: key, value: encoding)
+                if let stringValue = value as? String, !stringValue.isEmpty {
+                    return URLQueryItem(name: key, value: stringValue)
+                }
+                else if let longValue = value as? Int64 {
+                    return URLQueryItem(name: key, value: String(longValue))
                 }
                 return nil
             }
-            var components = URLComponents(string: url.appendingPathComponent(path.encodeURL()!).absoluteString)
+            var components = URLComponents(string: url.appendingPathComponent(endPoint.encodeURL()!).absoluteString)
             components?.queryItems = queryParams
             urlRequest.url = components?.url
             
@@ -108,11 +111,11 @@ extension TargetType {
             
         case .requestBody(let body):
             // url 설정
-            let url = try baseURL.encodeURL()!.asURL()
+            let url = try baseURL.asURL()
             var urlRequest = try URLRequest(url: url, method: method)
             urlRequest.setValue(ContentType.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
             
-            var components = URLComponents(string: url.appendingPathComponent(path.encodeURL()!).absoluteString)
+            var components = URLComponents(string: url.appendingPathComponent(endPoint.encodeURL()!).absoluteString)
             urlRequest.url = components?.url
             
             let bodyParams = body.toDictionary()
@@ -122,11 +125,11 @@ extension TargetType {
             
         case .requestPlain:
             // url 설정
-            let url = try baseURL.encodeURL()!.asURL()
+            let url = try baseURL.asURL()
             var urlRequest = try URLRequest(url: url, method: method)
             urlRequest.setValue(ContentType.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
             
-            var components = URLComponents(string: url.appendingPathComponent(path.encodeURL()!).absoluteString)
+            var components = URLComponents(string: url.appendingPathComponent(endPoint.encodeURL()!).absoluteString)
             urlRequest.url = components?.url
             
             return urlRequest

@@ -22,7 +22,7 @@ extension NicknameValidateService: TargetType {
         }
     }
     
-    var path: String {
+    var endPoint: String {
         switch self {
         case .validateNickname:
             return APIConstants.validateNicknameURL

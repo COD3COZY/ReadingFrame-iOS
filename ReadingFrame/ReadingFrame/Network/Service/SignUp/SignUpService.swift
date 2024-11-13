@@ -24,7 +24,7 @@ extension SignUpService: TargetType {
         }
     }
     
-    var path: String {
+    var endPoint: String {
         switch self {
         case .signUpKakako:
             return APIConstants.signUpKakaoURL

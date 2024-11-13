@@ -24,7 +24,7 @@ extension LoginService: TargetType {
         }
     }
     
-    var path: String {
+    var endPoint: String {
         switch self {
         case .loginKakao:
             return APIConstants.loginKakaoURL

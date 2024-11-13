@@ -22,7 +22,7 @@ extension HomeService: TargetType {
         }
     }
     
-    var path: String {
+    var endPoint: String {
         switch self {
         case .getHome:
             return APIConstants.homeURL

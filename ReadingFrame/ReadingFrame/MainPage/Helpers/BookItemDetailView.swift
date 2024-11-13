@@ -15,6 +15,9 @@ struct BookItemDetailView: View {
     /// 책 아이템 인덱스 값
     var bookIndex: Int
     
+    /// 책 아이템 isbn 값(읽고 있는 책을 위함)
+    var bookIsbn: String
+    
     /// 독서 상태 여부
     var readingStatus: ReadingStatus
     
@@ -113,13 +116,15 @@ struct BookItemDetailView: View {
                                 
                                 // MARK: 소장 버튼
                                 Button {
-                                    // 소장한 책인 경우
-                                    if (viewModel.readingBooks[bookIndex].isMine) {
-                                        isShowMineTrueAlert.toggle()
-                                    }
-                                    // 소장하지 않은 책인 경우
-                                    else {
-                                        isShowMineFalseAlert.toggle()
+                                    if let index = viewModel.readingBooks.firstIndex(where: { $0.isbn == bookIsbn }) {
+                                        // 소장한 책인 경우
+                                        if (viewModel.readingBooks[index].isMine) {
+                                            isShowMineTrueAlert.toggle()
+                                        }
+                                        // 소장하지 않은 책인 경우
+                                        else {
+                                            isShowMineFalseAlert.toggle()
+                                        }
                                     }
                                 } label: {
                                     Label("소장", systemImage: "square.and.arrow.down")
@@ -128,7 +133,16 @@ struct BookItemDetailView: View {
                                 // MARK: 꺼내기 or 홈 화면에서 숨기기 버튼
                                 if (viewModel.readingBooks[bookIndex].isHidden) {
                                     Button {
-                                        viewModel.readingBooks[bookIndex].isHidden = false
+                                        if let index = viewModel.readingBooks.firstIndex(where: { $0.isbn == bookIsbn }) {
+                                            // 읽고 있는 책 숨기기 & 꺼내기 API 호출
+                                            viewModel.hiddenReadBook(
+                                                isbn: viewModel.readingBooks[index].isbn,
+                                                request: HiddenReadBookRequest(isHidden: false)) { success in
+                                                if success {
+                                                    viewModel.readingBooks[index].isHidden = false
+                                                }
+                                            }
+                                        }
                                     } label: {
                                         Label("꺼내기", systemImage: "tray.and.arrow.up")
                                     }
@@ -222,7 +236,14 @@ struct BookItemDetailView: View {
                     isPresented: $isShowFinishReadAlert
                 ) {
                     Button("확인") {
-                        viewModel.readingBooks[bookIndex].readingStatus = .finishRead
+                        if let index = viewModel.readingBooks.firstIndex(where: { $0.isbn == bookIsbn }) {
+                            // 독서 상태 변경 API 호출
+                            viewModel.changeReadingStatus(isbn: viewModel.readingBooks[index].isbn, request: ChangeReadingStatusRequest(readingStatus: 2)) { success in
+                                if success {
+                                    viewModel.readingBooks[index].readingStatus = .finishRead
+                                }
+                            }
+                        }
                     }
                     Button("취소", role: .cancel) { }
                 } message: {
@@ -241,11 +262,22 @@ struct BookItemDetailView: View {
                     isPresented: $isShowMineFalseAlert
                 ) {
                     Button("확인") {
+                        // 소장 여부 변경 API 호출
                         if readingStatus == .reading {
-                            viewModel.readingBooks[bookIndex].isMine = true
+                            if let index = viewModel.readingBooks.firstIndex(where: { $0.isbn == bookIsbn }) {
+                                viewModel.changeIsMine(isbn: viewModel.readingBooks[index].isbn, request: ChangeIsMineRequest(isMine: true)) { success in
+                                    if success {
+                                        viewModel.readingBooks[index].isMine = true
+                                    }
+                                }
+                            }
                         }
                         else {
-                            viewModel.finishReadBooks[bookIndex].isMine = true
+                            viewModel.changeIsMine(isbn: viewModel.finishReadBooks[bookIndex].isbn, request: ChangeIsMineRequest(isMine: true)) { success in
+                                if success {
+                                    viewModel.finishReadBooks[bookIndex].isMine = true
+                                }
+                            }
                         }
                     }
                 }
@@ -255,7 +287,12 @@ struct BookItemDetailView: View {
                     isPresented: $isShowHideBookAlert
                 ) {
                     Button("확인") {
-                        viewModel.readingBooks[bookIndex].isHidden = true
+                        if let index = viewModel.readingBooks.firstIndex(where: { $0.isbn == bookIsbn }) {
+                            // 읽고 있는 책 숨기기 & 꺼내기 API 호출
+                            viewModel.hiddenReadBook(isbn: viewModel.readingBooks[index].isbn, request: HiddenReadBookRequest(isHidden: true)) { success in
+                                viewModel.readingBooks[index].isHidden = true
+                            }
+                        }
                     }
                     Button("취소", role: .cancel) { }
                 } message: {
@@ -298,5 +335,5 @@ struct BookItemDetailView: View {
 }
 
 #Preview {
-    BookItemDetailView(viewModel: DetailBookViewModel(readingStatus: .reading), bookIndex: 0, readingStatus: .reading)
+    BookItemDetailView(viewModel: DetailBookViewModel(readingStatus: .reading), bookIndex: 0, bookIsbn: "", readingStatus: .reading)
 }

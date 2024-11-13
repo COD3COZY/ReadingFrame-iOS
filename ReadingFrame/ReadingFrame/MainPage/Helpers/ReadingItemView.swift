@@ -139,8 +139,14 @@ struct ReadingItemView: View {
                 isPresented: $isShowFinishReadAlert
             ) {
                 Button("확인") {
-                    // TODO: 독서 상태 변경 API 호출
-                    viewModel.homeReadingBooks?[bookIndex].readingStatus = .finishRead
+                    // 독서 상태 변경 API 호출
+                    viewModel.changeReadingStatus(
+                        isbn: viewModel.homeReadingBooks![bookIndex].isbn,
+                        request: ChangeReadingStatusRequest(readingStatus: 2)) { success in
+                        if success {
+                            viewModel.homeReadingBooks?[bookIndex].readingStatus = .finishRead
+                        }
+                    }
                 }
                 
                 Button("취소", role: .cancel) { }
@@ -153,8 +159,12 @@ struct ReadingItemView: View {
                 isPresented: $isShowHidBookAlert
             ) {
                 Button("확인") {
-                    // TODO: 읽고 있는 책 숨기기 & 꺼내기 API 호출
-                    viewModel.homeReadingBooks?[bookIndex].isHidden = true
+                    // 읽고 있는 책 숨기기 & 꺼내기 API 호출
+                    viewModel.hiddenReadBook(
+                        isbn: viewModel.homeReadingBooks![bookIndex].isbn,
+                        request: HiddenReadBookRequest(isHidden: true)) { success in
+                        viewModel.homeReadingBooks?[bookIndex].isHidden = true
+                    }
                 }
                 
                 Button("취소", role: .cancel) { }
@@ -174,8 +184,14 @@ struct ReadingItemView: View {
                 isPresented: $isShowMineFalseAlert
             ) {
                 Button("확인") {
-                    // TODO: 소장 여부 변경 API 호출
-                    viewModel.homeReadingBooks?[bookIndex].isMine = true
+                    // 소장 여부 변경 API 호출
+                    viewModel.changeIsMine(
+                        isbn: viewModel.homeReadingBooks![bookIndex].isbn,
+                        request: ChangeIsMineRequest(isMine: true)) { success in
+                            if success {
+                                viewModel.homeReadingBooks?[bookIndex].isMine = true
+                            }
+                        }
                 }
             }
         }

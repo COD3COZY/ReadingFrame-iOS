@@ -112,7 +112,15 @@ struct BookItemView: View {
                                 }
                                 // 소장하지 않은 책인 경우
                                 else {
-                                    isShowMineFalseAlert.toggle()
+                                    // 책 소장 API 호출
+                                    viewModel.changeIsMine(
+                                        isbn: viewModel.homeFinishReadBooks![bookIndex].isbn,
+                                        request: ChangeIsMineRequest(isMine: true)) { success in
+                                            if success {
+                                                viewModel.homeFinishReadBooks?[bookIndex].isMine = true
+                                                isShowMineFalseAlert.toggle()
+                                            }
+                                        }
                                 }
                             } label: {
                                 Label("소장", systemImage: "square.and.arrow.down")
@@ -148,9 +156,7 @@ struct BookItemView: View {
                         "책을 소장했습니다",
                         isPresented: $isShowMineFalseAlert
                     ) {
-                        Button("확인") {
-                            viewModel.homeFinishReadBooks?[bookIndex].isMine = true
-                        }
+                        Button("확인") { }
                     }
                 }
                 .frame(height: matchReadingStatus(readingStatus: bookReadingStatus)?.author.count ?? 0 >= 14 ? 32 : 16)

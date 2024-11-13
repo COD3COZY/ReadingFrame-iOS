@@ -95,4 +95,84 @@ class HomeAPI: BaseAPI {
             }
         }
     }
+    
+    /// 책 삭제 API
+    func deleteBook(isbn: String, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(HomeService.deleteBook(isbn), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, String.self))
+            case .failure(let error):
+                completion(.networkFail(error.localizedDescription))
+            }
+        }
+    }
+    
+    /// 읽고 있는 책 숨기기&꺼내기 API
+    func hiddenReadBook(isbn: String, request: HiddenReadBookRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(HomeService.hiddenReadBook(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, String.self))
+            case .failure(let error):
+                completion(.networkFail(error.localizedDescription))
+            }
+        }
+    }
+    
+    /// 독서 상태 변경 API
+    func changeReadingStatus(isbn: String, request: ChangeReadingStatusRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(HomeService.changeReadingStatus(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, String.self))
+            case .failure(let error):
+                completion(.networkFail(error.localizedDescription))
+            }
+        }
+    }
+    
+    /// 소장 여부 변경 API
+    func changeIsMine(isbn: String, request: ChangeIsMineRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(HomeService.changeIsMine(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, String.self))
+            case .failure(let error):
+                completion(.networkFail(error.localizedDescription))
+            }
+        }
+    }
 }

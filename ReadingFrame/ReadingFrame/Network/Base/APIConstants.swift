@@ -38,6 +38,18 @@ struct APIConstants {
     
     /// 다 읽은 책 조회 API
     static let finishedReadingURL = "/home/finishRead"
+    
+    /// 책 삭제 API
+    static let deleteBookURL = "/book/delete"
+    
+    /// 읽고 있는 책 숨기기&꺼내기 API
+    static let hiddenReadBookURL = "/home/hidden"
+    
+    /// 독서 상태 변경 API
+    static let changeReadingStatusURL = "/book/readingStatus"
+    
+    /// 소장 여부 변경 API
+    static let changeIsMineURL = "/book/isMine"
 }
 
 /// 한글 인코딩

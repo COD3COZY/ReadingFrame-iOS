@@ -21,6 +21,18 @@ enum HomeService {
     
     /// 다 읽은 책 조회 API
     case getFinishReadBooks
+    
+    /// 책 삭제 API
+    case deleteBook(String)
+    
+    /// 읽고 있는 책 숨기기&꺼내기 API
+    case hiddenReadBook(String, HiddenReadBookRequest)
+    
+    /// 독서 상태 변경 API
+    case changeReadingStatus(String, ChangeReadingStatusRequest)
+    
+    /// 소장 여부 변경 API
+    case changeIsMine(String, ChangeIsMineRequest)
 }
 
 extension HomeService: TargetType {
@@ -28,6 +40,10 @@ extension HomeService: TargetType {
         switch self {
         case .getHome, .getReadingBooks, .getWantToReadBooks, .getFinishReadBooks:
             return .get
+        case .deleteBook:
+            return .delete
+        case .hiddenReadBook, .changeReadingStatus, .changeIsMine:
+            return .patch
         }
     }
     
@@ -44,6 +60,18 @@ extension HomeService: TargetType {
             
         case .getFinishReadBooks:
             return APIConstants.finishedReadingURL
+            
+        case .deleteBook:
+            return APIConstants.deleteBookURL
+            
+        case .hiddenReadBook:
+            return APIConstants.hiddenReadBookURL
+            
+        case .changeReadingStatus:
+            return APIConstants.changeReadingStatusURL
+        
+        case .changeIsMine:
+            return APIConstants.changeIsMineURL
         }
     }
     
@@ -51,6 +79,14 @@ extension HomeService: TargetType {
         switch self {
         case .getHome, .getReadingBooks, .getWantToReadBooks, .getFinishReadBooks:
             return .requestPlain
+        case .deleteBook(let isbn):
+            return .path(isbn)
+        case .hiddenReadBook(let isbn, let request):
+            return .pathBody(isbn, body: request)
+        case .changeReadingStatus(let isbn, let request):
+            return .pathBody(isbn, body: request)
+        case .changeIsMine(let isbn, let request):
+            return .pathBody(isbn, body: request)
         }
     }
 }

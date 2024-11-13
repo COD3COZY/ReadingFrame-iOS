@@ -74,11 +74,15 @@ struct BookRowDetailView: View {
                 // 읽고 있는 책이라면, 숨기지 않은 책 띄우기
                 if (readingStatus == .reading) {
                     ForEach(Array(viewModel.notHideBookList().enumerated()), id: \.offset) { index, book in
-                        BookItemDetailView(viewModel: viewModel, bookIndex: index, readingStatus: readingStatus)
+                        BookItemDetailView(viewModel: viewModel, bookIndex: index, bookIsbn: book.isbn, readingStatus: readingStatus)
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
-                                    // TODO: 책 삭제 API 호출
-                                    viewModel.deleteBook(isbn: book.isbn)
+                                    // 책 삭제 API 호출
+                                    viewModel.deleteBook(isbn: book.isbn) { success in
+                                        if success {
+                                            viewModel.deleteBookInList(isbn: book.isbn)
+                                        }
+                                    }
                                 } label: {
                                     Image(systemName: "trash.fill")
                                 }
@@ -91,10 +95,15 @@ struct BookRowDetailView: View {
                 // 읽고 싶은 책이라면
                 else if (readingStatus == .wantToRead) {
                     ForEach(Array(viewModel.wantToReadBooks.enumerated()), id: \.offset) { index, book in
-                        BookItemDetailView(viewModel: viewModel, bookIndex: index, readingStatus: readingStatus)
+                        BookItemDetailView(viewModel: viewModel, bookIndex: index, bookIsbn: book.isbn, readingStatus: readingStatus)
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
-                                    viewModel.wantToReadBooks.remove(at: index)
+                                    // 책 삭제 API 호출
+                                    viewModel.deleteBook(isbn: book.isbn) { success in
+                                        if success {
+                                            viewModel.wantToReadBooks.remove(at: index)
+                                        }
+                                    }
                                 } label: {
                                     Image(systemName: "trash.fill")
                                 }
@@ -107,10 +116,15 @@ struct BookRowDetailView: View {
                 // 다 읽은 책이라면
                 else {
                     ForEach(Array(viewModel.finishReadBooks.enumerated()), id: \.offset) { index, book in
-                        BookItemDetailView(viewModel: viewModel, bookIndex: index, readingStatus: readingStatus)
+                        BookItemDetailView(viewModel: viewModel, bookIndex: index, bookIsbn: book.isbn, readingStatus: readingStatus)
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
-                                    viewModel.finishReadBooks.remove(at: index)
+                                    // 책 삭제 API 호출
+                                    viewModel.deleteBook(isbn: book.isbn) { success in
+                                        if success {
+                                            viewModel.finishReadBooks.remove(at: index)
+                                        }
+                                    }
                                 } label: {
                                     Image(systemName: "trash.fill")
                                 }
@@ -139,11 +153,15 @@ struct BookRowDetailView: View {
                     
                     // MARK: 홈 화면에서 숨긴 책 리스트
                     ForEach(Array(viewModel.hideBookList().enumerated()), id: \.offset) { index, book in
-                        // 숨기기 상태가 안 바뀐 것만 리스트로 띄우기
-                        BookItemDetailView(viewModel: viewModel, bookIndex: index, readingStatus: readingStatus)
+                        BookItemDetailView(viewModel: viewModel, bookIndex: index, bookIsbn: book.isbn, readingStatus: readingStatus)
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
-                                    viewModel.deleteBook(isbn: book.isbn)
+                                    // 책 삭제 API 호출
+                                    viewModel.deleteBook(isbn: book.isbn) { success in
+                                        if success {
+                                            viewModel.deleteBookInList(isbn: book.isbn)
+                                        }
+                                    }
                                 } label: {
                                     Image(systemName: "trash.fill")
                                 }

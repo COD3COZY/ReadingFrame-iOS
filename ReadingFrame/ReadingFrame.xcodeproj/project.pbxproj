@@ -97,6 +97,9 @@
 		E768F08B2CE487E8003E2CB3 /* WantToReadBookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E768F08A2CE487E8003E2CB3 /* WantToReadBookModel.swift */; };
 		E768F08D2CE48811003E2CB3 /* FinshReadBookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E768F08C2CE48811003E2CB3 /* FinshReadBookModel.swift */; };
 		E768F08F2CE48CD1003E2CB3 /* HomeBookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E768F08E2CE48CD1003E2CB3 /* HomeBookModel.swift */; };
+		E768F0972CE51068003E2CB3 /* HiddenReadBookRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E768F0962CE51068003E2CB3 /* HiddenReadBookRequest.swift */; };
+		E768F0992CE51222003E2CB3 /* ChangeReadingStatusRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E768F0982CE51222003E2CB3 /* ChangeReadingStatusRequest.swift */; };
+		E768F09B2CE512F8003E2CB3 /* ChangeIsMineRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E768F09A2CE512F8003E2CB3 /* ChangeIsMineRequest.swift */; };
 		E77394842C637B8D0057760A /* SearchBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77394832C637B8D0057760A /* SearchBadge.swift */; };
 		E77394872C6385B80057760A /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77394862C6385B80057760A /* Badge.swift */; };
 		E773948A2C638CCD0057760A /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77394892C638CCD0057760A /* BadgeView.swift */; };
@@ -233,6 +236,9 @@
 		E768F08A2CE487E8003E2CB3 /* WantToReadBookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WantToReadBookModel.swift; sourceTree = "<group>"; };
 		E768F08C2CE48811003E2CB3 /* FinshReadBookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinshReadBookModel.swift; sourceTree = "<group>"; };
 		E768F08E2CE48CD1003E2CB3 /* HomeBookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBookModel.swift; sourceTree = "<group>"; };
+		E768F0962CE51068003E2CB3 /* HiddenReadBookRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenReadBookRequest.swift; sourceTree = "<group>"; };
+		E768F0982CE51222003E2CB3 /* ChangeReadingStatusRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeReadingStatusRequest.swift; sourceTree = "<group>"; };
+		E768F09A2CE512F8003E2CB3 /* ChangeIsMineRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeIsMineRequest.swift; sourceTree = "<group>"; };
 		E77394832C637B8D0057760A /* SearchBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBadge.swift; sourceTree = "<group>"; };
 		E77394862C6385B80057760A /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		E77394892C638CCD0057760A /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
@@ -742,6 +748,16 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		E768F0952CE5105B003E2CB3 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				E768F0962CE51068003E2CB3 /* HiddenReadBookRequest.swift */,
+				E768F0982CE51222003E2CB3 /* ChangeReadingStatusRequest.swift */,
+				E768F09A2CE512F8003E2CB3 /* ChangeIsMineRequest.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 		E77394812C637B740057760A /* Badge */ = {
 			isa = PBXGroup;
 			children = (
@@ -812,6 +828,7 @@
 			children = (
 				E77E0B9D2C745E1700626110 /* SignUp */,
 				E77E0BA82C747B0000626110 /* Login */,
+				E768F0952CE5105B003E2CB3 /* Home */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -1091,6 +1108,7 @@
 				C595A1FB2B7B8A3F006D88EC /* Book.swift in Sources */,
 				C56B56062BB95DA80084F2DD /* EnterNickname.swift in Sources */,
 				C5CEA8922B8A5CCA007A89A2 /* WrapLayout.swift in Sources */,
+				E768F0972CE51068003E2CB3 /* HiddenReadBookRequest.swift in Sources */,
 				C52EC5992C308162004F6BDB /* BookMapViewModel.swift in Sources */,
 				C518A8AB2B8132F800EBD1A8 /* Review.swift in Sources */,
 				E7A0DD2C2B7B52A7006004B5 /* Fonts.swift in Sources */,
@@ -1140,6 +1158,7 @@
 				E77E0BA22C74602800626110 /* APIConstants.swift in Sources */,
 				C595A2022B7BCB10006D88EC /* SelectBookTypeView.swift in Sources */,
 				C5BE52272B68F53E00FF07F8 /* LaunchView.swift in Sources */,
+				E768F0992CE51222003E2CB3 /* ChangeReadingStatusRequest.swift in Sources */,
 				C576DD532C79828F001AFFFA /* NicknameTextfieldStyle.swift in Sources */,
 				E7384CFB2C1284DE001B814B /* CustomDropDownMenu.swift in Sources */,
 				C5BE52252B68F53E00FF07F8 /* ReadingFrameApp.swift in Sources */,
@@ -1183,6 +1202,7 @@
 				C58F57172B8CF35D004085A5 /* BookInfo_ReviewModel.swift in Sources */,
 				C54B93222C4FF841008B73E0 /* SearchMapViewHelper.swift in Sources */,
 				C523ABE72C859CB600C4D9F8 /* BookShelfListRowView.swift in Sources */,
+				E768F09B2CE512F8003E2CB3 /* ChangeIsMineRequest.swift in Sources */,
 				E75AE6742BE2634A0056EC26 /* HalfCricleGraph.swift in Sources */,
 				C5CEA8942B8A66D8007A89A2 /* BookInfo_Review.swift in Sources */,
 				E7ACEA982CA29AC50079F2F1 /* NicknameValidateRequest.swift in Sources */,

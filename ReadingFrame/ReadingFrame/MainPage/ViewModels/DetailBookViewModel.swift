@@ -77,8 +77,7 @@ final class DetailBookViewModel: ObservableObject {
     }
     
     /// 읽고 있는 책 리스트 내의 책을 삭제하는 함수
-    func deleteBook(isbn: String) {
-        // TODO: 책 삭제 API 호출
+    func deleteBookInList(isbn: String) {
         if let index = readingBooks.firstIndex(where: { $0.isbn == isbn }) {
             readingBooks.remove(at: index)
         }
@@ -213,6 +212,110 @@ final class DetailBookViewModel: ObservableObject {
                         )
                     }
                 }
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
+    /// 책 삭제
+    func deleteBook(isbn: String, completion: @escaping (Bool) -> (Void)) {
+        HomeAPI.shared.deleteBook(isbn: isbn) { response in
+            switch response {
+            case .success(let data):
+                print("책 삭제 성공 \(data)")
+                completion(true)
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
+    /// 읽고 있는 책 숨기기&꺼내기
+    func hiddenReadBook(isbn: String, request: HiddenReadBookRequest, completion: @escaping (Bool) -> (Void)) {
+        HomeAPI.shared.hiddenReadBook(isbn: isbn, request: request) { response in
+            switch response {
+            case .success(let data):
+                print("읽고 있는 책 숨김 여부 변경 성공 \(data)")
+                completion(true)
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
+    /// 독서 상태 변경
+    func changeReadingStatus(isbn: String, request: ChangeReadingStatusRequest, completion: @escaping (Bool) -> (Void)) {
+        HomeAPI.shared.changeReadingStatus(isbn: isbn, request: request) { response in
+            switch response {
+            case .success(let data):
+                print("독서 상태 변경 성공 \(data)")
+                completion(true)
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
+    /// 소장 여부 변경
+    func changeIsMine(isbn: String, request: ChangeIsMineRequest, completion: @escaping (Bool) -> (Void)) {
+        HomeAPI.shared.changeIsMine(isbn: isbn, request: request) { response in
+            switch response {
+            case .success(let data):
+                print("소장 여부 변경 성공 \(data)")
+                completion(true)
             case .requestErr(let message):
                 print("Request Err: \(message)")
                 completion(false)

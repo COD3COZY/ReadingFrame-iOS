@@ -15,6 +15,11 @@ struct EditReview_Select: View {
     /// 작성할 리뷰 객체
     @StateObject var review: Review = .init()
     
+    /// 선택된 선택리뷰
+    var selected: [selectReviewCode] {
+        review.selectReviews
+    }
+    
     /// 선택리뷰 카테고리
     var selectReview_categorys: [String] = ["내용 및 구성", "감상", "기타"]
     
@@ -31,9 +36,13 @@ struct EditReview_Select: View {
     /// 편집 모드인지 여부 (리뷰 편집 모드 또는 초기 생성 모드)
     @State var isEditMode: Bool = false
     
+//    /// 편집 모드라면 리뷰 입력하고 뷰 dissmiss시키기위한 변수
+//    @Environment(\.dismiss) private var dismiss
+
+    
     /// 버튼 활성화 조건: 선택된 토큰이 1개 이상 5개 이하일 때만 활성화
     var isButtonDisabled: Bool {
-        review.selectReviews.count < 1 || review.selectReviews.count > 5
+        selected.count < 1 || selected.count > 5
     }
     
     // MARK: - View
@@ -58,7 +67,7 @@ struct EditReview_Select: View {
         .navigationBarTitleDisplayMode(.inline) // 상단에 바 뜨는 모양
         .task {
             print("---SelectReview 입력 페이지 task ----")
-            print("Review객체정보\n- selected: \(review.selectReviews)\n- keyword: \(review.keyword ?? "없어요. 없다니까요")\n- comment: \(review.comment ?? "없어요, 없다니까요")")
+            print("Review객체정보\n- selected: \(selected)\n- keyword: \(review.keyword ?? "없어요. 없다니까요")\n- comment: \(review.comment ?? "없어요, 없다니까요")")
         }
     }
 }
@@ -90,7 +99,7 @@ extension EditReview_Select {
         ScrollView(.horizontal) {
             HStack(spacing: 10) {
                 // 선택된 토큰들을 보여주는 ForEach
-                ForEach(review.selectReviews, id: \.self) { token in
+                ForEach(selected, id: \.self) { token in
                     TokenView(token)
                         .matchedGeometryEffect(id: token, in: animation) // 애니메이션 효과 추가
                         .onTapGesture {
@@ -186,12 +195,12 @@ extension EditReview_Select {
                 .font(.callout)
                 .fontWeight(.semibold)
         }
-        .foregroundStyle(review.selectReviews.contains(token) ? Color.white : Color.black0) // 선택된 토큰의 색상을 흰색으로 변경
+        .foregroundStyle(selected.contains(token) ? Color.white : Color.black0) // 선택된 토큰의 색상을 흰색으로 변경
         .padding(.vertical, 10)
         .padding(.horizontal, 20)
         .background {
             Capsule()
-                .fill(review.selectReviews.contains(token) ? Color.black0 : Color.white) // 선택된 경우 배경을 검정색으로 변경
+                .fill(selected.contains(token) ? Color.black0 : Color.white) // 선택된 경우 배경을 검정색으로 변경
                 .shadow(color: .black.opacity(0.15), radius: 2, x: 0, y: 0)
         }
     }
@@ -214,12 +223,12 @@ extension EditReview_Select {
                         TokenView(token)
                             .onTapGesture {
                                 withAnimation(.snappy) {
-                                    if review.selectReviews.contains(token) {
+                                    if selected.contains(token) {
                                         // 이미 선택된 거라면 해제
                                         review.selectReviews.removeAll(where: { $0 == token })
                                     } else {
                                         // 선택 안돼있던 거라면 추가
-                                        review.selectReviews.insert(token, at: review.selectReviews.endIndex)
+                                        review.selectReviews.insert(token, at: 0)
                                     }
                                 }
                             }

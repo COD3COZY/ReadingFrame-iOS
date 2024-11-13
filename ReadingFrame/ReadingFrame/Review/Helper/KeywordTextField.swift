@@ -20,7 +20,7 @@ struct KeywordTextField: View {
     @State private var textRect = CGRect()
     
     /// 부모 뷰의 크기
-    let parentViewSize: CGSize
+    let parentViewWidth: Double
     
     // MARK: - View
     var body: some View {
@@ -42,7 +42,7 @@ struct KeywordTextField: View {
                     // 실제 이용될 텍스트 입력창
                     TextField(placeholder, text: $text)
                         .tint(.main)
-                        .frame(width: parentViewSize.width - 90)
+                        .frame(width: parentViewWidth - 90)
                         .onChange(of: text) { oldValue, newValue in
                             // 15글자 이상 입력하지 못하게 제한
                             if newValue.count > 15 {
@@ -70,7 +70,7 @@ struct KeywordTextField: View {
         
         let textboxWidth: CGFloat = 60 + textRect.width     // 글자 너비 반영된 키워드 박스 크기
         
-        let maxWidth: CGFloat = parentViewSize.width - 32 // 최대 너비
+        let maxWidth: CGFloat = parentViewWidth - 32 // 최대 너비
         
         // 최소를 130으로 하고, 문자길이가 더 커지면 큰 값을 너비로 설정, 부모 뷰에 맞춰서 최대 크기
         let finalWidth = max(minWidth, min(textboxWidth, maxWidth))

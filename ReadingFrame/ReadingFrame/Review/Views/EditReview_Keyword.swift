@@ -33,7 +33,7 @@ struct EditReview_Keyword: View {
                     .padding(.bottom, 25)
                 
                 // 키워드 입력 박스
-                KeywordTextField(text: $keyword, parentViewSize: geometry.size)
+                KeywordTextField(text: $keyword, parentViewWidth: geometry.size.width)
                     .frame(maxWidth: geometry.size.width, maxHeight: 45, alignment: .topLeading)
                     // 키워드 입력되면 바로 review 객체에 입력시키기
                     .onChange(of: keyword) {

@@ -21,6 +21,9 @@ enum RequestParams {
     /// URL PathVariable
     case path(_ path: String)
     
+    /// URL PathVariable & Body Parameter
+    case pathBody(_ path: String, body: Encodable)
+    
     /// URL 쿼리
     case query(_ query: Encodable)
     
@@ -57,6 +60,20 @@ extension TargetType {
             let url = try (baseURL + endPoint + path).encodeURL()!.asURL()
             var urlRequest = try URLRequest(url: url, method: method)
             urlRequest.setValue(ContentType.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
+            
+            return urlRequest
+            
+        case .pathBody(let path, let body):
+            // url 설정
+            let url = try (baseURL + endPoint + path).encodeURL()!.asURL()
+            var urlRequest = try URLRequest(url: url, method: method)
+            urlRequest.setValue(ContentType.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
+            
+            var components = URLComponents(string: url.appendingPathComponent(endPoint.encodeURL()!).absoluteString)
+            urlRequest.url = components?.url
+            
+            let bodyParams = body.toDictionary()
+            urlRequest.httpBody = try JSONSerialization.data(withJSONObject: bodyParams, options: [])
             
             return urlRequest
             

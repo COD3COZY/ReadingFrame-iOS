@@ -29,6 +29,15 @@ struct APIConstants {
     
     /// 메인 화면 조회 API
     static let homeURL = "/home"
+    
+    /// 읽고 있는 책 조회 API
+    static let readingURL = "/home/reading"
+    
+    /// 읽고 싶은 책 조회 API
+    static let wantToReadURL = "/home/wantToRead"
+    
+    /// 다 읽은 책 조회 API
+    static let finishedReadingURL = "/home/finishRead"
 }
 
 /// 한글 인코딩

@@ -9,12 +9,17 @@ import SwiftUI
 
 /// 홈 화면의 읽고 싶은 책, 다 읽은 책 리스트에 들어가는 개별 뷰
 struct BookItemView: View {
+    /// 홈 화면 뷰모델
+    @ObservedObject var viewModel: MainPageViewModel
     
-    /// 책 객체
-    @Bindable var book: RegisteredBook
+    /// 책 아이템 인덱스 값
+    var bookIndex: Int
+    
+    /// 책 유형
+    var bookReadingStatus: ReadingStatus
     
     /// sheet를 띄우기 위한 기본 값
-    @State var readingStatus: ReadingStatus = .reading
+    @State var sheetReadingStatus: ReadingStatus = .reading
     
     /// sheet가 띄워져 있는지 확인하는 변수
     @State var isRegisterSheetAppear: Bool = false
@@ -31,27 +36,26 @@ struct BookItemView: View {
                 // MARK: 책 표지
                 NavigationLink {
                     // 읽고 싶은 책이라면
-                    if (book.book.readingStatus == .wantToRead) {
+                    if (bookReadingStatus == .wantToRead) {
                         // 책 정보 화면으로 이동
-                        BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
-                            .toolbarRole(.editor) // back 텍스트 표시X
-                            .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+    //                        BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
+    //                            .toolbarRole(.editor) // back 텍스트 표시X
+    //                            .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                     }
                     // 다 읽은 책 이라면
-                    else if (book.book.readingStatus == .finishRead) {
+                    else if (bookReadingStatus == .finishRead) {
                         // 독서 노트 화면으로 이동
-                        ReadingNote(book: book)
-                            .toolbarRole(.editor) // back 텍스트 표시X
+    //                        ReadingNote(book: book)
+    //                            .toolbarRole(.editor) // back 텍스트 표시X
                     }
                 } label: {
-                    // 책 표지 클릭 시, 각 화면으로 이동
-                    LoadableBookImage(bookCover: book.book.cover)
+                    LoadableBookImage(bookCover: matchReadingStatus(readingStatus: bookReadingStatus)?.cover ?? "")
                         .clipShape(RoundedRectangle(cornerRadius: 15))
                         .frame(width: 173, height: 260)
                 }
                 
                 // MARK: 책 이름
-                Text(book.book.title)
+                Text(matchReadingStatus(readingStatus: bookReadingStatus)?.title ?? "")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(.black0)
                     .lineLimit(2)
@@ -59,9 +63,9 @@ struct BookItemView: View {
                 
                 // 저자 글자 개수에 따른 뷰 처리
                 // 저자가 2줄 이상인 경우 bottom 정렬, 저자가 1줄인 경우 center 정렬
-                HStack(alignment: book.book.author.count >= 14 ? .bottom : .center) {
+                HStack(alignment: matchReadingStatus(readingStatus: bookReadingStatus)?.author.count ?? 0 >= 14 ? .bottom : .center) {
                     // MARK: 저자
-                    Text(book.book.author)
+                    Text(matchReadingStatus(readingStatus: bookReadingStatus)?.author ?? "")
                         .font(.caption)
                         .lineLimit(2)
                         .foregroundStyle(.greyText)
@@ -71,31 +75,31 @@ struct BookItemView: View {
                     // MARK: 더보기 버튼
                     Menu {
                         // 읽고 싶은 책이라면
-                        if (book.book.readingStatus == .wantToRead) {
+                        if (bookReadingStatus == .wantToRead) {
                             // MARK: 읽는 중 버튼
                             Button {
                                 // 버튼 누르면 sheet present되도록 만들기
                                 isRegisterSheetAppear.toggle()
-                                readingStatus = .reading
+                                sheetReadingStatus = .reading
                             } label: {
                                 Label("읽는 중", systemImage: "book")
                             }
                             // MARK: 다 읽음 버튼
                             Button {
                                 isRegisterSheetAppear.toggle()
-                                readingStatus = .finishRead
+                                sheetReadingStatus = .finishRead
                             } label: {
                                 Label("다 읽음", systemImage: "book.closed")
                             }
                         }
                         // 다 읽은 책 이라면
-                        else if (book.book.readingStatus == .finishRead){
+                        else if (bookReadingStatus == .finishRead){
                             // MARK: 정보 버튼
                             NavigationLink {
                                 // 책 정보 화면으로 이동
-                                BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
-                                    .toolbarRole(.editor) // back 텍스트 표시X
-                                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+//                                BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
+//                                    .toolbarRole(.editor) // back 텍스트 표시X
+//                                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                             } label: {
                                 Label("정보", systemImage: "info.circle")
                             }
@@ -103,7 +107,7 @@ struct BookItemView: View {
                             // MARK: 소장 버튼
                             Button {
                                 // 이미 소장한 책인 경우
-                                if (book.isMine) {
+                                if (matchReadingStatus(readingStatus: bookReadingStatus)?.isMine ?? false) {
                                     isShowMineTrueAlert.toggle()
                                 }
                                 // 소장하지 않은 책인 경우
@@ -128,9 +132,9 @@ struct BookItemView: View {
                     // sheet modal 보여주기 위한 코드
                     .sheet(isPresented: $isRegisterSheetAppear) {
                         // Sheet 뷰
-                        RegisterBook(book: book.book as! InitialBook,
-                                     readingStatus: $readingStatus,
-                                     isSheetAppear: $isRegisterSheetAppear)
+//                        RegisterBook(book: book.book as! InitialBook,
+//                                     readingStatus: $sheetReadingStatus,
+//                                     isSheetAppear: $isRegisterSheetAppear)
                     }
                     // MARK: 소장 버튼 클릭 시 나타나는 Alert(소장한 책인 경우)
                     .alert(
@@ -145,11 +149,11 @@ struct BookItemView: View {
                         isPresented: $isShowMineFalseAlert
                     ) {
                         Button("확인") {
-                            book.isMine = true
+                            viewModel.homeFinishReadBooks?[bookIndex].isMine = true
                         }
                     }
                 }
-                .frame(height: book.book.author.count >= 14 ? 32 : 16)
+                .frame(height: matchReadingStatus(readingStatus: bookReadingStatus)?.author.count ?? 0 >= 14 ? 32 : 16)
                 .padding(.top, 5)
             }
             .fixedSize(horizontal: false, vertical: true)
@@ -158,8 +162,19 @@ struct BookItemView: View {
         .padding(.trailing, 12)
         .padding(.bottom, 20)
     }
+    
+    /// 전달받은 정보가 읽고 싶은 책 or 다 읽은 책인지 판단 후 값을 반환하는 함수
+    func matchReadingStatus(readingStatus: ReadingStatus) -> HomeBookModel? {
+        if readingStatus == .wantToRead {
+            return viewModel.homeWantToReadBooks?[bookIndex]
+        }
+        else if readingStatus == .finishRead {
+            return viewModel.homeFinishReadBooks?[bookIndex]
+        }
+        return nil
+    }
 }
 
 #Preview {
-    BookItemView(book: RegisteredBook())
+    BookItemView(viewModel: MainPageViewModel(), bookIndex: 0, bookReadingStatus: .wantToRead)
 }

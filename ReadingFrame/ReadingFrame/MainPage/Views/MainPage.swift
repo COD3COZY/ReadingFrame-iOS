@@ -10,7 +10,7 @@ import SwiftUI
 /// 홈 화면
 struct MainPage: View {
     /// 홈 화면 뷰모델
-    @StateObject var viewModel: MainPageViewModel
+    @StateObject var viewModel = MainPageViewModel()
     
     var body: some View {
         // MARK: - 읽고 있는 책
@@ -23,14 +23,12 @@ struct MainPage: View {
             else {
                 HStack(spacing: 5) {
                     Text("읽고 있는 책")
-                        .font(.thirdTitle)
-                        .foregroundStyle(.black0)
                     Text("0")
-                        .font(.thirdTitle)
                         .fontDesign(.rounded)
-                        .foregroundStyle(.black0)
                 }
                 .padding([.leading, .bottom], 16)
+                .font(.thirdTitle)
+                .foregroundStyle(.black0)
                 
                 notRegisteredBook()
             }
@@ -46,13 +44,11 @@ struct MainPage: View {
             else {
                 HStack(spacing: 5) {
                     Text("읽고 싶은 책")
-                        .font(.thirdTitle)
-                        .foregroundStyle(.black0)
                     Text("0")
-                        .font(.thirdTitle)
                         .fontDesign(.rounded)
-                        .foregroundStyle(.black0)
                 }
+                .font(.thirdTitle)
+                .foregroundStyle(.black0)
                 .padding([.leading, .bottom], 16)
                 
                 notRegisteredBook()
@@ -69,13 +65,11 @@ struct MainPage: View {
             else {
                 HStack(spacing: 5) {
                     Text("다 읽은 책")
-                        .font(.thirdTitle)
-                        .foregroundStyle(.black0)
                     Text("0")
-                        .font(.thirdTitle)
                         .fontDesign(.rounded)
-                        .foregroundStyle(.black0)
                 }
+                .font(.thirdTitle)
+                .foregroundStyle(.black0)
                 .padding([.leading, .bottom], 16)
                 
                 notRegisteredBook()

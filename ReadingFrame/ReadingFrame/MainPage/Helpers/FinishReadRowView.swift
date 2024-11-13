@@ -20,20 +20,17 @@ struct FinishReadRowView: View {
             HStack {
                 HStack(spacing: 5) {
                     Text("다 읽은 책")
-                        .font(.thirdTitle)
-                        .foregroundStyle(.black0)
-                    
                     Text("\(viewModel.finishReadBooksCount)")
-                        .font(.thirdTitle)
                         .fontDesign(.rounded)
-                        .foregroundStyle(.black0)
                 }
+                .font(.thirdTitle)
+                .foregroundStyle(.black0)
                 
                 Spacer()
                 
                 // MARK: 다 읽은 책 상세 페이지로 이동
                 NavigationLink {
-                    BookRowDetailView(readingStatus: .finishRead, viewModel: viewModel)
+                    BookRowDetailView(readingStatus: .finishRead)
                         .toolbarRole(.editor)
                 } label: {
                     Image(systemName: "chevron.right")
@@ -48,9 +45,9 @@ struct FinishReadRowView: View {
             // 세로 스크롤 뷰
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns) {
-                    ForEach(Array(viewModel.homeFinishReadBooks.enumerated()), id: \.offset) { index, book in
+                    ForEach(Array((viewModel.homeFinishReadBooks ?? []).enumerated()), id: \.offset) { index, book in
                         // 다 읽은 책 리스트로 띄우기
-                        BookItemView(book: book)
+                        BookItemView(viewModel: viewModel, bookIndex: index, bookReadingStatus: .finishRead)
                     }
                 }
                 .padding(.leading, 16)

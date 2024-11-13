@@ -32,7 +32,7 @@ struct ReadingRowView: View {
             
             // MARK: 읽고 있는 책 상세 페이지로 이동
             NavigationLink {
-                BookRowDetailView(readingStatus: .reading, viewModel: viewModel)
+                BookRowDetailView(readingStatus: .reading)
                     .toolbarRole(.editor)
             } label: {
                 Image(systemName: "chevron.right")
@@ -46,9 +46,8 @@ struct ReadingRowView: View {
         
         ZStack(alignment: .top) {
             TabView(selection: $selectedPageIndex) {
-                
                 ForEach(Array(viewModel.notHiddenReadingBooksList().prefix(10).enumerated()), id: \.offset) { index, book in
-                    ReadingItemView(book: book) // 책 뷰 띄우기
+                    ReadingItemView(viewModel: viewModel, bookIndex: index) // 책 뷰 띄우기
                         .tag(index)
                 }
             }

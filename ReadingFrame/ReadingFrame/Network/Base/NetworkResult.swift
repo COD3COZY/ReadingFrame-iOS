@@ -23,4 +23,7 @@ enum NetworkResult<T> {
     
     /// 네트워크 연결 실패
     case networkFail(T)
+    
+    /// 알 수 없는 오류
+    case unknown(T)
 }

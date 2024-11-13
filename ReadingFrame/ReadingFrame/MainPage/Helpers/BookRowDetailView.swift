@@ -9,14 +9,16 @@ import SwiftUI
 
 /// 읽고 있는 책, 읽고 싶은 책, 다 읽은 책 상세 페이지의 리스트 뷰
 struct BookRowDetailView: View {
-    /// 독서 상태 여부/
+    /// 독서 상태 여부
     var readingStatus: ReadingStatus
     
-    /// 홈 화면 뷰모델
-    @ObservedObject var viewModel: MainPageViewModel
+    /// 읽고 있는 책, 읽고 싶은 책, 다 읽은 책 뷰모델
+    @StateObject var viewModel: DetailBookViewModel
     
-    /// 사용자가 삭제하려고 하는 책 아이템
-    @State private var selectedItem: String?
+    init(readingStatus: ReadingStatus) {
+        self.readingStatus = readingStatus
+        _viewModel = StateObject(wrappedValue: DetailBookViewModel(readingStatus: readingStatus))
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -38,44 +40,45 @@ struct BookRowDetailView: View {
                 .background(Color(.grey1))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
             }
-            .padding([.leading, .trailing], 16)
+            .padding(.horizontal, 16)
             .padding(.bottom, 10)
             
             List {
                 // MARK: 타이틀 및 책 개수
                 HStack {
-                    title()
-                        .font(.thirdTitle)
-                        .foregroundStyle(.black0)
+                    Text(title())
                     
                     // 읽고 있는 책이라면
                     if (readingStatus == .reading) {
-                        Text("\(notHideBookList.count)")
-                            .font(.thirdTitle)
-                            .foregroundStyle(.black0)
+                        Text("\(viewModel.notHideBookList().count)")
+                            .fontDesign(.rounded)
                     }
-                    // 다 읽은 책, 읽고 있는 책이라면
-                    else {
-                        Text("\(tempBookList.count)")
-                            .font(.thirdTitle)
-                            .foregroundStyle(.black0)
+                    // 다 읽은 책이라면
+                    else if (readingStatus == .finishRead) {
+                        Text("\(viewModel.finishReadBooks.count)")
+                            .fontDesign(.rounded)
+                    }
+                    // 읽고 싶은 책이라면
+                    else if (readingStatus == .wantToRead) {
+                        Text("\(viewModel.wantToReadBooks.count)")
+                            .fontDesign(.rounded)
                     }
                     
                     Spacer()
                 }
+                .font(.thirdTitle)
+                .foregroundStyle(.black0)
                 .padding(.top, 10)
                 
                 // MARK: 책 리스트
                 // 읽고 있는 책이라면, 숨기지 않은 책 띄우기
                 if (readingStatus == .reading) {
-                    ForEach(notHideBookList, id: \.id) { book in
-                        // 독서 상태가 안 바뀐 것만 리스트로 띄우기
-                        BookItemDetailView(book: book, readingStatus: readingStatus)
+                    ForEach(Array(viewModel.notHideBookList().enumerated()), id: \.offset) { index, book in
+                        BookItemDetailView(viewModel: viewModel, bookIndex: index, readingStatus: readingStatus)
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
-                                    if let tempIndex = bookList.firstIndex(where: { $0.id == book.id }) {
-                                        bookList.remove(at: tempIndex)
-                                    }
+                                    // TODO: 책 삭제 API 호출
+                                    viewModel.deleteBook(isbn: book.isbn)
                                 } label: {
                                     Image(systemName: "trash.fill")
                                 }
@@ -85,35 +88,49 @@ struct BookRowDetailView: View {
                             .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                     }
                 }
-                // 다 읽은 책, 읽고 싶은 책이라면
-                else {
-                    ForEach(Array(bookList.enumerated()), id: \.offset) { index, book in
-                        // 독서 상태가 안 바뀐 것만 리스트로 띄우기
-                        if (book.book.readingStatus == readingStatus) {
-                            BookItemDetailView(book: book, readingStatus: readingStatus)
-                                .swipeActions(edge: .trailing) {
-                                    Button(role: .destructive) {
-                                        bookList.remove(at: index)
-                                    } label: {
-                                        Image(systemName: "trash.fill")
-                                    }
-                                    .tint(.red0)
+                // 읽고 싶은 책이라면
+                else if (readingStatus == .wantToRead) {
+                    ForEach(Array(viewModel.wantToReadBooks.enumerated()), id: \.offset) { index, book in
+                        BookItemDetailView(viewModel: viewModel, bookIndex: index, readingStatus: readingStatus)
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    viewModel.wantToReadBooks.remove(at: index)
+                                } label: {
+                                    Image(systemName: "trash.fill")
                                 }
-                        }
+                                .tint(.red0)
+                            }
+                    }
+                    .listRowSeparator(.hidden) // list 구분선 제거
+                    .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                }
+                // 다 읽은 책이라면
+                else {
+                    ForEach(Array(viewModel.finishReadBooks.enumerated()), id: \.offset) { index, book in
+                        BookItemDetailView(viewModel: viewModel, bookIndex: index, readingStatus: readingStatus)
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    viewModel.finishReadBooks.remove(at: index)
+                                } label: {
+                                    Image(systemName: "trash.fill")
+                                }
+                                .tint(.red0)
+                            }
                     }
                     .listRowSeparator(.hidden) // list 구분선 제거
                     .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                 }
                 
                 // MARK: 홈 화면에서 숨긴 책 및 책 개수
-                if (!hideBookList.isEmpty && readingStatus == .reading) {
+                if (!viewModel.hideBookList().isEmpty && readingStatus == .reading) {
                     HStack {
                         Text("홈 화면에서 숨긴 책")
                             .font(.thirdTitle)
                             .foregroundStyle(.black0)
                         
-                        Text("\(hideBookList.count)")
+                        Text("\(viewModel.hideBookList().count)")
                             .font(.thirdTitle)
+                            .fontDesign(.rounded)
                             .foregroundStyle(.black0)
                         
                         Spacer()
@@ -121,14 +138,12 @@ struct BookRowDetailView: View {
                     .padding(.top, 40)
                     
                     // MARK: 홈 화면에서 숨긴 책 리스트
-                    ForEach(hideBookList, id: \.id) { book in
+                    ForEach(Array(viewModel.hideBookList().enumerated()), id: \.offset) { index, book in
                         // 숨기기 상태가 안 바뀐 것만 리스트로 띄우기
-                        BookItemDetailView(book: book, readingStatus: readingStatus)
+                        BookItemDetailView(viewModel: viewModel, bookIndex: index, readingStatus: readingStatus)
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
-                                    if let tempIndex = bookList.firstIndex(where: { $0.id == book.id }) {
-                                        bookList.remove(at: tempIndex)
-                                    }
+                                    viewModel.deleteBook(isbn: book.isbn)
                                 } label: {
                                     Image(systemName: "trash.fill")
                                 }
@@ -149,26 +164,19 @@ struct BookRowDetailView: View {
     }
     
     // 네비게이션 바 제목 설정하는 함수
-    func title() -> Text {
+    func title() -> String {
         if (readingStatus == .reading) {
-            return Text("읽고 있는 책")
+            return "읽고 있는 책"
         }
         else if (readingStatus == .wantToRead) {
-            return Text("읽고 싶은 책")
+            return "읽고 싶은 책"
         }
         else {
-            return Text("다 읽은 책")
+            return "다 읽은 책"
         }
-    }
-    
-    // 리스트 책 아이템 삭제 함수
-    func deleteBookItem(indexSet: IndexSet) {
-        guard let index = indexSet.first else { return }
-        bookList.remove(at: index)
-        selectedItem = nil
     }
 }
 
 #Preview {
-    BookRowDetailView(readingStatus: .reading, bookList: [RegisteredBook(), RegisteredBook(), RegisteredBook()])
+    BookRowDetailView(readingStatus: .reading)
 }

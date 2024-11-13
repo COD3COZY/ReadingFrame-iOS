@@ -9,54 +9,36 @@ import Foundation
 
 /// 홈 화면의 뷰모델
 final class MainPageViewModel: ObservableObject {
-    /// 다 읽은 책 개수
-    @Published var finishReadBooksCount: Int = 0
+    /// 읽고 있는 책 개수
+    @Published var readingBooksCount: Int = 0
     
     /// 읽고 싶은 책 개수
     @Published var wantToReadBooksCount: Int = 0
     
-    /// 읽고 있는 책 개수
-    @Published var readingBooksCount: Int = 0
-    
-    /// 전체 책 리스트
-    @Published var homeBooksList: [RegisteredBook] = []
+    /// 다 읽은 책 개수
+    @Published var finishReadBooksCount: Int = 0
     
     /// 읽고 있는 책 리스트
-    @Published var homeReadingBooks: [RegisteredBook] = []
+    @Published var homeReadingBooks: [HomeBookModel]? = []
     
     /// 읽고 싶은 책 리스트
-    @Published var homeWantToReadBooks: [RegisteredBook] = []
+    @Published var homeWantToReadBooks: [HomeBookModel]? = []
     
     /// 다 읽은 책 리스트
-    @Published var homeFinishReadBooks: [RegisteredBook] = []
+    @Published var homeFinishReadBooks: [HomeBookModel]? = []
     
     init() {
         getHome { isSuccess in
-            // 실패했을 경우
             if !isSuccess {
-                
+                // TODO: 실패 로직 작성
+                print("홈 조회 실패")
             }
         }
     }
     
     /// 숨김 처리 하지 않은 읽고 있는 책 리스트
-    func notHiddenReadingBooksList() -> [RegisteredBook] {
-        homeReadingBooks.filter { !$0.isHidden }
-    }
-    
-    // 독서 상태가 바뀌지 않은 책 리스트
-    var tempBookList(readingStatus: ReadingStatus) -> [RegisteredBook] {
-        bookList.filter { $0.book.readingStatus == readingStatus }
-    }
-    
-    // 홈 화면에서 숨긴 책 리스트
-    var hideBookList: [RegisteredBook] {
-        bookList.filter { $0.isHidden == true && $0.book.readingStatus == readingStatus}
-    }
-    
-    // 홈 화면에서 숨기지 않은 책 리스트
-    var notHideBookList: [RegisteredBook] {
-        bookList.filter { $0.isHidden == false && $0.book.readingStatus == readingStatus }
+    func notHiddenReadingBooksList() -> [HomeBookModel] {
+        homeReadingBooks?.filter { !($0.isHidden ?? false) } ?? []
     }
     
     /// ReadingStatus값 변환 함수
@@ -71,32 +53,32 @@ final class MainPageViewModel: ObservableObject {
             case .success(let data):
                 if let data = data as? HomeResponse {
                     if let tempList = data.booksList {
-                        self.homeBooksList = tempList.map { list in
-                            RegisteredBook(
-                                book: InitialBook(
-                                    ISBN: list.isbn,
-                                    cover: list.cover,
-                                    title: list.title,
-                                    author: list.author,
-                                    totalPage: list.totalPage ?? 0,
-                                    readingStatus: self.convertReadingStatus(from: list.readingStatus)
-                                ),
-                                isMine: list.isMine ?? false,
+                        let homeBooksList = tempList.map { list in
+                            HomeBookModel(
+                                readingStatus: self.convertReadingStatus(from: list.readingStatus),
+                                isbn: list.isbn,
+                                cover: list.cover,
+                                title: list.title,
+                                author: list.author,
                                 readingPercent: list.readingPercent ?? 0,
-                                readPage: list.readPage ?? 0
+                                totalPage: list.totalPage ?? 0,
+                                readPage: list.readPage ?? 0,
+                                isHidden: false,
+                                isMine: list.isMine ?? false,
+                                isWriteReview: list.isWriteReview ?? false
                             )
                         }
+                        
+                        self.homeReadingBooks = homeBooksList.filter { $0.readingStatus == .reading }
+                        self.homeWantToReadBooks = homeBooksList.filter { $0.readingStatus == .wantToRead }
+                        self.homeFinishReadBooks = homeBooksList.filter { $0.readingStatus == .finishRead }
+                        
+                        self.readingBooksCount = data.readingBooksCount
+                        self.wantToReadBooksCount = data.wantToReadBooksCount
+                        self.finishReadBooksCount = self.homeFinishReadBooks?.count ?? 0
                     }
-                    
-                    self.homeReadingBooks = self.homeBooksList.filter { $0.book.readingStatus == .reading }
-                    self.homeWantToReadBooks = self.homeBooksList.filter { $0.book.readingStatus == .wantToRead }
-                    self.homeFinishReadBooks = self.homeBooksList.filter { $0.book.readingStatus == .finishRead }
-                    
-                    self.readingBooksCount = data.readingBooksCount
-                    self.wantToReadBooksCount = data.wantToReadBooksCount
-                    self.finishReadBooksCount = self.homeFinishReadBooks.count
-                    completion(true)
                 }
+                completion(true)
             case .requestErr(let message):
                 print("Request Err: \(message)")
                 completion(false)
@@ -108,6 +90,9 @@ final class MainPageViewModel: ObservableObject {
                 completion(false)
             case .networkFail(let message):
                 print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
                 completion(false)
             }
         }

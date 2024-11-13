@@ -30,7 +30,7 @@ struct WantToReadRowView: View {
                 
                 // MARK: 읽고 싶은 책 상세 페이지로 이동
                 NavigationLink {
-                    BookRowDetailView(readingStatus: .wantToRead, viewModel: viewModel)
+                    BookRowDetailView(readingStatus: .wantToRead)
                         .toolbarRole(.editor)
                 } label: {
                     Image(systemName: "chevron.right")
@@ -45,9 +45,9 @@ struct WantToReadRowView: View {
             // 세로 스크롤 뷰
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
-                    ForEach(Array(viewModel.homeWantToReadBooks.prefix(10)), id: \.id) { book in
+                    ForEach(Array((viewModel.homeWantToReadBooks ?? []).prefix(10).enumerated()), id: \.offset) { index, book in
                         // 읽고 싶은 책만 리스트로 띄우기
-                        BookItemView(book: book)
+                        BookItemView(viewModel: viewModel, bookIndex: index, bookReadingStatus: .wantToRead)
                     }
                 }
                 .padding(.leading, 16)

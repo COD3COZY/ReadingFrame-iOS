@@ -50,7 +50,7 @@ class BaseAPI {
         case 500:
             return .serverErr(decodedData.message)
         default:
-            return .networkFail(decodedData.message)
+            return .unknown(decodedData.message)
         }
     }
 }

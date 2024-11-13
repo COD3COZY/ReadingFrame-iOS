@@ -27,6 +27,9 @@ final class SignUpViewModel: ObservableObject {
             case .networkFail(let message):
                 print("Network Err: \(message)")
                 completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
             }
         }
     }
@@ -52,6 +55,9 @@ final class SignUpViewModel: ObservableObject {
                 completion(false)
             case .networkFail(let message):
                 print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
                 completion(false)
             }
         }

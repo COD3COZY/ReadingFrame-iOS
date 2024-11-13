@@ -9,9 +9,11 @@ import SwiftUI
 
 /// 모든 책 상세 페이지의 리스트에 들어갈 아이템 뷰
 struct BookItemDetailView: View {
+    /// 읽고 있는 책, 읽고 싶은 책, 다 읽은 책 뷰모델
+    @ObservedObject var viewModel: DetailBookViewModel
     
-    /// 책 객체
-    @Bindable var book: RegisteredBook
+    /// 책 아이템 인덱스 값
+    var bookIndex: Int
     
     /// 독서 상태 여부
     var readingStatus: ReadingStatus
@@ -40,18 +42,19 @@ struct BookItemDetailView: View {
         VStack(spacing: 0) {
             HStack(alignment: .top, spacing: 0) {
                 // MARK: - 책 표지
-                LoadableBookImage(bookCover: book.book.cover)
+                LoadableBookImage(bookCover: viewModel.getBookInfo(readingStatus, bookIndex).0)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .frame(width: 80, height: 120)
                     .padding(.trailing, 10)
+                
                 
                 VStack(alignment: .leading, spacing: 0) {
                     HStack {
                         // MARK: - 배지
                         Badge_Info(
-                            bookType: book.bookType,
-                            category: book.book.categoryName,
-                            isMine: book.isMine
+                            bookType: viewModel.getBookBadge(readingStatus: readingStatus, bookIndex: bookIndex).0,
+                            category: viewModel.getBookBadge(readingStatus: readingStatus, bookIndex: bookIndex).1,
+                            isMine: viewModel.getBookBadge(readingStatus: readingStatus, bookIndex: bookIndex).2
                         )
                         
                         Spacer()
@@ -94,9 +97,9 @@ struct BookItemDetailView: View {
                                 // MARK: 정보 버튼
                                 NavigationLink {
                                     // 책 정보 화면으로 이동
-                                    BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
-                                        .toolbarRole(.editor) // back 텍스트 표시X
-                                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+//                                    BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
+//                                        .toolbarRole(.editor) // back 텍스트 표시X
+//                                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                                 } label: {
                                     Label("정보", systemImage: "info.circle")
                                 }
@@ -111,7 +114,7 @@ struct BookItemDetailView: View {
                                 // MARK: 소장 버튼
                                 Button {
                                     // 소장한 책인 경우
-                                    if (book.isMine) {
+                                    if (viewModel.readingBooks[bookIndex].isMine) {
                                         isShowMineTrueAlert.toggle()
                                     }
                                     // 소장하지 않은 책인 경우
@@ -123,9 +126,9 @@ struct BookItemDetailView: View {
                                 }
                                 
                                 // MARK: 꺼내기 or 홈 화면에서 숨기기 버튼
-                                if (book.isHidden) {
+                                if (viewModel.readingBooks[bookIndex].isHidden) {
                                     Button {
-                                        book.isHidden = false
+                                        viewModel.readingBooks[bookIndex].isHidden = false
                                     } label: {
                                         Label("꺼내기", systemImage: "tray.and.arrow.up")
                                     }
@@ -150,9 +153,9 @@ struct BookItemDetailView: View {
                                 // MARK: 정보 버튼
                                 NavigationLink {
                                     // 책 정보 화면으로 이동
-                                    BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
-                                        .toolbarRole(.editor) // back 텍스트 표시X
-                                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+//                                    BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
+//                                        .toolbarRole(.editor) // back 텍스트 표시X
+//                                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                                 } label: {
                                     Label("정보", systemImage: "info.circle")
                                 }
@@ -160,7 +163,7 @@ struct BookItemDetailView: View {
                                 // MARK: 소장 버튼
                                 Button {
                                     // 소장한 책인 경우
-                                    if (book.isMine) {
+                                    if (viewModel.finishReadBooks[bookIndex].isMine) {
                                         isShowMineTrueAlert.toggle()
                                     }
                                     // 소장하지 않은 책인 경우
@@ -187,13 +190,13 @@ struct BookItemDetailView: View {
                     }
                         
                     // MARK: 책 이름
-                    Text("\(book.book.title)")
+                    Text("\(viewModel.getBookInfo(readingStatus, bookIndex).1)")
                         .font(.headline)
                         .foregroundStyle(.black0)
                         .padding(.top, 10)
                     
                     // MARK: 저자
-                    Text("\(book.book.author)")
+                    Text("\(viewModel.getBookInfo(readingStatus, bookIndex).2)")
                         .font(.footnote)
                         .foregroundStyle(.black0)
                         .padding(.top, 3)
@@ -201,17 +204,17 @@ struct BookItemDetailView: View {
                     // MARK: 진행률
                     if (readingStatus == .reading) {
                         // 읽고 있는 책일 때만 진행률 띄우기
-                        ReadingPercentBar(readPage: book.readPage,
-                                          totalPage: book.book.totalPage,
-                                          readingPercent: book.readingPercent)
+                        ReadingPercentBar(readPage: viewModel.readingBooks[bookIndex].readPage,
+                                          totalPage: viewModel.readingBooks[bookIndex].totalPage,
+                                          readingPercent: viewModel.readingBooks[bookIndex].readingPercent)
                             .frame(height: 55)
                     }
                 }
                 // MARK: - 책 등록 sheet
                 .sheet(isPresented: $isRegisterSheetAppear) {
-                    RegisterBook(book: book.book as! InitialBook,
-                                 readingStatus: $sheetReadingStatus,
-                                 isSheetAppear: $isRegisterSheetAppear)
+//                    RegisterBook(book: book.book as! InitialBook,
+//                                 readingStatus: $sheetReadingStatus,
+//                                 isSheetAppear: $isRegisterSheetAppear)
                 }
                 // MARK: 다 읽음 버튼 클릭 시 나타나는 Alert
                 .alert(
@@ -219,7 +222,7 @@ struct BookItemDetailView: View {
                     isPresented: $isShowFinishReadAlert
                 ) {
                     Button("확인") {
-                        book.book.readingStatus = .finishRead
+                        viewModel.readingBooks[bookIndex].readingStatus = .finishRead
                     }
                     Button("취소", role: .cancel) { }
                 } message: {
@@ -238,7 +241,12 @@ struct BookItemDetailView: View {
                     isPresented: $isShowMineFalseAlert
                 ) {
                     Button("확인") {
-                        book.isMine = true
+                        if readingStatus == .reading {
+                            viewModel.readingBooks[bookIndex].isMine = true
+                        }
+                        else {
+                            viewModel.finishReadBooks[bookIndex].isMine = true
+                        }
                     }
                 }
                 // MARK: 홈 화면에서 숨기기 버튼 클릭 시 팝업 띄우기
@@ -247,7 +255,7 @@ struct BookItemDetailView: View {
                     isPresented: $isShowHideBookAlert
                 ) {
                     Button("확인") {
-                        book.isHidden = true
+                        viewModel.readingBooks[bookIndex].isHidden = true
                     }
                     Button("취소", role: .cancel) { }
                 } message: {
@@ -264,8 +272,8 @@ struct BookItemDetailView: View {
         .padding(.top, 16)
         .background(
             // 책 아이템 클릭 시, 각 화면으로 이동하기
-            NavigationLink("", destination: destinationView(book: book))
-                .opacity(0)
+//            NavigationLink("", destination: destinationView(book: book))
+//                .opacity(0)
         )
     }
     
@@ -290,5 +298,5 @@ struct BookItemDetailView: View {
 }
 
 #Preview {
-    BookItemDetailView(book: RegisteredBook(), readingStatus: .reading)
+    BookItemDetailView(viewModel: DetailBookViewModel(readingStatus: .reading), bookIndex: 0, readingStatus: .reading)
 }

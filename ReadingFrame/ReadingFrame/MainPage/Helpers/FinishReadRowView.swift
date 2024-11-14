@@ -9,9 +9,8 @@ import SwiftUI
 
 /// 홈 화면의 다 읽은 책 리스트
 struct FinishReadRowView: View {
-    
-    /// 다 읽은 책 리스트
-    var finishReadBooksList: [RegisteredBook]
+    /// 홈 화면 뷰모델
+    @ObservedObject var viewModel: MainPageViewModel
     
     /// 그리드 아이템
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
@@ -19,15 +18,19 @@ struct FinishReadRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Text("다 읽은 책 \(finishReadBooksList.count)")
-                    .font(.thirdTitle)
-                    .foregroundStyle(.black0)
+                HStack(spacing: 5) {
+                    Text("다 읽은 책")
+                    Text("\(viewModel.finishReadBooksCount)")
+                        .fontDesign(.rounded)
+                }
+                .font(.thirdTitle)
+                .foregroundStyle(.black0)
                 
                 Spacer()
                 
                 // MARK: 다 읽은 책 상세 페이지로 이동
                 NavigationLink {
-                    BookRowDetailView(readingStatus: .finishRead, bookList: finishReadBooksList)
+                    BookRowDetailView(readingStatus: .finishRead)
                         .toolbarRole(.editor)
                 } label: {
                     Image(systemName: "chevron.right")
@@ -42,9 +45,9 @@ struct FinishReadRowView: View {
             // 세로 스크롤 뷰
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns) {
-                    ForEach(Array(finishReadBooksList.enumerated()), id: \.offset) { index, book in
+                    ForEach(Array((viewModel.homeFinishReadBooks ?? []).enumerated()), id: \.offset) { index, book in
                         // 다 읽은 책 리스트로 띄우기
-                        BookItemView(book: book)
+                        BookItemView(viewModel: viewModel, bookIndex: index, bookReadingStatus: .finishRead)
                     }
                 }
                 .padding(.leading, 16)
@@ -56,5 +59,5 @@ struct FinishReadRowView: View {
 }
 
 #Preview {
-    FinishReadRowView(finishReadBooksList: [RegisteredBook()])
+    FinishReadRowView(viewModel: MainPageViewModel())
 }

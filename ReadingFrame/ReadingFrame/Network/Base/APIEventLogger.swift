@@ -18,7 +18,7 @@ class APIEventLogger: EventMonitor {
         
         print("1️⃣ URL\n")
         print(
-            "URL: " + (request.request?.url?.absoluteString ?? "")  + "\n"
+            "URL: " + (request.request?.url?.absoluteString.decodeURL()! ?? "")  + "\n"
             + "Method: " + (request.request?.httpMethod ?? "") + "\n"
             + "Headers: " + "\(request.request?.allHTTPHeaderFields ?? [:])" + "\n"
         )
@@ -31,7 +31,7 @@ class APIEventLogger: EventMonitor {
     func request<Value>(_ request: DataRequest, didParseResponse response: DataResponse<Value, AFError>) {
         print("🛰 NETWORK Response LOG")
         print(
-          "URL: " + (request.request?.url?.absoluteString ?? "") + "\n"
+            "URL: " + (request.request?.url?.absoluteString.decodeURL()! ?? "") + "\n"
             + "Result: " + "\(response.result)" + "\n"
             + "StatusCode: " + "\(response.response?.statusCode ?? 0)" + "\n"
             + "Data: \(response.data?.toPrettyPrintedString ?? "⚠️ 데이터가 없거나, Encoding에 실패했습니다.")"

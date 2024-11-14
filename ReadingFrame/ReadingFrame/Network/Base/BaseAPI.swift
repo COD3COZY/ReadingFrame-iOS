@@ -29,4 +29,28 @@ class BaseAPI {
         
         return session
     }()
+    
+    /// API 통신 응답 분기 처리
+    func judgeData<T: Codable>(by statusCode: Int, _ data: Data, _ type: T.Type) -> NetworkResult<Any> {
+        let decoder = JSONDecoder()
+        guard let decodedData = try? decoder.decode(CommonResponse<T>.self, from: data)
+        else {
+            return .pathErr // 디코딩 오류
+        }
+        
+        switch statusCode {
+        // 성공
+        case 200...201:
+            print(decodedData.message)
+            return .success(decodedData.data ?? decodedData.status)
+        case 202..<300:
+            return .success(decodedData.status)
+        case 400..<500:
+            return .requestErr(decodedData.message)
+        case 500:
+            return .serverErr(decodedData.message)
+        default:
+            return .unknown(decodedData.message)
+        }
+    }
 }

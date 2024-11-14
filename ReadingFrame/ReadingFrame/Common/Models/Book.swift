@@ -124,7 +124,7 @@ protocol BookRegistered {
     var isMine: Bool { get set }
     
     /// 책유형
-    var bookType: BookType { get set }
+    var bookType: BookType? { get set }
     
     /// 시작 날짜
     var startDate: Date { get set }
@@ -169,7 +169,7 @@ class RegisteredBook: BookRegistered, Identifiable {
         
     // 책 등록할 때 추가되는 책관련 정보
     var isMine: Bool
-    var bookType: BookType
+    var bookType: BookType?
     var startDate: Date
     var recentDate: Date
     var readingPercent: Int
@@ -228,11 +228,11 @@ protocol BookEnum {
 /// 책종류
 enum BookType: Int, BookEnum, CaseIterable {
     /// 종이책
-    case paperbook
+    case paperbook = 0
     /// 전자책
-    case eBook
+    case eBook = 1
     /// 오디오북
-    case audioBook
+    case audioBook = 2
     
     /// 책종류 이름
     var name: String {
@@ -304,21 +304,21 @@ enum ReadingStatus: Int, BookEnum, CaseIterable {
 /// 카테고리(장르)
 enum CategoryName: Int, BookEnum, CaseIterable {
     /// 인문사회
-    case humanSocial
+    case humanSocial = 0
     /// 문학
-    case literature
+    case literature = 1
     /// 에세이
-    case essays
+    case essays = 2
     /// 과학
-    case science
+    case science = 3
     /// 자기계발
-    case selfImprovement
+    case selfImprovement = 4
     /// 예술
-    case art
+    case art = 5
     /// 원서
-    case foreign
+    case foreign = 6
     /// 기타
-    case etc
+    case etc = 7
     
     /// 카테고리 이름
     var name: String {

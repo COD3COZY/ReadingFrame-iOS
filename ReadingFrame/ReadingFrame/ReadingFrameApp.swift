@@ -13,7 +13,7 @@ import KakaoSDKCommon
 struct ReadingFrameApp: App {
     
     init() {
-        KakaoSDK.initSDK(appKey: "9b636210ecf5cdb192ec1b2dbea2abbd")
+        KakaoSDK.initSDK(appKey: Bundle.main.object(forInfoDictionaryKey: "KAKAO_APP_KEY") as! String)
     }
     
     var body: some Scene {

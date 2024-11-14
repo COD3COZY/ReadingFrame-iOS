@@ -8,21 +8,23 @@
 import Foundation
 import Alamofire
 
-/// 카카오 회원가입 Router
-enum KakaoSignUpService {
+/// 회원가입 Router
+enum SignUpService {
     // 카카오 회원가입 API
     case signUpKakako(KakaoSignUpRequest)
+    
+    // 애플 회원가입 API
 }
 
-extension KakaoSignUpService: TargetType {
+extension SignUpService: TargetType {
     var method: HTTPMethod {
         switch self {
         case .signUpKakako:
-            return .get
+            return .post
         }
     }
     
-    var path: String {
+    var endPoint: String {
         switch self {
         case .signUpKakako:
             return APIConstants.signUpKakaoURL
@@ -32,7 +34,7 @@ extension KakaoSignUpService: TargetType {
     var parameters: RequestParams {
         switch self {
         case .signUpKakako(let request):
-            return .body(request)
+            return .requestBody(request)
         }
     }
 }

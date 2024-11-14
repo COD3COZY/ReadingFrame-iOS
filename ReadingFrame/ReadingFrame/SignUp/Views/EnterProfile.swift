@@ -24,6 +24,9 @@ struct EnterProfile: View {
     /// 가입이 완료되면 메인화면으로 보여줄 때 변수
     @State var isSignUpCompleted: Bool = false
     
+    /// 뷰모델
+    @ObservedObject var viewModel = SignUpViewModel()
+    
     // MARK: - View
     var body: some View {
         if isSignUpCompleted == false {
@@ -358,19 +361,29 @@ extension EnterProfile {
                 
                 // MARK: 회원가입 API 호출
                 if signupInfo.socialLoginType == .kakao {
-                    // TODO: 카카오 회원가입 API 호출
-                    // - keychain에서 email 불러오기
+                    // 카카오 회원가입 API 호출
+                    viewModel.signUpKakao(request: KakaoSignUpRequest(nickname: signupInfo.nickname, profileImageCode: signupInfo.profileImageCode, email: KeyChain.shared.getKeychainItem(key: .kakaoEmail)!)) { success in
+                        // 응답 성공
+                        if success {
+                            // 닉네임 키체인에 저장
+                            // 카카오, 애플 유형에 따라 key 다르게 저장
+                            if KeyChain.shared.addKeychainItem(key: signupInfo.socialLoginType == .kakao ? KeychainKeys.kakaoNickname : KeychainKeys.appleNickname, value: signupInfo.nickname) {
+                            }
+                            
+                            // 메인 화면으로 이동
+                            withAnimation {
+                                isSignUpCompleted = true
+                            }
+                        }
+                        // 응답 실패
+                        else {
+                            
+                        }
+                    }
                     
                 } else {
                     // TODO: 애플 회원가입 API 호출
                     // - keychain에서 UserIdentifier, idToken 불러오기
-                }
-                
-                // 응답 성공 시
-                // 닉네임 키체인에 저장
-                // 카카오, 애플 유형에 따라 key 다르게 저장
-                if KeyChain.shared.addKeychainItem(key: signupInfo.socialLoginType == .kakao ? KeychainKeys.kakaoNickname : KeychainKeys.appleNickname, value: signupInfo.nickname) {
-                    print("닉네임 키체인에 저장 완!")
                 }
                 
                 // 메인화면으로 넘어가기

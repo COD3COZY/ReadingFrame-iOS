@@ -16,35 +16,6 @@ struct ReadingNote: View {
     /// View Model
     @StateObject var vm = ReadingNoteViewModel()
     
-    /// 뷰모델의 책 객체: 편의를 위한 계산 프로퍼티
-    var bookInfo: ReadingNoteModel {
-        // 뷰모델에 책이 있으면
-        if let vmBookInfo = vm.book {
-            return vmBookInfo
-        }
-        // 뷰모델에 책 없는 경우
-        else {
-            return ReadingNoteModel(cover: "",
-                                    title: "책제목",
-                                    author: "저자명",
-                                    categoryName: .humanSocial,
-                                    totalPage: 380, readPage: 38,
-                                    readingPercent: 10,
-                                    keywordReview: nil,
-                                    commentReview: nil,
-                                    selectReview: nil,
-                                    isMine: false,
-                                    bookType: .paperbook,
-                                    readingStatus: .reading,
-                                    mainLocation: nil,
-                                    startDate: Date(),
-                                    recentDate: Date(),
-                                    bookmarks: nil,
-                                    memos: nil,
-                                    characters: nil)
-        }
-    }
-    
     /// 독서노트 삭제 Alert이 띄워졌는지 확인하기 위한 변수
     @State private var isShowBookDeleteAlert = false
     
@@ -71,6 +42,11 @@ struct ReadingNote: View {
     
     /// 기록하기 바텀 시트 변수
     @State var selectedTab: String = "책갈피"
+    
+    /// 리뷰 fullscreenCover 띄움 여부 변수
+    @State var showReviewFullscreen: Bool = false
+    
+    
     
     // MARK: - View
     var body: some View {
@@ -205,7 +181,7 @@ struct ReadingNote: View {
     
     /// 소장 버튼의 텍스트 색상을 결정하는 변수
     var isMineBtnColor: Color {
-        if bookInfo.isMine {
+        if ((vm.book?.isMine) != nil) {
             return .white
         } else {
             return .greyText
@@ -272,12 +248,12 @@ struct ReadingNote: View {
     
     /// 읽기 시작한 날 정할 수 있는 범위
     var startDateRange: ClosedRange<Date> {
-        DateRange().dateRange(date: bookInfo.startDate)
+        DateRange().dateRange(date: vm.book?.startDate ?? Date())
     }
     
     /// 다읽은 날 정할 수 있는 범위(읽기 시작한 날 ~ 현재)
     var recentDateRange: ClosedRange<Date> {
-        let min = bookInfo.startDate
+        let min = vm.book?.startDate ?? Date()
         let max = Date()
         return min...max
     }
@@ -336,7 +312,7 @@ extension View {
 extension ReadingNote {
     // MARK: - 책 표지
     private var coverImage: some View {
-        LoadableBookImage(bookCover: bookInfo.cover)
+        LoadableBookImage(bookCover: vm.book?.cover ?? "")
             .clipShape(RoundedRectangle(cornerRadius: 15))
             .frame(width: 138, height: 210)
             .frame(maxWidth: .infinity)
@@ -348,19 +324,19 @@ extension ReadingNote {
     private var basicBookInfo: some View {
         VStack(alignment: .leading, spacing: 0) {
             // 책정보 배지
-            Badge_Info(category: bookInfo.categoryName)
+            Badge_Info(category: vm.book?.categoryName ?? .etc)
                 .padding(.top, 10)
                 .padding(.horizontal, 16)
             
             // 책 이름
-            Text(bookInfo.title)
+            Text(vm.book?.title ?? "")
                 .font(.thirdTitle)
                 .foregroundStyle(.black0)
                 .padding(.top, 15)
                 .padding(.horizontal, 16)
             
             // 저자
-            Text(bookInfo.author)
+            Text(vm.book?.author ?? "")
                 .font(.footnote)
                 .foregroundStyle(.black0)
                 .padding(.top, 2)
@@ -401,17 +377,17 @@ extension ReadingNote {
             // TODO: 여기 로직 결정하고 반영하기
             Button {
                 withAnimation {
-                    if bookInfo.readingStatus == .reading {
+                    if vm.book?.readingStatus == .reading {
                         // 읽는중이면 다읽음으로
-                        print("readingstatus: \(bookInfo.readingStatus)")
+                        print("readingstatus: \(String(describing: vm.book?.readingStatus))")
                         vm.turnToFinishRead()
                         print("읽는중 -> 다읽음")
-                        print("readingstatus: \(bookInfo.readingStatus)")
+                        print("readingstatus: \(String(describing: vm.book?.readingStatus))")
                     }
-                    else if bookInfo.readingStatus == .finishRead {
+                    else if vm.book?.readingStatus == .finishRead {
                         // 다읽음이면 읽는중으로
                         print("다읽은 상태라 못돌림")
-                        print("readingstatus: \(bookInfo.readingStatus)")
+                        print("readingstatus: \(String(describing: vm.book?.readingStatus))")
                     }
                 }
             } label: {
@@ -421,7 +397,7 @@ extension ReadingNote {
                     Text("다읽음")
                         .fontWeight(.semibold)
                 }
-                .foregroundStyle(bookInfo.readingStatus == .reading ? .greyText : .white) // 다 읽으면 흰색, 읽는중이면 회색
+                .foregroundStyle(vm.book?.readingStatus == .reading ? .greyText : .white) // 다 읽으면 흰색, 읽는중이면 회색
             }
             .padding(.vertical, 18)
             .frame(maxWidth: .infinity)
@@ -523,19 +499,19 @@ extension ReadingNote {
             
             // MARK: 진행 막대 반원
             ZStack(alignment: .center) {
-                HalfCricleGraph(progress: CGFloat(bookInfo.readingPercent) / 100)
+                HalfCricleGraph(progress: CGFloat(vm.book?.readingPercent ?? 0) / 100)
                     .frame(maxWidth: .infinity)
                     .padding(.top, 10)
                     .padding(.horizontal, 60)
                     .padding(.bottom, -100)
                 
                 VStack(alignment: .center, spacing: 5) {
-                    Text("\(bookInfo.readingPercent)%")
+                    Text("\(vm.book?.readingPercent ?? 0)%")
                         .font(.system(size: 42, weight: .bold))
                         .fontDesign(.rounded)
                         .foregroundStyle(.black0)
                     
-                    Text("\(bookInfo.readPage)/\(bookInfo.totalPage)")
+                    Text("\(vm.book?.readPage ?? 0)/\(vm.book?.totalPage ?? 0)")
                         .font(.caption)
                         .foregroundStyle(.greyText)
                 }
@@ -558,8 +534,8 @@ extension ReadingNote {
                 .padding(.trailing, 8)
             
             // 대표위치가 있을 때: 장소 이름 + 수정 & 삭제 메뉴
-            if (bookInfo.mainLocation != nil) {
-                Text(bookInfo.mainLocation!)
+            if let mainLocation = vm.book?.mainLocation {
+                Text(mainLocation)
                     .foregroundStyle(.black0)
                 
                 Spacer()
@@ -609,7 +585,7 @@ extension ReadingNote {
     private var reviewBox: some View {
         VStack(spacing: 0) {
             // 리뷰가 있다면
-            if (bookInfo.selectReview != nil) {
+            if (vm.book?.selectReview != nil) {
                 HStack(alignment: .top, spacing: 0) {
                     Image(systemName: "bubble")
                         .foregroundStyle(.black0)
@@ -624,7 +600,7 @@ extension ReadingNote {
                         
                         // MARK: 리뷰 한줄평
                         if let comment =
-                            bookInfo.commentReview, !comment.isEmpty {
+                            vm.book?.commentReview, !comment.isEmpty {
                                 Text(comment)
                                 .font(.subheadline)
                                 .foregroundStyle(.black0)
@@ -656,10 +632,10 @@ extension ReadingNote {
                 VStack(alignment: .center) {
                     // MARK: 리뷰 한단어&키워드
                     if let selectReviews =
-                        bookInfo.selectReview, !selectReviews.isEmpty {
+                        vm.book?.selectReview, !selectReviews.isEmpty {
                         // 한단어 리뷰 있으면 같이 보여주기
                         if let keyword =
-                            bookInfo.keywordReview, !keyword.isEmpty {
+                            vm.book?.keywordReview, !keyword.isEmpty {
                             SelectReviewClusterView(
                                 selectReviews: selectReviews,
                                 keyword: keyword
@@ -718,7 +694,7 @@ extension ReadingNote {
                     .font(.headline)
                     .foregroundStyle(.black0)
                 
-                Text("\(bookInfo.bookmarks?.count ?? 0)")
+                Text("\(vm.book?.bookmarks?.count ?? 0)")
                     .font(.headline)
                     .foregroundStyle(.main)
                     .padding(.leading, 5)
@@ -726,7 +702,7 @@ extension ReadingNote {
                 Spacer()
                 
                 // 책갈피가 1개라도 있다면 더보기 버튼 띄우기
-                if (bookInfo.bookmarks?.count ?? 0 > 0) {
+                if (vm.book?.bookmarks?.count ?? 0 > 0) {
                     // MARK: 책갈피 목록 더보기 버튼
                     NavigationLink {
                         // TODO: TabReadingNote이랑도 원만한 합의 보기...
@@ -744,7 +720,7 @@ extension ReadingNote {
             
             // MARK: 책갈피 리스트
             // 책갈피가 있을 때
-            if let bookmarks = bookInfo.bookmarks, !bookmarks.isEmpty {
+            if let bookmarks = vm.book?.bookmarks, !bookmarks.isEmpty {
                 NavigationLink {
                     // TODO: 여기 TabReadingNote이랑도 원만한 합의 보기...
                     TabReadingNote(book: book, selectedTab: .bookmark)
@@ -807,7 +783,7 @@ extension ReadingNote {
                     .font(.headline)
                     .foregroundStyle(.black0)
                 
-                Text("\(bookInfo.memos?.count ?? 0)")
+                Text("\(vm.book?.memos?.count ?? 0)")
                     .font(.headline)
                     .foregroundStyle(.main)
                     .padding(.leading, 5)
@@ -815,7 +791,7 @@ extension ReadingNote {
                 Spacer()
                 
                 // 메모가 1개라도 있다면 더보기 버튼 띄우기
-                if (bookInfo.memos?.count ?? 0 > 0) {
+                if (vm.book?.memos?.count ?? 0 > 0) {
                     // MARK: 메모 목록 더보기 버튼
                     NavigationLink {
                         // TODO: 여기도 원만한 합의가 필요
@@ -833,7 +809,7 @@ extension ReadingNote {
             
             // MARK: 메모 리스트
             // 메모가 1개라도 있다면
-            if let memos = bookInfo.memos, !memos.isEmpty {
+            if let memos = vm.book?.memos, !memos.isEmpty {
                 LazyVStack(spacing: 8) {
                     ForEach(memos.indices, id: \.self) { index in
                         NavigationLink {
@@ -889,7 +865,7 @@ extension ReadingNote {
                     .font(.headline)
                     .foregroundStyle(.black0)
                 
-                Text("\(bookInfo.characters?.count ?? 0)")
+                Text("\(vm.book?.characters?.count ?? 0)")
                     .font(.headline)
                     .foregroundStyle(.main)
                     .padding(.leading, 5)
@@ -897,7 +873,7 @@ extension ReadingNote {
                 Spacer()
                 
                 // 인물사전이 1개라도 있다면 더보기 버튼 띄우기
-                if (bookInfo.characters?.count ?? 0 > 0) {
+                if (vm.book?.characters?.count ?? 0 > 0) {
                     // MARK: 인물사전 목록 더보기 버튼
                     NavigationLink {
                         TabReadingNote(book: book, selectedTab: .character)
@@ -914,7 +890,7 @@ extension ReadingNote {
             
             // MARK: 인물사전 리스트
             // 인물사전이 1개라도 있다면
-            if let characters = bookInfo.characters, !characters.isEmpty {
+            if let characters = vm.book?.characters, !characters.isEmpty {
                 ScrollView(.horizontal) {
                     LazyHStack(spacing: 10) {
                         ForEach(characters.indices, id: \.self) { index in

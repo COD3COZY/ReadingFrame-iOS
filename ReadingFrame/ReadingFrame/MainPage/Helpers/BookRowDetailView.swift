@@ -25,7 +25,7 @@ struct BookRowDetailView: View {
             // MARK: 검색 바
             NavigationLink {
                 // 검색 바 클릭 시 검색 화면으로 이동
-                SearchView()
+                Search()
                     .toolbarRole(.editor) // back 텍스트 표시X
             } label: {
                 HStack {

@@ -101,7 +101,7 @@ struct notRegisteredBook: View {
                 
                 // 버튼 클릭 시 Search 화면으로 이동
                 NavigationLink {
-                    SearchView()
+                    Search()
                         .toolbarRole(.editor) // back 텍스트 표시X
                         .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                 } label: {

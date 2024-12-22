@@ -68,7 +68,7 @@ class ReadingNoteViewModel: ObservableObject {
         let weekBefore = calendar.date(byAdding: .day, value: -7, to: Date())   // 일주일전
         let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())    // 어제
         
-        self.book = ReadingNoteModel(cover: "",
+        self.book = ReadingNoteModel(cover: "https://image.yes24.com/goods/96565175/XL",
                                 title: "사이보그가 되다",
                                 author: "김초엽, 김원영",
                                 categoryName: .humanSocial,

@@ -16,6 +16,9 @@ enum readingNoteTab : String, CaseIterable {
 
 struct TabReadingNote: View {
     // MARK: - PROPERTY
+    /// 뷰모델
+    @StateObject var vm = TabReadingNoteViewModel()
+    
     @Bindable var book: RegisteredBook
     
     /// 선택된 탭이 뭔지
@@ -43,7 +46,7 @@ struct TabReadingNote: View {
                 // 탭바 및 애니메이션
                 tabAnimate()
                 
-                if (selectedTab != .character) {
+                if (vm.selectedTab != .character) {
                     // MARK: 리스트 조회 방법
                     HStack(spacing: 5) {
                         Spacer()
@@ -77,7 +80,7 @@ struct TabReadingNote: View {
                 }
                 
                 // 스크롤 내부 뷰
-                switch selectedTab {
+                switch vm.selectedTab {
                     
                 // 책갈피를 클릭했다면: 책갈피 탭 뷰
                 case .bookmark:
@@ -121,7 +124,7 @@ struct TabReadingNote: View {
                 // 책갈피 등록 sheet 띄우기
                 EditAllRecord(
                     book: book,
-                    selectedTab: selectedTab.rawValue,
+                    selectedTab: vm.selectedTab.rawValue,
                     isSheetAppear: $isRecordSheetAppear,
                     isPickerAppear: isPickerAppear
                 )
@@ -129,6 +132,17 @@ struct TabReadingNote: View {
         } //: ZStack
         .navigationTitle("나의 기록")
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: vm.selectedTab) { oldValue, newValue in
+            // 탭이 달라질 때 데이터 불러오기
+            switch newValue {
+            case .bookmark:
+                vm.fetchBookmarkData()
+            case .memo:
+                vm.fetchMemoData()
+            case .character:
+                vm.fetchCharacterData()
+            }
+        }
     }
     
     // MARK: - FUNCTION
@@ -140,11 +154,11 @@ struct TabReadingNote: View {
                     VStack(spacing: 0) {
                         Text(item.rawValue)
                             .font(.subheadline)
-                            .fontWeight(selectedTab == item ? .semibold : .regular)
+                            .fontWeight(vm.selectedTab == item ? .semibold : .regular)
                             .frame(maxWidth: .infinity/3, minHeight: 54, alignment: .center)
                             .foregroundStyle(.black)
                         
-                        if selectedTab == item {
+                        if vm.selectedTab == item {
                             Capsule()
                                 .foregroundStyle(.black0)
                                 .frame(height: 3)
@@ -159,7 +173,7 @@ struct TabReadingNote: View {
                     }
                     .onTapGesture {
                         withAnimation(.easeInOut) {
-                            self.selectedTab = item
+                            self.vm.selectedTab = item
                         }
                     }
                 }
@@ -175,30 +189,7 @@ struct TabReadingNote: View {
 
 // MARK: - PREVIEW
 #Preview {
-    TabReadingNote(book: RegisteredBook( /*bookmarks: [
-        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 1, location: "위치"),
-        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 2, location: "위치"),
-        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 3, location: "위치"),
-        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 4, location: "위치"),
-        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 5, location: "위치"),
-        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 6, location: "위치"),
-        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 7, location: "위치"),
-        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 8, location: "위치"),
-        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 9, location: "위치"),
-        Bookmark(id: "", date: Date(), markPage: 35, markPercent: 0, location: "위치")
-    ]*/
-        characters: [
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구저쩌구라고 합니다 하지만 슬픈 얼굴이지요 너무 슬퍼서 울고 있는 얼굴입니다 하지만", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루")
-        ]
-                                       ))
+    TabReadingNote(book: RegisteredBook())
 }
 
 extension TabReadingNote {
@@ -206,7 +197,7 @@ extension TabReadingNote {
     private var bookmarkTabView: some View {
         VStack {
             // 책갈피가 있다면
-            if let bookmarks = book.bookmarks, !bookmarks.isEmpty {
+            if let bookmarks = vm.bookmarkData, !bookmarks.isEmpty {
                 List {
                     ForEach(Array(bookmarks.enumerated()), id: \.offset) { index, item in
                         BookmarkView(bookmark: item)
@@ -215,7 +206,7 @@ extension TabReadingNote {
 //                            .padding(.bottom, index == bookmarks.count - 1 ? 100 : 0) // 기록하기 버튼 눌러도 마지막 리스트 항목이 가려지지 않도록
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
-                                    book.bookmarks?.remove(at: index)
+                                    vm.bookmarkData?.remove(at: index)
                                 } label: {
                                     Image(systemName: "trash.fill")
                                 }
@@ -238,14 +229,14 @@ extension TabReadingNote {
     private var memoTabView: some View {
         VStack {
             // 메모가 있다면
-            if let memos = book.memos, !memos.isEmpty {
+            if let memos = vm.memoData, !memos.isEmpty {
                 List {
                     ForEach(Array(memos.enumerated()), id: \.offset) { index, item in
                         MemoView(memo: item)
                             .padding(.vertical, 24)
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
-                                    book.memos?.remove(at: index)
+                                    vm.memoData?.remove(at: index)
                                 } label: {
                                     Image(systemName: "trash.fill")
                                 }
@@ -254,6 +245,7 @@ extension TabReadingNote {
                             .listRowInsets(EdgeInsets()) // 전체 패딩 제거
                     }
                 }
+                .listStyle(.plain)
             }
             // 메모가 없다면
             else {
@@ -266,7 +258,7 @@ extension TabReadingNote {
     private var characterTabView: some View {
         VStack {
             // 인물사전에 값이 있다면
-            if let characters = book.characters, !characters.isEmpty {
+            if let characters = vm.characterData, !characters.isEmpty {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(Array(characters.enumerated()), id: \.offset) { index, item in

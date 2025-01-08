@@ -98,6 +98,7 @@ class ReadingNoteViewModel: ObservableObject {
         book?.isMine.toggle()
     }
     
+    // MARK: 독서상태(reading status) 변경 관련
     /// 책 다읽음 상태로 바꾸기
     func turnToFinishRead() {
         // readingStatus = finishRead
@@ -119,7 +120,7 @@ class ReadingNoteViewModel: ObservableObject {
         
         book?.bookmarks?.append(newBookmark)
         
-        // TODO: 위 작업들을 다 하거나 아니면 독서상태 변경 API 하나 호출한 다음에 새로고침하거나 결정하기..
+        // TODO: 독서상태 변경 API 호출하기
     }
     
     // TODO: 로직 확정하고 반영하기
@@ -129,6 +130,15 @@ class ReadingNoteViewModel: ObservableObject {
         
         // 마지막 읽은 날짜 버튼 누르는 당일로 수정
         
+    }
+    
+    // MARK: 책유형 관련
+    /// 책 유형 변경하기
+    func changeBookType(to bookType: BookType) {
+        // 화면상에서 바꾸기
+        self.book?.bookType = bookType
+        
+        // TODO: 책유형 변경 API 호출하기
     }
     
 }

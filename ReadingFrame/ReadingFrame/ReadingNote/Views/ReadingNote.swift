@@ -11,7 +11,7 @@ import SwiftUI
 struct ReadingNote: View {
     // MARK: - Properties
     /// 책 객체
-    // TODO: 페이지 연결 로직들 수정하고 삭제 필!
+    // TODO: book 변수 페이지 연결 로직들 수정하고 삭제 필!
     @Bindable var book: RegisteredBook
     
     /// View Model
@@ -44,6 +44,31 @@ struct ReadingNote: View {
     /// 리뷰 fullscreenCover 띄움 여부 변수
     @State var showReviewFullscreen: Bool = false
     
+    /// 책 유형 버튼 표시 여부
+    @State private var showBookTypeButtons: Bool = false
+    
+    // MARK: - Computed Properties
+    /// 소장 버튼의 텍스트 색상을 결정하는 변수
+    var isMineBtnColor: Color {
+        if ((vm.book?.isMine) != nil) {
+            return .white
+        } else {
+            return .greyText
+        }
+    }
+    
+    /// 읽기 시작한 날 정할 수 있는 범위
+    var startDateRange: ClosedRange<Date> {
+        DateRange().dateRange(date: vm.book?.startDate ?? Date())
+    }
+    
+    /// 다읽은 날 정할 수 있는 범위(읽기 시작한 날 ~ 현재)
+    var recentDateRange: ClosedRange<Date> {
+        let min = vm.book?.startDate ?? Date()
+        let max = Date()
+        return min...max
+    }
+    
     // MARK: - init
     // TODO: 아규먼트에 isbn 받아서 만드는 방식으로 수정하기, 현재는 더미 isbn 넣어둔 상태!
     init(book: RegisteredBook) {
@@ -73,12 +98,17 @@ struct ReadingNote: View {
                                                         
                             // MARK: 3개 버튼 바
                             threeButtonBar
+                                .frame(height: 200, alignment: .top)
+                                .zIndex(1)
                             
                             // MARK: 날짜 리스트
                             dateList
+                                .padding(.top, -120)
+                                .zIndex(0)
                             
                             // MARK: 독서 진행률
                             readingProgress
+                                .zIndex(0)
                             
                             // MARK: 대표위치
                             locationBox
@@ -197,116 +227,8 @@ struct ReadingNote: View {
         // TODO: 구매/대여한 위치 클릭 시 나타나는 Sheet
 //        .sheet(isPresented: $showSearchLocation, content: SearchLocation(showingSearchLocation: $showSearchLocation, pickedPlaceMark: <#Binding<MKPlacemark?>#>))
     }
-    
-    /// 소장 버튼의 텍스트 색상을 결정하는 변수
-    var isMineBtnColor: Color {
-        if ((vm.book?.isMine) != nil) {
-            return .white
-        } else {
-            return .greyText
-        }
-    }
-    
-    
-    /// 책 유형의 아이콘을 결정하는 변수
-    var bookTypeIcon: String {
-        if vm.book?.bookType == .paperbook {
-            return "book.pages.fill"
-        }
-        else if vm.book?.bookType == .eBook {
-            return "smartphone"
-        }
-        else {
-            return "headphones"
-        }
-    }
-    
-    /// 책 유형의 텍스트를 결정하는 변수
-    var bookTypeText: String {
-        if vm.book?.bookType == .paperbook {
-            return "종이책"
-        }
-        else if vm.book?.bookType == .eBook {
-            return "전자책"
-        }
-        else {
-            return "오디오북"
-        }
-    }
-    
-    /// 버튼에 들어갈 날짜 정보
-    func dateToString(date: Date) -> String {
-        // DateFormatter 지정
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy.MM.dd."
-        
-        // Date -> String
-        let dateFormat = dateFormatter.string(from: date)
-        
-        return dateFormat
-    }
-    
-    /// 읽기 시작한 날 정할 수 있는 범위
-    var startDateRange: ClosedRange<Date> {
-        DateRange().dateRange(date: vm.book?.startDate ?? Date())
-    }
-    
-    /// 다읽은 날 정할 수 있는 범위(읽기 시작한 날 ~ 현재)
-    var recentDateRange: ClosedRange<Date> {
-        let min = vm.book?.startDate ?? Date()
-        let max = Date()
-        return min...max
-    }
 }
 
-/// 3개 버튼의 위치 저장을 위함
-struct ButtonPosPreferenceKey: PreferenceKey {
-    static var defaultValue: CGSize = .zero
-    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {}
-}
-
-#Preview {
-    ReadingNote(book: RegisteredBook())
-}
-
-// 커스텀 드롭다운 만들려고 시도한 코드들
-extension View {
-    func customContextMenu<CustomView: View>(
-        @ViewBuilder customView: @escaping () -> CustomView,
-        menu: @escaping () -> UIMenu,
-        tapped: @escaping () -> () = {}
-    ) -> some View {
-        self.modifier(
-            CustomDropDownModifier(
-                customView: customView(),
-                menu: menu(),
-                tapped: tapped
-            )
-        )
-    }
-    
-    func readSize(onChange: @escaping (CGSize) -> Void) -> some View {
-        background(
-            GeometryReader { proxy in
-                Color.clear
-                    .preference(key: ButtonPosPreferenceKey.self, value: proxy.size)
-            }
-        )
-        .onPreferenceChange(ButtonPosPreferenceKey.self, perform: onChange)
-    }
-    
-    func dismissTopViewController() {
-        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        let window = windowScene?.windows.first
-        
-        if var topController = window?.rootViewController {
-            while let presentedViewController = topController.presentedViewController {
-                topController = presentedViewController
-            }
-            topController.dismiss(animated: true)
-        }
-    }
-}
 
 // MARK: - View Parts
 extension ReadingNote {
@@ -346,93 +268,181 @@ extension ReadingNote {
     
     // MARK: - 3개 버튼 바
     private var threeButtonBar: some View {
-        HStack(alignment: .center, spacing: 0) {
-            // MARK: 소장 버튼
-            Button {
-                withAnimation {
-                    vm.toggleIsMine()
-                }
-            } label: {
-                HStack(alignment: .center, spacing: 0) {
-                    Image(systemName: "checkmark")
-                        .font(.headline)
-                        .foregroundStyle(isMineBtnColor)
-                        .padding(.trailing, 7)
-                    Text("소장")
-                        .foregroundStyle(isMineBtnColor)
-                        .fontWeight(.semibold)
-                }
-                .padding([.top, .bottom], 18)
-                .frame(maxWidth: .infinity)
-                .background(.black0)
-                .clipShape(RoundedRectangle(cornerRadius: 15))
-            }
-            
-            // 구분선
-            Rectangle()
-                .foregroundStyle(.greyText)
-                .frame(width: 0.7, height: 40)
-            
-            // MARK: 독서 상태 변경 버튼(읽는중, 다읽음)
-            // TODO: 여기 로직 결정하고 반영하기
-            Button {
-                withAnimation {
-                    if vm.book?.readingStatus == .reading {
-                        // 읽는중이면 다읽음으로
-                        print("readingstatus: \(String(describing: vm.book?.readingStatus))")
-                        vm.turnToFinishRead()
-                        print("읽는중 -> 다읽음")
-                        print("readingstatus: \(String(describing: vm.book?.readingStatus))")
+        ZStack(alignment: .top) {
+            HStack(alignment: .center, spacing: 0) {
+                // MARK: 소장 버튼
+                Button {
+                    withAnimation {
+                        vm.toggleIsMine()
                     }
-                    else if vm.book?.readingStatus == .finishRead {
-                        // 다읽음이면 읽는중으로
-                        print("다읽은 상태라 못돌림")
-                        print("readingstatus: \(String(describing: vm.book?.readingStatus))")
+                } label: {
+                    HStack(alignment: .center, spacing: 0) {
+                        Image(systemName: "checkmark")
+                            .font(.headline)
+                            .foregroundStyle(isMineBtnColor)
+                            .padding(.trailing, 7)
+                        Text("소장")
+                            .foregroundStyle(isMineBtnColor)
+                            .fontWeight(.semibold)
                     }
+                    .padding([.top, .bottom], 18)
+                    .frame(maxWidth: .infinity)
+                    .background(.black0)
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
                 }
-            } label: {
-                HStack(alignment: .center, spacing: 7) {
-                    Image(systemName: "book.fill")
-                        .font(.headline)
-                    Text("다읽음")
-                        .fontWeight(.semibold)
-                }
-                .foregroundStyle(vm.book?.readingStatus == .reading ? .greyText : .white) // 다 읽으면 흰색, 읽는중이면 회색
-            }
-            .padding(.vertical, 18)
-            .frame(maxWidth: .infinity)
-            .background(.black0)
-            
-            // 구분선
-            Rectangle()
-                .foregroundStyle(.greyText)
-                .frame(width: 0.7, height: 40)
-            
-            // MARK: 책 유형 변경 버튼
-            Button {
-                // TODO: 눌렀을 때 책 유형 변경하는 버튼들 나와야
                 
-            } label: {
-                HStack(alignment: .center, spacing: 0) {
-                    Image(systemName: bookTypeIcon)
-                        .font(.headline)
-                        .foregroundStyle(.white)
-                        .padding(.trailing, 7)
-                    Text(bookTypeText)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.white)
+                // 구분선
+                Rectangle()
+                    .foregroundStyle(.greyText)
+                    .frame(width: 0.7, height: 40)
+                
+                // MARK: 독서 상태 변경 버튼(읽는중, 다읽음)
+                // TODO: 여기 로직 결정하고 반영하기
+                Button {
+                    withAnimation {
+                        if vm.book?.readingStatus == .reading {
+                            // 읽는중이면 다읽음으로
+                            print("readingstatus: \(String(describing: vm.book?.readingStatus))")
+                            vm.turnToFinishRead()
+                            print("읽는중 -> 다읽음")
+                            print("readingstatus: \(String(describing: vm.book?.readingStatus))")
+                        }
+                        else if vm.book?.readingStatus == .finishRead {
+                            // 다읽음이면 읽는중으로
+                            print("다읽은 상태라 못돌림")
+                            print("readingstatus: \(String(describing: vm.book?.readingStatus))")
+                        }
+                    }
+                } label: {
+                    HStack(alignment: .center, spacing: 7) {
+                        Image(systemName: "book.fill")
+                            .font(.headline)
+                        Text("다읽음")
+                            .fontWeight(.semibold)
+                    }
+                    .foregroundStyle(vm.book?.readingStatus == .reading ? .greyText : .white) // 다 읽으면 흰색, 읽는중이면 회색
                 }
-                .padding([.top, .bottom], 18)
+                .padding(.vertical, 18)
                 .frame(maxWidth: .infinity)
                 .background(.black0)
-                .clipShape(RoundedRectangle(cornerRadius: 15))
+                
+                // 구분선
+                Rectangle()
+                    .foregroundStyle(.greyText)
+                    .frame(width: 0.7, height: 40)
+                
+                // MARK: 책 유형 변경 버튼
+                Button {
+                    withAnimation {
+                        showBookTypeButtons.toggle()
+                    }
+                } label: {
+                    HStack(alignment: .center, spacing: 0) {
+                        Image(systemName: getBookTypeIcon(type: vm.book?.bookType ?? .paperbook))
+                            .font(.headline)
+                            .foregroundStyle(.white)
+                            .padding(.trailing, 7)
+                        Text(getBookTypeText(type: vm.book?.bookType ?? .paperbook))
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.white)
+                    }
+                    .padding([.top, .bottom], 18)
+                    .frame(maxWidth: .infinity)
+                    .background(.black0)
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                }
+            }
+            .background(.black0)
+            .cornerRadius(15)
+            .padding(.top, 20)
+            .padding(.horizontal, 16)
+            .shadow(color: Color(red: 0.47, green: 0.47, blue: 0.47).opacity(0.3), radius: 7.5, x: 0, y: 0)
+            
+            // 책 유형 버튼 누르면 나오는 전환용 버튼들
+            if showBookTypeButtons {
+                VStack(spacing: 10) {
+                    // 종이책 버튼
+                    if vm.book?.bookType != .paperbook {
+                        Button {
+                            withAnimation {
+                                showBookTypeButtons = false
+                                vm.changeBookType(to: .paperbook)
+                            }
+                        } label: {
+                            HStack(alignment: .center, spacing: 0) {
+                                Image(systemName: getBookTypeIcon(type: .paperbook))
+                                    .font(.headline)
+                                    .foregroundStyle(.white)
+                                    .padding(.trailing, 7)
+                                Text(getBookTypeText(type: .paperbook))
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.white)
+                            }
+                            .padding(18)
+                            .frame(minWidth: 120, maxWidth: 125)
+                            .background(.black0)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .padding(.trailing, 16)
+                        }
+                    }
+                    
+                    // 전자책 버튼
+                    if vm.book?.bookType != .eBook {
+                        Button {
+                            withAnimation {
+                                showBookTypeButtons = false
+                                vm.changeBookType(to: .eBook)
+                            }
+                        } label: {
+                            HStack(alignment: .center, spacing: 0) {
+                                Image(systemName: getBookTypeIcon(type: .eBook))
+                                    .font(.headline)
+                                    .foregroundStyle(.white)
+                                    .padding(.trailing, 7)
+                                Text(getBookTypeText(type: .eBook))
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.white)
+                            }
+                            .padding(18)
+                            .frame(minWidth: 120, maxWidth: 125)
+                            .background(.black0)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .padding(.trailing, 16)
+                        }
+                    }
+                    
+                    // 오디오북 버튼
+                    if vm.book?.bookType != .audioBook {
+                        Button {
+                            withAnimation {
+                                showBookTypeButtons = false
+                                vm.changeBookType(to: .audioBook)
+                            }
+                        } label: {
+                            HStack(alignment: .center, spacing: 0) {
+                                Image(systemName: getBookTypeIcon(type: .audioBook))
+                                    .font(.headline)
+                                    .foregroundStyle(.white)
+                                    .padding(.trailing, 7)
+                                Text(getBookTypeText(type: .audioBook))
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.white)
+                            }
+                            .padding(18)
+                            .frame(maxWidth: 125)
+                            .background(.black0)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .padding(.trailing, 16)
+                        }
+                    }
+                }
+                .padding(.top, 90)
+                .transition(.opacity)
             }
         }
-        .background(.black0)
-        .cornerRadius(15)
-        .padding(.top, 20)
-        .padding(.horizontal, 16)
-        .shadow(color: Color(red: 0.47, green: 0.47, blue: 0.47).opacity(0.3), radius: 7.5, x: 0, y: 0)
     }
     
     // MARK: - 날짜 리스트
@@ -995,4 +1005,48 @@ extension ReadingNote {
         .padding(.horizontal, 16)
         .padding(.bottom, 15)
     }
+}
+
+// MARK: - Methods
+extension ReadingNote {
+    /// 책 유형의 아이콘을 결정하는 변수
+    func getBookTypeIcon(type: BookType) -> String {
+        switch type {
+        case .paperbook:
+            return "book.pages.fill"
+        case .eBook:
+            return "smartphone"
+        case .audioBook:
+            return "headphones"
+        }
+    }
+    
+    /// 책 유형의 텍스트를 결정하는 변수
+    func getBookTypeText(type: BookType) -> String {
+        switch type {
+        case .paperbook:
+            return "종이책"
+        case .eBook:
+            return "전자책"
+        case .audioBook:
+            return "오디오북"
+        }
+    }
+    
+    /// 버튼에 들어갈 날짜 정보
+    func dateToString(date: Date) -> String {
+        // DateFormatter 지정
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd."
+        
+        // Date -> String
+        let dateFormat = dateFormatter.string(from: date)
+        
+        return dateFormat
+    }
+}
+
+
+#Preview {
+    ReadingNote(book: RegisteredBook())
 }

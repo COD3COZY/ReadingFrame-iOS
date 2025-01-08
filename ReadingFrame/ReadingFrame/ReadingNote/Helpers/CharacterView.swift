@@ -12,15 +12,16 @@ struct CharacterView: View {
     var character: Character
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .center, spacing: 0) {
             // MARK: 이모지
             Text(String(UnicodeScalar(character.emoji)!))
-                .font(.system(size: 60))
+                .font(.system(size: 54))
                 .frame(width: 60, height: 60)
             
             // MARK: 인물 이름
             Text(character.name)
-                .font(.system(size: 15, weight: .bold))
+                .font(.headline)
+                .fontWeight(.semibold)
                 .foregroundStyle(.black0)
                 .padding(.top, 6)
                 .padding(.bottom, 10)

@@ -11,18 +11,19 @@ import MapKit
 
 /// 독서노트의 기록하기 시트 화면
 struct EditAllRecord: View {
-    /// 책 객체
-    @Bindable var book: RegisteredBook
+    // MARK: - Properties
+    @StateObject var vm: EditAllRecordViewModel
     
+    
+    // MARK: 뷰 조작용으로 활용되는 변수들
     /// picker 메뉴
-    var records = ["책갈피", "메모", "인물사전"]
-    @State var selectedTab: String = "책갈피"
+    var recordTypes = ["책갈피", "메모", "인물사전"]
     
     /// 취소&완료 버튼 클릭 시 sheet 없어지도록 하기 위한 변수
     @Binding var isSheetAppear: Bool
     
     /// Picker 보임 여부
-    @State var isPickerAppear: Bool = true
+    var isPickerAppear: Bool = true
     
     /// 취소 버튼 클릭 시 나타나는 Alert 변수
     @State var isShowCancelAlert: Bool = false
@@ -30,37 +31,8 @@ struct EditAllRecord: View {
     /// 완료 버튼 클릭 시 마지막으로 읽은 페이지가 범위 밖이면 나타나는 Alert 변수
     @State var isShowOutOfRangeAlert: Bool = false
     
-    /// 선택한 날짜
-    @State private var selectedDate = Date()
-    
     /// 날짜 DatePicker가 보이는지에 대한 여부
     @State private var isDatePickerVisible = false
-    
-    /// 날짜 범위
-    var dateRange: ClosedRange<Date> {
-        DateRange().dateRange(date: selectedDate)
-    }
-    
-    /// 선택된 위치
-    @State private var pickedPlace: MKPlacemark? = nil
-    
-    /// 사용자가 입력한 책갈피 페이지
-    @State private var bookMarkPage: String = ""
-    
-    /// 사용자가 입력한 메모
-    @State private var inputMemo = ""
-    
-    /// 사용자가 선택한 인물 이모지
-    @State private var characterEmoji: String = "😀"
-    
-    /// 사용자가 입력한 인물 이름
-    @State private var characterName: String = ""
-    
-    /// 사용자가 입력한 한줄 소개
-    @State private var characterPreview: String = ""
-    
-    /// 사용자가 입력한 인물사전 메모
-    @State private var characterDescription: String = ""
     
     /// 위치 입력 sheet 띄움 여부를 결정하는 변수
     @State private var showSearchLocation: Bool = false
@@ -73,13 +45,13 @@ struct EditAllRecord: View {
     
     /// 완료 버튼 클릭 가능 여부 변수
     private var isEnableComplete: Bool {
-        switch selectedTab {
+        switch vm.selectedTab {
         case "책갈피":
-            return !bookMarkPage.isEmpty
+            return !vm.bookMarkPage.isEmpty
         case "메모":
-            return !bookMarkPage.isEmpty && !inputMemo.isEmpty
+            return !vm.bookMarkPage.isEmpty && !vm.inputMemo.isEmpty
         case "인물사전":
-            return !characterName.isEmpty
+            return !vm.characterName.isEmpty
         default:
             return false
         }
@@ -94,181 +66,56 @@ struct EditAllRecord: View {
     /// 최대 한줄 소개 입력 글자 수
     let limitCharacterPreview = 32
     
+    
+    // MARK: - init
+    init(book: EditRecordBookModel,
+         isSheetAppear: Binding<Bool>,
+         selectedTab: String = "책갈피",
+         selectedDate: Date = Date(),
+         pickedPlace: MKPlacemark? = nil,
+         bookMarkPage: String = "",
+         inputMemo: String = "",
+         characterEmoji: String = "😀",
+         characterName: String = "",
+         characterPreview: String = "",
+         characterDescription: String = "",
+         isPickerAppear: Bool
+    ) {
+        self._isSheetAppear = isSheetAppear
+        self._vm = StateObject(wrappedValue: EditAllRecordViewModel(book: book,
+                                                                   selectedTab: selectedTab,
+                                                                   selectedDate: selectedDate,
+                                                                   pickedPlace: pickedPlace,
+                                                                   bookMarkPage: bookMarkPage,
+                                                                   inputMemo: inputMemo,
+                                                                   characterEmoji: characterEmoji,
+                                                                   characterName: characterName,
+                                                                   characterPreview: characterPreview,
+                                                                   characterDescription: characterDescription))
+        self.isPickerAppear = isPickerAppear
+    }
+    
+    
+    // MARK: - View
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             DragIndicator()
             
             // 상단 정보
-            HStack {
-                // MARK: 취소 버튼
-                Button {
-                    // 입력한 값이 있다면
-                    if (!bookMarkPage.isEmpty) {
-                        isShowCancelAlert.toggle() // sheet 닫기 여부 alert 띄우기
-                    }
-                    // 입력한 값이 없다면
-                    else {
-                        isSheetAppear.toggle() // sheet 닫기
-                    }
-                } label: {
-                    Text("취소")
-                        .font(.body)
-                        .foregroundStyle(Color.main)
-                }
-                
-                Spacer()
-                
-                if (isPickerAppear) {
-                    Text("기록하기")
-                        .font(.headline)
-                        .foregroundStyle(.black0)
-                }
-                else {
-                    Text("\(selectedTab)")
-                        .font(.headline)
-                        .foregroundStyle(.black0)
-                }
-                
-                Spacer()
-                
-                // MARK: 완료 버튼
-                Button {
-                    isFocused = false // focus 삭제
-                    
-                    // 책갈피 기록하기 화면이라면
-                    if (selectedTab == "책갈피") {
-                        // 마지막으로 읽은 페이지가 입력됐다면
-                        if (!bookMarkPage.isEmpty) {
-                            /// 페이지 비교할 수 있도록 숫자로 변환한 변수
-                            let bookMarkLastReadNumber = Int(bookMarkPage) ?? 0
-                            
-                            // 책종류에 따라 분류: 종이책
-                            if book.bookType == .paperbook {
-                                // 입력된 페이지 값 검사
-                                if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber <= book.book.totalPage) {
-                                    // 정상적인 범위 내의 페이지가 입력되었다면
-                                    isSheetAppear.toggle() // sheet 닫기
-                                    
-                                    isTapCompleteBtn.toggle() // 완료 버튼 클릭
-                                } else {
-                                    // 범위 밖의 페이지가 입력되었다면 알람 띄워주기
-                                    isShowOutOfRangeAlert.toggle()
-                                }
-                                
-                            // 전자책 & 오디오북
-                            } else {
-                                // 입력된 퍼센트 값 검사
-                                if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber <= 100) {
-                                    // 정상적인 범위 내의 퍼센트가 입력되었다면
-                                    isSheetAppear.toggle() // sheet 닫기
-                                    
-                                    isTapCompleteBtn.toggle() // 완료 버튼 클릭
-                                } else {
-                                    // 범위 밖의 퍼센트가 입력되었다면 알람 띄워주기
-                                    isShowOutOfRangeAlert.toggle()
-                                }
-                            }
-                        }
-                    }
-                    // 메모 기록하기 화면이라면
-                    else if (selectedTab == "메모") {
-                        // 메모가 입력됐다면
-                        if (!inputMemo.isEmpty) {
-                            // 마지막으로 읽은 페이지가 입력됐다면
-                            if (!bookMarkPage.isEmpty) {
-                                /// 페이지 비교할 수 있도록 숫자로 변환한 변수
-                                let bookMarkLastReadNumber = Int(bookMarkPage) ?? 0
-                                
-                                // 책종류에 따라 분류: 종이책
-                                if book.bookType == .paperbook {
-                                    // 입력된 페이지 값 검사
-                                    if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber <= book.book.totalPage) {
-                                        // 정상적인 범위 내의 페이지가 입력되었다면
-                                        isSheetAppear.toggle() // sheet 닫기
-                                        
-                                        isTapCompleteBtn.toggle() // 완료 버튼 클릭
-                                    } else {
-                                        // 범위 밖의 페이지가 입력되었다면 알람 띄워주기
-                                        isShowOutOfRangeAlert.toggle()
-                                    }
-                                    
-                                // 전자책 & 오디오북
-                                } else {
-                                    // 입력된 퍼센트 값 검사
-                                    if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber <= 100) {
-                                        // 정상적인 범위 내의 퍼센트가 입력되었다면
-                                        isSheetAppear.toggle() // sheet 닫기
-                                        
-                                        isTapCompleteBtn.toggle() // 완료 버튼 클릭
-                                    } else {
-                                        // 범위 밖의 퍼센트가 입력되었다면 알람 띄워주기
-                                        isShowOutOfRangeAlert.toggle()
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    // 인물사전 기록하기 화면이라면
-                    else {
-                        // 인물 이름이 입력됐다면
-                        if (!characterName.isEmpty) {
-                            isSheetAppear.toggle() // sheet 닫기
-                            isTapCompleteBtn.toggle() // 완료 버튼 on
-                        }
-                    }
-                } label: {
-                    Text("완료")
-                        .font(.body)
-                        .fontWeight(.bold)
-                        // 필수정보 입력됐으면 accentColor, 아니라면 회색으로
-                        .foregroundStyle(isEnableComplete ? .main : .greyText)
-                }
-                // 필수정보 입력되지 않으면 완료 버튼 비활성화
-                .disabled(bookMarkPage.isEmpty)
-            }
-            .padding(.top, 21)
-            // MARK: 취소 버튼 클릭 시 나타나는 Alert
-            .alert(
-                "저장하지 않고 나가시겠습니까?",
-                isPresented: $isShowCancelAlert
-            ) {
-                Button("아니오", role: .cancel) { }
-                
-                Button("예", role: .destructive) {
-                    isSheetAppear.toggle() // sheet 닫기
-                }
-            } message: {
-                Text("수정된 내용은 반영되지 않습니다.")
-            }
-            // MARK: 완료 버튼 클릭했는데 입력된 페이지/퍼센트 범위 바깥일 경우 나타나는 Alert
-            .alert(
-                "읽은 정도를 저장할 수 없습니다.",
-                isPresented: $isShowOutOfRangeAlert
-            ) {
-                Button("확인") {
-                    isShowOutOfRangeAlert.toggle() // sheet 닫기
-                }
-            } message: {
-                Text("입력하신 정보를 저장할 수 없습니다. 책의 범위 안에서 입력해주세요.")
-            }
+            topBar
             
             // MARK: 상단 Picker
             if (isPickerAppear) {
-                Picker("", selection: $selectedTab) {
-                    ForEach(records, id: \.self) {
+                Picker("", selection: $vm.selectedTab) {
+                    ForEach(recordTypes, id: \.self) {
                         Text($0)
                             .font(.headline)
                             .foregroundStyle(.black0)
                     }
                 }
-                .onChange(of: selectedTab, { oldValue, newValue in
+                .onChange(of: vm.selectedTab, { oldValue, newValue in
                     // 탭이 바뀔 경우, 기존에 입력된 정보 초기화
-                    selectedDate = Date()
-                    bookMarkPage = ""
-                    inputMemo = ""
-                    characterName = ""
-                    characterPreview = ""
-                    characterDescription = ""
+                    vm.changeTab()
                 })
                 .pickerStyle(.segmented)
                 .padding(.top, 21)
@@ -287,11 +134,11 @@ struct EditAllRecord: View {
                     
                     // MARK: 날짜 선택 버튼
                     // 인물사전을 선택하지 않고 있다면, 날짜 박스 띄우기
-                    if (selectedTab != "인물사전") {
+                    if (vm.selectedTab != "인물사전") {
                         DatePicker(
                             "날짜",
-                            selection: $selectedDate,
-                            in: dateRange,
+                            selection: $vm.selectedDate,
+                            in: vm.dateRange,
                             displayedComponents: .date
                         )
                         .datePickerStyle(.compact)
@@ -306,27 +153,27 @@ struct EditAllRecord: View {
                     }
                     
                     // MARK: 마지막으로 읽은 페이지
-                    if (selectedTab == "책갈피") {
-                        pageView(book: book, text: "마지막으로 읽은", bookMarkPage: bookMarkPage, isFocused: _isFocused)
+                    if (vm.selectedTab == "책갈피") {
+                        pageView(text: "마지막으로 읽은")
                     }
                     
                     // MARK: - 메모
-                    if (selectedTab == "메모") {
+                    if (vm.selectedTab == "메모") {
                         VStack(alignment: .trailing, spacing: 6) {
                             ZStack(alignment: .topLeading) {
-                                TextEditor(text: $inputMemo)
+                                TextEditor(text: $vm.inputMemo)
                                     .padding(.vertical, 13)
                                     .padding(.horizontal, 16)
                                     .background(.white)
                                     .clipShape(RoundedRectangle(cornerRadius: 15))
-                                    .onChange(of: inputMemo) { oldText, newText in
+                                    .onChange(of: vm.inputMemo) { oldText, newText in
                                         if newText.count > limitMemoCount {
-                                            inputMemo = String(newText.prefix(limitMemoCount))
+                                            vm.inputMemo = String(newText.prefix(limitMemoCount))
                                         }
                                     }
                                     .frame(height: 300)
                                 
-                                if inputMemo.isEmpty {
+                                if vm.inputMemo.isEmpty {
                                     Text("메모")
                                         .foregroundColor(.greyText)
                                         .padding(.horizontal, 20)
@@ -338,7 +185,7 @@ struct EditAllRecord: View {
                                     .fill(.white)
                             )
                             
-                            Text("(\(inputMemo.count)/\(limitMemoCount))")
+                            Text("(\(vm.inputMemo.count)/\(limitMemoCount))")
                                 .font(.footnote)
                                 .foregroundStyle(.greyText)
                         }
@@ -346,18 +193,18 @@ struct EditAllRecord: View {
                     }
                     
                     // MARK: - 인물사전
-                    if (selectedTab == "인물사전") {
+                    if (vm.selectedTab == "인물사전") {
                         VStack(alignment: .center, spacing: 15) {
                             // MARK: 이모지
                             Button {
                                 isEmojiPickerPresented.toggle()
                             } label: {
-                                Text("\(characterEmoji)")
+                                Text("\(vm.characterEmoji)")
                                     .font(.system(size: 64, weight: .bold))
                             }
                             .emojiPicker(
                                 isPresented: $isEmojiPickerPresented,
-                                selectedEmoji: $characterEmoji
+                                selectedEmoji: $vm.characterEmoji
                             )
                             .frame(width: 64, height: 64, alignment: .center)
                             .padding(28)
@@ -370,7 +217,7 @@ struct EditAllRecord: View {
                             HStack {
                                 Text("이름")
                                 
-                                TextField("인물 이름", text: $characterName)
+                                TextField("인물 이름", text: $vm.characterName)
                                     .foregroundStyle(.black0)
                                     .multilineTextAlignment(.trailing)
                                     .focused($isFocused)
@@ -399,7 +246,7 @@ struct EditAllRecord: View {
                         .listRowInsets(EdgeInsets())
                     
                     // MARK: 위치 등록 버튼
-                    if (selectedTab == "책갈피") {
+                    if (vm.selectedTab == "책갈피") {
                         Button {
                             showSearchLocation.toggle() // 위치 등록 sheet 띄우기
                             isFocused.toggle() // textfield 포커스 삭제
@@ -416,19 +263,19 @@ struct EditAllRecord: View {
                         )
                         .sheet(isPresented: $showSearchLocation) {
                             // 위치 등록 화면으로 이동
-                            SearchLocation(showingSearchLocation: $showSearchLocation, pickedPlaceMark: $pickedPlace)
+                            SearchLocation(showingSearchLocation: $showSearchLocation, pickedPlaceMark: $vm.pickedPlace)
                         }
                     }
                     
                     // MARK: 메모 페이지
-                    if (selectedTab == "메모") {
-                        pageView(book: book, text: "페이지", bookMarkPage: bookMarkPage, isFocused: _isFocused)
+                    if (vm.selectedTab == "메모") {
+                        pageView(text: "페이지")
                     }
                     
-                    if (selectedTab == "인물사전") {
+                    if (vm.selectedTab == "인물사전") {
                         // MARK: 한줄 소개
                         VStack(alignment: .trailing, spacing: 6) {
-                            TextField("한줄소개", text: $characterPreview)
+                            TextField("한줄소개", text: $vm.characterPreview)
                                 .foregroundStyle(.black0)
                                 .multilineTextAlignment(.leading)
                                 .focused($isFocused)
@@ -437,9 +284,9 @@ struct EditAllRecord: View {
                                         isFocused = false
                                     }
                                 }
-                                .onChange(of: characterPreview) { oldText, newText in
+                                .onChange(of: vm.characterPreview) { oldText, newText in
                                     if newText.count > limitCharacterPreview {
-                                        characterPreview = String(newText.prefix(limitCharacterPreview))
+                                        vm.characterPreview = String(newText.prefix(limitCharacterPreview))
                                     }
                                 }
                                 .padding(.vertical, 13)
@@ -450,14 +297,14 @@ struct EditAllRecord: View {
                                         .fill(.white)
                                 )
                             
-                            Text("(\(characterPreview.count)/\(limitCharacterPreview))")
+                            Text("(\(vm.characterPreview.count)/\(limitCharacterPreview))")
                                 .font(.footnote)
                                 .foregroundStyle(.greyText)
                         }
                         
                         // MARK: 메모
                         ZStack(alignment: .topLeading) {
-                            TextEditor(text: $characterDescription)
+                            TextEditor(text: $vm.characterDescription)
                                 .foregroundStyle(.black0)
                                 .focused($isFocused)
                                 .onAppear {
@@ -465,9 +312,9 @@ struct EditAllRecord: View {
                                         isFocused = false
                                     }
                                 }
-                                .onChange(of: characterDescription) { oldText, newText in
+                                .onChange(of: vm.characterDescription) { oldText, newText in
                                     if newText.count > limitMemoCount {
-                                        characterDescription = String(newText.prefix(limitMemoCount))
+                                        vm.characterDescription = String(newText.prefix(limitMemoCount))
                                     }
                                 }
                                 .padding(.vertical, 13)
@@ -476,7 +323,7 @@ struct EditAllRecord: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 15))
                                 .frame(height: 300)
                             
-                            if characterDescription.isEmpty {
+                            if vm.characterDescription.isEmpty {
                                 Text("메모")
                                     .foregroundColor(.grey2)
                                     .padding(.vertical, 20)
@@ -503,19 +350,15 @@ struct EditAllRecord: View {
 }
 
 /// 페이지 입력 필드
-struct pageView: View {
-    var book: RegisteredBook
-    var text: String
-    @State var bookMarkPage: String
-    @FocusState var isFocused: Bool
-    
-    var body: some View {
+extension EditAllRecord {
+    @ViewBuilder
+    private func pageView(text: String) -> some View {
         VStack {
             HStack {
                 Text(text)
                 
                 // 종이책이면 ~\(totalPage), 전자책 오디오북이면 0~100
-                TextField(book.bookType == .paperbook ? "~\(book.book.totalPage)" : "0~100", text: $bookMarkPage)
+                TextField(vm.book.bookType == .paperbook ? "~\(vm.book.totalPage)" : "0~100", text: $vm.bookMarkPage)
                     .keyboardType(.numberPad) // 텍스트필드 눌렀을 때 숫자 키보드 뜨도록 함
                     .foregroundStyle(.black0)
                     .multilineTextAlignment(.trailing)
@@ -527,7 +370,7 @@ struct pageView: View {
                     }
                 
                 // 종이책이면 p, 전자책 오디오북이면 %
-                Text(book.bookType == .paperbook ? "p" : "%")
+                Text(vm.book.bookType == .paperbook ? "p" : "%")
             }
         }
         .padding(.vertical, 13)
@@ -538,9 +381,184 @@ struct pageView: View {
                 .fill(.white)
         )
         .padding(.top, 10)
+        
+        
+    }
+}
+
+// MARK: - Components
+extension EditAllRecord {
+    // MARK: 상단 제목 바
+    private var topBar: some View {
+        HStack {
+            // 취소 버튼
+            cancelButton
+            
+            Spacer()
+            
+            if (isPickerAppear) {
+                Text("기록하기")
+                    .font(.headline)
+                    .foregroundStyle(.black0)
+            }
+            else {
+                Text("\(vm.selectedTab)")
+                    .font(.headline)
+                    .foregroundStyle(.black0)
+            }
+            
+            Spacer()
+            
+            // 완료 버튼
+            completebutton
+        }
+        .padding(.top, 21)
+        // MARK: 취소 버튼 클릭 시 나타나는 Alert
+        .alert(
+            "저장하지 않고 나가시겠습니까?",
+            isPresented: $isShowCancelAlert
+        ) {
+            Button("아니오", role: .cancel) { }
+            
+            Button("예", role: .destructive) {
+                isSheetAppear.toggle() // sheet 닫기
+            }
+        } message: {
+            Text("수정된 내용은 반영되지 않습니다.")
+        }
+        // MARK: 완료 버튼 클릭했는데 입력된 페이지/퍼센트 범위 바깥일 경우 나타나는 Alert
+        .alert(
+            "읽은 정도를 저장할 수 없습니다.",
+            isPresented: $isShowOutOfRangeAlert
+        ) {
+            Button("확인") {
+                isShowOutOfRangeAlert.toggle() // sheet 닫기
+            }
+        } message: {
+            Text("입력하신 정보를 저장할 수 없습니다. 책의 범위 안에서 입력해주세요.")
+        }
+    }
+    
+    // MARK: 취소 버튼
+    private var cancelButton: some View {
+        Button {
+            // 입력한 값이 있다면
+            if (!vm.bookMarkPage.isEmpty ||
+                !vm.inputMemo.isEmpty ||
+                !vm.characterName.isEmpty) {
+                isShowCancelAlert.toggle() // sheet 닫기 여부 alert 띄우기
+            }
+            // 입력한 값이 없다면
+            else {
+                isSheetAppear.toggle() // sheet 닫기
+            }
+        } label: {
+            Text("취소")
+                .font(.body)
+                .foregroundStyle(Color.main)
+        }
+    }
+    
+    
+    // MARK: 완료 버튼
+    private var completebutton: some View {
+        Button {
+            isFocused = false // focus 삭제
+            
+            // 책갈피 기록하기 화면이라면
+            if (vm.selectedTab == "책갈피") {
+                // 마지막으로 읽은 페이지가 입력됐다면
+                if (!vm.bookMarkPage.isEmpty) {
+                    /// 페이지 비교할 수 있도록 숫자로 변환한 변수
+                    let bookMarkLastReadNumber = Int(vm.bookMarkPage) ?? 0
+                    
+                    // 책종류에 따라 분류: 종이책
+                    if vm.book.bookType == .paperbook {
+                        // 입력된 페이지 ��� 검사
+                        if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber <= vm.book.totalPage) {
+                            // 정상적인 범위 내의 페이지가 입력되었다면
+                            isSheetAppear.toggle() // sheet 닫기
+                            
+                            isTapCompleteBtn.toggle() // 완료 버튼 클릭
+                        } else {
+                            // 범위 밖의 페이지가 입력되었다면 알람 띄워주기
+                            isShowOutOfRangeAlert.toggle()
+                        }
+                        
+                    // 전자책 & 오디오북
+                    } else {
+                        // 입력된 퍼센트 값 검사
+                        if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber <= 100) {
+                            // 정상적인 범위 내의 퍼센트가 입력되었다면
+                            isSheetAppear.toggle() // sheet 닫기
+                            
+                            isTapCompleteBtn.toggle() // 완료 버튼 클릭
+                        } else {
+                            // 범위 밖의 퍼센트가 입력되었다면 알람 띄워주기
+                            isShowOutOfRangeAlert.toggle()
+                        }
+                    }
+                }
+            }
+            // 메모 기록하기 화면이라면
+            else if (vm.selectedTab == "메모") {
+                // 메모가 입력됐다면
+                if (!vm.inputMemo.isEmpty) {
+                    // 마지막으로 읽은 페이지가 입력됐다면
+                    if (!vm.bookMarkPage.isEmpty) {
+                        /// 페이지 비교할 수 있도록 숫자로 변환한 변수
+                        let bookMarkLastReadNumber = Int(vm.bookMarkPage) ?? 0
+                        
+                        // 책종류에 따라 분류: 종이책
+                        if vm.book.bookType == .paperbook {
+                            // 입력된 페이지 값 검사
+                            if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber <= vm.book.totalPage) {
+                                // 정상적인 범위 내의 페이지가 입력되었다면
+                                isSheetAppear.toggle() // sheet 닫기
+                                
+                                isTapCompleteBtn.toggle() // 완료 버튼 클릭
+                            } else {
+                                // 범위 밖의 페이지가 입력되었다면 알람 띄워주기
+                                isShowOutOfRangeAlert.toggle()
+                            }
+                            
+                        // 전자책 & 오디오북
+                        } else {
+                            // 입력된 퍼센트 값 검사
+                            if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber <= 100) {
+                                // 정상적인 범위 내의 퍼센트가 입력되었다면
+                                isSheetAppear.toggle() // sheet 닫기
+                                
+                                isTapCompleteBtn.toggle() // 완료 버튼 클릭
+                            } else {
+                                // 범위 밖의 퍼센트가 입력되었다면 알람 띄워주기
+                                isShowOutOfRangeAlert.toggle()
+                            }
+                        }
+                    }
+                }
+            }
+            // 인물사전 기록하기 화면이라면
+            else {
+                // 인물 이름이 입력됐다면
+                if (!vm.characterName.isEmpty) {
+                    isSheetAppear.toggle() // sheet 닫기
+                    isTapCompleteBtn.toggle() // 완료 버튼 on
+                }
+            }
+        } label: {
+            Text("완료")
+                .font(.body)
+                .fontWeight(.bold)
+                // 필수정보 입력됐으면 accentColor, 아니라면 회색으로
+                .foregroundStyle(isEnableComplete ? .main : .greyText)
+        }
+        // 필수정보 입력되지 않으면 완료 버튼 비활성화
+        .disabled(vm.bookMarkPage.isEmpty)
     }
 }
 
 #Preview {
-    EditAllRecord(book: RegisteredBook(), isSheetAppear: .constant(false))
+    EditAllRecord(book: EditRecordBookModel(bookType: .paperbook, totalPage: 500, isbn: "1234567"),
+                  isSheetAppear: .constant(false), isPickerAppear: true)
 }

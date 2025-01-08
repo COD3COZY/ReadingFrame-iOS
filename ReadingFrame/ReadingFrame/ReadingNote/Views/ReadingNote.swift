@@ -9,9 +9,13 @@ import SwiftUI
 
 /// 독서노트 화면
 struct ReadingNote: View {
-    
+    // MARK: - Properties
     /// 책 객체
+    // TODO: 페이지 연결 로직들 수정하고 삭제 필!
     @Bindable var book: RegisteredBook
+    
+    /// View Model
+    @StateObject var vm: ReadingNoteViewModel
     
     /// 독서노트 삭제 Alert이 띄워졌는지 확인하기 위한 변수
     @State private var isShowBookDeleteAlert = false
@@ -30,15 +34,24 @@ struct ReadingNote: View {
     
     /// 기록하기 sheet가 띄워져 있는지 확인하는 변수
     @State var isRecordSheetAppear: Bool = false
-    
-    /// 기록하기 sheet의 picker 띄움 여부 변수
-    @State var isPickerAppear: Bool = true
-    
+        
     /// 위치검색 sheet 띄움 여부 변수
     @State var showSearchLocation: Bool = false
     
     /// 기록하기 바텀 시트 변수
     @State var selectedTab: String = "책갈피"
+    
+    /// 리뷰 fullscreenCover 띄움 여부 변수
+    @State var showReviewFullscreen: Bool = false
+    
+    // MARK: - init
+    // TODO: 아규먼트에 isbn 받아서 만드는 방식으로 수정하기, 현재는 더미 isbn 넣어둔 상태!
+    init(book: RegisteredBook) {
+        self.book = book
+        self._vm = StateObject(wrappedValue: ReadingNoteViewModel(isbn: "isbn"))
+    }
+    
+    
     
     // MARK: - View
     var body: some View {
@@ -91,8 +104,10 @@ struct ReadingNote: View {
                             Button("아니오", role: .cancel) { }
                             
                             Button("예", role: .destructive) {
-                                book.mainLocation = nil
-                                book.mainPlace = nil
+                                vm.book?.mainLocation = nil
+//                                book.mainPlace = nil
+                                
+                                // TODO: 대표위치 삭제 API 호출
                             }
                         } message: {
                             Text("삭제된 위치는 복구할 수 없습니다.")
@@ -105,7 +120,12 @@ struct ReadingNote: View {
                             Button("아니오", role: .cancel) { }
                             
                             Button("예", role: .destructive) {
-                                book.reviews = nil
+                                // view상의 리뷰 삭제
+                                vm.book?.selectReview = nil
+                                vm.book?.commentReview = nil
+                                vm.book?.keywordReview = nil
+                                
+                                // TODO: 리뷰 전체 삭제 API 호출
                             }
                         } message: {
                             Text("삭제된 리뷰는 복구할 수 없습니다.")
@@ -127,32 +147,6 @@ struct ReadingNote: View {
             .background(.grey1)
             // 화면 꽉 채우기
             .ignoresSafeArea(.container)
-            // MARK: 네비게이션 바 설정
-            .navigationTitle("독서노트")
-            .navigationBarTitleDisplayMode(.inline)
-            // MARK: 툴바의 오른쪽 삭제 버튼
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        isShowBookDeleteAlert.toggle()
-                    } label: {
-                        Text("삭제")
-                            .foregroundStyle(.red0)
-                    }
-                    // MARK: 삭제 버튼 클릭 시 나타나는 Alert
-                    .alert(
-                        "독서노트를 삭제하시겠습니까?",
-                        isPresented: $isShowBookDeleteAlert
-                    ) {
-                        Button("아니오", role: .cancel) { }
-                        Button("예", role: .destructive) {
-                            // TODO: 독서노트 삭제
-                        }
-                    } message: {
-                        Text("삭제된 독서노트는 복구할 수 없습니다.")
-                    }
-                }
-            }
             
             // MARK: - 기록하기 버튼
             recordBtn
@@ -161,11 +155,44 @@ struct ReadingNote: View {
         .sheet(isPresented: $isRecordSheetAppear) {
             // 책갈피 등록 sheet 띄우기
             EditAllRecord(
-                book: book,
-                selectedTab: selectedTab,
+                book: EditRecordBookModel(bookType: vm.book!.bookType,
+                                          totalPage: vm.book?.totalPage ?? 0,
+                                          isbn: vm.isbn),
                 isSheetAppear: $isRecordSheetAppear,
-                isPickerAppear: isPickerAppear
+                selectedTab: selectedTab,
+                isPickerAppear: true
             )
+        }
+        // MARK: 네비게이션 바 설정
+        .navigationTitle("독서노트")
+        .navigationBarTitleDisplayMode(.inline)
+        // MARK: 툴바의 오른쪽 삭제 버튼
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    isShowBookDeleteAlert.toggle()
+                } label: {
+                    Text("삭제")
+                        .foregroundStyle(.red0)
+                }
+                // MARK: 삭제 버튼 클릭 시 나타나는 Alert
+                .alert(
+                    "독서노트를 삭제하시겠습니까?",
+                    isPresented: $isShowBookDeleteAlert
+                ) {
+                    Button("아니오", role: .cancel) { }
+                    Button("예", role: .destructive) {
+                        // TODO: 독서노트 삭제
+                    }
+                } message: {
+                    Text("삭제된 독서노트는 복구할 수 없습니다.")
+                }
+            }
+        }
+        // MARK: 리뷰 Fullscreen
+        .fullScreenCover(isPresented: $showReviewFullscreen) {
+            EditReview_Select()
+                .toolbarRole(.editor)
         }
         // TODO: 구매/대여한 위치 클릭 시 나타나는 Sheet
 //        .sheet(isPresented: $showSearchLocation, content: SearchLocation(showingSearchLocation: $showSearchLocation, pickedPlaceMark: <#Binding<MKPlacemark?>#>))
@@ -173,39 +200,20 @@ struct ReadingNote: View {
     
     /// 소장 버튼의 텍스트 색상을 결정하는 변수
     var isMineBtnColor: Color {
-        if book.isMine {
+        if ((vm.book?.isMine) != nil) {
             return .white
         } else {
             return .greyText
         }
     }
     
-//    /// 독서 상태의 아이콘을 결정하는 변수
-//    var readingStatusBtnColor: Color {
-//        if book.book.readingStatus == .reading {
-//            return .greyText
-//        }
-//        else {
-//            return .white
-//        }
-//    }
-    
-//    /// 독서 상태의 텍스트를 결정하는 변수
-//    var readingStatusText: String {
-//        if book.book.readingStatus == .reading {
-//            return "읽는중"
-//        }
-//        else {
-//            return "다읽음"
-//        }
-//    }
     
     /// 책 유형의 아이콘을 결정하는 변수
     var bookTypeIcon: String {
-        if book.bookType == .paperbook {
+        if vm.book?.bookType == .paperbook {
             return "book.pages.fill"
         }
-        else if book.bookType == .eBook {
+        else if vm.book?.bookType == .eBook {
             return "smartphone"
         }
         else {
@@ -215,10 +223,10 @@ struct ReadingNote: View {
     
     /// 책 유형의 텍스트를 결정하는 변수
     var bookTypeText: String {
-        if book.bookType == .paperbook {
+        if vm.book?.bookType == .paperbook {
             return "종이책"
         }
-        else if book.bookType == .eBook {
+        else if vm.book?.bookType == .eBook {
             return "전자책"
         }
         else {
@@ -240,12 +248,12 @@ struct ReadingNote: View {
     
     /// 읽기 시작한 날 정할 수 있는 범위
     var startDateRange: ClosedRange<Date> {
-        DateRange().dateRange(date: book.startDate)
+        DateRange().dateRange(date: vm.book?.startDate ?? Date())
     }
     
     /// 다읽은 날 정할 수 있는 범위(읽기 시작한 날 ~ 현재)
     var recentDateRange: ClosedRange<Date> {
-        let min = book.startDate
+        let min = vm.book?.startDate ?? Date()
         let max = Date()
         return min...max
     }
@@ -304,7 +312,7 @@ extension View {
 extension ReadingNote {
     // MARK: - 책 표지
     private var coverImage: some View {
-        LoadableBookImage(bookCover: book.book.cover)
+        LoadableBookImage(bookCover: vm.book?.cover ?? "")
             .clipShape(RoundedRectangle(cornerRadius: 15))
             .frame(width: 138, height: 210)
             .frame(maxWidth: .infinity)
@@ -316,19 +324,19 @@ extension ReadingNote {
     private var basicBookInfo: some View {
         VStack(alignment: .leading, spacing: 0) {
             // 책정보 배지
-            Badge_Info(category: book.book.categoryName)
+            Badge_Info(category: vm.book?.categoryName ?? .etc)
                 .padding(.top, 10)
                 .padding(.horizontal, 16)
             
             // 책 이름
-            Text(book.book.title)
+            Text(vm.book?.title ?? "")
                 .font(.thirdTitle)
                 .foregroundStyle(.black0)
                 .padding(.top, 15)
                 .padding(.horizontal, 16)
             
             // 저자
-            Text(book.book.author)
+            Text(vm.book?.author ?? "")
                 .font(.footnote)
                 .foregroundStyle(.black0)
                 .padding(.top, 2)
@@ -342,7 +350,7 @@ extension ReadingNote {
             // MARK: 소장 버튼
             Button {
                 withAnimation {
-                    book.isMine.toggle()
+                    vm.toggleIsMine()
                 }
             } label: {
                 HStack(alignment: .center, spacing: 0) {
@@ -366,18 +374,20 @@ extension ReadingNote {
                 .frame(width: 0.7, height: 40)
             
             // MARK: 독서 상태 변경 버튼(읽는중, 다읽음)
+            // TODO: 여기 로직 결정하고 반영하기
             Button {
                 withAnimation {
-                    if book.book.readingStatus == .reading {
+                    if vm.book?.readingStatus == .reading {
                         // 읽는중이면 다읽음으로
-                        print("readingstatus: \(book.book.readingStatus)")
-                        book.book.readingStatus = .finishRead
+                        print("readingstatus: \(String(describing: vm.book?.readingStatus))")
+                        vm.turnToFinishRead()
                         print("읽는중 -> 다읽음")
-                        print("readingstatus: \(book.book.readingStatus)")
-                    } else if book.book.readingStatus == .finishRead {
+                        print("readingstatus: \(String(describing: vm.book?.readingStatus))")
+                    }
+                    else if vm.book?.readingStatus == .finishRead {
                         // 다읽음이면 읽는중으로
-                        book.book.readingStatus = .reading
-                        print("다읽음 -> 읽는중")
+                        print("다읽은 상태라 못돌림")
+                        print("readingstatus: \(String(describing: vm.book?.readingStatus))")
                     }
                 }
             } label: {
@@ -387,7 +397,7 @@ extension ReadingNote {
                     Text("다읽음")
                         .fontWeight(.semibold)
                 }
-                .foregroundStyle(book.book.readingStatus == .reading ? .greyText : .white) // 다 읽으면 흰색, 읽는중이면 회색
+                .foregroundStyle(vm.book?.readingStatus == .reading ? .greyText : .white) // 다 읽으면 흰색, 읽는중이면 회색
             }
             .padding(.vertical, 18)
             .frame(maxWidth: .infinity)
@@ -431,7 +441,7 @@ extension ReadingNote {
             // MARK: 읽기 시작한 날 버튼
             DatePicker(
                 "읽기 시작한",
-                selection: $book.startDate,
+                selection: vm.startDateBinding,
                 in: startDateRange,
                 displayedComponents: .date
             )
@@ -448,7 +458,7 @@ extension ReadingNote {
             // MARK: 마지막으로 읽은 날 버튼
             DatePicker(
                 "마지막으로 읽은",
-                selection: $book.recentDate,
+                selection: vm.recentDateBinding,
                 in: recentDateRange,
                 displayedComponents: .date
             )
@@ -456,8 +466,8 @@ extension ReadingNote {
             .tint(.accentColor)
             .transition(.opacity)
         }
-        .padding([.top, .bottom], 10)
-        .padding([.leading, .trailing], 12)
+        .padding(.vertical, 10)
+        .padding(.horizontal, 12)
         .background(
             RoundedRectangle(cornerRadius: 15)
                 .fill(.white)
@@ -489,22 +499,23 @@ extension ReadingNote {
             
             // MARK: 진행 막대 반원
             ZStack(alignment: .center) {
-                HalfCricleGraph(progress: CGFloat(book.readingPercent) / 100)
+                HalfCricleGraph(progress: CGFloat(vm.book?.readingPercent ?? 0) / 100)
                     .frame(maxWidth: .infinity)
                     .padding(.top, 10)
                     .padding(.horizontal, 60)
                     .padding(.bottom, -100)
                 
                 VStack(alignment: .center, spacing: 5) {
-                    Text("\(book.readingPercent)%")
+                    Text("\(vm.book?.readingPercent ?? 0)%")
                         .font(.system(size: 42, weight: .bold))
                         .fontDesign(.rounded)
                         .foregroundStyle(.black0)
                     
-                    Text("\(book.readPage)/\(book.book.totalPage)")
+                    Text("\(vm.book?.readPage ?? 0)/\(vm.book?.totalPage ?? 0)")
                         .font(.caption)
                         .foregroundStyle(.greyText)
                 }
+                .padding(.top, 20)
             }
             .background(
                 RoundedRadiusBox(radius: 15, corners: [.bottomLeft, .bottomRight])
@@ -523,8 +534,8 @@ extension ReadingNote {
                 .padding(.trailing, 8)
             
             // 대표위치가 있을 때: 장소 이름 + 수정 & 삭제 메뉴
-            if (book.mainPlace != nil) {
-                Text(book.mainPlace!)
+            if let mainLocation = vm.book?.mainLocation {
+                Text(mainLocation)
                     .foregroundStyle(.black0)
                 
                 Spacer()
@@ -574,7 +585,7 @@ extension ReadingNote {
     private var reviewBox: some View {
         VStack(spacing: 0) {
             // 리뷰가 있다면
-            if (book.reviews != nil) {
+            if (vm.book?.selectReview != nil) {
                 HStack(alignment: .top, spacing: 0) {
                     Image(systemName: "bubble")
                         .foregroundStyle(.black0)
@@ -582,13 +593,13 @@ extension ReadingNote {
                     
                     VStack(alignment: .leading, spacing: 0) {
                         // MARK: 최초 리뷰 등록 날짜
-                        Text(DateRange().dateToString(date: book.reviews?.reviewDate ?? Date(), style: "yy.MM.dd"))
+                        Text(DateRange().dateToString(date: vm.book?.firstReviewDate ?? Date(), style: "yy.MM.dd"))
                             .font(.footnote)
                             .foregroundStyle(.greyText)
                         
                         // MARK: 리뷰 한줄평
                         if let comment =
-                            book.reviews?.comment, !comment.isEmpty {
+                            vm.book?.commentReview, !comment.isEmpty {
                                 Text(comment)
                                 .font(.subheadline)
                                 .foregroundStyle(.black0)
@@ -620,15 +631,16 @@ extension ReadingNote {
                 VStack(alignment: .center) {
                     // MARK: 리뷰 한단어&키워드
                     if let selectReviews =
-                        book.reviews?.selectReviews, !selectReviews.isEmpty {
-                        
+                        vm.book?.selectReview, !selectReviews.isEmpty {
+                        // 한단어 리뷰 있으면 같이 보여주기
                         if let keyword =
-                            book.reviews?.keyword, !keyword.isEmpty {
+                            vm.book?.keywordReview, !keyword.isEmpty {
                             SelectReviewClusterView(
                                 selectReviews: selectReviews,
                                 keyword: keyword
                             )
                         }
+                        // 없으면 선택리뷰만 보여주기
                         else {
                             SelectReviewClusterView(
                                 selectReviews: selectReviews
@@ -651,14 +663,23 @@ extension ReadingNote {
                     Spacer()
                                         
                     // !!!: 리뷰 작성 화면으로 이동
-                    NavigationLink {
-                        EditReview_Select()
-                            .toolbarRole(.editor)
+                    Button {
+                        showReviewFullscreen.toggle()
                     } label: {
                         Image(systemName: "chevron.right")
                             .foregroundStyle(.black0)
+
                     }
                     .frame(width: 13)
+                    
+//                    NavigationLink {
+//                        EditReview_Select()
+//                            .toolbarRole(.editor)
+//                    } label: {
+//                        Image(systemName: "chevron.right")
+//                            .foregroundStyle(.black0)
+//                    }
+//                    .frame(width: 13)
                 }
             }
         }
@@ -681,7 +702,7 @@ extension ReadingNote {
                     .font(.headline)
                     .foregroundStyle(.black0)
                 
-                Text("\(book.bookmarks?.count ?? 0)")
+                Text("\(vm.book?.bookmarks?.count ?? 0)")
                     .font(.headline)
                     .foregroundStyle(.main)
                     .padding(.leading, 5)
@@ -689,10 +710,13 @@ extension ReadingNote {
                 Spacer()
                 
                 // 책갈피가 1개라도 있다면 더보기 버튼 띄우기
-                if (book.bookmarks?.count ?? 0 > 0) {
+                if (vm.book?.bookmarks?.count ?? 0 > 0) {
                     // MARK: 책갈피 목록 더보기 버튼
                     NavigationLink {
-                        TabReadingNote(book: book, selectedTab: .bookmark)
+                        TabReadingNote(bookType: vm.book?.bookType ?? .paperbook,
+                                       totalPage: vm.book?.totalPage ?? 0,
+                                       isbn: vm.isbn,
+                                       selectedTab: .bookmark)
                             .toolbarRole(.editor) // back 텍스트 표시X
                             .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                     } label: {
@@ -706,34 +730,35 @@ extension ReadingNote {
             
             // MARK: 책갈피 리스트
             // 책갈피가 있을 때
-            if (book.bookmarks != nil) {
-                if let bookmarks = book.bookmarks, !bookmarks.isEmpty {
-                    NavigationLink {
-                        TabReadingNote(book: book, selectedTab: .bookmark)
-                            .toolbarRole(.editor) // back 텍스트 표시X
-                            .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
-                    } label: {
-                        LazyVStack(spacing: 20) {
-                            ForEach(bookmarks.indices, id: \.self) { index in
-                                BookmarkView(bookmark: bookmarks[index])
-                                
-                                // 마지막 값이 아닌 경우에만 구분선 추가
-                                if index != bookmarks.count - 1 {
-                                    Divider()
-                                        .background(.grey2)
-                                        .padding(.horizontal, 16)
-                                }
+            if let bookmarks = vm.book?.bookmarks, !bookmarks.isEmpty {
+                NavigationLink {
+                    TabReadingNote(bookType: vm.book?.bookType ?? .paperbook,
+                                   totalPage: vm.book?.totalPage ?? 0,
+                                   isbn: vm.isbn,
+                                   selectedTab: .bookmark)
+                        .toolbarRole(.editor) // back 텍스트 표시X
+                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                } label: {
+                    LazyVStack(spacing: 20) {
+                        ForEach(bookmarks.indices, id: \.self) { index in
+                            BookmarkView(bookmark: bookmarks[index])
+                            
+                            // 마지막 값이 아닌 경우에만 구분선 추가
+                            if index != bookmarks.count - 1 {
+                                Divider()
+                                    .background(.grey2)
+                                    .padding(.horizontal, 16)
                             }
                         }
-                        .padding(.vertical, 20)
-                        .background(
-                            RoundedRectangle(cornerRadius: 15)
-                                .fill(.white)
-                        )
                     }
-                    .padding(.top, 20)
-                    .padding(.horizontal, 16)
+                    .padding(.vertical, 20)
+                    .background(
+                        RoundedRectangle(cornerRadius: 15)
+                            .fill(.white)
+                    )
                 }
+                .padding(.top, 20)
+                .padding(.horizontal, 16)
             }
             // 책갈피가 없을 때
             else {
@@ -770,7 +795,7 @@ extension ReadingNote {
                     .font(.headline)
                     .foregroundStyle(.black0)
                 
-                Text("\(book.memos?.count ?? 0)")
+                Text("\(vm.book?.memos?.count ?? 0)")
                     .font(.headline)
                     .foregroundStyle(.main)
                     .padding(.leading, 5)
@@ -778,10 +803,13 @@ extension ReadingNote {
                 Spacer()
                 
                 // 메모가 1개라도 있다면 더보기 버튼 띄우기
-                if (book.memos?.count ?? 0 > 0) {
+                if (vm.book?.memos?.count ?? 0 > 0) {
                     // MARK: 메모 목록 더보기 버튼
                     NavigationLink {
-                        TabReadingNote(book: book, selectedTab: .memo)
+                        TabReadingNote(bookType: vm.book?.bookType ?? .paperbook,
+                                       totalPage: vm.book?.totalPage ?? 0,
+                                       isbn: vm.isbn,
+                                       selectedTab: .memo)
                             .toolbarRole(.editor) // back 텍스트 표시X
                             .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                     } label: {
@@ -795,22 +823,23 @@ extension ReadingNote {
             
             // MARK: 메모 리스트
             // 메모가 1개라도 있다면
-            if (book.memos?.count ?? 0 > 0) {
-                if let memos = book.memos, !memos.isEmpty {
-                    LazyVStack(spacing: 8) {
-                        ForEach(memos.indices, id: \.self) { index in
-                            NavigationLink {
-                                TabReadingNote(book: book, selectedTab: .memo)
-                                    .toolbarRole(.editor) // back 텍스트 표시X
-                                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
-                            } label: {
-                                MemoView(memo: memos[index])
-                            }
+            if let memos = vm.book?.memos, !memos.isEmpty {
+                LazyVStack(spacing: 8) {
+                    ForEach(memos.indices, id: \.self) { index in
+                        NavigationLink {
+                            TabReadingNote(bookType: vm.book?.bookType ?? .paperbook,
+                                           totalPage: vm.book?.totalPage ?? 0,
+                                           isbn: vm.isbn,
+                                           selectedTab: .memo)
+                                .toolbarRole(.editor) // back 텍스트 표시X
+                                .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                        } label: {
+                            MemoView(memo: memos[index])
                         }
                     }
-                    .padding(.top, 20)
-                    .padding(.horizontal, 16)
                 }
+                .padding(.top, 20)
+                .padding(.horizontal, 16)
             }
             // 메모가 없다면
             else {
@@ -852,7 +881,7 @@ extension ReadingNote {
                     .font(.headline)
                     .foregroundStyle(.black0)
                 
-                Text("\(book.characters?.count ?? 0)")
+                Text("\(vm.book?.characters?.count ?? 0)")
                     .font(.headline)
                     .foregroundStyle(.main)
                     .padding(.leading, 5)
@@ -860,10 +889,13 @@ extension ReadingNote {
                 Spacer()
                 
                 // 인물사전이 1개라도 있다면 더보기 버튼 띄우기
-                if (book.characters?.count ?? 0 > 0) {
+                if (vm.book?.characters?.count ?? 0 > 0) {
                     // MARK: 인물사전 목록 더보기 버튼
                     NavigationLink {
-                        TabReadingNote(book: book, selectedTab: .character)
+                        TabReadingNote(bookType: vm.book?.bookType ?? .paperbook,
+                                       totalPage: vm.book?.totalPage ?? 0,
+                                       isbn: vm.isbn,
+                                       selectedTab: .character)
                             .toolbarRole(.editor) // back 텍스트 표시X
                             .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                     } label: {
@@ -877,41 +909,39 @@ extension ReadingNote {
             
             // MARK: 인물사전 리스트
             // 인물사전이 1개라도 있다면
-            if (book.characters?.count ?? 0 > 0) {
-                if let characters = book.characters, !characters.isEmpty {
-                    ScrollView(.horizontal) {
-                        LazyHStack(spacing: 10) {
-                            ForEach(characters.indices, id: \.self) { index in
-                                NavigationLink {
-                                    CharacterDetail(character: characters[index])
-                                        .toolbarRole(.editor) // back 텍스트 표시X
-                                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
-                                } label: {
-                                    CharacterView(character: characters[index])
-                                        .padding(.vertical, 15)
-                                        .padding(.horizontal, 10)
-                                        .frame(width: 126, height: 180)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 15)
-                                                .fill(.white)
-                                        )
-                                }
-                            }
-                            
-                            // 인물사전 추가하기 버튼
-                            Button {
-                                isRecordSheetAppear.toggle()
-                                selectedTab = "인물사전"
+            if let characters = vm.book?.characters, !characters.isEmpty {
+                ScrollView(.horizontal) {
+                    LazyHStack(spacing: 10) {
+                        ForEach(characters.indices, id: \.self) { index in
+                            NavigationLink {
+                                CharacterDetail(character: characters[index])
+                                    .toolbarRole(.editor) // back 텍스트 표시X
+                                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                             } label: {
-                                characterAddBtn
+                                CharacterView(character: characters[index])
+                                    .padding(.vertical, 15)
+                                    .padding(.horizontal, 10)
+                                    .frame(width: 126, height: 180)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 15)
+                                            .fill(.white)
+                                    )
                             }
                         }
-                        .padding(.horizontal, 16)
+                        
+                        // 인물사전 추가하기 버튼
+                        Button {
+                            isRecordSheetAppear.toggle()
+                            selectedTab = "인물사전"
+                        } label: {
+                            characterAddBtn
+                        }
                     }
-                    .scrollIndicators(.hidden)
-                    .frame(height: 180)
-                    .padding(.top, 20)
+                    .padding(.horizontal, 16)
                 }
+                .scrollIndicators(.hidden)
+                .frame(height: 180)
+                .padding(.top, 20)
             }
             // 인물사전이 없다면
             else {
@@ -952,7 +982,6 @@ extension ReadingNote {
         Button {
             isRecordSheetAppear.toggle()
             selectedTab = "책갈피"
-            isPickerAppear.toggle()
         } label: {
             Text("기록하기")
                 .font(.headline)

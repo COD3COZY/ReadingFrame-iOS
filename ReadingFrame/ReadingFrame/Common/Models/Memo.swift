@@ -8,7 +8,7 @@
 import Foundation
 
 /// 등록된 책(읽고 있는 책, 다 읽은 책)의 메모 모델
-struct Memo {
+struct Memo: Codable {
     /// 메모 id
     var id: String
     

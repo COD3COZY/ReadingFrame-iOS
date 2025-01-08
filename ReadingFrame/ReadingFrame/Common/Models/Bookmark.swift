@@ -8,7 +8,7 @@
 import Foundation
 
 /// 등록된 책(읽고 있는 책, 다 읽은 책)의 책갈피 모델
-struct Bookmark: Identifiable {
+struct Bookmark: Identifiable, Codable {
     /// 책갈피 id
     let id: String
     
@@ -21,6 +21,7 @@ struct Bookmark: Identifiable {
     /// 읽은 퍼센트
     var markPercent: Int
     
+    // TODO: 위치는 필수 아니어서 옵셔널로 바꿔야 함!
     /// 책갈피한 위치
     var location: String
 }

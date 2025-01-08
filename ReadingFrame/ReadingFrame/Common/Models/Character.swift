@@ -8,7 +8,7 @@
 import Foundation
 
 /// 등록된 책(읽고 있는 책, 다 읽은 책)의 인물사전 모델
-struct Character {
+struct Character: Codable {
     /// 이모지
     var emoji: Int
     

@@ -19,9 +19,10 @@ struct BookmarkView: View {
             
             VStack(alignment: .leading, spacing: 4) {
                 Text("\(DateRange().dateToString(date: bookmark.date))")
-                    .font(.system(size: 20, weight: .bold))
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundStyle(.black0)
                 
+                // TODO: location 옵셔널로 바꾸면서 if문으로 감싸줘야 할 것 같다
                 Text(bookmark.location)
                     .font(.caption)
                     .foregroundStyle(.greyText)
@@ -32,12 +33,14 @@ struct BookmarkView: View {
             
             VStack(alignment: .trailing, spacing: 2) {
                 Text("\(bookmark.markPage)p")
-                    .font(.system(size: 28, weight: .bold))
+                    .font(.system(size: 28, weight: .bold, design: .rounded))
                     .foregroundStyle(.black0)
                 
                 Text("\(bookmark.markPercent)%")
                     .font(.caption)
+                    .fontDesign(.rounded)
                     .foregroundStyle(.greyText)
+
             }
         }
         .padding(.horizontal, 16)

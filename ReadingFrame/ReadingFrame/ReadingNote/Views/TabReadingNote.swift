@@ -17,10 +17,8 @@ enum readingNoteTab : String, CaseIterable {
 struct TabReadingNote: View {
     // MARK: - PROPERTY
     /// 뷰모델
-    @StateObject var vm = TabReadingNoteViewModel()
-    
-    @Bindable var book: RegisteredBook
-    
+    @StateObject var vm: TabReadingNoteViewModel
+        
     /// 선택된 탭이 뭔지
     @State var selectedTab: readingNoteTab = .bookmark
     
@@ -32,12 +30,19 @@ struct TabReadingNote: View {
     
     /// 기록하기 sheet가 띄워져 있는지 확인하는 변수
     @State var isRecordSheetAppear: Bool = false
-    
-    /// 기록하기 sheet의 picker 띄움 여부 변수
-    @State var isPickerAppear: Bool = false
-    
+        
     /// 사용자가 입력한 검색어
     @State private var searchText: String = ""
+    
+    // MARK: - init
+    init(bookType: BookType,
+         totalPage: Int,
+         isbn: String,
+         selectedTab: readingNoteTab) {
+        self._vm = StateObject(wrappedValue: TabReadingNoteViewModel(selectedTab: selectedTab,
+                                                                     book: EditRecordBookModel(bookType: bookType, totalPage: totalPage, isbn: isbn)))
+        self.selectedTab = selectedTab
+    }
     
     // MARK: - BODY
     var body: some View {
@@ -123,10 +128,10 @@ struct TabReadingNote: View {
             .sheet(isPresented: $isRecordSheetAppear) {
                 // 책갈피 등록 sheet 띄우기
                 EditAllRecord(
-                    book: book,
-                    selectedTab: vm.selectedTab.rawValue,
+                    book: vm.book,
                     isSheetAppear: $isRecordSheetAppear,
-                    isPickerAppear: isPickerAppear
+                    selectedTab: vm.selectedTab.rawValue,
+                    isPickerAppear: false
                 )
             }
         } //: ZStack
@@ -189,7 +194,7 @@ struct TabReadingNote: View {
 
 // MARK: - PREVIEW
 #Preview {
-    TabReadingNote(book: RegisteredBook())
+    TabReadingNote(bookType: .paperbook, totalPage: 500, isbn: "12345", selectedTab: .bookmark)
 }
 
 extension TabReadingNote {

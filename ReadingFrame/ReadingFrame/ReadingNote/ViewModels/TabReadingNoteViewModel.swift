@@ -22,8 +22,13 @@ class TabReadingNoteViewModel: ObservableObject {
     /// 인물사전 전체조회로 불러올 책갈피 데이터 모델
     @Published var characterData: [Character]?
     
+    /// 수정/추가를 위해 필요한 책정보
+    @Published var book: EditRecordBookModel
+    
     // MARK: - init
-    init(selectedTab: readingNoteTab = .bookmark) {
+    init(selectedTab: readingNoteTab = .bookmark, book: EditRecordBookModel) {
+        self.book = book
+        
         switch selectedTab {
         case .bookmark:
             fetchBookmarkData()

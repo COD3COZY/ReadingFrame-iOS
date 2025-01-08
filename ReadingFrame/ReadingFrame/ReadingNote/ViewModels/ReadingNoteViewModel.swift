@@ -13,6 +13,9 @@ import SwiftUI
 class ReadingNoteViewModel: ObservableObject {
     @Published var book: ReadingNoteModel?
     
+    /// 해당 책의 isbn값
+    var isbn: String
+    
     // MARK: - Properties
     
     /// 시작 날짜: 옵셔널 book을 위한 커스텀 Binding 생성
@@ -32,7 +35,8 @@ class ReadingNoteViewModel: ObservableObject {
     }
     
     // MARK: - init()
-    init() {
+    init(isbn: String) {
+        self.isbn = isbn
         fetchData()
     }
     
@@ -69,23 +73,24 @@ class ReadingNoteViewModel: ObservableObject {
         let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())    // 어제
         
         self.book = ReadingNoteModel(cover: "https://image.yes24.com/goods/96565175/XL",
-                                title: "사이보그가 되다",
-                                author: "김초엽, 김원영",
-                                categoryName: .humanSocial,
-                                totalPage: 380, readPage: 38,
-                                readingPercent: 10,
-                                keywordReview: dummykeywordReview,
-                                commentReview: dummycommentReview,
-                                selectReview: dummyselectReview,
-                                isMine: false,
-                                bookType: .paperbook,
-                                readingStatus: .reading,
-                                mainLocation: nil,
-                                startDate: weekBefore!,
-                                recentDate: yesterday!,
-                                bookmarks: dummyBookmark,
-                                memos: dummyMemo,
-                                characters: dummyCharacter)
+                                     title: "사이보그가 되다",
+                                     author: "김초엽, 김원영",
+                                     categoryName: .humanSocial,
+                                     totalPage: 380, readPage: 38,
+                                     readingPercent: 10,
+                                     firstReviewDate: Date(),
+                                     keywordReview: dummykeywordReview,
+                                     commentReview: dummycommentReview,
+                                     selectReview: dummyselectReview,
+                                     isMine: false,
+                                     bookType: .paperbook,
+                                     readingStatus: .reading,
+                                     mainLocation: nil,
+                                     startDate: weekBefore!,
+                                     recentDate: yesterday!,
+                                     bookmarks: dummyBookmark,
+                                     memos: dummyMemo,
+                                     characters: dummyCharacter)
     }
     
     /// 소장여부 바꾸기: 소장 <-> 비소장

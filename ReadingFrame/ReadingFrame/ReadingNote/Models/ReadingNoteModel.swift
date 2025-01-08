@@ -30,15 +30,18 @@ struct ReadingNoteModel: Codable {
     /// 읽은 퍼센트
     /// - 12%면 정수로 12
     var readingPercent: Int
+    
+    /// 리뷰 최초 등록일
+    var firstReviewDate: Date?
 
     /// 이 책을 기억하는 한가지 단어 키워드
-    let keywordReview: String?
+    var keywordReview: String?
 
     /// 개인 한줄평
-    let commentReview: String?
+    var commentReview: String?
 
     /// 선택리뷰 리스트
-    let selectReview: [selectReviewCode]?
+    var selectReview: [selectReviewCode]?
 
     /// 소장여부
     var isMine: Bool
@@ -51,7 +54,7 @@ struct ReadingNoteModel: Codable {
     var readingStatus: ReadingStatus
 
     /// 대표위치 장소명
-    let mainLocation: String?
+    var mainLocation: String?
 
     /// 시작날짜
     var startDate: Date

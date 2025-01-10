@@ -17,6 +17,7 @@ struct ReadingNote: View {
     /// View Model
     @StateObject var vm: ReadingNoteViewModel
     
+    // MARK: Alert 관련 변수들
     /// 독서노트 삭제 Alert이 띄워졌는지 확인하기 위한 변수
     @State private var isShowBookDeleteAlert = false
     
@@ -26,12 +27,17 @@ struct ReadingNote: View {
     /// 리뷰 삭제 Alert 변수
     @State private var isShowReviewDeleteAlert = false
     
-    /// 버튼 오버레이 여부
-    @State private var showOverlay = false
+    /// 읽는중에서 다읽음으로 전환하는 Alert 변수
+    @State private var isShowTurnToFinishReadAlert = false
     
-//    /// 버튼 프레임
-//    @State private var buttonFrame: CGSize = .zero
+    /// 다읽음에서 읽는중으로 전환하는 Alert 변수
+    @State private var isShowTurnToReadingAlert = false
     
+    /// 다읽음에서 읽는중으로 전환할 때 텍스트필드로 받아오는 값
+    @State private var enteredPage = ""
+    
+    
+    // MARK: Sheet 띄움 여부 관련 변수들
     /// 기록하기 sheet가 띄워져 있는지 확인하는 변수
     @State var isRecordSheetAppear: Bool = false
         
@@ -47,7 +53,7 @@ struct ReadingNote: View {
     /// 책 유형 버튼 표시 여부
     @State private var showBookTypeButtons: Bool = false
     
-    // MARK: - Computed Properties
+    // MARK: 계산 프로퍼티
     /// 소장 버튼의 텍스트 색상을 결정하는 변수
     var isMineBtnColor: Color {
         if ((vm.book?.isMine) != nil) {
@@ -126,6 +132,7 @@ struct ReadingNote: View {
                             characterSection
                         }
                         .padding(.bottom, 50)
+                        // MARK: - Alerts
                         // MARK: 위치 삭제 버튼을 클릭하면 나타나는 Alert
                         .alert(
                             "위치를 삭제하시겠습니까?",
@@ -135,7 +142,6 @@ struct ReadingNote: View {
                             
                             Button("예", role: .destructive) {
                                 vm.book?.mainLocation = nil
-//                                book.mainPlace = nil
                                 
                                 // TODO: 대표위치 삭제 API 호출
                             }
@@ -159,6 +165,40 @@ struct ReadingNote: View {
                             }
                         } message: {
                             Text("삭제된 리뷰는 복구할 수 없습니다.")
+                        }
+                        // MARK: 읽는중에서 다읽음 버튼 클릭하면 나타나는 Alert
+                        .alert(
+                            "\'다읽음\'설정하시겠습니까?",
+                            isPresented: $isShowTurnToFinishReadAlert
+                        ) {
+                            Button("아니오", role: .cancel) { }
+                            
+                            Button("예", role: .destructive) {
+                                withAnimation {
+                                    vm.turnToFinishRead()
+                                }
+                            }
+                        } message: {
+                            Text("독서 진행률이 100%가 되고,\n마지막으로 읽은 날짜가 오늘로 변경됩니다.")
+                        }
+                        // MARK: 다읽음 상태에서 버튼 한 번 더 클릭하면 나타나는 Alert
+                        .alert(
+                            "독서 진행률 설정",
+                            isPresented: $isShowTurnToReadingAlert
+                        ) {
+                            TextField("123456", text: $enteredPage)
+                                .keyboardType(.decimalPad)
+                            
+                            Button("취소", role: .none) { }
+                            
+                            Button("확인", role: .none) {
+                                withAnimation {
+                                    vm.turnToReading(p: Int(enteredPage))
+                                    enteredPage.removeAll()
+                                }
+                            }
+                        } message: {
+                            Text("마지막으로 읽은 페이지를 입력해 주세요.\n미작성 시 진행률이 0%로 설정됩니다.")
                         }
                     }
                     // MARK: - 회색 둥근 모서리 박스
@@ -297,21 +337,17 @@ extension ReadingNote {
                     .frame(width: 0.7, height: 40)
                 
                 // MARK: 독서 상태 변경 버튼(읽는중, 다읽음)
-                // TODO: 여기 로직 결정하고 반영하기
                 Button {
-                    withAnimation {
-                        if vm.book?.readingStatus == .reading {
-                            // 읽는중이면 다읽음으로
-                            print("readingstatus: \(String(describing: vm.book?.readingStatus))")
-                            vm.turnToFinishRead()
-                            print("읽는중 -> 다읽음")
-                            print("readingstatus: \(String(describing: vm.book?.readingStatus))")
-                        }
-                        else if vm.book?.readingStatus == .finishRead {
-                            // 다읽음이면 읽는중으로
-                            print("다읽은 상태라 못돌림")
-                            print("readingstatus: \(String(describing: vm.book?.readingStatus))")
-                        }
+                    // 읽는중이면 다읽음으로
+                    if vm.book?.readingStatus == .reading {
+                        
+                        // 다읽음 변경할거냐는 alert 띄우기
+                        self.isShowTurnToFinishReadAlert.toggle()
+                    }
+                    // 다읽음이면 읽는중으로
+                    else if vm.book?.readingStatus == .finishRead {
+                        // 독서 진행률 변경 alert 띄우기
+                        self.isShowTurnToReadingAlert.toggle()
                     }
                 } label: {
                     HStack(alignment: .center, spacing: 7) {

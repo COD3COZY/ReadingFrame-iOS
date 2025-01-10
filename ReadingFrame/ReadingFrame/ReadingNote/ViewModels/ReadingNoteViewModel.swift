@@ -125,10 +125,36 @@ class ReadingNoteViewModel: ObservableObject {
     
     // TODO: 로직 확정하고 반영하기
     /// 책 읽는중 상태로 바꾸기
-    func turnToReading() {
+    func turnToReading(p: Int?) {
+        // TODO: 독서상태 변경 API 호출하기
+
         // readingStatus = reading
+        book?.readingStatus = .reading
         
         // 마지막 읽은 날짜 버튼 누르는 당일로 수정
+        book?.recentDate = Date()
+        
+        
+        // 입력한 페이지 수 있으면 그 페이지로 책갈피 추가, 독서 진행률 적용
+        if let page = p {
+            // 독서 진행률 변경
+            let readingPercent: Int = page * 100 / book!.totalPage
+            
+            book?.readingPercent = readingPercent
+            book?.readPage = page
+            
+            // 책갈피 추가
+            let newBookmark = Bookmark(id: UUID().uuidString, date: Date(), markPage: page, markPercent: readingPercent, location: "")
+            
+            book?.bookmarks?.append(newBookmark)
+            
+            // TODO: 책갈피 추가 API 호출하기
+            
+        // 따로 입력한 페이지 수 없으면 0페이지로 돌아가기
+        } else {
+            book?.readingPercent = 0
+            book?.readPage = 0
+        }
         
     }
     

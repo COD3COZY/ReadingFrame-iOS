@@ -10,7 +10,10 @@ import Observation
 
 // MARK: 개인용 책 등록용 3종류 리뷰
 /// 사용자가 개별 책에 등록하는 3종 리뷰
-class Review: ObservableObject {
+class Review: ObservableObject, Hashable {
+    /// 리뷰 구분을 위한 id
+    let id: UUID = UUID()
+    
     /// 선택리뷰들
     /// - 처음 생성 시에는 비어있음
     @Published var selectReviews: [selectReviewCode] = []
@@ -25,6 +28,14 @@ class Review: ObservableObject {
     /// 한줄평
     /// - DB) 200자 제한
     @Published var comment: String?
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: Review, rhs: Review) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 // MARK: 한줄평 관련 정보

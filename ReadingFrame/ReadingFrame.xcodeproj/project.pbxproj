@@ -42,6 +42,7 @@
 		C54B932B2C500AD0008B73E0 /* BookshelfModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54B932A2C500AD0008B73E0 /* BookshelfModel.swift */; };
 		C54B932E2C500FCD008B73E0 /* BookShelfView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54B932D2C500FCD008B73E0 /* BookShelfView.swift */; };
 		C5529F1B2BBD7AB300C3E614 /* EnterProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5529F1A2BBD7AB300C3E614 /* EnterProfile.swift */; };
+		C55AB2472D36B76D0036E081 /* ReviewNavigationDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55AB2462D36B76D0036E081 /* ReviewNavigationDestination.swift */; };
 		C563455A2D18563600531ADC /* TabReadingNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56345592D18563600531ADC /* TabReadingNoteViewModel.swift */; };
 		C563455C2D193CF400531ADC /* EditAllRecordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C563455B2D193CF400531ADC /* EditAllRecordViewModel.swift */; };
 		C563455E2D19513C00531ADC /* EditRecordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C563455D2D19513C00531ADC /* EditRecordModel.swift */; };
@@ -192,6 +193,7 @@
 		C54B932A2C500AD0008B73E0 /* BookshelfModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfModel.swift; sourceTree = "<group>"; };
 		C54B932D2C500FCD008B73E0 /* BookShelfView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookShelfView.swift; sourceTree = "<group>"; };
 		C5529F1A2BBD7AB300C3E614 /* EnterProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterProfile.swift; sourceTree = "<group>"; };
+		C55AB2462D36B76D0036E081 /* ReviewNavigationDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewNavigationDestination.swift; sourceTree = "<group>"; };
 		C56345592D18563600531ADC /* TabReadingNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabReadingNoteViewModel.swift; sourceTree = "<group>"; };
 		C563455B2D193CF400531ADC /* EditAllRecordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAllRecordViewModel.swift; sourceTree = "<group>"; };
 		C563455D2D19513C00531ADC /* EditRecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecordModel.swift; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 			children = (
 				C5288E7F2CABEAC400865527 /* KeywordTextField.swift */,
 				C5FEB1602CE3CF96007798C5 /* CheckReviews_EditComment.swift */,
+				C55AB2462D36B76D0036E081 /* ReviewNavigationDestination.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -813,13 +816,6 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		E75D6B052BEB3DD10080EBA0 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		E768F0952CE5105B003E2CB3 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -1196,7 +1192,7 @@
 				E7C24DB02C5CF89600D05937 /* CharacterDetail.swift in Sources */,
 				E7A0DD302B7B6B5B006004B5 /* HomeSegmentedControl.swift in Sources */,
 				E77394872C6385B80057760A /* Badge.swift in Sources */,
-				E77E0BB82C7499A500626110 /* KakaoSignUpService.swift in Sources */,
+				E77E0BB82C7499A500626110 /* SignUpService.swift in Sources */,
 				C5FEB1612CE3CF96007798C5 /* CheckReviews_EditComment.swift in Sources */,
 				E77E0BB82C7499A500626110 /* SignUpService.swift in Sources */,
 				E77E0B8F2C7390A400626110 /* BaseAPI.swift in Sources */,
@@ -1257,6 +1253,7 @@
 				C595A1E82B7A9FFB006D88EC /* BookMap.swift in Sources */,
 				C54B93262C500A35008B73E0 /* BookShelf.swift in Sources */,
 				C51556C32B830402006FD0F2 /* BookInfoBottomButtonView.swift in Sources */,
+				C55AB2472D36B76D0036E081 /* ReviewNavigationDestination.swift in Sources */,
 				C52EC59F2C308258004F6BDB /* LocationManager.swift in Sources */,
 				E7ACEAA02CA2B08B0079F2F1 /* LoginViewModel.swift in Sources */,
 				C53A34B22C37D99A008A88F0 /* BottomSheetHelper.swift in Sources */,

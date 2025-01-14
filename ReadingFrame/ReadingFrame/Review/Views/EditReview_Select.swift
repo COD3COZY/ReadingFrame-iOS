@@ -36,9 +36,16 @@ struct EditReview_Select: View {
     /// 편집 모드인지 여부 (리뷰 편집 모드 또는 초기 생성 모드)
     @State var isEditMode: Bool = false
     
-//    /// 편집 모드라면 리뷰 입력하고 뷰 dissmiss시키기위한 변수
-//    @Environment(\.dismiss) private var dismiss
-
+    // MARK: 리뷰 네비게이션 Stack 관리 관련
+    /// 리뷰 전체 빠져나가기 위한 클로저
+    let popToRootAction: () -> Void
+    
+    /// 화면 전환용
+    @Environment(\.presentationMode) var presentationMode
+    
+    /// 리뷰 작성 빠져나가기 alert
+    @State var exitReviewAlert: Bool = false
+    
     
     /// 버튼 활성화 조건: 선택된 토큰이 1개 이상 5개 이하일 때만 활성화
     var isButtonDisabled: Bool {
@@ -65,16 +72,57 @@ struct EditReview_Select: View {
         }
         .navigationTitle("리뷰 작성") // 네비게이션 바 타이틀
         .navigationBarTitleDisplayMode(.inline) // 상단에 바 뜨는 모양
+        // 상단 이전 버튼(리뷰 빠져나가기)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    exitReviewAlert.toggle()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .foregroundStyle(.black0)
+                        .fontWeight(.medium)
+                }
+                // MARK: < 버튼 클릭 시 나타나는 Alert
+                .alert(
+                    "이 페이지에서 나가시겠습니까?",
+                    isPresented: $exitReviewAlert
+                ) {
+                    Button("아니오", role: .cancel) { }
+                    Button("예", role: .destructive) {
+                        // 리뷰 작성 빠져나가기
+                        popToRootAction()
+                    }
+                } message: {
+                    Text("변경사항이 저장되지 않을 수 있습니다.")
+                }
+            }
+        }
         .task {
             print("---SelectReview 입력 페이지 task ----")
             print("Review객체정보\n- selected: \(selected)\n- keyword: \(review.keyword ?? "없어요. 없다니까요")\n- comment: \(review.comment ?? "없어요, 없다니까요")")
         }
+        // 좌측 스와이프하면 이전화면으로 이동
+        .gesture(
+            DragGesture()
+                .onChanged { value in
+                    let startLocation = value.startLocation.x
+                    
+                    // 왼쪽 끝에서 시작된 드래그인지 확인
+                    if startLocation < 50 {
+                        let dragDistance = value.translation.width
+                        // 오른쪽으로의 드래그 거리가 충분한지 확인
+                        if dragDistance > 30 {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                }
+        )
     }
 }
 
-#Preview {
-    EditReview_Select()
-}
+//#Preview {
+//    EditReview_Select()
+//}
 
 extension EditReview_Select {
     // MARK: 제목 섹션
@@ -145,17 +193,13 @@ extension EditReview_Select {
         HStack {
             Spacer()
             
-            NavigationLink {
-                if isEditMode {
-                    // 수정 모드: 전체확인 페이지
-                    EditReview_CheckReviews(review: self.review)
-                        .toolbarRole(.editor) // back 텍스트 표시X
-                } else {
-                    // 초기 입력 모드: 키워드리뷰 페이지
-                    EditReview_Keyword(review: self.review)
-                        .toolbarRole(.editor) // back 텍스트 표시X
-                }
-            } label: {
+            NavigationLink (
+                value: isEditMode
+                // 수정모드였으면 전체화면 페이지로 연결
+                ? ReviewNavigationDestination.editReview_checkReviews(data: self.review)
+                // 초기 입력 모드였으면 키워드리뷰 페이지로 연결
+                : ReviewNavigationDestination.editReview_keyword(data: self.review)
+            ) {
                 moveButton
             }
             .disabled(isButtonDisabled)

@@ -53,6 +53,18 @@ struct ReadingNote: View {
     /// 책 유형 버튼 표시 여부
     @State private var showBookTypeButtons: Bool = false
     
+    // MARK: 네비게이션 스택 관련 변수들
+    @State private var path: [ReviewNavigationDestination] = []
+        
+    func popToRoot() {
+        path.removeAll()
+    }
+    
+    func popLast() {
+        path.removeLast()
+    }
+        
+    
     // MARK: 계산 프로퍼티
     /// 소장 버튼의 텍스트 색상을 결정하는 변수
     var isMineBtnColor: Color {
@@ -86,186 +98,238 @@ struct ReadingNote: View {
     
     // MARK: - View
     var body: some View {
-        ZStack(alignment: .bottom) {
-            ScrollView {
-                ZStack(alignment: .topLeading) {
-                    // 화면 윗부분은 흰색으로 설정
-                    Rectangle()
-                        .fill(.white)
-                    
-                    VStack(alignment: .leading, spacing: 0) {
-                        // MARK: 책 표지
-                        coverImage
-
+        NavigationStack(path: $path) {
+            ZStack(alignment: .bottom) {
+                ScrollView {
+                    ZStack(alignment: .topLeading) {
+                        // 화면 윗부분은 흰색으로 설정
+                        Rectangle()
+                            .fill(.white)
                         
                         VStack(alignment: .leading, spacing: 0) {
-                            // MARK: 기본 책정보: 책정보 배지, 책 이름, 저자
-                            basicBookInfo
-                                                        
-                            // MARK: 3개 버튼 바
-                            threeButtonBar
-                                .frame(height: 200, alignment: .top)
-                                .zIndex(1)
+                            // MARK: 책 표지
+                            coverImage
                             
-                            // MARK: 날짜 리스트
-                            dateList
-                                .padding(.top, -120)
-                                .zIndex(0)
                             
-                            // MARK: 독서 진행률
-                            readingProgress
-                                .zIndex(0)
-                            
-                            // MARK: 대표위치
-                            locationBox
-                                                        
-                            // MARK: 리뷰 박스
-                            reviewBox
-                            
-                            // MARK: 책갈피 구역
-                            bookmarkSection
-                            
-                            // MARK: 메모 구역
-                            memoSection
-                            
-                            // MARK: 인물사전
-                            characterSection
-                        }
-                        .padding(.bottom, 50)
-                        // MARK: - Alerts
-                        // MARK: 위치 삭제 버튼을 클릭하면 나타나는 Alert
-                        .alert(
-                            "위치를 삭제하시겠습니까?",
-                            isPresented: $isShowLocationDeleteAlert
-                        ) {
-                            Button("아니오", role: .cancel) { }
-                            
-                            Button("예", role: .destructive) {
-                                vm.book?.mainLocation = nil
+                            VStack(alignment: .leading, spacing: 0) {
+                                // MARK: 기본 책정보: 책정보 배지, 책 이름, 저자
+                                basicBookInfo
                                 
-                                // TODO: 대표위치 삭제 API 호출
-                            }
-                        } message: {
-                            Text("삭제된 위치는 복구할 수 없습니다.")
-                        }
-                        // MARK: 리뷰 삭제 버튼을 클릭하면 나타나는 Alert
-                        .alert(
-                            "리뷰를 삭제하시겠습니까?",
-                            isPresented: $isShowReviewDeleteAlert
-                        ) {
-                            Button("아니오", role: .cancel) { }
-                            
-                            Button("예", role: .destructive) {
-                                // view상의 리뷰 삭제
-                                vm.book?.selectReview = nil
-                                vm.book?.commentReview = nil
-                                vm.book?.keywordReview = nil
+                                // MARK: 3개 버튼 바
+                                threeButtonBar
+                                    .frame(height: 200, alignment: .top)
+                                    .zIndex(1)
                                 
-                                // TODO: 리뷰 전체 삭제 API 호출
+                                // MARK: 날짜 리스트
+                                dateList
+                                    .padding(.top, -120)
+                                    .zIndex(0)
+                                
+                                // MARK: 독서 진행률
+                                readingProgress
+                                    .zIndex(0)
+                                
+                                // MARK: 대표위치
+                                locationBox
+                                
+                                // MARK: 리뷰 박스
+                                reviewBox
+                                
+                                // MARK: 책갈피 구역
+                                bookmarkSection
+                                
+                                // MARK: 메모 구역
+                                memoSection
+                                
+                                // MARK: 인물사전
+                                characterSection
                             }
-                        } message: {
-                            Text("삭제된 리뷰는 복구할 수 없습니다.")
-                        }
-                        // MARK: 읽는중에서 다읽음 버튼 클릭하면 나타나는 Alert
-                        .alert(
-                            "\'다읽음\'설정하시겠습니까?",
-                            isPresented: $isShowTurnToFinishReadAlert
-                        ) {
-                            Button("아니오", role: .cancel) { }
-                            
-                            Button("예", role: .destructive) {
-                                withAnimation {
-                                    vm.turnToFinishRead()
+                            .padding(.bottom, 50)
+                            // MARK: - Alerts
+                            // MARK: 위치 삭제 버튼을 클릭하면 나타나는 Alert
+                            .alert(
+                                "위치를 삭제하시겠습니까?",
+                                isPresented: $isShowLocationDeleteAlert
+                            ) {
+                                Button("아니오", role: .cancel) { }
+                                
+                                Button("예", role: .destructive) {
+                                    vm.book?.mainLocation = nil
+                                    
+                                    // TODO: 대표위치 삭제 API 호출
                                 }
+                            } message: {
+                                Text("삭제된 위치는 복구할 수 없습니다.")
                             }
-                        } message: {
-                            Text("독서 진행률이 100%가 되고,\n마지막으로 읽은 날짜가 오늘로 변경됩니다.")
-                        }
-                        // MARK: 다읽음 상태에서 버튼 한 번 더 클릭하면 나타나는 Alert
-                        .alert(
-                            "독서 진행률 설정",
-                            isPresented: $isShowTurnToReadingAlert
-                        ) {
-                            TextField("123456", text: $enteredPage)
-                                .keyboardType(.decimalPad)
-                            
-                            Button("취소", role: .none) { }
-                            
-                            Button("확인", role: .none) {
-                                withAnimation {
-                                    vm.turnToReading(p: Int(enteredPage))
-                                    enteredPage.removeAll()
+                            // MARK: 리뷰 삭제 버튼을 클릭하면 나타나는 Alert
+                            .alert(
+                                "리뷰를 삭제하시겠습니까?",
+                                isPresented: $isShowReviewDeleteAlert
+                            ) {
+                                Button("아니오", role: .cancel) { }
+                                
+                                Button("예", role: .destructive) {
+                                    // view상의 리뷰 삭제
+                                    vm.book?.selectReview = nil
+                                    vm.book?.commentReview = nil
+                                    vm.book?.keywordReview = nil
+                                    
+                                    // TODO: 리뷰 전체 삭제 API 호출
                                 }
+                            } message: {
+                                Text("삭제된 리뷰는 복구할 수 없습니다.")
                             }
-                        } message: {
-                            Text("마지막으로 읽은 페이지를 입력해 주세요.\n미작성 시 진행률이 0%로 설정됩니다.")
+                            // MARK: 읽는중에서 다읽음 버튼 클릭하면 나타나는 Alert
+                            .alert(
+                                "\'다읽음\'설정하시겠습니까?",
+                                isPresented: $isShowTurnToFinishReadAlert
+                            ) {
+                                Button("아니오", role: .cancel) { }
+                                
+                                Button("예", role: .destructive) {
+                                    withAnimation {
+                                        vm.turnToFinishRead()
+                                    }
+                                }
+                            } message: {
+                                Text("독서 진행률이 100%가 되고,\n마지막으로 읽은 날짜가 오늘로 변경됩니다.")
+                            }
+                            // MARK: 다읽음 상태에서 버튼 한 번 더 클릭하면 나타나는 Alert
+                            .alert(
+                                "독서 진행률 설정",
+                                isPresented: $isShowTurnToReadingAlert
+                            ) {
+                                TextField("123456", text: $enteredPage)
+                                    .keyboardType(.decimalPad)
+                                
+                                Button("취소", role: .none) { }
+                                
+                                Button("확인", role: .none) {
+                                    withAnimation {
+                                        vm.turnToReading(p: Int(enteredPage))
+                                        enteredPage.removeAll()
+                                    }
+                                }
+                            } message: {
+                                Text("마지막으로 읽은 페이지를 입력해 주세요.\n미작성 시 진행률이 0%로 설정됩니다.")
+                            }
                         }
+                        // MARK: - 배경: 회색 둥근 모서리 박스
+                        .background(
+                            RoundedRadiusBox(radius: 20, corners: [.topLeft, .topRight])
+                                .fill(.grey1)
+                                .padding(.top, 176)
+                        )
+                        .padding(.top, 100)
                     }
-                    // MARK: - 회색 둥근 모서리 박스
-                    .background(
-                        RoundedRadiusBox(radius: 20, corners: [.topLeft, .topRight])
-                            .fill(.grey1)
-                            .padding(.top, 176)
+                    .background(.white)
+                }
+                // 스크롤 끝까지 내렸을 때 기록하기 버튼에 노트 내용 안가려지도록
+                .padding(.bottom, 70)
+                // 화면 전체적으로 회색으로 설정
+                .background(.grey1)
+                // 화면 꽉 채우기
+                .ignoresSafeArea(.container)
+                
+                // MARK: - 기록하기 버튼
+                recordBtn
+            }
+            // MARK: - 네비게이션 바 관련 코드 구역
+            // MARK: 네비게이션 바 설정
+            .navigationTitle("독서노트")
+            .navigationBarTitleDisplayMode(.inline)
+            // MARK: 툴바의 오른쪽 삭제 버튼
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isShowBookDeleteAlert.toggle()
+                    } label: {
+                        Text("삭제")
+                            .foregroundStyle(.red0)
+                    }
+                    // MARK: 삭제 버튼 클릭 시 나타나는 Alert
+                    .alert(
+                        "독서노트를 삭제하시겠습니까?",
+                        isPresented: $isShowBookDeleteAlert
+                    ) {
+                        Button("아니오", role: .cancel) { }
+                        Button("예", role: .destructive) {
+                            // TODO: 독서노트 삭제
+                        }
+                    } message: {
+                        Text("삭제된 독서노트는 복구할 수 없습니다.")
+                    }
+                }
+            }
+            // MARK: - 화면 연결 관련 구역
+            // MARK: 기록하기 버튼 클릭 시 나타나는 Sheet
+            .sheet(isPresented: $isRecordSheetAppear) {
+                // 책갈피 등록 sheet 띄우기
+                EditAllRecord(
+                    book: EditRecordBookModel(bookType: vm.book!.bookType,
+                                              totalPage: vm.book?.totalPage ?? 0,
+                                              isbn: vm.isbn),
+                    isSheetAppear: $isRecordSheetAppear,
+                    selectedTab: selectedTab,
+                    isPickerAppear: true
+                )
+            }
+            // TODO: 구매/대여한 위치 클릭 시 나타나는 Sheet
+            //        .sheet(isPresented: $showSearchLocation, content: SearchLocation(showingSearchLocation: $showSearchLocation, pickedPlaceMark: <#Binding<MKPlacemark?>#>))
+            // MARK: 리뷰 작성 Navigation 연결
+            .navigationDestination(for: ReviewNavigationDestination.self) { destination in
+                if destination.identifier == "EditReview_Select_Make" {
+                    EditReview_Select(
+                        popToRootAction: popToRoot
                     )
-                    .padding(.top, 100)
+                    .toolbarRole(.editor) // back 텍스트 표시X
+                    .navigationBarBackButtonHidden()
                 }
-                .background(.white)
-            }
-            // 스크롤 끝까지 내렸을 때 기록하기 버튼에 노트 내용 안가려지도록
-            .padding(.bottom, 70)
-            // 화면 전체적으로 회색으로 설정
-            .background(.grey1)
-            // 화면 꽉 채우기
-            .ignoresSafeArea(.container)
-            
-            // MARK: - 기록하기 버튼
-            recordBtn
-        }
-        // MARK: 기록하기 버튼 클릭 시 나타나는 Sheet
-        .sheet(isPresented: $isRecordSheetAppear) {
-            // 책갈피 등록 sheet 띄우기
-            EditAllRecord(
-                book: EditRecordBookModel(bookType: vm.book!.bookType,
-                                          totalPage: vm.book?.totalPage ?? 0,
-                                          isbn: vm.isbn),
-                isSheetAppear: $isRecordSheetAppear,
-                selectedTab: selectedTab,
-                isPickerAppear: true
-            )
-        }
-        // MARK: 네비게이션 바 설정
-        .navigationTitle("독서노트")
-        .navigationBarTitleDisplayMode(.inline)
-        // MARK: 툴바의 오른쪽 삭제 버튼
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    isShowBookDeleteAlert.toggle()
-                } label: {
-                    Text("삭제")
-                        .foregroundStyle(.red0)
-                }
-                // MARK: 삭제 버튼 클릭 시 나타나는 Alert
-                .alert(
-                    "독서노트를 삭제하시겠습니까?",
-                    isPresented: $isShowBookDeleteAlert
-                ) {
-                    Button("아니오", role: .cancel) { }
-                    Button("예", role: .destructive) {
-                        // TODO: 독서노트 삭제
+                else if destination.identifier == "EditReview_Select_Edit" {
+                    if case let .editReview_select_edit(data) = destination {
+                        EditReview_Select(
+                            review: data,
+                            isEditMode: true,
+                            popToRootAction: popToRoot
+                        )
+                        .toolbarRole(.editor) // back 텍스트 표시X
+                        .navigationBarBackButtonHidden()
                     }
-                } message: {
-                    Text("삭제된 독서노트는 복구할 수 없습니다.")
+                }
+                else if destination.identifier == "EditReview_Keyword" {
+                    if case let .editReview_keyword(data) = destination {
+                        EditReview_Keyword(
+                            review: data,
+                            popToRootAction: popToRoot,
+                            dismissAction: popLast
+                        )
+                        .toolbarRole(.editor) // back 텍스트 표시X
+                        .navigationBarBackButtonHidden()
+                    }
+                }
+                else if destination.identifier == "EditReview_Comment" {
+                    if case let .editReview_comment(data) = destination {
+                        EditReview_Comment(
+                            review: data,
+                            popToRootAction: popToRoot,
+                            dismissAction: popLast
+                        )
+                        .toolbarRole(.editor) // back 텍스트 표시X
+                        .navigationBarBackButtonHidden()
+                    }
+                }
+                else if destination.identifier == "EditReview_CheckReviews" {
+                    if case let .editReview_checkReviews(data) = destination {
+                        EditReview_CheckReviews(
+                            review: data,
+                            popToRootAction: popToRoot
+                        )
+                        .toolbarRole(.editor) // back 텍스트 표시X
+                        .navigationBarBackButtonHidden()
+                    }
                 }
             }
         }
-        // MARK: 리뷰 Fullscreen
-        .fullScreenCover(isPresented: $showReviewFullscreen) {
-            EditReview_Select()
-                .toolbarRole(.editor)
-        }
-        // TODO: 구매/대여한 위치 클릭 시 나타나는 Sheet
-//        .sheet(isPresented: $showSearchLocation, content: SearchLocation(showingSearchLocation: $showSearchLocation, pickedPlaceMark: <#Binding<MKPlacemark?>#>))
     }
 }
 
@@ -698,25 +762,24 @@ extension ReadingNote {
             }
             // 리뷰가 없다면
             else {
-                HStack(alignment: .center, spacing: 0) {
-                    Image(systemName: "bubble")
-                        .foregroundStyle(.black0)
-                        .padding(.trailing, 8)
-                    
-                    Text("리뷰 작성하기")
-                        .foregroundStyle(.black0)
-                    
-                    Spacer()
-                                        
-                    // !!!: 리뷰 작성 화면으로 이동
-                    Button {
-                        showReviewFullscreen.toggle()
-                    } label: {
+                // !!!: 리뷰 작성 화면으로 이동
+                NavigationLink(
+                    value: ReviewNavigationDestination.editReview_select_make
+                ) {
+                    HStack(alignment: .center, spacing: 0) {
+                        Image(systemName: "bubble")
+                            .foregroundStyle(.black0)
+                            .padding(.trailing, 8)
+                        
+                        Text("리뷰 작성하기")
+                            .foregroundStyle(.black0)
+                        
+                        Spacer()
+                        
                         Image(systemName: "chevron.right")
                             .foregroundStyle(.black0)
-
+                            .frame(width: 13)
                     }
-                    .frame(width: 13)
                     
 //                    NavigationLink {
 //                        EditReview_Select()

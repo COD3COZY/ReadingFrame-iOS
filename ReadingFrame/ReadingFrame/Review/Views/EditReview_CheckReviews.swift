@@ -42,6 +42,18 @@ struct EditReview_CheckReviews: View {
     /// 전체삭제 진짜로 할건지 물어보는 알람 띄우는 변수
     @State var showDeleteAlert: Bool = false
     
+    // MARK: 리뷰 네비게이션 Stack 관리 관련
+    /// 리뷰 전체 빠져나가기 위한 클로저
+    let popToRootAction: () -> Void
+        
+    /// 리뷰 작성 빠져나가기 alert
+    @State var exitReviewAlert: Bool = false
+    
+    /// 화면 전환용
+    @Environment(\.presentationMode) var presentationMode
+
+
+    
     // MARK: - View
     var body: some View {
         GeometryReader { geometry in
@@ -78,6 +90,32 @@ struct EditReview_CheckReviews: View {
         }
         .navigationTitle("리뷰 작성") // 네비게이션 바 타이틀
         .navigationBarTitleDisplayMode(.inline) // 상단에 바 뜨는 모양
+        // 상단 이전 버튼(리뷰 빠져나가기)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    exitReviewAlert.toggle()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .foregroundStyle(.black0)
+                        .fontWeight(.medium)
+                }
+                // MARK: < 버튼 클릭 시 나타나는 Alert
+                .alert(
+                    "이 페이지에서 나가시겠습니까?",
+                    isPresented: $exitReviewAlert
+                ) {
+                    Button("아니오", role: .cancel) { }
+                    Button("예", role: .destructive) {
+                        // 독서노트 작성 빠져나가기
+                        popToRootAction()
+                    }
+                } message: {
+                    Text("변경사항이 저장되지 않을 수 있습니다.")
+                }
+            }
+        }
+
         .sheet(isPresented: $isCommentSheetAppear) {
             CheckReviews_EditComment(parentComment: $review.comment, isCommentSheetAppear: $isCommentSheetAppear)
         } // 한줄평 수정
@@ -113,7 +151,7 @@ struct EditReview_CheckReviews: View {
 }
 
 #Preview {
-    EditReview_CheckReviews(review: .init())
+    EditReview_CheckReviews(review: .init(), popToRootAction: {})
 }
 
 extension EditReview_CheckReviews {
@@ -178,10 +216,9 @@ extension EditReview_CheckReviews {
             // 추가하기 버튼
             // 5개 미만일 때만
             if review.selectReviews.count < 5 {
-                NavigationLink {
-                    EditReview_Select(review: self.review, isEditMode: true)
-                        .toolbarRole(.editor)
-                } label: {
+                NavigationLink (
+                    value: ReviewNavigationDestination.editReview_select_edit(data: self.review)
+                ) {
                     HStack(spacing: 2) {
                         Image(systemName: "plus")
                             .font(.subheadline)
@@ -232,9 +269,10 @@ extension EditReview_CheckReviews {
     private var registerReviewButton: some View {
         VStack {
             Button {
-                // TODO: API 연결
+                // TODO: 리뷰 등록 API 호출
                 
-                // TODO: 쌓여있는 리뷰 화면 다 빠져나가기
+                // 쌓여있는 리뷰 화면 다 빠져나가기
+                popToRootAction()
             } label: {
                 Text("리뷰 등록하기")
                     .font(.headline)

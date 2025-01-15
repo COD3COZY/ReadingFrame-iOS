@@ -8,15 +8,21 @@
 import Foundation
 import Alamofire
 import SwiftUI
+import MapKit
 
 /// 독서노트의 뷰모델
 class ReadingNoteViewModel: ObservableObject {
+    // MARK: - Properties
     @Published var book: ReadingNoteModel?
     
     /// 해당 책의 isbn값
     var isbn: String
     
-    // MARK: - Properties
+    
+    /// 위치검색이 등록용인지, 수정용인지 구별하기위한 변수
+    /// - true: 위치 등록 API 호출
+    /// - false: 위치 수정 API 호출
+    @State var isRegisteringLocation: Bool = false
     
     /// 시작 날짜: 옵셔널 book을 위한 커스텀 Binding 생성
     var startDateBinding: Binding<Date> {
@@ -116,6 +122,36 @@ class ReadingNoteViewModel: ObservableObject {
         return review
     }
     
+    // MARK: 위치 변경 관련
+    /// 위치 변경 처리
+    func modifyLocation(place: MKPlacemark) {
+        print("modifyLocation 호출")
+        
+        // 위치 등록 API 호출(POST)
+        if isRegisteringLocation {
+            postMainLocation()
+        }
+        // 위치 변경 API 호출(PATCH)
+        else {
+            patchMainLocation()
+        }
+        
+        // 독서노트 UI에도 위치명 보이도록
+        self.book?.mainLocation = place.name
+    }
+    
+    // TODO: 아래 대표위치 API 호출 코드 채워넣기
+    /// 책별대표위치 등록 API 호출
+    func postMainLocation() {
+        print("책별대표위치 등록")
+    }
+    
+    /// 책별대표위치 수정/변경 API 호출
+    func patchMainLocation() {
+        print("책별대표위치 수정/변경")
+    }
+    
+    
     // MARK: 독서상태(reading status) 변경 관련
     /// 책 다읽음 상태로 바꾸기
     func turnToFinishRead() {
@@ -141,7 +177,6 @@ class ReadingNoteViewModel: ObservableObject {
         // TODO: 독서상태 변경 API 호출하기
     }
     
-    // TODO: 로직 확정하고 반영하기
     /// 책 읽는중 상태로 바꾸기
     func turnToReading(p: Int?) {
         // TODO: 독서상태 변경 API 호출하기

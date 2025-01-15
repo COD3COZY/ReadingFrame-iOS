@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MapKit
 
 /// 독서노트 화면
 struct ReadingNote: View {
@@ -16,6 +17,9 @@ struct ReadingNote: View {
     
     /// View Model
     @StateObject var vm: ReadingNoteViewModel
+    
+    /// 위치 데이터 관리를 위한 MKPlaceMark
+    @State var pickedPlace: MKPlacemark? = nil
     
     // MARK: Alert 관련 변수들
     /// 독서노트 삭제 Alert이 띄워졌는지 확인하기 위한 변수
@@ -275,7 +279,19 @@ struct ReadingNote: View {
                 )
             }
             // TODO: 구매/대여한 위치 클릭 시 나타나는 Sheet
-            //        .sheet(isPresented: $showSearchLocation, content: SearchLocation(showingSearchLocation: $showSearchLocation, pickedPlaceMark: <#Binding<MKPlacemark?>#>))
+            .sheet(isPresented: $showSearchLocation) {
+                SearchLocation(
+                    showingSearchLocation: $showSearchLocation,
+                    pickedPlaceMark: $pickedPlace
+                )
+            }
+            // 위치 변경 시 API 호출
+            .onChange(of: pickedPlace) { oldPlace, newPlace in
+                print("위치 골랐음")
+                if newPlace != nil {
+                    vm.modifyLocation()
+                }
+            }
             // MARK: 리뷰 작성 Navigation 연결
             .navigationDestination(for: ReviewNavigationDestination.self) { destination in
                 if destination.identifier == "EditReview_Select_Make" {
@@ -652,8 +668,10 @@ extension ReadingNote {
                 
                 // - MARK: 위치 수정, 삭제 버튼
                 Menu {
+                    // 위치검색화면 연결
                     Button {
-                        // TODO: 위치 검색화면 연결
+                        vm.isRegisteringLocation = false // 위치 수정하는 액션임
+                        self.showSearchLocation = true
                     } label: {
                         Label("수정", systemImage: "pencil.line")
                     }
@@ -670,10 +688,10 @@ extension ReadingNote {
             }
             // 대표위치가 없을 때: 위치검색화면 연결
             else {
-                // TODO: 위치 검색화면 연결
                 Text("구매/대여한 위치")
                     .foregroundStyle(.greyText)
                     .onTapGesture {
+                        vm.isRegisteringLocation = true // 위치 등록하는 액션임
                         self.showSearchLocation = true
                     }
                     
@@ -1047,7 +1065,7 @@ extension ReadingNote {
         }
     }
     
-    // MARK: - 인물사전 추가하기 버튼
+    // MARK: 인물사전 추가하기 버튼
     private var characterAddBtn: some View {
         VStack(spacing: 8) {
             Image(systemName: "plus.circle.fill")

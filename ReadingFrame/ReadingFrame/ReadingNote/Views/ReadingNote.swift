@@ -695,7 +695,7 @@ extension ReadingNote {
     private var reviewBox: some View {
         VStack(spacing: 0) {
             // 리뷰가 있다면
-            if (vm.book?.selectReview != nil) {
+            if let selectReviews = vm.book?.selectReview {
                 HStack(alignment: .top, spacing: 0) {
                     Image(systemName: "bubble")
                         .foregroundStyle(.black0)
@@ -714,6 +714,8 @@ extension ReadingNote {
                                 .font(.subheadline)
                                 .foregroundStyle(.black0)
                                 .padding(.top, 5)
+                                .lineLimit(nil)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                     }
                     
@@ -721,9 +723,9 @@ extension ReadingNote {
                     
                     // MARK: 리뷰 수정, 삭제 버튼
                     Menu {
-                        Button {
-                            // TODO: 리뷰 수정 화면으로 이동
-                        } label: {
+                        NavigationLink(
+                            value: ReviewNavigationDestination.editReview_checkReviews(data: vm.getReview())
+                        ) {
                             Label("수정", systemImage: "pencil.line")
                         }
                         
@@ -738,31 +740,18 @@ extension ReadingNote {
                     }
                 }
                 
-                VStack(alignment: .center) {
-                    // MARK: 리뷰 한단어&키워드
-                    if let selectReviews =
-                        vm.book?.selectReview, !selectReviews.isEmpty {
-                        // 한단어 리뷰 있으면 같이 보여주기
-                        if let keyword =
-                            vm.book?.keywordReview, !keyword.isEmpty {
-                            SelectReviewClusterView(
-                                selectReviews: selectReviews,
-                                keyword: keyword
-                            )
-                        }
-                        // 없으면 선택리뷰만 보여주기
-                        else {
-                            SelectReviewClusterView(
-                                selectReviews: selectReviews
-                            )
-                        }
-                    }
+                // MARK: 리뷰 한단어&키워드
+                if !selectReviews.isEmpty {
+                    SelectReviewClusterView(
+                        selectReviews: selectReviews,
+                        keyword: vm.book?.keywordReview
+                    )
+                    .padding(.top, 10)
                 }
-                .padding(.top, 10)
             }
             // 리뷰가 없다면
             else {
-                // !!!: 리뷰 작성 화면으로 이동
+                // 리뷰 작성 화면으로 이동
                 NavigationLink(
                     value: ReviewNavigationDestination.editReview_select_make
                 ) {
@@ -780,15 +769,6 @@ extension ReadingNote {
                             .foregroundStyle(.black0)
                             .frame(width: 13)
                     }
-                    
-//                    NavigationLink {
-//                        EditReview_Select()
-//                            .toolbarRole(.editor)
-//                    } label: {
-//                        Image(systemName: "chevron.right")
-//                            .foregroundStyle(.black0)
-//                    }
-//                    .frame(width: 13)
                 }
             }
         }

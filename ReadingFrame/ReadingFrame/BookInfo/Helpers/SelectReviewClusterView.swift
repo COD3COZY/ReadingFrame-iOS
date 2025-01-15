@@ -16,11 +16,11 @@ struct SelectReviewClusterView: View {
     var keyword: String? = nil
     
     var body: some View {
-        ScrollView(.vertical) {
             // 레이아웃 사용해서 선택리뷰들 줄바꿈
             WrapLayout(alignment: .leading) {
-                if let keywords = keyword, !keywords.isEmpty {
-                    Text("# \(keyword ?? "")")
+                // 키워드 있으면 보여주기
+                if let keyword = keyword, !keyword.isEmpty {
+                    Text("# \(keyword)")
                         .font(.footnote)
                         .foregroundStyle(.white)
                         .padding(.vertical, 7)
@@ -31,12 +31,12 @@ struct SelectReviewClusterView: View {
                         )
                 }
                 
+                // 선택리뷰들
                 ForEach(selectReviews, id: \.self) { reviewToken in
                     // 개별 토큰 모양으로 만들어서 보여줌
                     singleSelectReviewToken(reviewToken)
                 }
             }
-        }
     }
     
     

@@ -50,9 +50,9 @@ class ReadingNoteViewModel: ObservableObject {
         // 더미 키워드리뷰
         let dummykeywordReview: String? = nil
         // 더미 한줄평
-        let dummycommentReview: String? = nil
+        let dummycommentReview: String? = "베스트셀러 도서라고 언급이 많길래 한 번 읽어 봤는데 정말 재미있었습니다. 왜 베스트셀러인지 알 것 같았어요. 한 번쯤 꼭 보시길 추천합니다!"
         // 더미 선택리뷰
-        let dummyselectReview: [selectReviewCode]? = nil
+        let dummyselectReview: [selectReviewCode]? = [.comforting, .easyToRead]
         
         // 더미 책갈피
         let dummyBookmark: [Bookmark]? = [
@@ -96,6 +96,24 @@ class ReadingNoteViewModel: ObservableObject {
     /// 소장여부 바꾸기: 소장 <-> 비소장
     func toggleIsMine() {
         book?.isMine.toggle()
+    }
+    
+    /// 리뷰 수정을 위한 리뷰 객체 리턴
+    func getReview() -> Review {
+        let review = Review()
+        
+        if let selectReview = book?.selectReview {
+            review.selectReviews = selectReview
+        }
+        
+        if let reviewDate = book?.firstReviewDate {
+            review.reviewDate = reviewDate
+        }
+        
+        review.keyword = book?.keywordReview
+        review.comment = book?.commentReview
+        
+        return review
     }
     
     // MARK: 독서상태(reading status) 변경 관련

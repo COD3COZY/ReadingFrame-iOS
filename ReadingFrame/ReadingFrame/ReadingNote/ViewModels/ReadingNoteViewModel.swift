@@ -18,12 +18,6 @@ class ReadingNoteViewModel: ObservableObject {
     /// 해당 책의 isbn값
     var isbn: String
     
-    
-    /// 위치검색이 등록용인지, 수정용인지 구별하기위한 변수
-    /// - true: 위치 등록 API 호출
-    /// - false: 위치 수정 API 호출
-    @State var isRegisteringLocation: Bool = false
-    
     /// 시작 날짜: 옵셔널 book을 위한 커스텀 Binding 생성
     var startDateBinding: Binding<Date> {
         Binding<Date>(
@@ -124,11 +118,11 @@ class ReadingNoteViewModel: ObservableObject {
     
     // MARK: 위치 변경 관련
     /// 위치 변경 처리
-    func modifyLocation(place: MKPlacemark) {
+    func modifyLocation(isRegistering: Bool, place: MKPlacemark) {
         print("modifyLocation 호출")
         
         // 위치 등록 API 호출(POST)
-        if isRegisteringLocation {
+        if isRegistering {
             postMainLocation()
         }
         // 위치 변경 API 호출(PATCH)

@@ -75,3 +75,10 @@ struct ReadingNoteModel: Codable {
     /// - 기본적으로 초기에는 3개만 보여줄 예정
     let characters: [Character]?
 }
+
+/// 기록 타입: 책갈피, 메모, 인물사전
+enum RecordType: String, CaseIterable {
+    case bookmark = "책갈피"
+    case memo = "메모"
+    case character = "인물사전"
+}

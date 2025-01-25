@@ -40,8 +40,8 @@ struct EditAllRecord: View {
     /// 이모지 피커 띄움 여부를 결정하는 변수
     @State private var isEmojiPickerPresented: Bool = false
     
-    /// 완료 버튼 클릭 여부 변수
-    @State private var isTapCompleteBtn: Bool = false
+//    /// 완료 버튼 클릭 여부 변수
+//    @State private var isTapCompleteBtn: Bool = false
     
     /// 완료 버튼 클릭 가능 여부 변수
     private var isEnableComplete: Bool {
@@ -49,7 +49,7 @@ struct EditAllRecord: View {
         case "책갈피":
             return !vm.bookMarkPage.isEmpty
         case "메모":
-            return !vm.bookMarkPage.isEmpty && !vm.inputMemo.isEmpty
+            return !vm.inputMemo.isEmpty
         case "인물사전":
             return !vm.characterName.isEmpty
         default:
@@ -71,6 +71,7 @@ struct EditAllRecord: View {
     init(book: EditRecordBookModel,
          isSheetAppear: Binding<Bool>,
          selectedTab: String = "책갈피",
+         isForEditing: Bool = false,
          selectedDate: Date = Date(),
          pickedPlace: MKPlacemark? = nil,
          bookMarkPage: String = "",
@@ -83,15 +84,16 @@ struct EditAllRecord: View {
     ) {
         self._isSheetAppear = isSheetAppear
         self._vm = StateObject(wrappedValue: EditAllRecordViewModel(book: book,
-                                                                   selectedTab: selectedTab,
-                                                                   selectedDate: selectedDate,
-                                                                   pickedPlace: pickedPlace,
-                                                                   bookMarkPage: bookMarkPage,
-                                                                   inputMemo: inputMemo,
-                                                                   characterEmoji: characterEmoji,
-                                                                   characterName: characterName,
-                                                                   characterPreview: characterPreview,
-                                                                   characterDescription: characterDescription))
+                                                                    selectedTab: selectedTab,
+                                                                    isForEditing: isForEditing,
+                                                                    selectedDate: selectedDate,
+                                                                    pickedPlace: pickedPlace,
+                                                                    bookMarkPage: bookMarkPage,
+                                                                    inputMemo: inputMemo,
+                                                                    characterEmoji: characterEmoji,
+                                                                    characterName: characterName,
+                                                                    characterPreview: characterPreview,
+                                                                    characterDescription: characterDescription))
         self.isPickerAppear = isPickerAppear
     }
     
@@ -251,8 +253,9 @@ struct EditAllRecord: View {
                             showSearchLocation.toggle() // 위치 등록 sheet 띄우기
                             isFocused.toggle() // textfield 포커스 삭제
                         } label: {
-                            Text("책갈피한 위치")
-                                .foregroundStyle(.greyText)
+                            Text(vm.pickedPlace == nil ? "책갈피한 위치" : (vm.pickedPlace?.name ?? ""))
+                                .foregroundStyle(vm.pickedPlace == nil ? .greyText : .black0)
+                            
                             Spacer()
                         }
                         .padding(.vertical, 13)
@@ -465,86 +468,11 @@ extension EditAllRecord {
         Button {
             isFocused = false // focus 삭제
             
-            // 책갈피 기록하기 화면이라면
-            if (vm.selectedTab == "책갈피") {
-                // 마지막으로 읽은 페이지가 입력됐다면
-                if (!vm.bookMarkPage.isEmpty) {
-                    /// 페이지 비교할 수 있도록 숫자로 변환한 변수
-                    let bookMarkLastReadNumber = Int(vm.bookMarkPage) ?? 0
-                    
-                    // 책종류에 따라 분류: 종이책
-                    if vm.book.bookType == .paperbook {
-                        // 입력된 페이지 ��� 검사
-                        if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber <= vm.book.totalPage) {
-                            // 정상적인 범위 내의 페이지가 입력되었다면
-                            isSheetAppear.toggle() // sheet 닫기
-                            
-                            isTapCompleteBtn.toggle() // 완료 버튼 클릭
-                        } else {
-                            // 범위 밖의 페이지가 입력되었다면 알람 띄워주기
-                            isShowOutOfRangeAlert.toggle()
-                        }
-                        
-                    // 전자책 & 오디오북
-                    } else {
-                        // 입력된 퍼센트 값 검사
-                        if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber <= 100) {
-                            // 정상적인 범위 내의 퍼센트가 입력되었다면
-                            isSheetAppear.toggle() // sheet 닫기
-                            
-                            isTapCompleteBtn.toggle() // 완료 버튼 클릭
-                        } else {
-                            // 범위 밖의 퍼센트가 입력되었다면 알람 띄워주기
-                            isShowOutOfRangeAlert.toggle()
-                        }
-                    }
-                }
-            }
-            // 메모 기록하기 화면이라면
-            else if (vm.selectedTab == "메모") {
-                // 메모가 입력됐다면
-                if (!vm.inputMemo.isEmpty) {
-                    // 마지막으로 읽은 페이지가 입력됐다면
-                    if (!vm.bookMarkPage.isEmpty) {
-                        /// 페이지 비교할 수 있도록 숫자로 변환한 변수
-                        let bookMarkLastReadNumber = Int(vm.bookMarkPage) ?? 0
-                        
-                        // 책종류에 따라 분류: 종이책
-                        if vm.book.bookType == .paperbook {
-                            // 입력된 페이지 값 검사
-                            if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber <= vm.book.totalPage) {
-                                // 정상적인 범위 내의 페이지가 입력되었다면
-                                isSheetAppear.toggle() // sheet 닫기
-                                
-                                isTapCompleteBtn.toggle() // 완료 버튼 클릭
-                            } else {
-                                // 범위 밖의 페이지가 입력되었다면 알람 띄워주기
-                                isShowOutOfRangeAlert.toggle()
-                            }
-                            
-                        // 전자책 & 오디오북
-                        } else {
-                            // 입력된 퍼센트 값 검사
-                            if (bookMarkLastReadNumber > 0 && bookMarkLastReadNumber <= 100) {
-                                // 정상적인 범위 내의 퍼센트가 입력되었다면
-                                isSheetAppear.toggle() // sheet 닫기
-                                
-                                isTapCompleteBtn.toggle() // 완료 버튼 클릭
-                            } else {
-                                // 범위 밖의 퍼센트가 입력되었다면 알람 띄워주기
-                                isShowOutOfRangeAlert.toggle()
-                            }
-                        }
-                    }
-                }
-            }
-            // 인물사전 기록하기 화면이라면
-            else {
-                // 인물 이름이 입력됐다면
-                if (!vm.characterName.isEmpty) {
-                    isSheetAppear.toggle() // sheet 닫기
-                    isTapCompleteBtn.toggle() // 완료 버튼 on
-                }
+            // 범위와 입력값 검증 후 결과 처리
+            if vm.validateAndUpload() {
+                isSheetAppear.toggle()  // sheet 닫기
+            } else {
+                isShowOutOfRangeAlert.toggle()  // 범위 오류 알림
             }
         } label: {
             Text("완료")
@@ -554,7 +482,7 @@ extension EditAllRecord {
                 .foregroundStyle(isEnableComplete ? .main : .greyText)
         }
         // 필수정보 입력되지 않으면 완료 버튼 비활성화
-        .disabled(vm.bookMarkPage.isEmpty)
+        .disabled(!isEnableComplete)
     }
 }
 

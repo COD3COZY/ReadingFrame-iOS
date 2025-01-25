@@ -205,6 +205,7 @@ extension TabReadingNote {
             if let bookmarks = vm.bookmarkData, !bookmarks.isEmpty {
                 List {
                     ForEach(Array(bookmarks.enumerated()), id: \.offset) { index, item in
+                        // TODO: 수정용 sheet 띄우기
                         BookmarkView(bookmark: item)
                             .padding(.vertical, 24)
                         // TODO: 리스트 길어질 때 어떻게 기록하기 버튼 안가려질 수 있을지 방법 찾기
@@ -237,6 +238,7 @@ extension TabReadingNote {
             if let memos = vm.memoData, !memos.isEmpty {
                 List {
                     ForEach(Array(memos.enumerated()), id: \.offset) { index, item in
+                        // TODO: 수정용 sheet 띄우기
                         MemoView(memo: item)
                             .padding(.vertical, 24)
                             .swipeActions(edge: .trailing) {

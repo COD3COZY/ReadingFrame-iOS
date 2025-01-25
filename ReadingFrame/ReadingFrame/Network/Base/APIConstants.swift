@@ -30,6 +30,9 @@ struct APIConstants {
     /// 메인 화면 조회 API
     static let homeURL = "/home"
     
+    /// 검색 API
+    static let searchURL = "/home/search/"
+    
     /// 읽고 있는 책 조회 API
     static let readingURL = "/home/reading"
     

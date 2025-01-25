@@ -26,7 +26,7 @@ struct Home: View {
                         
                         // 검색바를 클릭한 경우
                         NavigationLink {
-                            SearchView()
+                            Search()
                                 .toolbarRole(.editor) // back 텍스트 표시X
                                 .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                         } label: {

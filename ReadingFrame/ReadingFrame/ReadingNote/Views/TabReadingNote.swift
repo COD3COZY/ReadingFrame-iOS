@@ -22,17 +22,29 @@ struct TabReadingNote: View {
     /// 선택된 탭이 뭔지
     @State var selectedTab: readingNoteTab = .bookmark
     
+    /// 사용자가 입력한 검색어
+    @State private var searchText: String = ""
+    
     /// 탭바 애니메이션 구현용
     @Namespace private var animation
+    
+    /// 페이지순/최신순 확인용
+    @State var isOrderedByPage: Bool = true
     
     /// 인물사전 2열 그리드 만들기 위한 변수
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     
+    // MARK: sheet 관련
     /// 기록하기 sheet가 띄워져 있는지 확인하는 변수
     @State var isRecordSheetAppear: Bool = false
-        
-    /// 사용자가 입력한 검색어
-    @State private var searchText: String = ""
+    
+    /// 책갈피 수정용 sheet가 띄워져 있는지 확인하는 변수
+    @State var isEditBookmarkSheetAppear: Bool = false
+    
+    /// 메모 수정용 sheet가 띄워져 있는지 확인하는 변수
+    @State var isEditMemoSheetAppear: Bool = false
+    
+    // TODO: 책갈피/메모 삭제 경고 alert 구현하기
     
     // MARK: - init
     init(bookType: BookType,
@@ -57,20 +69,26 @@ struct TabReadingNote: View {
                         Spacer()
                         
                         Button {
-                            
+                            withAnimation {
+                                isOrderedByPage = true
+                            // TODO: 책갈피/메모 페이지순 조회 호출하기
+                            }
                         } label: {
                             Text("페이지순")
                                 .font(.caption)
-                                .foregroundStyle(.black0)
+                                .foregroundStyle(isOrderedByPage ? .black0: .greyText)
                         }
                         Circle()
                             .frame(width: 3, height: 3)
                         Button {
-                            
+                            withAnimation {
+                                isOrderedByPage = false
+                                // TODO: 책갈피/메모 최신순 조회 호출하기
+                            }
                         } label: {
                             Text("최신순")
                                 .font(.caption)
-                                .foregroundStyle(.greyText)
+                                .foregroundStyle(isOrderedByPage ? .greyText: .black0)
                         }
                     }
                     .padding(.top, 14)
@@ -79,6 +97,7 @@ struct TabReadingNote: View {
                 }
                 else {
                     // MARK: 인물사전 검색
+                    // TODO: 인물사전 검색 기능 구현
                     SearchBar(searchText: $searchText, placeholder: "인물의 이름, 한줄소개를 입력하세요")
                         .padding(.top, 15)
                         .padding(.horizontal, 16)
@@ -124,16 +143,14 @@ struct TabReadingNote: View {
                 }
                 .padding(32)
             }
-            // MARK: 기록하기 버튼 클릭 시 나타나는 Sheet
-            .sheet(isPresented: $isRecordSheetAppear) {
-                // 책갈피 등록 sheet 띄우기
-                EditAllRecord(
-                    book: vm.book,
-                    isSheetAppear: $isRecordSheetAppear,
-                    selectedTab: vm.selectedTab.rawValue,
-                    isPickerAppear: false
-                )
-            }
+            // MARK: sheet
+            // 기록하기(연필) 버튼 클릭 시 나타나는 Sheet
+            .sheet(isPresented: $isRecordSheetAppear) { pencilButtonSheet }
+            // 개별 책갈피 눌렀을 때 수정용으로 나타나는 Sheet
+            .sheet(isPresented: $isEditBookmarkSheetAppear) { editBookmarkSheet }
+            // 개별 메모 눌렀을 때 수정용으로 나타나는 Sheet
+            .sheet(isPresented: $isEditMemoSheetAppear) { editMemoSheet }
+            
         } //: ZStack
         .navigationTitle("나의 기록")
         .navigationBarTitleDisplayMode(.inline)
@@ -192,11 +209,8 @@ struct TabReadingNote: View {
     }
 }
 
-// MARK: - PREVIEW
-#Preview {
-    TabReadingNote(bookType: .paperbook, totalPage: 500, isbn: "12345", selectedTab: .bookmark)
-}
 
+// MARK: - Components
 extension TabReadingNote {
     // MARK: - 책갈피 탭 뷰
     private var bookmarkTabView: some View {
@@ -205,11 +219,8 @@ extension TabReadingNote {
             if let bookmarks = vm.bookmarkData, !bookmarks.isEmpty {
                 List {
                     ForEach(Array(bookmarks.enumerated()), id: \.offset) { index, item in
-                        // TODO: 수정용 sheet 띄우기
                         BookmarkView(bookmark: item)
                             .padding(.vertical, 24)
-                        // TODO: 리스트 길어질 때 어떻게 기록하기 버튼 안가려질 수 있을지 방법 찾기
-//                            .padding(.bottom, index == bookmarks.count - 1 ? 100 : 0) // 기록하기 버튼 눌러도 마지막 리스트 항목이 가려지지 않도록
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
                                     vm.bookmarkData?.remove(at: index)
@@ -219,7 +230,11 @@ extension TabReadingNote {
                                 .tint(.red0)
                             }
                             .listRowInsets(EdgeInsets()) // 전체 패딩 제거
-                        
+                            .onTapGesture {
+                                // 책갈피 수정용 sheet
+                                vm.pickedBookmark = item
+                                isEditBookmarkSheetAppear.toggle()
+                            }
                     }
                 }
                 .listStyle(.plain)
@@ -238,7 +253,6 @@ extension TabReadingNote {
             if let memos = vm.memoData, !memos.isEmpty {
                 List {
                     ForEach(Array(memos.enumerated()), id: \.offset) { index, item in
-                        // TODO: 수정용 sheet 띄우기
                         MemoView(memo: item)
                             .padding(.vertical, 24)
                             .swipeActions(edge: .trailing) {
@@ -250,6 +264,11 @@ extension TabReadingNote {
                                 .tint(.red0)
                             }
                             .listRowInsets(EdgeInsets()) // 전체 패딩 제거
+                            .onTapGesture {
+                                // 메모 수정용 sheet
+                                vm.pickedMemo = item
+                                isEditMemoSheetAppear.toggle()
+                            }
                     }
                 }
                 .listStyle(.plain)
@@ -298,4 +317,63 @@ extension TabReadingNote {
             }
         }
     }
+}
+
+// MARK: - Sheets
+extension TabReadingNote {
+    /// 기록하기 버튼 클릭 시 나타나는 Sheet
+    private var pencilButtonSheet: some View {
+        EditAllRecord(
+            book: vm.book,
+            isSheetAppear: $isRecordSheetAppear,
+            selectedTab: vm.selectedTab.rawValue,
+            isPickerAppear: false
+        )
+    }
+    
+    /// 책갈피 수정할 때 나타나는 Sheet
+    private var editBookmarkSheet: some View {
+        EditAllRecord(
+            book: vm.book,
+            isSheetAppear: $isEditBookmarkSheetAppear,
+            selectedTab: RecordType.bookmark.rawValue,
+            isForEditing: true,
+            selectedDate: vm.pickedBookmark!.date,
+            // TODO: place 해결하기
+            pickedPlace: nil,
+            bookMarkPage: String(vm.book.bookType == .paperbook
+                                 ? vm.pickedBookmark!.markPage
+                                 : vm.pickedBookmark!.markPercent),
+            isPickerAppear: false
+        )
+    }
+    
+    /// 메모 수정할 때 나타나는 Sheet
+    private var editMemoSheet: some View {
+        EditAllRecord(
+            book: vm.book,
+            isSheetAppear: $isEditMemoSheetAppear,
+            selectedTab: RecordType.memo.rawValue,
+            isForEditing: true,
+            selectedDate: vm.pickedMemo!.date,
+            bookMarkPage: {
+                // 선택정보인 페이지 있는지 확인하고 있다면 입력해주기
+                guard let page = vm.pickedMemo?.markPage else { return "" }
+                guard let percent = vm.pickedMemo?.markPercent else { return "" }
+                
+                if vm.book.bookType == .paperbook {
+                    return String(page)
+                } else {
+                    return String(percent)
+                }
+            }(),
+            inputMemo: vm.pickedMemo!.memo,
+            isPickerAppear: false
+        )
+    }
+}
+
+
+#Preview {
+    TabReadingNote(bookType: .paperbook, totalPage: 500, isbn: "12345", selectedTab: .bookmark)
 }

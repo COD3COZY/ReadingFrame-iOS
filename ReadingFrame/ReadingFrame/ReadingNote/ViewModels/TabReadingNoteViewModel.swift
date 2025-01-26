@@ -16,8 +16,14 @@ class TabReadingNoteViewModel: ObservableObject {
     /// 책갈피 전체조회로 불러올 책갈피 데이터 모델
     @Published var bookmarkData: [Bookmark]?
     
+    /// 수정할 책갈피를 위한 정보 저장용
+    @Published var pickedBookmark: Bookmark?
+    
     /// 메모 전체조회로 불러올 책갈피 데이터 모델
     @Published var memoData: [Memo]?
+    
+    /// 수정할 메모를 위한 정보 저장용
+    @Published var pickedMemo: Memo?
     
     /// 인물사전 전체조회로 불러올 책갈피 데이터 모델
     @Published var characterData: [Character]?

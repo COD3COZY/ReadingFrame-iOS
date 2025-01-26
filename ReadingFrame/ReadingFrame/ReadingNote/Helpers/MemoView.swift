@@ -14,24 +14,17 @@ struct MemoView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .center, spacing: 0) {
-                // MARK: 메모한 페이지
-                Text("\(memo.markPage)")
-                    .font(.system(size: 13, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.black0)
-                Text("p")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(.black0)
-                
-                Text("(")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(.greyText)
-                // MARK: 책 퍼센트
-                Text("\(memo.markPercent)")
-                    .font(.system(size: 13, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.greyText)
-                Text("%)")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(.greyText)
+                if let page = memo.markPage, let percent = memo.markPercent {
+                    // MARK: 메모한 페이지
+                    Text("\(page)p")
+                        .font(.system(size: 13, weight: .semibold, design: .rounded))
+                        .foregroundStyle(.black0)
+
+                    // MARK: 책 퍼센트
+                    Text("(\(percent)%)")
+                        .font(.system(size: 13, weight: .semibold, design: .rounded))
+                        .foregroundStyle(.greyText)
+                }
                 
                 Spacer()
                 
@@ -55,5 +48,5 @@ struct MemoView: View {
 }
 
 #Preview {
-    MemoView(memo: Memo(id: "1", date: Date(), markPage: 24, markPercent: 20, memo: "메모입니다."))
+    MemoView(memo: Memo(id: "1", date: Date(), markPage: nil, markPercent: nil, memo: "옆에 있는 당신이 행복하면 저도 행복해져요. 저를 행복하게 하고 싶으시다면 당신이 행복해지면 돼요. 괜찮지 않나요?"))
 }

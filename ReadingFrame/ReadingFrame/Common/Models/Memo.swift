@@ -16,10 +16,10 @@ struct Memo: Codable {
     var date: Date
     
     /// 메모하고 싶은 페이지
-    var markPage: Int
+    var markPage: Int?
     
     /// 읽은 퍼센트
-    var markPercent: Int
+    var markPercent: Int?
     
     /// 메모
     var memo: String

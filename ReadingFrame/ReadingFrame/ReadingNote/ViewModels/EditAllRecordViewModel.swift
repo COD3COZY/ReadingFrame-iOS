@@ -96,23 +96,29 @@ class EditAllRecordViewModel: ObservableObject {
         case RecordType.bookmark.rawValue:
             if isForEditing {
                 // TODO: 책갈피 PATCH API 호출하기
+                print("책갈피 PATCH API 호출")
             }
             else {
                 // TODO: 책갈피 POST API 호출하기
+                print("책갈피 POST API 호출")
             }
         case RecordType.memo.rawValue:
             if isForEditing {
                 // TODO: 메모 PATCH API 호출하기
+                print("메모 PATCH API 호출")
             }
             else {
                 // TODO: 메모 POST API 호출하기
+                print("메모 POST API 호출")
             }
         case RecordType.character.rawValue:
             if isForEditing {
                 // TODO: 인물사전 PATCH API 호출하기
+                print("인물사전 PATCH API 호출")
             }
             else {
                 // TODO: 인물사전 POST API 호출하기
+                print("인물사전 POST API 호출")
             }
         default: break
         }

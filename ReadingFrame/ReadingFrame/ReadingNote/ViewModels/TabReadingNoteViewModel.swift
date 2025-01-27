@@ -28,6 +28,9 @@ class TabReadingNoteViewModel: ObservableObject {
     /// 인물사전 전체조회로 불러올 책갈피 데이터 모델
     @Published var characterData: [Character]?
     
+    /// 인물 검색했을 때 검색결과로 조회된 인물 배열
+    @Published var filteredCharacter: [Character]?
+    
     /// 수정/추가를 위해 필요한 책정보
     @Published var book: EditRecordBookModel
     
@@ -53,16 +56,16 @@ class TabReadingNoteViewModel: ObservableObject {
         
         // FIXME: 아래쪽 더미 데이터 지우기
         self.bookmarkData = [
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 1, location: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 2, location: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 3, location: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 4, location: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 5, location: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 6, location: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 7, location: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 8, location: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 9, location: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 0, location: "위치")
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 1, placeName: "위치"),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 2, placeName: "위치"),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 3, placeName: "위치"),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 4, placeName: "위치"),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 5, placeName: "위치"),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 6, placeName: "위치"),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 7, placeName: "위치"),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 8, placeName: "위치"),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 9, placeName: "위치"),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 0, placeName: "위치")
         ]
     }
     
@@ -98,5 +101,19 @@ class TabReadingNoteViewModel: ObservableObject {
             Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
             Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루")
         ]
+        
+        self.filteredCharacter = characterData
+    }
+    
+    /// 인물사전 검색하기
+    func searchCharacter(searchQuery: String) {
+        if searchQuery.isEmpty {
+            filteredCharacter = characterData
+        } else {
+            filteredCharacter = characterData?.filter { character in
+                character.name.localizedCaseInsensitiveContains(searchQuery) ||
+                character.preview.localizedCaseInsensitiveContains(searchQuery)
+            }
+        }
     }
 }

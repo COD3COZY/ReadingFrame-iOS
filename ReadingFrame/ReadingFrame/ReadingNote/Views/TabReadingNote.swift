@@ -77,7 +77,7 @@ struct TabReadingNote: View {
                         Button {
                             withAnimation {
                                 isOrderedByPage = true
-                            // TODO: 책갈피/메모 페이지순 조회 호출하기
+                            // TODO: 책갈피/메모 '페이지순' 조회 호출하기
                             }
                         } label: {
                             Text("페이지순")
@@ -89,7 +89,7 @@ struct TabReadingNote: View {
                         Button {
                             withAnimation {
                                 isOrderedByPage = false
-                                // TODO: 책갈피/메모 최신순 조회 호출하기
+                                // TODO: 책갈피/메모 '최신순' 조회 호출하기
                             }
                         } label: {
                             Text("최신순")
@@ -103,7 +103,6 @@ struct TabReadingNote: View {
                 }
                 else {
                     // MARK: 인물사전 검색
-                    // TODO: 인물사전 검색 기능 구현
                     SearchBar(searchText: $searchText, placeholder: "인물의 이름, 한줄소개를 입력하세요")
                         .padding(.top, 15)
                         .padding(.horizontal, 16)
@@ -169,6 +168,12 @@ struct TabReadingNote: View {
                 vm.fetchMemoData()
             case .character:
                 vm.fetchCharacterData()
+            }
+        }
+        .onChange(of: searchText) {
+            // 인물사전 검색하기
+            withAnimation {
+                vm.searchCharacter(searchQuery: searchText)
             }
         }
     }
@@ -290,7 +295,7 @@ extension TabReadingNote {
     private var characterTabView: some View {
         VStack {
             // 인물사전에 값이 있다면
-            if let characters = vm.characterData, !characters.isEmpty {
+            if let characters = vm.filteredCharacter, !characters.isEmpty {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(Array(characters.enumerated()), id: \.offset) { index, item in
@@ -385,5 +390,5 @@ extension TabReadingNote {
 
 
 #Preview {
-    TabReadingNote(bookType: .paperbook, totalPage: 500, isbn: "12345", selectedTab: .bookmark)
+    TabReadingNote(bookType: .paperbook, totalPage: 500, isbn: "12345", selectedTab: .character)
 }

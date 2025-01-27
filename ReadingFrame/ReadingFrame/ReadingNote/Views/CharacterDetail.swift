@@ -23,7 +23,6 @@ struct CharacterDetail: View {
     @State var isShowDeleteAlert: Bool = false
     
     // MARK: - BODY
-    // TODO: 인물사전 수정용 sheet 띄우기
     var body: some View {
         ScrollView {
             VStack(alignment: .center, spacing: 0) {

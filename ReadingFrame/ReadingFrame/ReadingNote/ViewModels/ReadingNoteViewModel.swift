@@ -65,7 +65,11 @@ class ReadingNoteViewModel: ObservableObject {
         ]*/
         
         // 더미 인물
-        let dummyCharacter: [Character]? = nil
+        let dummyCharacter: [Character]? = [
+            Character(emoji: 129401, name: "얼굴", preview: "슬픈 얼굴이지요 너무 슬퍼서 울고 있는 얼굴입니다", description: "어쩌구룰루"),
+            Character(emoji: 129401, name: "얼굴", preview: "슬픈 얼굴이지요 너무 슬퍼서 울고 있는 얼굴입니다", description: "어쩌구룰루"),
+            Character(emoji: 129401, name: "얼굴", preview: "슬픈 얼굴이지요 너무 슬퍼서 울고 있는 얼굴입니다", description: "어쩌구룰루"),
+        ]
         
         // 하루 전 날짜 가져오기
         let calendar = Calendar.current

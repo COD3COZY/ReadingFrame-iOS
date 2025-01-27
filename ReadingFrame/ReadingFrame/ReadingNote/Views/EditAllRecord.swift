@@ -45,15 +45,12 @@ struct EditAllRecord: View {
     
     /// 완료 버튼 클릭 가능 여부 변수
     private var isEnableComplete: Bool {
-        switch vm.selectedTab {
-        case "책갈피":
-            return !vm.bookMarkPage.isEmpty
-        case "메모":
-            return !vm.inputMemo.isEmpty
-        case "인물사전":
-            return !vm.characterName.isEmpty
-        default:
-            return false
+        if vm.isForEditing {
+            // 수정 모드면 필수작성 필드 채워졌는지 && 입력값 바뀌었는지 확인
+            return vm.isContentChanged() && vm.isRequiredFieldsFilled()
+        } else {
+            // 초기작성 모드면 필수작성 필드 채워졌는지 확인
+            return vm.isRequiredFieldsFilled()
         }
     }
     
@@ -68,32 +65,37 @@ struct EditAllRecord: View {
     
     
     // MARK: - init
-    init(book: EditRecordBookModel,
-         isSheetAppear: Binding<Bool>,
-         selectedTab: String = "책갈피",
-         isForEditing: Bool = false,
-         selectedDate: Date = Date(),
-         pickedPlace: MKPlacemark? = nil,
-         bookMarkPage: String = "",
-         inputMemo: String = "",
-         characterEmoji: String = "😀",
-         characterName: String = "",
-         characterPreview: String = "",
-         characterDescription: String = "",
-         isPickerAppear: Bool
+    init(
+        book: EditRecordBookModel,
+        isSheetAppear: Binding<Bool>,
+        selectedTab: String = "책갈피",
+        isForEditing: Bool = false,
+        selectedDate: Date = Date(),
+        pickedPlace: MKPlacemark? = nil,
+        bookMarkPage: String = "",
+        inputMemo: String = "",
+        characterEmoji: String = "😀",
+        characterName: String = "",
+        characterPreview: String = "",
+        characterDescription: String = "",
+        isPickerAppear: Bool
     ) {
         self._isSheetAppear = isSheetAppear
-        self._vm = StateObject(wrappedValue: EditAllRecordViewModel(book: book,
-                                                                    selectedTab: selectedTab,
-                                                                    isForEditing: isForEditing,
-                                                                    selectedDate: selectedDate,
-                                                                    pickedPlace: pickedPlace,
-                                                                    bookMarkPage: bookMarkPage,
-                                                                    inputMemo: inputMemo,
-                                                                    characterEmoji: characterEmoji,
-                                                                    characterName: characterName,
-                                                                    characterPreview: characterPreview,
-                                                                    characterDescription: characterDescription))
+        self._vm = StateObject(
+            wrappedValue: EditAllRecordViewModel(
+                book: book,
+                selectedTab: selectedTab,
+                isForEditing: isForEditing,
+                selectedDate: selectedDate,
+                pickedPlace: pickedPlace,
+                bookMarkPage: bookMarkPage,
+                inputMemo: inputMemo,
+                characterEmoji: characterEmoji,
+                characterName: characterName,
+                characterPreview: characterPreview,
+                characterDescription: characterDescription
+            )
+        )
         self.isPickerAppear = isPickerAppear
     }
     
@@ -445,15 +447,20 @@ extension EditAllRecord {
     // MARK: 취소 버튼
     private var cancelButton: some View {
         Button {
-            // 입력한 값이 있다면
-            if (!vm.bookMarkPage.isEmpty ||
-                !vm.inputMemo.isEmpty ||
-                !vm.characterName.isEmpty) {
-                isShowCancelAlert.toggle() // sheet 닫기 여부 alert 띄우기
-            }
-            // 입력한 값이 없다면
-            else {
-                isSheetAppear.toggle() // sheet 닫기
+            // 수정모드 -> 변경된 값이 있다면 취소 alert 띄우기
+            if vm.isForEditing {
+                if vm.isContentChanged() {
+                    isShowCancelAlert.toggle() // sheet 닫기 여부 alert 띄우기
+                } else {
+                    isSheetAppear.toggle() // sheet 닫기
+                }
+            // 초기입력모드 -> 입력한 값이 뭐라도 있다면 취소 alert 띄우기
+            } else {
+                if vm.isSomethingFilled() {
+                    isShowCancelAlert.toggle() // sheet 닫기 여부 alert 띄우기
+                } else {
+                    isSheetAppear.toggle() // sheet 닫기
+                }
             }
         } label: {
             Text("취소")

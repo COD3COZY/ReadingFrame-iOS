@@ -16,11 +16,6 @@ class EditAllRecordViewModel: ObservableObject {
     /// 책갈피 / 메모 / 인물사전 결정하는 탭
     @Published var selectedTab: String = "책갈피"
     
-    /// 등록/수정 중 어떤 걸 위한 화면인지를 결정해주는 변수
-    /// - API 호출 시 POST / PATCH 구분을 위함
-    /// - 기본값은 등록, 수정하는 화면이라면 True 입력해주면 됩니다
-    @Published var isForEditing: Bool = false
-    
     /// 선택한 날짜
     @Published var selectedDate = Date()
     
@@ -53,18 +48,41 @@ class EditAllRecordViewModel: ObservableObject {
     /// 사용자가 입력한 인물사전 메모
     @Published var characterDescription: String = ""
     
+    // MARK: 수정 관련
+    /// 등록/수정 중 어떤 걸 위한 화면인지를 결정해주는 변수
+    /// - API 호출 시 POST / PATCH 구분을 위함
+    /// - 기본값은 등록, 수정하는 화면이라면 True 입력해주면 됩니다
+    @Published var isForEditing: Bool = false
+    
+    // 수정 시, 값 변경 감지를 위해 비교할 초기값을 저장하기 위한 프로퍼티들
+    // 책갈피
+    private var initialBookMarkPage: String = ""
+    private var initialPickedPlace: MKPlacemark? = nil
+    // 메모
+    private var initialInputMemo: String = ""
+    // 인물사전
+    private var initialCharacterName: String = ""
+    private var initialCharacterPreview: String = ""
+    private var initialCharacterDescription: String = ""
+    private var initialCharacterEmoji: String = "😀"
+    // 공통(책갈피&메모)
+    private var initialSelectedDate: Date = Date()
+    
+    
     // MARK: - init
-    init(book: EditRecordBookModel,
-         selectedTab: String = "책갈피",
-         isForEditing: Bool = false,
-         selectedDate: Date = Date(),
-         pickedPlace: MKPlacemark? = nil,
-         bookMarkPage: String = "",
-         inputMemo: String = "",
-         characterEmoji: String = "😀",
-         characterName: String = "",
-         characterPreview: String = "",
-         characterDescription: String = "") {
+    init(
+        book: EditRecordBookModel,
+        selectedTab: String = "책갈피",
+        isForEditing: Bool = false,
+        selectedDate: Date = Date(),
+        pickedPlace: MKPlacemark? = nil,
+        bookMarkPage: String = "",
+        inputMemo: String = "",
+        characterEmoji: String = "😀",
+        characterName: String = "",
+        characterPreview: String = "",
+        characterDescription: String = ""
+    ) {
         self.book = book
         self.selectedTab = selectedTab
         self.isForEditing = isForEditing
@@ -76,6 +94,18 @@ class EditAllRecordViewModel: ObservableObject {
         self.characterName = characterName
         self.characterPreview = characterPreview
         self.characterDescription = characterDescription
+        
+        // 수정 모드일 때 초기값 저장
+        if isForEditing {
+            self.initialBookMarkPage = bookMarkPage
+            self.initialInputMemo = inputMemo
+            self.initialCharacterName = characterName
+            self.initialCharacterPreview = characterPreview
+            self.initialCharacterDescription = characterDescription
+            self.initialPickedPlace = pickedPlace
+            self.initialSelectedDate = selectedDate
+            self.initialCharacterEmoji = characterEmoji
+        }
     }
     
     // MARK: Methods
@@ -123,6 +153,37 @@ class EditAllRecordViewModel: ObservableObject {
         default: break
         }
     }
+    
+    /// 수정모드일 때 현재값이 초기값과 다른지 확인하는 메서드
+    /// - 수정모드일 때 필요
+    /// - 완료 버튼 활성화 여부 체크를 위해
+    func isContentChanged() -> Bool {
+        if isForEditing {
+            switch selectedTab {
+            // 책갈피
+            case RecordType.bookmark.rawValue:
+                return bookMarkPage != initialBookMarkPage ||
+                pickedPlace != initialPickedPlace ||
+                !Calendar.current.isDate(selectedDate, inSameDayAs: initialSelectedDate)
+                
+            // 메모
+            case RecordType.memo.rawValue:
+                return inputMemo != initialInputMemo ||
+                bookMarkPage != initialBookMarkPage ||
+                !Calendar.current.isDate(selectedDate, inSameDayAs: initialSelectedDate)
+            
+            // 인물사전
+            case RecordType.character.rawValue:
+                return characterName != initialCharacterName ||
+                characterPreview != initialCharacterPreview ||
+                characterDescription != initialCharacterDescription ||
+                characterEmoji != initialCharacterEmoji
+                
+            default:
+                return false
+            }
+        } else { return false }
+    }
 }
 
 // MARK: Validation Methods
@@ -150,7 +211,18 @@ extension EditAllRecordViewModel {
         }
         
         // 각 탭별 필수 입력값 검증
-        let isValid = switch selectedTab {
+        let isValid = isRequiredFieldsFilled()
+        
+        if isValid {
+            uploadReadingRecord()
+        }
+        
+        return isValid
+    }
+    
+    /// 작성하고 있는 기록 종류에 따라 필수 항목이 작성되었는지 확인
+    func isRequiredFieldsFilled() -> Bool {
+        switch selectedTab {
         case RecordType.bookmark.rawValue:
             !bookMarkPage.isEmpty
         case RecordType.memo.rawValue:
@@ -160,11 +232,15 @@ extension EditAllRecordViewModel {
         default:
             false
         }
-        
-        if isValid {
-            uploadReadingRecord()
-        }
-        
-        return isValid
+    }
+    
+    /// 사용자가 기록 종류 상관없이 어떤 값이든 입력한 게 있는지 확인
+    func isSomethingFilled() -> Bool {
+        return !bookMarkPage.isEmpty ||
+        !inputMemo.isEmpty ||
+        !characterName.isEmpty ||
+        !characterPreview.isEmpty ||
+        !characterDescription.isEmpty ||
+        pickedPlace != nil
     }
 }

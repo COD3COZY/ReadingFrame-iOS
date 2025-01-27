@@ -11,7 +11,7 @@ class TabReadingNoteViewModel: ObservableObject {
     // - MARK: Properties
     /// 선택된 탭이 뭔지
     /// - 따로 입력하지 않으면 기본은 책갈피
-    @Published var selectedTab: readingNoteTab = .bookmark
+    @Published var selectedTab: readingNoteTab
     
     /// 책갈피 전체조회로 불러올 책갈피 데이터 모델
     @Published var bookmarkData: [Bookmark]?
@@ -32,8 +32,9 @@ class TabReadingNoteViewModel: ObservableObject {
     @Published var book: EditRecordBookModel
     
     // MARK: - init
-    init(selectedTab: readingNoteTab = .bookmark, book: EditRecordBookModel) {
+    init(selectedTab: readingNoteTab, book: EditRecordBookModel) {
         self.book = book
+        self.selectedTab = selectedTab
         
         switch selectedTab {
         case .bookmark:
@@ -87,7 +88,7 @@ class TabReadingNoteViewModel: ObservableObject {
         
         // FIXME: 아래쪽 더미 데이터 지우기
         self.characterData = [
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구저쩌구라고 합니다 하지만 슬픈 얼굴이지요 너무 슬퍼서 울고 있는 얼굴입니다 하지만", description: "어쩌구룰루"),
+            Character(emoji: 129401, name: "얼굴", preview: "슬픈 얼굴이지요 너무 슬퍼서 울고 있는 얼굴입니다", description: "어쩌구룰루"),
             Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
             Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
             Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),

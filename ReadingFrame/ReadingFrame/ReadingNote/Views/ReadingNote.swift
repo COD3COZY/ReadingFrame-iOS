@@ -185,7 +185,7 @@ struct ReadingNote: View {
 }
 
 
-// MARK: - View Parts
+// MARK: - View Components
 extension ReadingNote {
     /// 네비게이션 스택 이하 전체 뷰
     private var mainContent: some View {
@@ -797,20 +797,18 @@ extension ReadingNote {
                 
                 Spacer()
                 
-                // 책갈피가 1개라도 있다면 더보기 버튼 띄우기
-                if (vm.book?.bookmarks?.count ?? 0 > 0) {
-                    // MARK: 책갈피 목록 더보기 버튼
-                    NavigationLink {
-                        TabReadingNote(bookType: vm.book?.bookType ?? .paperbook,
-                                       totalPage: vm.book?.totalPage ?? 0,
-                                       isbn: vm.isbn,
-                                       selectedTab: .bookmark)
-                            .toolbarRole(.editor) // back 텍스트 표시X
-                            .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
-                    } label: {
-                        Image(systemName: "chevron.right")
-                            .foregroundStyle(.black0)
-                    }
+                // MARK: 책갈피 목록 더보기 버튼
+                NavigationLink {
+                    TabReadingNote(
+                        bookType: vm.book?.bookType ?? .paperbook,
+                        totalPage: vm.book?.totalPage ?? 0,
+                        isbn: vm.isbn,
+                        selectedTab: .bookmark
+                    )
+                    .toolbarRole(.editor) // back 텍스트 표시X
+                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                } label: {
+                    moreBtn
                 }
             }
             .padding(.top, 35)
@@ -890,20 +888,18 @@ extension ReadingNote {
                 
                 Spacer()
                 
-                // 메모가 1개라도 있다면 더보기 버튼 띄우기
-                if (vm.book?.memos?.count ?? 0 > 0) {
-                    // MARK: 메모 목록 더보기 버튼
-                    NavigationLink {
-                        TabReadingNote(bookType: vm.book?.bookType ?? .paperbook,
-                                       totalPage: vm.book?.totalPage ?? 0,
-                                       isbn: vm.isbn,
-                                       selectedTab: .memo)
-                            .toolbarRole(.editor) // back 텍스트 표시X
-                            .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
-                    } label: {
-                        Image(systemName: "chevron.right")
-                            .foregroundStyle(.black0)
-                    }
+                // MARK: 메모 목록 더보기 버튼
+                NavigationLink {
+                    TabReadingNote(
+                        bookType: vm.book?.bookType ?? .paperbook,
+                        totalPage: vm.book?.totalPage ?? 0,
+                        isbn: vm.isbn,
+                        selectedTab: .memo
+                    )
+                    .toolbarRole(.editor) // back 텍스트 표시X
+                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                } label: {
+                    moreBtn
                 }
             }
             .padding(.top, 35)
@@ -915,12 +911,14 @@ extension ReadingNote {
                 LazyVStack(spacing: 8) {
                     ForEach(memos.indices, id: \.self) { index in
                         NavigationLink {
-                            TabReadingNote(bookType: vm.book?.bookType ?? .paperbook,
-                                           totalPage: vm.book?.totalPage ?? 0,
-                                           isbn: vm.isbn,
-                                           selectedTab: .memo)
-                                .toolbarRole(.editor) // back 텍스트 표시X
-                                .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                            TabReadingNote(
+                                bookType: vm.book?.bookType ?? .paperbook,
+                                totalPage: vm.book?.totalPage ?? 0,
+                                isbn: vm.isbn,
+                                selectedTab: .memo
+                            )
+                            .toolbarRole(.editor) // back 텍스트 표시X
+                            .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                         } label: {
                             MemoView(memo: memos[index])
                         }
@@ -976,20 +974,18 @@ extension ReadingNote {
                 
                 Spacer()
                 
-                // 인물사전이 1개라도 있다면 더보기 버튼 띄우기
-                if (vm.book?.characters?.count ?? 0 > 0) {
-                    // MARK: 인물사전 목록 더보기 버튼
-                    NavigationLink {
-                        TabReadingNote(bookType: vm.book?.bookType ?? .paperbook,
-                                       totalPage: vm.book?.totalPage ?? 0,
-                                       isbn: vm.isbn,
-                                       selectedTab: .character)
-                            .toolbarRole(.editor) // back 텍스트 표시X
-                            .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
-                    } label: {
-                        Image(systemName: "chevron.right")
-                            .foregroundStyle(.black0)
-                    }
+                // MARK: 인물사전 목록 더보기 버튼
+                NavigationLink {
+                    TabReadingNote(
+                        bookType: vm.book?.bookType ?? .paperbook,
+                        totalPage: vm.book?.totalPage ?? 0,
+                        isbn: vm.isbn,
+                        selectedTab: .character
+                    )
+                    .toolbarRole(.editor) // back 텍스트 표시X
+                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                } label: {
+                    moreBtn
                 }
             }
             .padding(.top, 35)
@@ -1087,6 +1083,12 @@ extension ReadingNote {
         .shadow(color: Color(red: 0.47, green: 0.47, blue: 0.47).opacity(0.3), radius: 7.5, x: 0, y: 0)
         .padding(.horizontal, 16)
         .padding(.bottom, 15)
+    }
+    
+    /// 더보기 버튼 UI 재사용
+    private var moreBtn: some View {
+        Image(systemName: "chevron.right")
+            .foregroundStyle(.black0)
     }
 }
 

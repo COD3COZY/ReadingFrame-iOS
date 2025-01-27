@@ -18,9 +18,6 @@ struct TabReadingNote: View {
     // MARK: - PROPERTY
     /// 뷰모델
     @StateObject var vm: TabReadingNoteViewModel
-        
-    /// 선택된 탭이 뭔지
-    @State var selectedTab: readingNoteTab = .bookmark
     
     /// 사용자가 입력한 검색어
     @State private var searchText: String = ""
@@ -47,10 +44,12 @@ struct TabReadingNote: View {
     // TODO: 책갈피/메모 삭제 경고 alert 구현하기
     
     // MARK: - init
-    init(bookType: BookType,
-         totalPage: Int,
-         isbn: String,
-         selectedTab: readingNoteTab) {
+    init(
+        bookType: BookType,
+        totalPage: Int,
+        isbn: String,
+        selectedTab: readingNoteTab
+    ) {
         self._vm = StateObject(
             wrappedValue: TabReadingNoteViewModel(
                 selectedTab: selectedTab,
@@ -61,7 +60,6 @@ struct TabReadingNote: View {
                 )
             )
         )
-        self.selectedTab = selectedTab
     }
     
     // MARK: - BODY
@@ -203,7 +201,7 @@ struct TabReadingNote: View {
                     }
                     .onTapGesture {
                         withAnimation(.easeInOut) {
-                            self.vm.selectedTab = item
+                            vm.selectedTab = item
                         }
                     }
                 }

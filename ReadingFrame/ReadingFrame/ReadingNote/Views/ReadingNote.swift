@@ -180,6 +180,7 @@ struct ReadingNote: View {
                     }
                 }
         }
+        .tint(.black0)
     }
 }
 
@@ -1001,7 +1002,14 @@ extension ReadingNote {
                     LazyHStack(spacing: 10) {
                         ForEach(characters.indices, id: \.self) { index in
                             NavigationLink {
-                                CharacterDetail(character: characters[index])
+                                CharacterDetail(
+                                    character: characters[index],
+                                    bookInfo: EditRecordBookModel(
+                                        bookType: vm.book!.bookType,
+                                        totalPage: vm.book!.totalPage,
+                                        isbn: vm.isbn
+                                    )
+                                )
                                     .toolbarRole(.editor) // back 텍스트 표시X
                                     .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                             } label: {

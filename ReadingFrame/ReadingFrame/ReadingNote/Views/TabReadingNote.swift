@@ -51,8 +51,16 @@ struct TabReadingNote: View {
          totalPage: Int,
          isbn: String,
          selectedTab: readingNoteTab) {
-        self._vm = StateObject(wrappedValue: TabReadingNoteViewModel(selectedTab: selectedTab,
-                                                                     book: EditRecordBookModel(bookType: bookType, totalPage: totalPage, isbn: isbn)))
+        self._vm = StateObject(
+            wrappedValue: TabReadingNoteViewModel(
+                selectedTab: selectedTab,
+                book: EditRecordBookModel(
+                    bookType: bookType,
+                    totalPage: totalPage,
+                    isbn: isbn
+                )
+            )
+        )
         self.selectedTab = selectedTab
     }
     
@@ -291,7 +299,11 @@ extension TabReadingNote {
                             
                             // 누르면 상세 페이지로 연결되는 인물사전 카드 형태의 버튼
                             NavigationLink {
-                                CharacterDetail(character: item)
+                                CharacterDetail(
+                                    character: item,
+                                    bookInfo: vm.book
+                                )
+                                .toolbarRole(.editor) // back 텍스트 표시X
                             } label: {
                                 CharacterView(character: item)
                                     .padding(16)

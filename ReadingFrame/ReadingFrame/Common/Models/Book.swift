@@ -183,7 +183,7 @@ class RegisteredBook: BookRegistered, Identifiable {
     var characters: Array<Character>?
     
     init(
-        book: Book = InitialBook(),
+        book: Book = InitialBook(readingStatus: .reading),
         isMine: Bool = false,
         bookType: BookType = .paperbook,
         startDate: Date = Date(),
@@ -226,7 +226,10 @@ protocol BookEnum {
 }
 
 /// 책종류
-enum BookType: Int, BookEnum, CaseIterable {
+/// - 0: 종이책
+/// - 1: 전자책
+/// - 2: 오디오북
+enum BookType: Int, BookEnum, CaseIterable, Codable {
     /// 종이책
     case paperbook = 0
     /// 전자책
@@ -259,8 +262,12 @@ enum BookType: Int, BookEnum, CaseIterable {
     }
 }
 
-/// 독서상태
-enum ReadingStatus: Int, BookEnum, CaseIterable {
+/// 독서상태: Int
+/// - -1: 미등록
+/// - 0: 읽고싶은
+/// - 1: 읽는중
+/// - 2: 다읽음
+enum ReadingStatus: Int, BookEnum, CaseIterable, Codable {
     
     /// 미등록
     case unregistered   = -1
@@ -301,8 +308,16 @@ enum ReadingStatus: Int, BookEnum, CaseIterable {
 
 }
 
-/// 카테고리(장르)
-enum CategoryName: Int, BookEnum, CaseIterable {
+/// 카테고리(장르): Int
+/// - 0: 인문사회
+/// - 1: 문학
+/// - 2: 에세이
+/// - 3: 과학
+/// - 4: 자기계발
+/// - 5: 예술
+/// - 6: 원서
+/// - 7: 기타
+enum CategoryName: Int, BookEnum, CaseIterable, Codable {
     /// 인문사회
     case humanSocial = 0
     /// 문학

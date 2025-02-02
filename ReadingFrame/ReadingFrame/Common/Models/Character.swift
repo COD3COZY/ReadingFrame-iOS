@@ -8,7 +8,7 @@
 import Foundation
 
 /// 등록된 책(읽고 있는 책, 다 읽은 책)의 인물사전 모델
-struct Character {
+struct Character: Codable {
     /// 이모지
     var emoji: Int
     
@@ -16,8 +16,8 @@ struct Character {
     var name: String
     
     /// 한줄 소개
-    var preview: String
+    var preview: String?
     
     /// 메모
-    var description: String
+    var description: String?
 }

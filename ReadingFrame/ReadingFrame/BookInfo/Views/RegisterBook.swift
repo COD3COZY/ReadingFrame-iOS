@@ -127,7 +127,10 @@ struct RegisterBook: View {
                         // sheet modal 보여주기 위한 코드
                         // (일단 화면 띄우기만 하고 위치 받아오기는 나중에 하겠습니다)
                         .sheet(isPresented: $showSearchLocation) {
-                            SearchLocation(showingSearchLocation: $showSearchLocation, pickedPlaceMark: $pickedPlace)
+                            SearchLocation(
+                                showingSearchLocation: $showSearchLocation,
+                                pickedPlaceMark: $pickedPlace
+                            )
                         }
                         
                     }

@@ -19,12 +19,14 @@ struct BookmarkView: View {
             
             VStack(alignment: .leading, spacing: 4) {
                 Text("\(DateRange().dateToString(date: bookmark.date))")
-                    .font(.system(size: 20, weight: .bold))
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundStyle(.black0)
                 
-                Text(bookmark.location)
-                    .font(.caption)
-                    .foregroundStyle(.greyText)
+                if let placeName = bookmark.location?.placeName {
+                    Text(placeName)
+                        .font(.caption)
+                        .foregroundStyle(.greyText)
+                }
             }
             .padding(.horizontal, 12)
             
@@ -32,12 +34,14 @@ struct BookmarkView: View {
             
             VStack(alignment: .trailing, spacing: 2) {
                 Text("\(bookmark.markPage)p")
-                    .font(.system(size: 28, weight: .bold))
+                    .font(.system(size: 28, weight: .bold, design: .rounded))
                     .foregroundStyle(.black0)
                 
                 Text("\(bookmark.markPercent)%")
                     .font(.caption)
+                    .fontDesign(.rounded)
                     .foregroundStyle(.greyText)
+
             }
         }
         .padding(.horizontal, 16)
@@ -45,5 +49,5 @@ struct BookmarkView: View {
 }
 
 #Preview {
-    BookmarkView(bookmark: Bookmark(id: "1", date: Date(), markPage: 42, markPercent: 21, location: "도서관"))
+    BookmarkView(bookmark: Bookmark(id: "1", date: Date(), markPage: 42, markPercent: 21))
 }

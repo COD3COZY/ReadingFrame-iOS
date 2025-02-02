@@ -10,9 +10,17 @@ import SwiftUI
 /// 인물사전 상세 화면
 struct CharacterDetail: View {
     // MARK: - PROPERTY
-    var character: Character // 인물사전 객체
-    @State var isRecordSheetAppear: Bool = false // 인물사전 수정 시트 띄움 여부
-    @State var isShowDeleteAlert: Bool = false // 인물사전 삭제 alert 띄움 여부
+    /// 인물사전 객체
+    var character: Character
+    
+    /// 인물 수정을 위해 필요한 해당 책의 기본정보
+    let bookInfo: EditRecordBookModel
+    
+    /// 인물사전 수정 시트 띄움 여부
+    @State var isRecordSheetAppear: Bool = false
+    
+    /// 인물사전 삭제 alert 띄움 여부
+    @State var isShowDeleteAlert: Bool = false
     
     // MARK: - BODY
     var body: some View {
@@ -36,14 +44,14 @@ struct CharacterDetail: View {
                     .padding(.horizontal, 20)
                 
                 // 한줄 소개
-                Text(character.preview)
+                Text(character.preview ?? "")
                     .font(.headline)
                     .foregroundStyle(.black0)
                     .padding(.vertical, 15)
                     .padding(.horizontal, 20)
                 
                 // 메모
-                Text(character.description)
+                Text(character.description ?? "")
                     .font(.subheadline)
                     .foregroundStyle(.black0)
                     .padding(.top, 15)
@@ -63,6 +71,10 @@ struct CharacterDetail: View {
                         .foregroundStyle(.red0)
                 }
             }
+        }
+        // 인물 수정 sheet
+        .sheet(isPresented: $isRecordSheetAppear) {
+            editCharacterSheet
         }
         
         // MARK: 삭제 버튼
@@ -84,16 +96,30 @@ struct CharacterDetail: View {
         ) {
             Button("아니오", role: .cancel) { }
             Button("예", role: .destructive) {
-                // 이전 화면으로 이동하기
+                // TODO: 인물사전 삭제 API 호출
+                // TODO: 이전 화면으로 이동하기
             }
         } message: {
             Text("삭제된 인물사전은 복구할 수 없습니다.")
         }
     }
-    // MARK: - FUNCTION
+}
+
+// MARK: Sheets
+extension CharacterDetail {
+    private var editCharacterSheet: some View {
+        EditAllRecord(
+            book: self.bookInfo,
+            isSheetAppear: $isRecordSheetAppear,
+            selectedTab: RecordType.character.rawValue,
+            isForEditing: true,
+            characterEditInfo: self.character,
+            isPickerAppear: false
+        )
+    }
 }
 
 // MARK: - PREVIEW
 #Preview("인물사전 상세") {
-    CharacterDetail(character: Character(emoji: Int("🍎".unicodeScalars.first!.value), name: "사과", preview: "사과입니다.", description: "맛있는 사과"))
+    CharacterDetail(character: Character(emoji: Int("🍎".unicodeScalars.first!.value), name: "사과", preview: "사과입니다.", description: "맛있는 사과"), bookInfo: EditRecordBookModel(bookType: .paperbook, totalPage: 350, isbn: "1234567"))
 }

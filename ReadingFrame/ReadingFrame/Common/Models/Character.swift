@@ -16,8 +16,8 @@ struct Character: Codable {
     var name: String
     
     /// 한줄 소개
-    var preview: String
+    var preview: String?
     
     /// 메모
-    var description: String
+    var description: String?
 }

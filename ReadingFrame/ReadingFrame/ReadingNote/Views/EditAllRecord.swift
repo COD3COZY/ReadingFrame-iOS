@@ -70,14 +70,9 @@ struct EditAllRecord: View {
         isSheetAppear: Binding<Bool>,
         selectedTab: String = "책갈피",
         isForEditing: Bool = false,
-        selectedDate: Date = Date(),
-        pickedPlace: MKPlacemark? = nil,
-        bookMarkPage: String = "",
-        inputMemo: String = "",
-        characterEmoji: String = "😀",
-        characterName: String = "",
-        characterPreview: String = "",
-        characterDescription: String = "",
+        bookmarkEditInfo: Bookmark? = nil,
+        memoEditInfo: Memo? = nil,
+        characterEditInfo: Character? = nil,
         isPickerAppear: Bool
     ) {
         self._isSheetAppear = isSheetAppear
@@ -86,14 +81,9 @@ struct EditAllRecord: View {
                 book: book,
                 selectedTab: selectedTab,
                 isForEditing: isForEditing,
-                selectedDate: selectedDate,
-                pickedPlace: pickedPlace,
-                bookMarkPage: bookMarkPage,
-                inputMemo: inputMemo,
-                characterEmoji: characterEmoji,
-                characterName: characterName,
-                characterPreview: characterPreview,
-                characterDescription: characterDescription
+                bookmarkEditInfo: bookmarkEditInfo,
+                memoEditInfo: memoEditInfo,
+                characterEditInfo: characterEditInfo
             )
         )
         self.isPickerAppear = isPickerAppear
@@ -255,8 +245,10 @@ struct EditAllRecord: View {
                             showSearchLocation.toggle() // 위치 등록 sheet 띄우기
                             isFocused.toggle() // textfield 포커스 삭제
                         } label: {
-                            Text(vm.pickedPlace == nil ? "책갈피한 위치" : (vm.pickedPlace?.name ?? ""))
-                                .foregroundStyle(vm.pickedPlace == nil ? .greyText : .black0)
+                            Text(vm.placeText)
+                                .foregroundStyle(vm.placeText == "책갈피한 위치"
+                                                 ? .greyText
+                                                 : .black0)
                             
                             Spacer()
                         }
@@ -494,6 +486,13 @@ extension EditAllRecord {
 }
 
 #Preview {
-    EditAllRecord(book: EditRecordBookModel(bookType: .paperbook, totalPage: 500, isbn: "1234567"),
-                  isSheetAppear: .constant(false), isPickerAppear: true)
+    EditAllRecord(
+        book: EditRecordBookModel(
+            bookType: .paperbook,
+            totalPage: 500,
+            isbn: "1234567"
+        ),
+        isSheetAppear: .constant(false),
+        isPickerAppear: true
+    )
 }

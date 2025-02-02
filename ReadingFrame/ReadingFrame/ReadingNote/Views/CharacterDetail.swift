@@ -44,14 +44,14 @@ struct CharacterDetail: View {
                     .padding(.horizontal, 20)
                 
                 // 한줄 소개
-                Text(character.preview)
+                Text(character.preview ?? "")
                     .font(.headline)
                     .foregroundStyle(.black0)
                     .padding(.vertical, 15)
                     .padding(.horizontal, 20)
                 
                 // 메모
-                Text(character.description)
+                Text(character.description ?? "")
                     .font(.subheadline)
                     .foregroundStyle(.black0)
                     .padding(.top, 15)
@@ -112,10 +112,7 @@ extension CharacterDetail {
             isSheetAppear: $isRecordSheetAppear,
             selectedTab: RecordType.character.rawValue,
             isForEditing: true,
-            characterEmoji: String(UnicodeScalar(character.emoji)!),
-            characterName: self.character.name,
-            characterPreview: self.character.preview,
-            characterDescription: self.character.description,
+            characterEditInfo: self.character,
             isPickerAppear: false
         )
     }

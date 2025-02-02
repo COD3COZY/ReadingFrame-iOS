@@ -56,16 +56,16 @@ class TabReadingNoteViewModel: ObservableObject {
         
         // FIXME: 아래쪽 더미 데이터 지우기
         self.bookmarkData = [
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 1, placeName: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 2, placeName: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 3, placeName: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 4, placeName: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 5, placeName: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 6, placeName: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 7, placeName: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 8, placeName: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 9, placeName: "위치"),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 0, placeName: "위치")
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 1, location: PlaceInfo(placeName: "원자력병원", address: "", latitude: 37.6287618, longitude: 127.08264)),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 2),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 3),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 4),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 5),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 6),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 7),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 8),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 9),
+            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 0)
         ]
     }
     
@@ -92,7 +92,7 @@ class TabReadingNoteViewModel: ObservableObject {
         // FIXME: 아래쪽 더미 데이터 지우기
         self.characterData = [
             Character(emoji: 129401, name: "얼굴", preview: "슬픈 얼굴이지요 너무 슬퍼서 울고 있는 얼굴입니다", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
+            Character(emoji: 129401, name: "얼굴", description: "어쩌구룰루"),
             Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
             Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
             Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
@@ -111,8 +111,12 @@ class TabReadingNoteViewModel: ObservableObject {
             filteredCharacter = characterData
         } else {
             filteredCharacter = characterData?.filter { character in
-                character.name.localizedCaseInsensitiveContains(searchQuery) ||
-                character.preview.localizedCaseInsensitiveContains(searchQuery)
+                if let preview = character.preview {
+                    character.name.localizedCaseInsensitiveContains(searchQuery)
+                    || preview.localizedCaseInsensitiveContains(searchQuery)
+                } else {
+                    character.name.localizedCaseInsensitiveContains(searchQuery)
+                }
             }
         }
     }

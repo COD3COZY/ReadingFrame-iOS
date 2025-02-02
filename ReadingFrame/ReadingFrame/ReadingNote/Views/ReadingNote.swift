@@ -119,7 +119,7 @@ struct ReadingNote: View {
                 .toolbar { deleteButton }
                 // sheet setup
                 .sheet(isPresented: $isAllRecordSheetAppear) { editAllRecordSheet }
-                .sheet(isPresented: $isCharacterRecordSheetAppear) { editCharacterRecordSheet }
+                .sheet(isPresented: $isCharacterRecordSheetAppear) { makeCharacterRecordSheet }
                 .sheet(isPresented: $showSearchLocation) { searchLocationSheet }
                 // 위치 변경 시 API 호출
                 .onChange(of: pickedPlace) { old, new in
@@ -1170,8 +1170,8 @@ extension ReadingNote {
         )
     }
     
-    /// 3종 기록 중 한 가지 기록만 할 수 있도록 하는 sheet
-    private var editCharacterRecordSheet: some View {
+    /// 인물사전 등록만 할 수 있도록 하는 sheet
+    private var makeCharacterRecordSheet: some View {
         EditAllRecord(
             book: EditRecordBookModel(
                 bookType: vm.book!.bookType,

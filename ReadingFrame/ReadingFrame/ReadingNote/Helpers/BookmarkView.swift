@@ -22,10 +22,11 @@ struct BookmarkView: View {
                     .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundStyle(.black0)
                 
-                // TODO: location 옵셔널로 바꾸면서 if문으로 감싸줘야 할 것 같다
-                Text(bookmark.location)
-                    .font(.caption)
-                    .foregroundStyle(.greyText)
+                if let placeName = bookmark.location?.placeName {
+                    Text(placeName)
+                        .font(.caption)
+                        .foregroundStyle(.greyText)
+                }
             }
             .padding(.horizontal, 12)
             
@@ -48,5 +49,5 @@ struct BookmarkView: View {
 }
 
 #Preview {
-    BookmarkView(bookmark: Bookmark(id: "1", date: Date(), markPage: 42, markPercent: 21, location: "도서관"))
+    BookmarkView(bookmark: Bookmark(id: "1", date: Date(), markPage: 42, markPercent: 21))
 }

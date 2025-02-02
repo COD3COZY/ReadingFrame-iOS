@@ -21,7 +21,7 @@ struct Bookmark: Identifiable, Codable {
     /// 읽은 퍼센트
     var markPercent: Int
     
-    // TODO: 위치는 필수 아니어서 옵셔널로 바꿔야 함!
-    /// 책갈피한 위치
-    var location: String
+    // 위치 관련
+    /// 위치 이름
+    var location: PlaceInfo?
 }

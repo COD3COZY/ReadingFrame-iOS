@@ -14,10 +14,10 @@ class EditAllRecordViewModel: ObservableObject {
     @Published var book: EditRecordBookModel
 
     /// 책갈피 / 메모 / 인물사전 결정하는 탭
-    @Published var selectedTab: String = "책갈피"
+    @Published var selectedTab: String
     
     /// 선택한 날짜
-    @Published var selectedDate = Date()
+    @Published var selectedDate: Date = Date()
     
     /// 날짜 범위
     var dateRange: ClosedRange<Date> {
@@ -26,14 +26,26 @@ class EditAllRecordViewModel: ObservableObject {
     
     // MARK: 책갈피 관련
     /// 선택된 위치
+    /// - 새로 선택하거나 변경해서 전달할 위치 정보를 위한 변수
     @Published var pickedPlace: MKPlacemark? = nil
+    
+    
+    /// 책갈피 위치 선택 필드에 보여줄 텍스트
+    /// - pickedPlace가 있을 때는(현재 화면에서 SearchLocation을 활용해서 새로운 위치 선택했을 때) 해당하는 위치명
+    /// - BE에서 받아온 위치가 있다면(수정모드이고, 기존에 작성해둔 위치가 있다면) 해당하는 위치명
+    /// - 없을 때는 기본 placeholder
+    var placeText: String {
+        if let placeName = pickedPlace?.name { return placeName }
+        else if isForEditing, let placeName = bookmarkEditInfo?.location?.placeName { return placeName }
+        else { return "책갈피한 위치" }
+    }
     
     /// 사용자가 입력한 책갈피 페이지
     @Published var bookMarkPage: String = ""
     
     // MARK: 메모 관련
     /// 사용자가 입력한 메모
-    @Published var inputMemo = ""
+    @Published var inputMemo: String = ""
     
     // MARK: 인물사전 관련
     /// 사용자가 선택한 인물 이모지
@@ -53,58 +65,97 @@ class EditAllRecordViewModel: ObservableObject {
     /// - API 호출 시 POST / PATCH 구분을 위함
     /// - 기본값은 등록, 수정하는 화면이라면 True 입력해주면 됩니다
     @Published var isForEditing: Bool = false
-    
-    // 수정 시, 값 변경 감지를 위해 비교할 초기값을 저장하기 위한 프로퍼티들
-    // 책갈피
-    private var initialBookMarkPage: String = ""
-    private var initialPickedPlace: MKPlacemark? = nil
-    // 메모
-    private var initialInputMemo: String = ""
-    // 인물사전
-    private var initialCharacterName: String = ""
-    private var initialCharacterPreview: String = ""
-    private var initialCharacterDescription: String = ""
-    private var initialCharacterEmoji: String = "😀"
-    // 공통(책갈피&메모)
-    private var initialSelectedDate: Date = Date()
+        
+    // 수정모드일 때 BE에서 받아올 기존 기록 데이터
+    var bookmarkEditInfo: Bookmark?
+    var memoEditInfo: Memo?
+    var characterEditInfo: Character?
     
     
     // MARK: - init
     init(
+        // 공통
         book: EditRecordBookModel,
         selectedTab: String = "책갈피",
         isForEditing: Bool = false,
-        selectedDate: Date = Date(),
-        pickedPlace: MKPlacemark? = nil,
-        bookMarkPage: String = "",
-        inputMemo: String = "",
-        characterEmoji: String = "😀",
-        characterName: String = "",
-        characterPreview: String = "",
-        characterDescription: String = ""
+        // selectedTab에 따라 입력될 정보
+        bookmarkEditInfo: Bookmark? = nil,
+        memoEditInfo: Memo? = nil,
+        characterEditInfo: Character? = nil
     ) {
+        // 공통
         self.book = book
         self.selectedTab = selectedTab
         self.isForEditing = isForEditing
-        self.selectedDate = selectedDate
-        self.pickedPlace = pickedPlace
-        self.bookMarkPage = bookMarkPage
-        self.inputMemo = inputMemo
-        self.characterEmoji = characterEmoji
-        self.characterName = characterName
-        self.characterPreview = characterPreview
-        self.characterDescription = characterDescription
         
-        // 수정 모드일 때 초기값 저장
+        // 수정모드: 입력받은 값대로 초기화
         if isForEditing {
-            self.initialBookMarkPage = bookMarkPage
-            self.initialInputMemo = inputMemo
-            self.initialCharacterName = characterName
-            self.initialCharacterPreview = characterPreview
-            self.initialCharacterDescription = characterDescription
-            self.initialPickedPlace = pickedPlace
-            self.initialSelectedDate = selectedDate
-            self.initialCharacterEmoji = characterEmoji
+            switch selectedTab {
+            // 책갈피탭
+            case RecordType.bookmark.rawValue:
+                self.bookmarkEditInfo = bookmarkEditInfo
+                
+                // bookMarkPage: 책종류에 따라 페이지/퍼센트 지정
+                if let bookmarkPage = {
+                    book.bookType == .paperbook
+                    ? String(bookmarkEditInfo!.markPage)
+                    : String(bookmarkEditInfo!.markPercent)
+                }() {
+                    self.bookMarkPage = bookmarkPage
+                }
+                
+                // selectedDate
+                self.selectedDate = bookmarkEditInfo!.date
+                                
+            // 메모탭
+            case RecordType.memo.rawValue:
+                self.memoEditInfo = memoEditInfo
+                
+                // inputMemo
+                self.inputMemo = memoEditInfo!.memo
+                
+                // selectedDate
+                self.selectedDate = memoEditInfo!.date
+                
+                // 선택값) bookmarkPage: 책종류에 따라 페이지/퍼센트 지정
+                guard let markPage = memoEditInfo?.markPage,
+                      let markPercent = memoEditInfo?.markPercent else { break }
+                
+                let bookmarkPage = book.bookType == .paperbook ? String(markPage) : String(markPercent)
+                self.bookMarkPage = bookmarkPage
+                
+            // 인물사전탭
+            case RecordType.character.rawValue:
+                self.characterEditInfo = characterEditInfo
+                
+                // characterEmoji
+                self.characterEmoji = String(UnicodeScalar(characterEditInfo!.emoji)!)
+                
+                // characterName
+                self.characterName = characterEditInfo!.name
+                
+                // 선택값) characterPreview
+                if let preview = characterEditInfo?.preview {
+                    self.characterPreview = preview
+                }
+                // 선택값) characterDescription
+                if let desc = characterEditInfo?.description {
+                    self.characterDescription = desc
+                }
+                
+            default: break
+            }
+        }
+        // 생성모드: 기본값 초기화
+        else {
+            self.selectedDate = Date()
+            self.pickedPlace = nil
+            self.bookMarkPage = ""
+            self.inputMemo = ""
+            self.characterEmoji = "😀"
+            self.characterName = ""
+            self.characterPreview = ""
+            self.characterDescription = ""
         }
     }
     
@@ -162,22 +213,37 @@ class EditAllRecordViewModel: ObservableObject {
             switch selectedTab {
             // 책갈피
             case RecordType.bookmark.rawValue:
+                let initialBookMarkPage = book.bookType == .paperbook
+                ? String(bookmarkEditInfo!.markPage)
+                : String(bookmarkEditInfo!.markPercent)
+                
                 return bookMarkPage != initialBookMarkPage ||
-                pickedPlace != initialPickedPlace ||
-                !Calendar.current.isDate(selectedDate, inSameDayAs: initialSelectedDate)
+                pickedPlace != nil ||
+                !Calendar.current.isDate(selectedDate, inSameDayAs: bookmarkEditInfo!.date)
                 
             // 메모
             case RecordType.memo.rawValue:
-                return inputMemo != initialInputMemo ||
+                var initialBookMarkPage: String = ""
+                if let markPage = memoEditInfo?.markPage,
+                   let markPercent = memoEditInfo?.markPercent {
+                    
+                    initialBookMarkPage = book.bookType == .paperbook
+                    ? String(markPage)
+                    : String(markPercent)
+                }
+                
+                return inputMemo != memoEditInfo!.memo ||
                 bookMarkPage != initialBookMarkPage ||
-                !Calendar.current.isDate(selectedDate, inSameDayAs: initialSelectedDate)
+                !Calendar.current.isDate(selectedDate, inSameDayAs: memoEditInfo!.date)
+                
+                
             
             // 인물사전
             case RecordType.character.rawValue:
-                return characterName != initialCharacterName ||
-                characterPreview != initialCharacterPreview ||
-                characterDescription != initialCharacterDescription ||
-                characterEmoji != initialCharacterEmoji
+                return characterName != characterEditInfo!.name ||
+                characterPreview != characterEditInfo!.preview ||
+                characterDescription != characterEditInfo!.description ||
+                characterEmoji != String(UnicodeScalar(characterEditInfo!.emoji)!)
                 
             default:
                 return false

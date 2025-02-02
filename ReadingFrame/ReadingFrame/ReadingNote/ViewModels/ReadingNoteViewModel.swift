@@ -56,7 +56,7 @@ class ReadingNoteViewModel: ObservableObject {
         
         // 더미 책갈피
         let dummyBookmark: [Bookmark]? = [
-            Bookmark(id: "", date: Date(), markPage: 10, markPercent: 14, location: "집")
+            Bookmark(id: "", date: Date(), markPage: 10, markPercent: 14)
         ]
         
         // 더미 메모
@@ -168,7 +168,7 @@ class ReadingNoteViewModel: ObservableObject {
         }
         
         // 버튼 누르는 당일 시간으로 100% 책갈피 하나 추가
-        let newBookmark = Bookmark(id: UUID().uuidString, date: Date(), markPage: book!.totalPage, markPercent: 100, location: "")
+        let newBookmark = Bookmark(id: UUID().uuidString, date: Date(), markPage: book!.totalPage, markPercent: 100)
         
         book?.bookmarks?.append(newBookmark)
         
@@ -195,7 +195,7 @@ class ReadingNoteViewModel: ObservableObject {
             book?.readPage = page
             
             // 책갈피 추가
-            let newBookmark = Bookmark(id: UUID().uuidString, date: Date(), markPage: page, markPercent: readingPercent, location: "")
+            let newBookmark = Bookmark(id: UUID().uuidString, date: Date(), markPage: page, markPercent: readingPercent)
             
             book?.bookmarks?.append(newBookmark)
             

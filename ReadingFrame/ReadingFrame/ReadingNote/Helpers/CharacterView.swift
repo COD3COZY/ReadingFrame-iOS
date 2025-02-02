@@ -27,7 +27,7 @@ struct CharacterView: View {
                 .padding(.bottom, 10)
             
             // MARK: 한줄소개
-            Text(character.preview)
+            Text(character.preview ?? "")
                 .font(.footnote)
                 .foregroundStyle(.black0)
                 .lineLimit(3)

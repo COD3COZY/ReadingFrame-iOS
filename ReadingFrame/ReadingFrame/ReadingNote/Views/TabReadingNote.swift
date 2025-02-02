@@ -353,12 +353,7 @@ extension TabReadingNote {
             isSheetAppear: $isEditBookmarkSheetAppear,
             selectedTab: RecordType.bookmark.rawValue,
             isForEditing: true,
-            selectedDate: vm.pickedBookmark!.date,
-            // TODO: place 해결하기
-            pickedPlace: nil,
-            bookMarkPage: String(vm.book.bookType == .paperbook
-                                 ? vm.pickedBookmark!.markPage
-                                 : vm.pickedBookmark!.markPercent),
+            bookmarkEditInfo: vm.pickedBookmark,
             isPickerAppear: false
         )
     }
@@ -370,19 +365,7 @@ extension TabReadingNote {
             isSheetAppear: $isEditMemoSheetAppear,
             selectedTab: RecordType.memo.rawValue,
             isForEditing: true,
-            selectedDate: vm.pickedMemo!.date,
-            bookMarkPage: {
-                // 선택정보인 페이지 있는지 확인하고 있다면 입력해주기
-                guard let page = vm.pickedMemo?.markPage else { return "" }
-                guard let percent = vm.pickedMemo?.markPercent else { return "" }
-                
-                if vm.book.bookType == .paperbook {
-                    return String(page)
-                } else {
-                    return String(percent)
-                }
-            }(),
-            inputMemo: vm.pickedMemo!.memo,
+            memoEditInfo: vm.pickedMemo,
             isPickerAppear: false
         )
     }
@@ -390,5 +373,5 @@ extension TabReadingNote {
 
 
 #Preview {
-    TabReadingNote(bookType: .paperbook, totalPage: 500, isbn: "12345", selectedTab: .character)
+    TabReadingNote(bookType: .paperbook, totalPage: 500, isbn: "12345", selectedTab: .bookmark)
 }

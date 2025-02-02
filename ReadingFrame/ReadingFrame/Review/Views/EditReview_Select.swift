@@ -52,6 +52,9 @@ struct EditReview_Select: View {
         selected.count < 1 || selected.count > 5
     }
     
+    /// 좌우 스크롤 버튼용
+    @State private var offsetX: CGFloat = .zero
+    
     // MARK: - View
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -120,9 +123,6 @@ struct EditReview_Select: View {
     }
 }
 
-//#Preview {
-//    EditReview_Select()
-//}
 
 extension EditReview_Select {
     // MARK: 제목 섹션
@@ -169,20 +169,57 @@ extension EditReview_Select {
     // MARK: 카테고리별 토큰 섹션
     /// 카테고리별로 토큰을 선택할 수 있는 섹션
     private var reviewCategoriesSection: some View {
-        ScrollView(.horizontal) {
-            HStack(alignment: .top, spacing: 50) {
-                ForEach(selectReview_categorys.indices, id: \.self) { index in
-                    // 카테고리별 토큰을 보여주는 뷰
-                    SelectReviewCategoryView(
-                        name: selectReview_categorys[index],
-                        tokenSet: selectReviews[index]
-                    )
+        ZStack {
+            ScrollViewReader { proxy in
+                ScrollView(.horizontal) {
+                    HStack(alignment: .top, spacing: 0) {
+                        hiddenView
+                        ForEach(selectReview_categorys.indices, id: \.self) { index in
+                            // 카테고리별 토큰을 보여주는 뷰
+                            SelectReviewCategoryView(
+                                name: selectReview_categorys[index],
+                                tokenSet: selectReviews[index]
+                            )
+                            .padding(.trailing, 50)
+                        }
+                    }
                 }
+                // 오른쪽 버튼
+                .overlay {
+                    HStack {
+                        Spacer()
+                        Image("btn_right")
+                            .opacity(offsetX > -50 ? 1 : 0)
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.5)) {
+                                    proxy.scrollTo(selectReview_categorys.count-1, anchor: .trailing)
+                                }
+                            }
+                    }
+                }
+                .overlay {
+                    // 왼쪽 버튼
+                    HStack {
+                        Image("btn_left")
+                            .opacity(offsetX < -200 ? 1 : 0)
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.5)) {
+                                    proxy.scrollTo(0, anchor: .leading)
+                                }
+                            }
+                        Spacer()
+                    }
+                }
+                
             }
         }
         .padding(20)
         .scrollClipDisabled(true)
         .scrollIndicators(.hidden)
+        .onPreferenceChange(ScrollPreferenceKey.self) { value in
+            self.offsetX = value
+        }
+        .animation(.easeInOut(duration: 0.3), value: offsetX)
         .background(Color.grey1)
         .background(ignoresSafeAreaEdges: .bottom) // 배경색 적용
     }
@@ -284,4 +321,35 @@ extension EditReview_Select {
             .padding(-10) // 사각형 위치는 왼쪽 정렬에서 벗어나지 않도록
         }
     }
+}
+
+// MARK: 좌우스크롤 버튼 인디케이터용
+extension EditReview_Select {
+    /// offset 측정용 화면
+    private var hiddenView: some View {
+        GeometryReader { proxy in
+            let offsetX = proxy.frame(in: .global).origin.x
+            Color.clear
+                .preference(
+                    key: ScrollPreferenceKey.self,
+                    value: offsetX
+                )
+                .onAppear {
+                    self.offsetX = offsetX
+                }
+        }
+        .frame(width: 0)
+    }
+    
+    struct ScrollPreferenceKey: PreferenceKey {
+        static var defaultValue: CGFloat = .zero
+        static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+            value += nextValue()
+        }
+    }
+    
+}
+
+#Preview {
+    EditReview_Select(popToRootAction: {})
 }

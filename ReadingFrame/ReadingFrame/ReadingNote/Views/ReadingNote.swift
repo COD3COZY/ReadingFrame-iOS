@@ -81,7 +81,7 @@ struct ReadingNote: View {
     // MARK: 계산 프로퍼티
     /// 소장 버튼의 텍스트 색상을 결정하는 변수
     var isMineBtnColor: Color {
-        if ((vm.book?.isMine) != nil) {
+        if let isMine = vm.book?.isMine, isMine {
             return .white
         } else {
             return .greyText
@@ -118,6 +118,7 @@ struct ReadingNote: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { deleteButton }
                 // sheet setup
+                // TODO: sheet onDismiss일 때 독서노트 조회 API 호출하기(재로딩)
                 .sheet(isPresented: $isAllRecordSheetAppear) { editAllRecordSheet }
                 .sheet(isPresented: $isCharacterRecordSheetAppear) { makeCharacterRecordSheet }
                 .sheet(isPresented: $showSearchLocation) { searchLocationSheet }
@@ -1149,6 +1150,7 @@ extension ReadingNote {
                 Button("아니오", role: .cancel) { }
                 Button("예", role: .destructive) {
                     // TODO: 독서노트 삭제
+                    // TODO: 현재 화면 dismiss
                 }
             } message: {
                 Text("삭제된 독서노트는 복구할 수 없습니다.")

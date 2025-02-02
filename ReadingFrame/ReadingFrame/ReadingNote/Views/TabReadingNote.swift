@@ -41,7 +41,6 @@ struct TabReadingNote: View {
     /// 메모 수정용 sheet가 띄워져 있는지 확인하는 변수
     @State var isEditMemoSheetAppear: Bool = false
     
-    // TODO: 책갈피/메모 삭제 경고 alert 구현하기
     
     // MARK: - init
     init(

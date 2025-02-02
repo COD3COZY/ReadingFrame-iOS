@@ -96,7 +96,8 @@ struct CharacterDetail: View {
         ) {
             Button("아니오", role: .cancel) { }
             Button("예", role: .destructive) {
-                // 이전 화면으로 이동하기
+                // TODO: 인물사전 삭제 API 호출
+                // TODO: 이전 화면으로 이동하기
             }
         } message: {
             Text("삭제된 인물사전은 복구할 수 없습니다.")

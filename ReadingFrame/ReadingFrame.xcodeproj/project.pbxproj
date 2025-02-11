@@ -31,6 +31,8 @@
 		C5338FA42B8DD76900D24B5F /* CommentReactionToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5338FA32B8DD76900D24B5F /* CommentReactionToken.swift */; };
 		C5338FA62B8DD89C00D24B5F /* EmojiSelectPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5338FA52B8DD89C00D24B5F /* EmojiSelectPopover.swift */; };
 		C5338FA82B8E1B1600D24B5F /* CommentRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5338FA72B8E1B1600D24B5F /* CommentRowView.swift */; };
+		C538809F2D50A45D00384E1B /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C538809E2D50A45D00384E1B /* MyPageViewModel.swift */; };
+		C53880A42D50A7A400384E1B /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53880A32D50A7A400384E1B /* ProfileImage.swift */; };
 		C53A34B22C37D99A008A88F0 /* BottomSheetHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53A34B12C37D99A008A88F0 /* BottomSheetHelper.swift */; };
 		C54B93182C4FF6BD008B73E0 /* SearchLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54B93172C4FF6BD008B73E0 /* SearchLocationManager.swift */; };
 		C54B931B2C4FF772008B73E0 /* recentlySearchedLocationsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54B931A2C4FF772008B73E0 /* recentlySearchedLocationsData.swift */; };
@@ -62,6 +64,10 @@
 		C595A2042B7BDE87006D88EC /* DatePickerInList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C595A2032B7BDE87006D88EC /* DatePickerInList.swift */; };
 		C5A136352C350B8F0061D674 /* BookmapSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A136342C350B8F0061D674 /* BookmapSheetView.swift */; };
 		C5A136372C350C5A0061D674 /* BookLocationListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A136362C350C5A0061D674 /* BookLocationListRow.swift */; };
+		C5B57A0A2D5BA15200B4B18D /* CircleBorderCharcterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B57A092D5BA15200B4B18D /* CircleBorderCharcterView.swift */; };
+		C5B57A0C2D5BAC8A00B4B18D /* EditProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B57A0B2D5BAC8A00B4B18D /* EditProfile.swift */; };
+		C5B57A0E2D5BACC800B4B18D /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B57A0D2D5BACC800B4B18D /* Settings.swift */; };
+		C5B57A102D5BACF500B4B18D /* Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B57A0F2D5BACF500B4B18D /* Support.swift */; };
 		C5BAF29D2BA49F0800DC33FE /* GreyLogoAndTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BAF29C2BA49F0800DC33FE /* GreyLogoAndTextView.swift */; };
 		C5BB8B662B7CF3CE00A49858 /* SearchLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BB8B652B7CF3CE00A49858 /* SearchLocation.swift */; };
 		C5BE52252B68F53E00FF07F8 /* ReadingFrameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BE52242B68F53E00FF07F8 /* ReadingFrameApp.swift */; };
@@ -189,6 +195,8 @@
 		C5338FA32B8DD76900D24B5F /* CommentReactionToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentReactionToken.swift; sourceTree = "<group>"; };
 		C5338FA52B8DD89C00D24B5F /* EmojiSelectPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiSelectPopover.swift; sourceTree = "<group>"; };
 		C5338FA72B8E1B1600D24B5F /* CommentRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRowView.swift; sourceTree = "<group>"; };
+		C538809E2D50A45D00384E1B /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
+		C53880A32D50A7A400384E1B /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		C53A34B12C37D99A008A88F0 /* BottomSheetHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetHelper.swift; sourceTree = "<group>"; };
 		C54B93172C4FF6BD008B73E0 /* SearchLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocationManager.swift; sourceTree = "<group>"; };
 		C54B931A2C4FF772008B73E0 /* recentlySearchedLocationsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recentlySearchedLocationsData.swift; sourceTree = "<group>"; };
@@ -220,6 +228,10 @@
 		C595A2032B7BDE87006D88EC /* DatePickerInList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerInList.swift; sourceTree = "<group>"; };
 		C5A136342C350B8F0061D674 /* BookmapSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmapSheetView.swift; sourceTree = "<group>"; };
 		C5A136362C350C5A0061D674 /* BookLocationListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookLocationListRow.swift; sourceTree = "<group>"; };
+		C5B57A092D5BA15200B4B18D /* CircleBorderCharcterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleBorderCharcterView.swift; sourceTree = "<group>"; };
+		C5B57A0B2D5BAC8A00B4B18D /* EditProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfile.swift; sourceTree = "<group>"; };
+		C5B57A0D2D5BACC800B4B18D /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		C5B57A0F2D5BACF500B4B18D /* Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Support.swift; sourceTree = "<group>"; };
 		C5BAF29C2BA49F0800DC33FE /* GreyLogoAndTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreyLogoAndTextView.swift; sourceTree = "<group>"; };
 		C5BB8B652B7CF3CE00A49858 /* SearchLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocation.swift; sourceTree = "<group>"; };
 		C5BE52212B68F53E00FF07F8 /* ReadingFrame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReadingFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -439,6 +451,21 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		C538809D2D50A42B00384E1B /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				C538809E2D50A45D00384E1B /* MyPageViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		C53880A02D50A49200384E1B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		C54B93162C4FF6A3008B73E0 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -603,7 +630,10 @@
 		C595A1E92B7AA00F006D88EC /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
+				C5B57A082D5BA11F00B4B18D /* Helpers */,
+				C53880A02D50A49200384E1B /* Models */,
 				C595A1EA2B7AA016006D88EC /* Views */,
+				C538809D2D50A42B00384E1B /* ViewModels */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -612,6 +642,9 @@
 			isa = PBXGroup;
 			children = (
 				C595A1EB2B7AA01E006D88EC /* MyPage.swift */,
+				C5B57A0B2D5BAC8A00B4B18D /* EditProfile.swift */,
+				C5B57A0D2D5BACC800B4B18D /* Settings.swift */,
+				C5B57A0F2D5BACF500B4B18D /* Support.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -641,6 +674,7 @@
 				E75D6B082BEB5B7E0080EBA0 /* Bookmark.swift */,
 				E7A756652C07360800CF52A4 /* Memo.swift */,
 				E7A756672C0741BC00CF52A4 /* Character.swift */,
+				C53880A32D50A7A400384E1B /* ProfileImage.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -677,6 +711,14 @@
 				C5338FA32B8DD76900D24B5F /* CommentReactionToken.swift */,
 				C5338FA52B8DD89C00D24B5F /* EmojiSelectPopover.swift */,
 				C5338FA72B8E1B1600D24B5F /* CommentRowView.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		C5B57A082D5BA11F00B4B18D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				C5B57A092D5BA15200B4B18D /* CircleBorderCharcterView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1214,6 +1256,7 @@
 				C5E3FC8E2C78E5A1007D6BDE /* BookshelfTypePicker.swift in Sources */,
 				C595A2002B7BAC7A006D88EC /* RegisterBook.swift in Sources */,
 				E77E0B9C2C745CA700626110 /* CommonResponse.swift in Sources */,
+				C5B57A0C2D5BAC8A00B4B18D /* EditProfile.swift in Sources */,
 				C52EC5A12C3082D6004F6BDB /* AnnotationView.swift in Sources */,
 				C595A1FB2B7B8A3F006D88EC /* Book.swift in Sources */,
 				C56B56062BB95DA80084F2DD /* EnterNickname.swift in Sources */,
@@ -1242,6 +1285,7 @@
 				E768F08F2CE48CD1003E2CB3 /* HomeBookModel.swift in Sources */,
 				E7B2E94D2D1853D500566E88 /* SearchService.swift in Sources */,
 				C55AB2492D4FD9410036E081 /* Place.swift in Sources */,
+				C5B57A0A2D5BA15200B4B18D /* CircleBorderCharcterView.swift in Sources */,
 				E77E0BA42C74611000626110 /* NetworkResult.swift in Sources */,
 				E707643D2C3AF30D00373B8D /* EditAllRecord.swift in Sources */,
 				E7F6D81E2BA6D92E00181586 /* BookRowDetailView.swift in Sources */,
@@ -1278,6 +1322,7 @@
 				E768F0992CE51222003E2CB3 /* ChangeReadingStatusRequest.swift in Sources */,
 				C576DD532C79828F001AFFFA /* NicknameTextfieldStyle.swift in Sources */,
 				E7384CFB2C1284DE001B814B /* CustomDropDownMenu.swift in Sources */,
+				C5B57A102D5BACF500B4B18D /* Support.swift in Sources */,
 				C5BE52252B68F53E00FF07F8 /* ReadingFrameApp.swift in Sources */,
 				C5A136352C350B8F0061D674 /* BookmapSheetView.swift in Sources */,
 				E7384CFF2C128E95001B814B /* CustomDropDownHelper.swift in Sources */,
@@ -1302,9 +1347,11 @@
 				C595A1DE2B7A9DD6006D88EC /* AppTabView.swift in Sources */,
 				E77E0BB42C7488C800626110 /* HTTPHeaderField.swift in Sources */,
 				C54B931E2C4FF7A4008B73E0 /* SearchLocationModel.swift in Sources */,
+				C538809F2D50A45D00384E1B /* MyPageViewModel.swift in Sources */,
 				E702A9AE2B8605D10081F65D /* ReadingRowView.swift in Sources */,
 				E7384CFD2C128E4B001B814B /* CustomDropDownModifier.swift in Sources */,
 				E7505C492CBD03410082FE85 /* ReadingBookResponse.swift in Sources */,
+				C5B57A0E2D5BACC800B4B18D /* Settings.swift in Sources */,
 				E77E0BA62C747A0B00626110 /* KakaoSignUpResponse.swift in Sources */,
 				E70719E62C32393900841A6F /* BookmarkView.swift in Sources */,
 				E707643B2C3ADEA000373B8D /* CharacterView.swift in Sources */,
@@ -1335,6 +1382,7 @@
 				C51556C82B83BA7E006FD0F2 /* BasicBookInfoView.swift in Sources */,
 				E77E0BAA2C747B1200626110 /* KakaoLoginRequest.swift in Sources */,
 				C50F7A0B2C71D70100D65BFB /* Login.swift in Sources */,
+				C53880A42D50A7A400384E1B /* ProfileImage.swift in Sources */,
 				C54B932E2C500FCD008B73E0 /* BookShelfView.swift in Sources */,
 				E77394842C637B8D0057760A /* SearchBadge.swift in Sources */,
 				E768F0852CE47BB7003E2CB3 /* WantToReadBookResponse.swift in Sources */,

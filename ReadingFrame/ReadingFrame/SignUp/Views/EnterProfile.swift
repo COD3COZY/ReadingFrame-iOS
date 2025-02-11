@@ -13,13 +13,13 @@ struct EnterProfile: View {
     @StateObject var signupInfo: SignUpInfo
     
     /// 선택한 색상(기본은 메인 자주색)
-    @State var colorChoose: Color = Color.main
+    @State var colorChoose: ThemeColor = .main
     
     /// (임시용) 색상의 이름 텍스트 직접 생성한 color는 이름만 뽑아내는 방법을 아직 몰라서
     @State var colorName: String = "main"
     
     /// 선택한 캐릭터(기본은 R)
-    @State var characterChoose: ProfileCharacter = .R
+    @State var characterChoose: ProfileCharacterType = .R
     
     /// 가입이 완료되면 메인화면으로 보여줄 때 변수
     @State var isSignUpCompleted: Bool = false
@@ -40,18 +40,8 @@ struct EnterProfile: View {
     }
 }
 
-/// 캐릭터 유형선택용 열거형(추후 프로필 클래스 만들면 그쪽으로 옮길 수도 있을 것 같습니다)
-enum ProfileCharacter: String {
-    case R = "character_main"
-    case A = "character_A"
-    case M = "character_M"
-    case I = "character_I"
-    case P = "character_P"
-}
 
-#Preview {
-    EnterProfile(signupInfo: SignUpInfo(socialLoginType: .kakao))
-}
+
 
 // MARK: - View Parts
 extension EnterProfile {
@@ -117,7 +107,7 @@ extension EnterProfile {
                         .resizable()
                         .renderingMode(.template)
                         .aspectRatio(contentMode: .fit)
-                        .foregroundStyle(colorChoose) // 여기에 선택한 색상
+                        .foregroundStyle(colorChoose.color) // 여기에 선택한 색상
                         .frame(width: 170, height: 170)
                     // 전체 캐릭터 모양에 그림자가 적용되도록 함
                         .background(Color.white)
@@ -147,7 +137,7 @@ extension EnterProfile {
                 // A, M일 경우
             } else {
                 ZStack {
-                    Image(characterChoose.rawValue + "_" + colorName)
+                    Image(characterChoose.rawValue + "_" + colorChoose.name)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 170, height: 170)
@@ -167,14 +157,13 @@ extension EnterProfile {
                 .foregroundStyle(Color.main)
                 .onTapGesture {
                     withAnimation {
-                        self.colorChoose = Color.main
-                        self.colorName = "main"
+                        self.colorChoose = .main
                     }
                 }
                 .overlay (
                     Circle()
                         .inset(by: -3)
-                        .stroke(colorChoose == Color.main ? .black0 : .clear, lineWidth: 2)
+                        .stroke(colorChoose == .main ? .black0 : .clear, lineWidth: 2)
                         .backgroundStyle(Color.white)
                 )
             
@@ -184,14 +173,13 @@ extension EnterProfile {
                 .foregroundStyle(Color.yellow)
                 .onTapGesture {
                     withAnimation {
-                        self.colorChoose = Color.yellow
-                        self.colorName = "yellow"
+                        self.colorChoose = .yellow
                     }
                 }
                 .overlay (
                     Circle()
                         .inset(by: -3)
-                        .stroke(colorChoose == Color.yellow ? .black0 : .clear, lineWidth: 2)
+                        .stroke(colorChoose == .yellow ? .black0 : .clear, lineWidth: 2)
                         .backgroundStyle(Color.white)
                 )
             
@@ -201,15 +189,13 @@ extension EnterProfile {
                 .foregroundStyle(Color.emerald)
                 .onTapGesture {
                     withAnimation {
-                        self.colorChoose = Color.emerald
-                        self.colorName = "emerald"
-                        
+                        self.colorChoose = .emerald
                     }
                 }
                 .overlay (
                     Circle()
                         .inset(by: -3)
-                        .stroke(colorChoose == Color.emerald ? .black0 : .clear, lineWidth: 2)
+                        .stroke(colorChoose == .emerald ? .black0 : .clear, lineWidth: 2)
                         .backgroundStyle(Color.white)
                 )
             
@@ -219,14 +205,13 @@ extension EnterProfile {
                 .foregroundStyle(Color.blue)
                 .onTapGesture {
                     withAnimation {
-                        self.colorChoose = Color.blue
-                        self.colorName = "blue"
+                        self.colorChoose = .blue
                     }
                 }
                 .overlay (
                     Circle()
                         .inset(by: -3)
-                        .stroke(colorChoose == Color.blue ? .black0 : .clear, lineWidth: 2)
+                        .stroke(colorChoose == .blue ? .black0 : .clear, lineWidth: 2)
                         .backgroundStyle(Color.white)
                 )
             
@@ -236,15 +221,14 @@ extension EnterProfile {
                 .foregroundStyle(Color.purple0)
                 .onTapGesture {
                     withAnimation {
-                        self.colorChoose = Color.purple0
-                        self.colorName = "purple0"
+                        self.colorChoose = .purple
                         
                     }
                 }
                 .overlay (
                     Circle()
                         .inset(by: -3)
-                        .stroke(colorChoose == Color.purple0 ? .black0 : .clear, lineWidth: 2)
+                        .stroke(colorChoose == .purple ? .black0 : .clear, lineWidth: 2)
                         .backgroundStyle(Color.white)
                 )
         }
@@ -351,7 +335,12 @@ extension EnterProfile {
         VStack {
             Button {
                 // signupInfo에 선택한 캐릭터 입력해주기
-                self.signupInfo.profileImageCode = makeProfileImageCode()
+                self.signupInfo.profileImageCode = ProfileImage.getProfileImageCode(
+                    of: ProfileCharacter(
+                        character: characterChoose,
+                        color: colorChoose
+                    )
+                )
                 
                 // 잘 입력됐나 확인용
                 print("signupInfo.nickname:  \(signupInfo.nickname)")
@@ -412,41 +401,6 @@ extension EnterProfile {
     }
 }
 
-// MARK: - Methods
-extension EnterProfile {
-    func makeProfileImageCode() -> String {
-        var profileCode: String
-        
-        // 선택한 색상에 따라 코드 만들기 시작(첫번째 자리)
-        switch colorChoose {
-        case Color.main:
-            profileCode = "0"
-        case Color.yellow:
-            profileCode = "1"
-        case Color.emerald:
-            profileCode = "2"
-        case Color.blue:
-            profileCode = "3"
-        case Color.purple0:
-            profileCode = "4"
-        default:
-            profileCode = "0" // 기본 0
-        }
-        
-        // 선택한 캐릭터에 따라 코드 이어서 만들어주기
-        switch characterChoose {
-        case .R:
-            profileCode += "0"
-        case .A:
-            profileCode += "1"
-        case .M:
-            profileCode += "2"
-        case .I:
-            profileCode += "3"
-        case .P:
-            profileCode += "4"
-        }
-        
-        return profileCode
-    }
+#Preview {
+    EnterProfile(signupInfo: SignUpInfo(socialLoginType: .kakao))
 }

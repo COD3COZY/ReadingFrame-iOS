@@ -59,7 +59,7 @@ extension MyPage {
             } else { ProgressView() }
             
             // 닉네임
-            Text(vm.nickname ?? "없음")
+            Text(vm.nickname ?? "닉네임")
                 .font(.SecondTitle)
         }
     }
@@ -109,8 +109,13 @@ extension MyPage {
         VStack(spacing: 0) {
             // 프로필 편집
             NavigationLink {
-                EditProfile()
+                if let profile = vm.profileImage, let nickname = vm.nickname {
+                    EditProfile(
+                        character: profile,
+                        nickname: nickname
+                    )
                     .toolbarRole(.editor)
+                }
             } label: {
                 mypageListRow(text: "프로필 편집")
             }
@@ -157,8 +162,11 @@ extension MyPage {
             HStack(alignment: .center) {
                 Text(text)
                     .font(.body)
+                
                 Spacer()
+                
                 Image(systemName: "chevron.right")
+                    .foregroundStyle(.black0)
             }
             .padding(.vertical, 19)
             Divider()

@@ -68,6 +68,8 @@
 		C5B57A0C2D5BAC8A00B4B18D /* EditProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B57A0B2D5BAC8A00B4B18D /* EditProfile.swift */; };
 		C5B57A0E2D5BACC800B4B18D /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B57A0D2D5BACC800B4B18D /* Settings.swift */; };
 		C5B57A102D5BACF500B4B18D /* Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B57A0F2D5BACF500B4B18D /* Support.swift */; };
+		C5B57A122D5C629800B4B18D /* EditProfile_Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B57A112D5C629800B4B18D /* EditProfile_Character.swift */; };
+		C5B57A142D5C6E6C00B4B18D /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B57A132D5C6E6C00B4B18D /* EditProfileViewModel.swift */; };
 		C5BAF29D2BA49F0800DC33FE /* GreyLogoAndTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BAF29C2BA49F0800DC33FE /* GreyLogoAndTextView.swift */; };
 		C5BB8B662B7CF3CE00A49858 /* SearchLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BB8B652B7CF3CE00A49858 /* SearchLocation.swift */; };
 		C5BE52252B68F53E00FF07F8 /* ReadingFrameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BE52242B68F53E00FF07F8 /* ReadingFrameApp.swift */; };
@@ -232,6 +234,8 @@
 		C5B57A0B2D5BAC8A00B4B18D /* EditProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfile.swift; sourceTree = "<group>"; };
 		C5B57A0D2D5BACC800B4B18D /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		C5B57A0F2D5BACF500B4B18D /* Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Support.swift; sourceTree = "<group>"; };
+		C5B57A112D5C629800B4B18D /* EditProfile_Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfile_Character.swift; sourceTree = "<group>"; };
+		C5B57A132D5C6E6C00B4B18D /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		C5BAF29C2BA49F0800DC33FE /* GreyLogoAndTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreyLogoAndTextView.swift; sourceTree = "<group>"; };
 		C5BB8B652B7CF3CE00A49858 /* SearchLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocation.swift; sourceTree = "<group>"; };
 		C5BE52212B68F53E00FF07F8 /* ReadingFrame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReadingFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -455,6 +459,7 @@
 			isa = PBXGroup;
 			children = (
 				C538809E2D50A45D00384E1B /* MyPageViewModel.swift */,
+				C5B57A132D5C6E6C00B4B18D /* EditProfileViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -645,6 +650,7 @@
 				C5B57A0B2D5BAC8A00B4B18D /* EditProfile.swift */,
 				C5B57A0D2D5BACC800B4B18D /* Settings.swift */,
 				C5B57A0F2D5BACF500B4B18D /* Support.swift */,
+				C5B57A112D5C629800B4B18D /* EditProfile_Character.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1274,6 +1280,7 @@
 				E77394872C6385B80057760A /* Badge.swift in Sources */,
 				E77E0BB82C7499A500626110 /* SignUpService.swift in Sources */,
 				C5FEB1612CE3CF96007798C5 /* CheckReviews_EditComment.swift in Sources */,
+				C5B57A122D5C629800B4B18D /* EditProfile_Character.swift in Sources */,
 				E77E0BB82C7499A500626110 /* SignUpService.swift in Sources */,
 				E77E0B8F2C7390A400626110 /* BaseAPI.swift in Sources */,
 				E7505C4B2CBD0C690082FE85 /* DetailBookViewModel.swift in Sources */,
@@ -1349,6 +1356,7 @@
 				C54B931E2C4FF7A4008B73E0 /* SearchLocationModel.swift in Sources */,
 				C538809F2D50A45D00384E1B /* MyPageViewModel.swift in Sources */,
 				E702A9AE2B8605D10081F65D /* ReadingRowView.swift in Sources */,
+				C5B57A142D5C6E6C00B4B18D /* EditProfileViewModel.swift in Sources */,
 				E7384CFD2C128E4B001B814B /* CustomDropDownModifier.swift in Sources */,
 				E7505C492CBD03410082FE85 /* ReadingBookResponse.swift in Sources */,
 				C5B57A0E2D5BACC800B4B18D /* Settings.swift in Sources */,

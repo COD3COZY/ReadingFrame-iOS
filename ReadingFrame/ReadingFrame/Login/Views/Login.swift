@@ -12,6 +12,10 @@ import KakaoSDKCommon
 import KakaoSDKUser
 
 struct Login: View {
+    // MARK: - Properties
+    /// 뷰모델
+    @ObservedObject var viewModel = LoginViewModel()
+    
     /// 로그인 되었는지 확인하는 변수
     @State var isLoggedIn: Bool = false
     
@@ -24,9 +28,11 @@ struct Login: View {
     /// - 회원가입이 필요하다면 생성시켜주면 됩니다
     @State var signupInfo: SignUpInfo?
     
-    /// 뷰모델
-    @ObservedObject var viewModel = LoginViewModel()
+    // 회원가입용 NavigationStack을 위한 변수들
+    @StateObject private var navigationManager = SignUpNavigationManager()
+//    @State var moveToEnterProfile: Bool = false
     
+    // MARK: - View
     var body: some View {
         VStack {
             if isLoggedIn == false {
@@ -36,7 +42,7 @@ struct Login: View {
                     // 회원가입으로 넘어가기 야매 버튼
                     // TODO: 이 버튼 없애고 정식 로직 밟기
                     Button {
-                        //haveToSignUp.toggle()
+                        haveToSignUp.toggle()
                         // 회원탈퇴
                         UserApi.shared.unlink {(error) in
                             if let error = error {
@@ -56,8 +62,19 @@ struct Login: View {
                     
                 } else {
                     // 회원가입이 필요한 상태라면 닉네임 입력 화면으로 넘어가기
-                    NavigationStack {
-                        EnterNickname(signupInfo: self.signupInfo ?? SignUpInfo(socialLoginType: .apple))
+                    NavigationStack(path: $navigationManager.path) {
+                        EnterNickname(
+                            signupInfo: self.signupInfo ?? SignUpInfo(socialLoginType: .apple)
+                        )
+                        .environmentObject(navigationManager)
+                        .navigationDestination(for: SignUpNavigationDestination.self) { destination in
+                            if case let .enterProfile(data) = destination {
+                                EnterProfile(
+                                    signupInfo: data,
+                                    isLoggedIn: $isLoggedIn
+                                )
+                            }
+                        }
                     }
                 }
             } else {
@@ -72,7 +89,7 @@ struct Login: View {
     Login()
 }
 
-// MARK: - View Parts
+// MARK: - View Components
 extension Login {
     private var LogInView: some View {
         VStack(spacing: 0) {
@@ -210,7 +227,7 @@ extension Login {
                 }
                 
                 // KeyChain에 카카오 닉네임이 저장되어 있다면
-                if let nickname = KeyChain.shared.getKeychainItem(key: .kakaoNickname) {
+                if let nickname = KeyChain.shared.getKeychainItem(key: .kakaoNickname), !nickname.isEmpty {
                     // 카카오 로그인 API 연결
                     viewModel.loginKakao(request: KakaoLoginRequest(email: KeyChain.shared.getKeychainItem(key: .kakaoEmail)!)) { success in
                         if success {
@@ -232,12 +249,17 @@ extension Login {
                         
                         // 카카오 이메일 저장
                         if let email = user?.kakaoAccount?.email {
-                            KeyChain.shared.addKeychainItem(key: .kakaoEmail, value: email)
-                            
-                            self.signupInfo = SignUpInfo(socialLoginType: .kakao)
-                            
-                            // 회원가입 로직으로 전환
-                            haveToSignUp = true
+                            // 키체인에 카카오 이메일 저장 성공
+                            if KeyChain.shared.addKeychainItem(key: .kakaoEmail, value: email) {
+                                self.signupInfo = SignUpInfo(socialLoginType: .kakao)
+                                
+                                // 회원가입 로직으로 전환
+                                haveToSignUp = true
+                            }
+                            // 키체인에 저장 실패
+                            else {
+                                print("키체인에 카카오 이메일 저장 실패")
+                            }
                         }
                     }
                 }
@@ -251,7 +273,7 @@ extension Login {
                 }
                 
                 // KeyChain에 카카오 닉네임이 저장되어 있다면
-                if let nickname = KeyChain.shared.getKeychainItem(key: .kakaoNickname) {
+                if let _ = KeyChain.shared.getKeychainItem(key: .kakaoNickname) {
                     // 카카오 로그인 API 연결
                     viewModel.loginKakao(request: KakaoLoginRequest(email: KeyChain.shared.getKeychainItem(key: .kakaoEmail)!)) { success in
                         if success {
@@ -273,12 +295,20 @@ extension Login {
                         
                         // 카카오 이메일 저장
                         if let email = user?.kakaoAccount?.email {
-                            KeyChain.shared.addKeychainItem(key: .kakaoEmail, value: email)
-                            
-                            self.signupInfo = SignUpInfo(socialLoginType: .kakao)
-                            
-                            // 회원가입 로직으로 전환
-                            haveToSignUp = true
+                            // 키체인에 카카오 이메일 저장 성공
+                            if KeyChain.shared.addKeychainItem(key: .kakaoEmail, value: email) {
+                                
+                                print("키체인에 카카오 이메일 저장 성공")
+                                
+                                self.signupInfo = SignUpInfo(socialLoginType: .kakao)
+                                
+                                // 회원가입 로직으로 전환
+                                haveToSignUp = true
+                            }
+                            // 키체인에 저장 실패
+                            else {
+                                print("키체인에 카카오 이메일 저장 실패")
+                            }
                         }
                     }
                 }

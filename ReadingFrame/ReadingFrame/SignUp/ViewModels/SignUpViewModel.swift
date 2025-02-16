@@ -40,9 +40,16 @@ final class SignUpViewModel: ObservableObject {
             switch response {
             case .success(let data):
                 if let data = data as? KakaoSignUpResponse {
-                    KeyChain.shared.addToken(token: data.xAuthToken) // KeyChain에 토큰 저장
-                    print("카카오 로그인 성공!! \(String(describing: KeyChain.shared.getToken()))")
-                    completion(true)
+                    // KeyChain에 토큰 저장
+                    if KeyChain.shared.addToken(token: data.xAuthToken) {
+                        print("카카오 로그인 성공!! \(String(describing: KeyChain.shared.getToken()))")
+                        completion(true)
+                    }
+                    else {
+                        print("키체인에 토큰 저장 실패")
+                        completion(false)
+                    }
+                        
                 }
             case .requestErr(let message):
                 print("Request Err: \(message)")

@@ -10,4 +10,8 @@ import Foundation
 /// 닉네임 중복 검사 Request 모델
 struct NicknameValidateRequest: Encodable {
     let nickname: String
+    
+    enum CodingKeys: String, CodingKey {
+        case nickname = "nickname"
+    }
 }

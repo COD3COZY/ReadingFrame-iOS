@@ -10,7 +10,7 @@ import SwiftUI
 struct EnterProfile: View {
     // MARK: - Properties
     /// API 전송을 위한 회원가입 정보
-    @StateObject var signupInfo: SignUpInfo
+    @ObservedObject var signupInfo: SignUpInfo
     
     /// 선택한 색상(기본은 메인 자주색)
     @State var colorChoose: ThemeColor = .main
@@ -22,21 +22,28 @@ struct EnterProfile: View {
     @State var characterChoose: ProfileCharacterType = .R
     
     /// 가입이 완료되면 메인화면으로 보여줄 때 변수
-    @State var isSignUpCompleted: Bool = false
+//    @State var isLoggedIn: Bool = false
+    @Binding var isLoggedIn: Bool
     
     /// 뷰모델
     @ObservedObject var viewModel = SignUpViewModel()
     
     // MARK: - View
     var body: some View {
-        if isSignUpCompleted == false {
-            // 가입완료처리가 안되어있다면 기본적인 EnterProfile View
-            EnterProfileView
-                .navigationBarBackButtonHidden(true)
-        } else {
-            // 가입완료가 다 되었다면 메인페이지로 넘어가도록 처리(이전 버튼 눌러도 안돌아오도록)
-            AppTabView()
-        }
+        EnterProfileView
+            .navigationBarBackButtonHidden(true)
+
+//        if isSignUpCompleted == false {
+//            // 가입완료처리가 안되어있다면 기본적인 EnterProfile View
+//            EnterProfileView
+//                .navigationBarBackButtonHidden(true)
+//                .onAppear {
+//                    print("sign up info: \(signupInfo.nickname)")
+//                }
+//        } else {
+//            // 가입완료가 다 되었다면 메인페이지로 넘어가도록 처리(이전 버튼 눌러도 안돌아오도록)
+//            AppTabView()
+//        }
     }
 }
 
@@ -348,37 +355,41 @@ extension EnterProfile {
                 print("signupInfo.socialLoginType:  \(signupInfo.socialLoginType)")
                 
                 
-                // MARK: 회원가입 API 호출
+                // 회원가입 API 호출
+                // MARK: 카카오 회원가입 API 호출
                 if signupInfo.socialLoginType == .kakao {
-                    // 카카오 회원가입 API 호출
-                    viewModel.signUpKakao(request: KakaoSignUpRequest(nickname: signupInfo.nickname, profileImageCode: signupInfo.profileImageCode, email: KeyChain.shared.getKeychainItem(key: .kakaoEmail)!)) { success in
-                        // 응답 성공
+                    viewModel.signUpKakao(
+                        request: KakaoSignUpRequest(
+                            nickname: signupInfo.nickname,
+                            profileImageCode: signupInfo.profileImageCode,
+                            email: KeyChain.shared.getKeychainItem(key: .kakaoEmail)!
+                        )
+                    ) { success in
+                        // 카카오 회원가입 API 응답 성공
                         if success {
                             // 닉네임 키체인에 저장
                             // 카카오, 애플 유형에 따라 key 다르게 저장
-                            if KeyChain.shared.addKeychainItem(key: signupInfo.socialLoginType == .kakao ? KeychainKeys.kakaoNickname : KeychainKeys.appleNickname, value: signupInfo.nickname) {
+                            if KeyChain.shared.addKeychainItem(
+                                key: KeychainKeys.kakaoNickname,
+                                value: signupInfo.nickname
+                            ) {
+                                // 메인 화면으로 이동
+                                withAnimation {
+                                    isLoggedIn = true
+                                }
                             }
                             
-                            // 메인 화면으로 이동
-                            withAnimation {
-                                isSignUpCompleted = true
-                            }
                         }
-                        // 응답 실패
+                        // 카카오 회원가입 API 응답 실패
                         else {
                             
                         }
                     }
                     
-                } else {
-                    // TODO: 애플 회원가입 API 호출
-                    // - keychain에서 UserIdentifier, idToken 불러오기
                 }
-                
-                // 메인화면으로 넘어가기
-                // 일단 버튼 누르면 넘어가도록 처리
-                withAnimation {
-                    isSignUpCompleted = true
+                // TODO: 애플 회원가입 API 호출
+                else {
+                    // - keychain에서 UserIdentifier, idToken 불러오기
                 }
                 
                 // TODO: 가입 실패 시 처리하는 로직
@@ -402,5 +413,5 @@ extension EnterProfile {
 }
 
 #Preview {
-    EnterProfile(signupInfo: SignUpInfo(socialLoginType: .kakao))
+    EnterProfile(signupInfo: SignUpInfo(socialLoginType: .kakao), isLoggedIn: .constant(false))
 }

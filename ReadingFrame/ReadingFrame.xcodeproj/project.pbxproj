@@ -70,6 +70,7 @@
 		C5B57A102D5BACF500B4B18D /* Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B57A0F2D5BACF500B4B18D /* Support.swift */; };
 		C5B57A122D5C629800B4B18D /* EditProfile_Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B57A112D5C629800B4B18D /* EditProfile_Character.swift */; };
 		C5B57A142D5C6E6C00B4B18D /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B57A132D5C6E6C00B4B18D /* EditProfileViewModel.swift */; };
+		C5B57A182D5CF0D900B4B18D /* SignUpNavigationDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B57A172D5CF0D900B4B18D /* SignUpNavigationDestination.swift */; };
 		C5BAF29D2BA49F0800DC33FE /* GreyLogoAndTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BAF29C2BA49F0800DC33FE /* GreyLogoAndTextView.swift */; };
 		C5BB8B662B7CF3CE00A49858 /* SearchLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BB8B652B7CF3CE00A49858 /* SearchLocation.swift */; };
 		C5BE52252B68F53E00FF07F8 /* ReadingFrameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BE52242B68F53E00FF07F8 /* ReadingFrameApp.swift */; };
@@ -236,6 +237,7 @@
 		C5B57A0F2D5BACF500B4B18D /* Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Support.swift; sourceTree = "<group>"; };
 		C5B57A112D5C629800B4B18D /* EditProfile_Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfile_Character.swift; sourceTree = "<group>"; };
 		C5B57A132D5C6E6C00B4B18D /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
+		C5B57A172D5CF0D900B4B18D /* SignUpNavigationDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpNavigationDestination.swift; sourceTree = "<group>"; };
 		C5BAF29C2BA49F0800DC33FE /* GreyLogoAndTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreyLogoAndTextView.swift; sourceTree = "<group>"; };
 		C5BB8B652B7CF3CE00A49858 /* SearchLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocation.swift; sourceTree = "<group>"; };
 		C5BE52212B68F53E00FF07F8 /* ReadingFrame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReadingFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -557,7 +559,7 @@
 		C576DD512C79827C001AFFFA /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				C576DD522C79828F001AFFFA /* NicknameTextfieldStyle.swift */,
+				C5B57A172D5CF0D900B4B18D /* SignUpNavigationDestination.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1072,6 +1074,7 @@
 		E7A0DD282B7B49F2006004B5 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				C576DD522C79828F001AFFFA /* NicknameTextfieldStyle.swift */,
 				C595A2032B7BDE87006D88EC /* DatePickerInList.swift */,
 				C5DF2B852B7FC94D0069B64D /* Badge_Info.swift */,
 				E7A0DD292B7B4B12006004B5 /* SearchBar.swift */,
@@ -1377,6 +1380,7 @@
 				E702A9AA2B85F0ED0081F65D /* ReadingPercentBar.swift in Sources */,
 				C5338FA62B8DD89C00D24B5F /* EmojiSelectPopover.swift in Sources */,
 				C58F57172B8CF35D004085A5 /* BookInfo_ReviewModel.swift in Sources */,
+				C5B57A182D5CF0D900B4B18D /* SignUpNavigationDestination.swift in Sources */,
 				C54B93222C4FF841008B73E0 /* SearchMapViewHelper.swift in Sources */,
 				C523ABE72C859CB600C4D9F8 /* BookShelfListRowView.swift in Sources */,
 				E768F09B2CE512F8003E2CB3 /* ChangeIsMineRequest.swift in Sources */,
@@ -1539,12 +1543,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ReadingFrame/ReadingFrame.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ReadingFrame/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZUGAVD3728;
+				DEVELOPMENT_TEAM = ZUGAVD3728;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ReadingFrame/Info.plist;
@@ -1567,7 +1570,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.CodeCozy.ReadingFrame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ReadingFrame_iOS_Development;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1584,12 +1586,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ReadingFrame/ReadingFrame.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ReadingFrame/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = ZUGAVD3728;
+				DEVELOPMENT_TEAM = ZUGAVD3728;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ReadingFrame/Info.plist;
@@ -1612,7 +1613,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.CodeCozy.ReadingFrame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ReadingFrame_iOS_Development;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;

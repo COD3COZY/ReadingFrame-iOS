@@ -9,7 +9,7 @@ import Foundation
 
 
 /// 회원가입을 위한 필수정보
-class SignUpInfo: ObservableObject {
+class SignUpInfo: ObservableObject, Hashable {
     /// 소셜 로그인 종류
     var socialLoginType: SocialLoginType
     
@@ -23,6 +23,17 @@ class SignUpInfo: ObservableObject {
         self.socialLoginType = socialLoginType
         self.nickname = ""
         self.profileImageCode = ""
+    }
+    
+    /// For hashable
+    let id = UUID()
+
+    static func == (lhs: SignUpInfo, rhs: SignUpInfo) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
 

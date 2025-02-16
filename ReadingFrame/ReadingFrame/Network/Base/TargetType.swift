@@ -69,7 +69,7 @@ extension TargetType {
             var urlRequest = try URLRequest(url: url, method: method)
             urlRequest.setValue(ContentType.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
             
-            var components = URLComponents(string: url.appendingPathComponent(endPoint.encodeURL()!).absoluteString)
+            let components = URLComponents(string: url.appendingPathComponent(endPoint.encodeURL()!).absoluteString)
             urlRequest.url = components?.url
             
             let bodyParams = body.toDictionary()
@@ -132,7 +132,7 @@ extension TargetType {
             var urlRequest = try URLRequest(url: url, method: method)
             urlRequest.setValue(ContentType.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
             
-            var components = URLComponents(string: url.appendingPathComponent(endPoint.encodeURL()!).absoluteString)
+            let components = URLComponents(string: url.appendingPathComponent(endPoint.encodeURL()!).absoluteString)
             urlRequest.url = components?.url
             
             let bodyParams = body.toDictionary()
@@ -146,7 +146,7 @@ extension TargetType {
             var urlRequest = try URLRequest(url: url, method: method)
             urlRequest.setValue(ContentType.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
             
-            var components = URLComponents(string: url.appendingPathComponent(endPoint.encodeURL()!).absoluteString)
+            let components = URLComponents(string: url.appendingPathComponent(endPoint.encodeURL()!).absoluteString)
             urlRequest.url = components?.url
             
             return urlRequest

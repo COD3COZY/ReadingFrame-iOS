@@ -18,7 +18,7 @@ class NicknameValidateAPI: BaseAPI {
     
     /// 닉네임 중복검사 API
     func validateNickname(nickname: String, completion: @escaping (NetworkResult<Any>) -> (Void)) {
-        AFManager.request(NicknameValidateService.validateNickname(nickname)).responseData { (response) in
+        AFManager.request(NicknameValidateService.validateNickname(NicknameValidateRequest(nickname: nickname))).responseData { (response) in
             switch response.result {
             case .success:
                 guard let statusCode = response.response?.statusCode

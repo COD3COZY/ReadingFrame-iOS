@@ -19,13 +19,13 @@ struct APIConstants {
     static let devURL = "http://127.0.0.1:8080"
     
     /// 닉네임 중복 검사 API
-    static let validateNicknameURL = "/nickname/"
+    static let validateNicknameURL = "/member/nickname/check"
     
     /// 카카오 회원가입 API
-    static let signUpKakaoURL = "/sign-up/kakao"
+    static let signUpKakaoURL = "/member/sign-up/kakao"
     
     /// 카카오 로그인 API
-    static let loginKakaoURL = "/sign-in/kakao"
+    static let loginKakaoURL = "/member/sign-in/kakao"
     
     /// 메인 화면 조회 API
     static let homeURL = "/home"

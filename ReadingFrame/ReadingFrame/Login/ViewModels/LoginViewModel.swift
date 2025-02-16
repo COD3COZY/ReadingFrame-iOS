@@ -15,8 +15,14 @@ final class LoginViewModel: ObservableObject {
             switch response {
             case .success(let data):
                 if let data = data as? KakaoLoginResponse {
-                    KeyChain.shared.addToken(token: data.xAuthToken) // KeyChain에 토큰 저장
-                    completion(true)
+                    // KeyChain에 토큰 저장
+                    if KeyChain.shared.addToken(token: data.xAuthToken) {
+                        completion(true)
+                    }
+                    // 키체인에 토큰 저장 실패
+                    else {
+                        completion(false)
+                    }
                 }
             case .requestErr(let message):
                 print("Request Err: \(message)")

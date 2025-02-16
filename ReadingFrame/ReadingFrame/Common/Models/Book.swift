@@ -318,20 +318,20 @@ enum ReadingStatus: Int, BookEnum, CaseIterable, Codable {
 /// - 6: 원서
 /// - 7: 기타
 enum CategoryName: Int, BookEnum, CaseIterable, Codable {
-    /// 인문사회
-    case humanSocial = 0
     /// 문학
-    case literature = 1
+    case literature = 0
     /// 에세이
-    case essays = 2
+    case essays = 1
+    /// 인문사회
+    case humanSocial = 2
     /// 과학
     case science = 3
     /// 자기계발
     case selfImprovement = 4
-    /// 예술
-    case art = 5
     /// 원서
-    case foreign = 6
+    case foreign = 5
+    /// 예술
+    case art = 6
     /// 기타
     case etc = 7
     
@@ -360,19 +360,19 @@ enum CategoryName: Int, BookEnum, CaseIterable, Codable {
     /// BookshelfCode
     var code: String {
         switch self {
-        case .humanSocial:
-            "20"
         case .literature:
-            "21"
+            "20"
         case .essays:
+            "21"
+        case .humanSocial:
             "22"
         case .science:
             "23"
         case .selfImprovement:
             "24"
-        case .art:
-            "25"
         case .foreign:
+            "25"
+        case .art:
             "26"
         case .etc:
             "27"

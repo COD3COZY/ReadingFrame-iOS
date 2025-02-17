@@ -39,15 +39,25 @@ struct WrapLayout: Layout {
         /// 높이 정해주기 위해 rows 불러오기
         let rows = generateRows(maxWidth, proposal, subviews)
         
-        // row와 그 row마다 붙여주는 인덱스, 순서대로
-        for (index, row) in rows.enumerated() {
+        // 서재용 레이아웃인 경우와 아닌 경우를 구분
+        if isForBookshelf {
+            // 서재용일 경우 각 row의 높이를 110으로 고정
+            height = CGFloat(rows.count) * 110
             
+            if rows.count > 1 {
+                height += verticalSpacing * CGFloat(rows.count - 1)
+            }
+        }
+        // 일반적인 경우 기존 로직 유지
+        else {
             // 각 행에서 최대 높이값 구해서 뷰의 total height에 더해주기
-            if index == (rows.count - 1) {
+            for (index, row) in rows.enumerated() {
                 // 마지막 행: spacing 필요없음
-                height += row.maxHeight(proposal)
-            } else {
-                height += row.maxHeight(proposal) + verticalSpacing
+                if index == (rows.count - 1) {
+                    height += row.maxHeight(proposal)
+                } else {
+                    height += row.maxHeight(proposal) + verticalSpacing
+                }
             }
         }
         

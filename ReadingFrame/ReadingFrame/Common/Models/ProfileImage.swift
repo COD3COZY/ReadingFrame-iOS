@@ -24,12 +24,12 @@ enum ProfileCharacterType: String {
 
 
 /// 테마 색상 5종
-enum ThemeColor {
-    case main
-    case yellow
-    case emerald
-    case blue
-    case purple
+enum ThemeColor: String {
+    case main = "main"
+    case yellow = "yellow"
+    case emerald = "emerald"
+    case blue = "blue"
+    case purple = "purple0"
     
     var name: String {
         switch self {

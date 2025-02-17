@@ -34,6 +34,15 @@ struct BookShelfListByType: View {
     /// 표시할 책들의 정보
     @State private var filteredBooks: [BookShelfRowInfo]
     
+    /// UserDefault에 저장된 책장 테마색상
+    var bookshelfColor: ThemeColor {
+        if let themeColor = UserDefaults.standard.string(forKey: "ThemeColor") {
+            ThemeColor(rawValue: themeColor) ?? .main
+        } else {
+            .main
+        }
+    }
+    
     init(bookshelfSubtype: BookEnum, searchQuery: String = "") {
         self.bookshelfSubtype = bookshelfSubtype
         self.searchQuery = ""
@@ -79,8 +88,11 @@ struct BookShelfListByType: View {
             
             ScrollView {
                 // MARK: BookshelfView
-                BookShelfView(totalPages: filteredBooks.map { $0.totalPage })
-                    .padding(.bottom, 20)
+                BookShelfView(
+                    shelfColor: bookshelfColor,
+                    totalPages: filteredBooks.map { $0.totalPage }
+                )
+                .padding(.bottom, 20)
                 
                 // MARK: List
                 ForEach(filteredBooks) { book in

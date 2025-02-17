@@ -34,6 +34,15 @@ struct BookShelf: View {
     /// 2. [[200, 150, 230], [300], [130, 150]]
     @State var totalPages: [[Int]] = BookShelf.temp_randomTotalPage()
     
+    /// UserDefault에 저장된 책장 테마색상
+    var bookshelfColor: ThemeColor {
+        if let themeColor = UserDefaults.standard.string(forKey: "ThemeColor") {
+            ThemeColor(rawValue: themeColor) ?? .main
+        } else {
+            .main
+        }
+    }
+    
     
     // MARK: - View
     var body: some View {
@@ -73,7 +82,10 @@ struct BookShelf: View {
                         BookShelfListByType(bookshelfSubtype: currentBookshelf)
                             .toolbarRole(.editor) // back 텍스트 표시X
                     } label: {
-                        BookShelfView(totalPages: totalPages[index])
+                        BookShelfView(
+                            shelfColor: bookshelfColor,
+                            totalPages: totalPages[index]
+                        )
                     }
                 }
                 .padding(.bottom, 25)

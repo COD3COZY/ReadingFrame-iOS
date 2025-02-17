@@ -16,7 +16,20 @@ struct EditProfile: View {
     @State var nickname: String
     
     /// 닉네임이 변경되면 완료 버튼 활성화
-    @State var isCompleteButtonAbled: Bool = false
+    var isCompleteButtonAbled: Bool {
+        self.nickname != vm.nickname
+        && (nickname.count >= 2 && nickname.count <= 20)
+    }
+    
+    // alert 관련 변수
+    /// 닉네임 변경 결과 alert
+    @State var showCompleteButtonAlert: Bool = false
+    
+    /// 닉네임 변경 결과로 보여줄 텍스트
+    @State var nicknameChangeResultMessage: String = ""
+    
+    /// 탈퇴하기 확인용 alert
+    @State var showDeleteAccountAlert: Bool = false
     
     // MARK: - init
     init(
@@ -36,12 +49,35 @@ struct EditProfile: View {
     var body: some View {
         VStack {
             profileImageSection
+                .padding(.top, 30)
             
             nicknameEditSection
+                .padding(.top, 50)
+            
+            Spacer()
+            
+            deleteAccountButton
         }
         .navigationTitle("프로필 편집")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { completeButton }
+        .alert("탈퇴하시겠습니까?", isPresented: $showDeleteAccountAlert) {
+            Button("아니오", role: .cancel) { }
+            Button("예", role: .destructive) {
+                if vm.deleteAccount() {
+                    // 탈퇴 처리 성공 처리
+                    // TODO: 로그인 창으로 리다이렉트
+                    print("탈퇴되었습니다")
+                } else {
+                    print("탈퇴 실패")
+                }
+            }
+        } message: {
+            Text("회원 탈퇴 시, 계정은 삭제되며 복구할 수 없습니다.")
+        }
+        .alert(nicknameChangeResultMessage, isPresented: $showCompleteButtonAlert) {
+            Button("확인", role: .cancel) { }
+        }
     }
 }
 
@@ -79,38 +115,69 @@ extension EditProfile {
     
     /// 닉네임 수정 구역
     private var nicknameEditSection: some View {
-        VStack {
+        VStack(spacing: 0) {
             Text("닉네임")
                 .font(.headline)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, 20)
+            
+            nicknameTextfield
+                .frame(height: 50)
+            
+            // 글자수 카운터
+            Text("(\(nickname.count)/20)")
+                .font(.footnote)
+                .foregroundStyle(.greyText)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding(.top, 7)
         }
+        .padding(.horizontal, 16)
     }
     
-//    /// 닉네임 박스
-//    private var nicknameTextfield: some View {
-//        TextField(text: $nickname)
-//            .textFieldStyle(NicknameTextfieldStyle(showNicknameLengthWarning: self.showNicknameLengthWarning))
-//            .onChange(of: nickname) {
-//                // 닉네임 글자수 20글자 못넘게 제한
-//                nickname = String(nickname.prefix(20))
-//                
-//                // 중복확인까지 했으면서 다시 닉네임 변경하면 다시 중복확인해서 넘어가도록(다음 버튼 비활성화도 해야함)
-//                isDuplicate = true
-//            }
-//    }
-    
+    /// 닉네임 입력 필드
+    private var nicknameTextfield: some View {
+        TextField(nickname, text: $nickname)
+            .clearButton(text: $nickname)
+            .onChange(of: nickname) {
+                // 닉네임 글자수 20글자 못넘게 제한
+                nickname = String(nickname.prefix(20))
+            }
+    }
     
     /// 네비게이션 바 상단 완료 버튼
     private var completeButton: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Button {
-                // TODO: 저장하고 이 뷰 나가기
-                
+                // 닉네임 저장 결과에 따라 alert 메시지 다르게 입력해주고 띄우기
+                if vm.saveNickname(nickname) {
+                    self.nicknameChangeResultMessage = "닉네임 변경이 완료되었습니다"
+                    self.showCompleteButtonAlert.toggle()
+                } else {
+                    self.nicknameChangeResultMessage = "이미 사용중인 닉네임입니다."
+                    self.showCompleteButtonAlert.toggle()
+                }
             } label: {
                 Text("완료")
                     .foregroundStyle(isCompleteButtonAbled ? .main : .greyText)
             }
             .disabled(!isCompleteButtonAbled)
         }
+    }
+    
+    /// 탈퇴하기 버튼
+    private var deleteAccountButton: some View {
+        HStack {
+            Button {
+                showDeleteAccountAlert.toggle()
+            } label: {
+                Text("탈퇴하기")
+                    .font(.subheadline)
+                    .foregroundColor(.black.opacity(0.2))
+            }
+            
+            Spacer()
+        }
+        .padding(.horizontal, 20)
     }
 }
 

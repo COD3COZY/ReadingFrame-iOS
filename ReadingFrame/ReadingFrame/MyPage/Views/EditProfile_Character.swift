@@ -75,7 +75,8 @@ extension EditProfile_Character {
             Text("색상")
                 .font(.subheadline)
                 .foregroundStyle(.black0)
-                .padding(.vertical, 20)
+                .padding(.top, 5)
+                .padding(.bottom, 20)
             
             // 색상 5개 그리드
             colorChooseGrid
@@ -95,7 +96,7 @@ extension EditProfile_Character {
         .padding([.top, .horizontal], 20)
         .padding(.bottom, 70) // SE 캐릭터 선택지 잘 보이도록 조금 밀어줌(임시, 더 좋은 방법 찾으면 변경하도록 하겠습니다!)
         .background(
-            RoundedRectangle(cornerRadius: 40)
+            RoundedRectangle(cornerRadius: 25)
                 .foregroundStyle(Color.grey1)
                 .ignoresSafeArea(edges: .bottom)
         )

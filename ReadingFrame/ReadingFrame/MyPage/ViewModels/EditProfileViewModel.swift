@@ -36,8 +36,38 @@ class EditProfileViewModel: ObservableObject {
     }
     
     /// 닉네임 저장 작업
-    func saveNickname(_ nickname: String) {
-        print("캐릭터 저장하기")
-        self.nickname = nickname
+    func saveNickname(_ nickname: String) -> Bool {
+        print("닉네임 변경하기")
+        
+        // TODO: 닉네임 중복검사 API 호출
+        
+        // TODO: 닉네임 중복검사 통과하면 닉네임 변경 API 호출
+        
+        // 호출 결과에 따라 뷰에서 결과 처리
+        let testReturn: Bool = false
+        
+        if testReturn {
+            self.nickname = nickname
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    /// 탈퇴하기 처리 후 결과 리턴
+    func deleteAccount() -> Bool {
+        // TODO: 탈퇴 API 호출하기
+        
+        // 호출 결과에 따라 뷰에서 결과 처리
+        let testReturn: Bool = true
+        
+        if testReturn {
+            // TODO: 탈퇴 처리하기
+            // - 토큰 삭제
+            // - 계정 삭제
+            return true
+        } else {
+            return false
+        }
     }
 }

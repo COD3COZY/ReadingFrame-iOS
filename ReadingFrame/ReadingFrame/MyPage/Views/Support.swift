@@ -10,23 +10,24 @@ import SwiftUI
 /// 도움말 및 지원 뷰
 struct Support: View {
     // MARK: - Properties
-    /// 자주 묻는 질문 데이터
-    let data: SupportData
+    /// 뷰모델
+    @ObservedObject var vm = SupportViewModel()
     
-    /// 인덱스의 질문이 토글됐는지 저장하는 배열
-    @State var isItemIndexExpanded: [Bool]
+    /// 이메일 Sheet용
+    @State private var showEmailSheet = false
     
-    // init
-    init() {
-        self.data = SupportData()
-        self.isItemIndexExpanded = .init(repeating: false, count: data.questions.count)
-    }
+    /// 문의 이메일이 일반 문의인지 오류제보인지 체크
+    @State private var isEmailForBugReport: Bool = false
     
     // MARK: - View
     var body: some View {
-        VStack(spacing: 30) {
-            questionsSection
-                .padding(.top, 10)
+        ScrollView {
+            VStack(spacing: 30) {
+                questionsSection
+                    .padding(.top, 10)
+                
+                inquireSection
+            }
         }
         .navigationTitle("도움말 및 지원")
         .navigationBarTitleDisplayMode(.inline)
@@ -38,34 +39,44 @@ struct Support: View {
 extension Support {
     /// 자주 묻는 질문 구역
     private var questionsSection: some View {
-        ScrollView {
+        VStack {
             titleText("자주 묻는 질문")
             
-            ForEach(0..<data.questions.count, id: \.self) { index in
+            ForEach(0..<vm.supportData.questions.count, id: \.self) { index in
                 VStack(alignment: .leading, spacing: 0) {
                     // 질문
-                    questionRow(data.questions[index], isExpanded: isItemIndexExpanded[index])
+                    defaultListRow(vm.supportData.questions[index], isExpanded: vm.isItemIndexExpanded[index])
                         .onTapGesture {
                             withAnimation(.easeInOut) {
-                                if isItemIndexExpanded[index] {
-                                    isItemIndexExpanded[index] = false
+                                if vm.isItemIndexExpanded[index] {
+                                    vm.isItemIndexExpanded[index] = false
                                 } else {
-                                    isItemIndexExpanded[index] = true
+                                    vm.isItemIndexExpanded[index] = true
                                 }
                             }
                         }
                     
                     // 응답
-                    if isItemIndexExpanded[index] {
-                        answerRow(data.answers[index])
+                    if vm.isItemIndexExpanded[index] {
+                        answerRow(vm.supportData.answers[index])
                     }
+                }
+            }
+        }
+        .sheet(isPresented: $showEmailSheet) {
+            MailView(supportEmail: isEmailForBugReport ? $vm.bugReportEmail : $vm.contactEmail) { result in
+                switch result {
+                case .success:
+                    print("Email sent")
+                case .failure(let error):
+                    print(error.localizedDescription)
                 }
             }
         }
     }
     
     /// 질문 row UI
-    private func questionRow(_ text: String, isExpanded: Bool) -> some View {
+    private func defaultListRow(_ text: String, isExpanded: Bool) -> some View {
         VStack {
             HStack {
                 Text(text)
@@ -106,7 +117,38 @@ extension Support {
     private var inquireSection: some View {
         VStack {
             titleText("문의")
-
+            
+            defaultListRow("오류 제보", isExpanded: false)
+                .onTapGesture {
+                    // 이메일 앱 있을 경우, 오류 제보용 이메일 Sheet 띄우기
+                    isEmailForBugReport = true
+                    
+                    if MailView.canSendMail {
+                        showEmailSheet.toggle()
+                    } else {
+                        print("""
+                        This device does not support email
+                        \(vm.contactEmail.body)
+                        """
+                        )
+                    }
+                }
+            
+            defaultListRow("문의하기", isExpanded: false)
+                .onTapGesture {
+                    // 이메일 앱 있을 경우, 일반문의용 이메일 Sheet 띄우기
+                    isEmailForBugReport = false
+                    
+                    if MailView.canSendMail {
+                        showEmailSheet.toggle()
+                    } else {
+                        print("""
+                        This device does not support email
+                        \(vm.contactEmail.body)
+                        """
+                        )
+                    }
+                }
         }
     }
     

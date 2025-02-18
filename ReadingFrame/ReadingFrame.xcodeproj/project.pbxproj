@@ -63,6 +63,12 @@
 		C595A2022B7BCB10006D88EC /* SelectBookTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C595A2012B7BCB10006D88EC /* SelectBookTypeView.swift */; };
 		C595A2042B7BDE87006D88EC /* DatePickerInList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C595A2032B7BDE87006D88EC /* DatePickerInList.swift */; };
 		C59BF6A72D63A6ED00528A82 /* SupportData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59BF6A62D63A6ED00528A82 /* SupportData.swift */; };
+		C59BF6C52D64899E00528A82 /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59BF6C42D64899E00528A82 /* MailView.swift */; };
+		C59BF6C82D6489E700528A82 /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59BF6C72D6489E000528A82 /* UIDevice+Extension.swift */; };
+		C59BF6CA2D6489FB00528A82 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59BF6C92D6489FB00528A82 /* Bundle+Extension.swift */; };
+		C59BF6CC2D648A4E00528A82 /* SupportEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59BF6CB2D648A4900528A82 /* SupportEmail.swift */; };
+		C59BF6CE2D648EBB00528A82 /* SupportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59BF6CD2D648EBB00528A82 /* SupportViewModel.swift */; };
+		C59BF6D02D648FB500528A82 /* DeviceModels.json in Resources */ = {isa = PBXBuildFile; fileRef = C59BF6CF2D648FB500528A82 /* DeviceModels.json */; };
 		C5A136352C350B8F0061D674 /* BookmapSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A136342C350B8F0061D674 /* BookmapSheetView.swift */; };
 		C5A136372C350C5A0061D674 /* BookLocationListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A136362C350C5A0061D674 /* BookLocationListRow.swift */; };
 		C5B57A0A2D5BA15200B4B18D /* CircleBorderCharcterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B57A092D5BA15200B4B18D /* CircleBorderCharcterView.swift */; };
@@ -231,6 +237,12 @@
 		C595A2012B7BCB10006D88EC /* SelectBookTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectBookTypeView.swift; sourceTree = "<group>"; };
 		C595A2032B7BDE87006D88EC /* DatePickerInList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerInList.swift; sourceTree = "<group>"; };
 		C59BF6A62D63A6ED00528A82 /* SupportData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportData.swift; sourceTree = "<group>"; };
+		C59BF6C42D64899E00528A82 /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
+		C59BF6C72D6489E000528A82 /* UIDevice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extension.swift"; sourceTree = "<group>"; };
+		C59BF6C92D6489FB00528A82 /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
+		C59BF6CB2D648A4900528A82 /* SupportEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportEmail.swift; sourceTree = "<group>"; };
+		C59BF6CD2D648EBB00528A82 /* SupportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportViewModel.swift; sourceTree = "<group>"; };
+		C59BF6CF2D648FB500528A82 /* DeviceModels.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DeviceModels.json; sourceTree = "<group>"; };
 		C5A136342C350B8F0061D674 /* BookmapSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmapSheetView.swift; sourceTree = "<group>"; };
 		C5A136362C350C5A0061D674 /* BookLocationListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookLocationListRow.swift; sourceTree = "<group>"; };
 		C5B57A092D5BA15200B4B18D /* CircleBorderCharcterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleBorderCharcterView.swift; sourceTree = "<group>"; };
@@ -464,6 +476,7 @@
 			children = (
 				C538809E2D50A45D00384E1B /* MyPageViewModel.swift */,
 				C5B57A132D5C6E6C00B4B18D /* EditProfileViewModel.swift */,
+				C59BF6CD2D648EBB00528A82 /* SupportViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -471,6 +484,7 @@
 		C53880A02D50A49200384E1B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C59BF6CB2D648A4900528A82 /* SupportEmail.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -639,6 +653,7 @@
 		C595A1E92B7AA00F006D88EC /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
+				C59BF6C62D6489BB00528A82 /* Extensions */,
 				C5B57A082D5BA11F00B4B18D /* Helpers */,
 				C53880A02D50A49200384E1B /* Models */,
 				C595A1EA2B7AA016006D88EC /* Views */,
@@ -725,11 +740,22 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		C59BF6C62D6489BB00528A82 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C59BF6C92D6489FB00528A82 /* Bundle+Extension.swift */,
+				C59BF6C72D6489E000528A82 /* UIDevice+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		C5B57A082D5BA11F00B4B18D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				C59BF6CF2D648FB500528A82 /* DeviceModels.json */,
 				C5B57A092D5BA15200B4B18D /* CircleBorderCharcterView.swift */,
 				C59BF6A62D63A6ED00528A82 /* SupportData.swift */,
+				C59BF6C42D64899E00528A82 /* MailView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1245,6 +1271,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5BE522C2B68F54000FF07F8 /* Preview Assets.xcassets in Resources */,
+				C59BF6D02D648FB500528A82 /* DeviceModels.json in Resources */,
 				C5BE52292B68F54000FF07F8 /* Assets.xcassets in Resources */,
 				E7ACEAA32CA2DF4B0079F2F1 /* Secrets.xcconfig in Resources */,
 			);
@@ -1271,6 +1298,7 @@
 				C5B57A0C2D5BAC8A00B4B18D /* EditProfile.swift in Sources */,
 				C52EC5A12C3082D6004F6BDB /* AnnotationView.swift in Sources */,
 				C595A1FB2B7B8A3F006D88EC /* Book.swift in Sources */,
+				C59BF6CC2D648A4E00528A82 /* SupportEmail.swift in Sources */,
 				C56B56062BB95DA80084F2DD /* EnterNickname.swift in Sources */,
 				C5CEA8922B8A5CCA007A89A2 /* WrapLayout.swift in Sources */,
 				E768F0972CE51068003E2CB3 /* HiddenReadBookRequest.swift in Sources */,
@@ -1320,6 +1348,7 @@
 				C5DF2B862B7FC94D0069B64D /* Badge_Info.swift in Sources */,
 				C563455E2D19513C00531ADC /* EditRecordModel.swift in Sources */,
 				E77E0BB12C747FD900626110 /* APIEventLogger.swift in Sources */,
+				C59BF6CE2D648EBB00528A82 /* SupportViewModel.swift in Sources */,
 				C51556CA2B83C9FB006FD0F2 /* SelectReviewClusterView.swift in Sources */,
 				E7A0DD2A2B7B4B12006004B5 /* SearchBar.swift in Sources */,
 				C5A136372C350C5A0061D674 /* BookLocationListRow.swift in Sources */,
@@ -1330,10 +1359,12 @@
 				E7A756682C0741BC00CF52A4 /* Character.swift in Sources */,
 				E77E0BA22C74602800626110 /* APIConstants.swift in Sources */,
 				C52CE0E42CD372F500C6D09A /* ReadingNoteViewModel.swift in Sources */,
+				C59BF6C82D6489E700528A82 /* UIDevice+Extension.swift in Sources */,
 				C595A2022B7BCB10006D88EC /* SelectBookTypeView.swift in Sources */,
 				C5BE52272B68F53E00FF07F8 /* LaunchView.swift in Sources */,
 				E768F0992CE51222003E2CB3 /* ChangeReadingStatusRequest.swift in Sources */,
 				C576DD532C79828F001AFFFA /* NicknameTextfieldStyle.swift in Sources */,
+				C59BF6CA2D6489FB00528A82 /* Bundle+Extension.swift in Sources */,
 				E7384CFB2C1284DE001B814B /* CustomDropDownMenu.swift in Sources */,
 				C5B57A102D5BACF500B4B18D /* Support.swift in Sources */,
 				C5BE52252B68F53E00FF07F8 /* ReadingFrameApp.swift in Sources */,
@@ -1399,6 +1430,7 @@
 				E77E0BAA2C747B1200626110 /* KakaoLoginRequest.swift in Sources */,
 				C50F7A0B2C71D70100D65BFB /* Login.swift in Sources */,
 				C53880A42D50A7A400384E1B /* ProfileImage.swift in Sources */,
+				C59BF6C52D64899E00528A82 /* MailView.swift in Sources */,
 				C54B932E2C500FCD008B73E0 /* BookShelfView.swift in Sources */,
 				E77394842C637B8D0057760A /* SearchBadge.swift in Sources */,
 				E768F0852CE47BB7003E2CB3 /* WantToReadBookResponse.swift in Sources */,

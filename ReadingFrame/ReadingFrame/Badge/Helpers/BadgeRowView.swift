@@ -9,20 +9,8 @@ import SwiftUI
 
 struct BadgeRowView: View {
     /// 배지 제목
-    var badgeTitle: String
-    
-    /// 배지 설명
-    var badgeInfo: String?
-    
-    /// 배지 제목 상단 여백
-    var titlePadding: CGFloat
-    
-    /// 배지 상단 여백
-    var topPadding: CGFloat
-    
-    /// 배지 하단 여백
-    var bottomPadding: CGFloat
-    
+    var badgeSection: BadgeSectionType
+            
     /// 배지 리스트
     var badges: [Badge]
     
@@ -32,39 +20,36 @@ struct BadgeRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // 배지 제목
-            Text(badgeTitle)
+            Text(badgeSection.rawValue)
                 .font(.thirdTitle)
                 .foregroundStyle(.black0)
-                .padding(.top, titlePadding)
-                .padding(.horizontal, 27)
+                .padding(.horizontal, 2)
             
             // 배지 설명
-            if let badgeText = badgeInfo {
-                Text(badgeText)
-                    .font(.system(size: 10, weight: .regular))
+            if let badgeInfo = badgeSection.desc {
+                Text(badgeInfo)
+                    .font(.caption)
                     .foregroundStyle(.greyText)
-                    .padding(.top, 2)
-                    .padding(.horizontal, 27)
+                    .padding([.top, .horizontal], 2)
+                    .padding(.bottom, -7)
             }
+            
+            Color.clear.frame(height: 22) // 여백용 사각형
             
             // 배지 리스트
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(badges.indices, id: \.self) { index in
-                    BadgeView(badge: badges[index], topPadding: topPadding, bottomPadding: bottomPadding)
+                    BadgeView(badge: badges[index])
                 }
             }
-            .padding(.top, 22)
-            .padding(.horizontal, 25)
         }
+        .padding(.horizontal, 25)
     }
 }
 
 #Preview {
     BadgeRowView(
-        badgeTitle: "서재에 등록한 책",
-        titlePadding: 32,
-        topPadding: 12,
-        bottomPadding: 12,
+        badgeSection: .bookCount,
         badges:
             [Badge(badgeCode: 0, isGotBadge: true, date: "2024.08.08"),
              Badge(badgeCode: 1, isGotBadge: true, date: "2024.08.08"),

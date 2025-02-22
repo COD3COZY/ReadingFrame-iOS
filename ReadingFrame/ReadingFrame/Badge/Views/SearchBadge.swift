@@ -15,33 +15,23 @@ struct SearchBadge: View {
     // MARK: - BODY
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading) {
-                // MARK: 서재에 등록한 책
-                BadgeRowView(badgeTitle: "서재에 등록한 책", titlePadding: 32, topPadding: 12, bottomPadding: 12, badges: Array(badges[0...5]))
-                
-                // MARK: 완독가
-                BadgeRowView(badgeTitle: "완독가", titlePadding: 44, topPadding: 8, bottomPadding: 16, badges: Array(badges[6...9]))
-                
-                // MARK: 기록 MVP
-                BadgeRowView(badgeTitle: "기록 MVP", badgeInfo: "*’첫 기록’은 책갈피, 인물사전, 메모를 모두 등록해야 합니다.", titlePadding: 44, topPadding: 12, bottomPadding: 12, badges: Array(badges[10...12]))
-                
-                // MARK: 리뷰 마스터
-                BadgeRowView(badgeTitle: "리뷰 마스터", badgeInfo: "*’리뷰계의 라이징스타’는 키워드, 선택, 한줄평 모두 등록해야 합니다.", titlePadding: 44, topPadding: 30, bottomPadding: 30, badges: Array(badges[13...15]))
-                
-                // MARK: 장르 애호가
-                BadgeRowView(badgeTitle: "장르 애호가", titlePadding: 44, topPadding: 12, bottomPadding: 12, badges: Array(badges[16...21]))
+            VStack(alignment: .leading, spacing: 45) {
+                // 구역별로 배지 보여주기
+                ForEach(BadgeSectionType.allCases, id: \.rawValue) { sectionType in
+                    BadgeRowView(
+                        badgeSection: sectionType,
+                        badges: Array(badges[sectionType.badgeArrayRange])
+                    )
+                }
             }
         }
         // 네비게이션 바 설정
         .navigationTitle("배지")
         .navigationBarTitleDisplayMode(.inline)
     }
-    
-    // MARK: - FUNCTION
 }
 
 
-// MARK: - PREVIEW
 #Preview("배지 조회") {
     SearchBadge(badges:
         [Badge(badgeCode: 0, isGotBadge: true, date: "2024.08.08"),

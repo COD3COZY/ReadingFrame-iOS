@@ -53,8 +53,8 @@ struct BookItemDetailView: View {
                 
                 VStack(alignment: .leading, spacing: 0) {
                     HStack {
-                        // MARK: - 배지
-                        Badge_Info(
+                        // MARK: - 태그
+                        Tag_Info(
                             bookType: viewModel.getBookBadge(readingStatus: readingStatus, bookIndex: bookIndex).0,
                             category: viewModel.getBookBadge(readingStatus: readingStatus, bookIndex: bookIndex).1,
                             isMine: viewModel.getBookBadge(readingStatus: readingStatus, bookIndex: bookIndex).2

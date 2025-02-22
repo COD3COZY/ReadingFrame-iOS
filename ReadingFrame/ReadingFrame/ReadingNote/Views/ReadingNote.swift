@@ -347,8 +347,8 @@ extension ReadingNote {
     // MARK: - 기본 책정보: 책정보 배지, 책 이름, 저자
     private var basicBookInfo: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // 책정보 배지
-            Badge_Info(category: vm.book?.categoryName ?? .etc)
+            // 책정보 태그
+            Tag_Info(category: vm.book?.categoryName ?? .etc)
                 .padding(.top, 10)
                 .padding(.horizontal, 16)
             

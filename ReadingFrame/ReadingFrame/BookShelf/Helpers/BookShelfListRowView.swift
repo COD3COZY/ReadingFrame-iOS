@@ -23,8 +23,8 @@ struct BookShelfListRowView: View {
                 // 책정보
                 VStack(alignment: .leading, spacing: 0) {
                     HStack {
-                        // MARK: 배지
-                        Badge_Info(
+                        // MARK: 태그
+                        Tag_Info(
                             bookType: bookInfo.bookType,
                             category: bookInfo.category,
                             isMine: bookInfo.isMine

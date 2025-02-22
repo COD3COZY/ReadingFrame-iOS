@@ -42,8 +42,8 @@ struct BasicBookInfoView: View {
             
             // 오른쪽 책정보
             VStack(alignment: .leading, spacing: 0) {
-                // MARK: 책정보 배지
-                Badge_Info(category: book.categoryName)
+                // MARK: 책정보 태그
+                Tag_Info(category: book.categoryName)
                     .padding(.bottom, 12)
                 
                 // MARK: 제목

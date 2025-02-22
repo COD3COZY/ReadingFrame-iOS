@@ -39,9 +39,7 @@ class EditProfileViewModel: ObservableObject {
     func saveNickname(_ nickname: String) -> Bool {
         print("닉네임 변경하기")
         
-        // TODO: 닉네임 중복검사 API 호출
-        
-        // TODO: 닉네임 중복검사 통과하면 닉네임 변경 API 호출
+        // TODO: 닉네임 변경 API 호출
         
         // 호출 결과에 따라 뷰에서 결과 처리
         let testReturn: Bool = false

@@ -50,6 +50,7 @@
 		C563455C2D193CF400531ADC /* EditAllRecordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C563455B2D193CF400531ADC /* EditAllRecordViewModel.swift */; };
 		C563455E2D19513C00531ADC /* EditRecordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C563455D2D19513C00531ADC /* EditRecordModel.swift */; };
 		C56B56062BB95DA80084F2DD /* EnterNickname.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56B56052BB95DA80084F2DD /* EnterNickname.swift */; };
+		C5765D7E2D6B8BE800BE1983 /* BadgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5765D7D2D6B8BE800BE1983 /* BadgeViewModel.swift */; };
 		C576DD532C79828F001AFFFA /* NicknameTextfieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C576DD522C79828F001AFFFA /* NicknameTextfieldStyle.swift */; };
 		C576DD562C7F0CEF001AFFFA /* SignUpModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C576DD552C7F0CEF001AFFFA /* SignUpModel.swift */; };
 		C58F57172B8CF35D004085A5 /* BookInfo_ReviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58F57162B8CF35D004085A5 /* BookInfo_ReviewModel.swift */; };
@@ -224,6 +225,7 @@
 		C563455B2D193CF400531ADC /* EditAllRecordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAllRecordViewModel.swift; sourceTree = "<group>"; };
 		C563455D2D19513C00531ADC /* EditRecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecordModel.swift; sourceTree = "<group>"; };
 		C56B56052BB95DA80084F2DD /* EnterNickname.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterNickname.swift; sourceTree = "<group>"; };
+		C5765D7D2D6B8BE800BE1983 /* BadgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeViewModel.swift; sourceTree = "<group>"; };
 		C576DD522C79828F001AFFFA /* NicknameTextfieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameTextfieldStyle.swift; sourceTree = "<group>"; };
 		C576DD552C7F0CEF001AFFFA /* SignUpModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SignUpModel.swift; path = ReadingFrame/SignUp/Models/SignUpModel.swift; sourceTree = SOURCE_ROOT; };
 		C58F57162B8CF35D004085A5 /* BookInfo_ReviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInfo_ReviewModel.swift; sourceTree = "<group>"; };
@@ -570,6 +572,14 @@
 				C5529F1A2BBD7AB300C3E614 /* EnterProfile.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		C5765D7C2D6B8BD300BE1983 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				C5765D7D2D6B8BE800BE1983 /* BadgeViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		C576DD512C79827C001AFFFA /* Helpers */ = {
@@ -927,6 +937,7 @@
 			children = (
 				E77394852C6385680057760A /* Models */,
 				E77394822C637B820057760A /* Views */,
+				C5765D7C2D6B8BD300BE1983 /* ViewModels */,
 				E77394882C638CC00057760A /* Helpers */,
 			);
 			path = Badge;
@@ -1394,6 +1405,7 @@
 				C54B931E2C4FF7A4008B73E0 /* SearchLocationModel.swift in Sources */,
 				C538809F2D50A45D00384E1B /* MyPageViewModel.swift in Sources */,
 				E702A9AE2B8605D10081F65D /* ReadingRowView.swift in Sources */,
+				C5765D7E2D6B8BE800BE1983 /* BadgeViewModel.swift in Sources */,
 				C5B57A142D5C6E6C00B4B18D /* EditProfileViewModel.swift in Sources */,
 				E7384CFD2C128E4B001B814B /* CustomDropDownModifier.swift in Sources */,
 				E7505C492CBD03410082FE85 /* ReadingBookResponse.swift in Sources */,

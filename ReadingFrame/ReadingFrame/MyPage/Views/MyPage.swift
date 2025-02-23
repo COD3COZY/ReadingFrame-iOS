@@ -68,7 +68,7 @@ extension MyPage {
     /// 배지 섹션
     private var badgeSection: some View {
         NavigationLink {
-            badgeView
+            SearchBadge()
                 .toolbarRole(.editor)
         } label: {
             badgeBox
@@ -186,16 +186,6 @@ extension MyPage {
             .padding(20)
             
             Spacer()
-        }
-    }
-}
-
-// MARK: - 연결되는 페이지
-extension MyPage {
-    // TODO: 배지 VM 만들어서 다시 연결할 뷰 작성하기
-    private var badgeView: some View {
-        VStack {
-            Text("쭈르륵 배지 와다다")
         }
     }
 }

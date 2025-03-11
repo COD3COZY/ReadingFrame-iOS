@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C50ECCEE2D782CA900BCDFDB /* AppleSignUpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50ECCED2D782CA900BCDFDB /* AppleSignUpRequest.swift */; };
+		C50ECCF22D78352100BCDFDB /* AppleSignUpResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50ECCF12D78352100BCDFDB /* AppleSignUpResponse.swift */; };
+		C50ECCF42D783D1500BCDFDB /* AppleLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50ECCF32D783D1500BCDFDB /* AppleLoginRequest.swift */; };
 		C50F7A0B2C71D70100D65BFB /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50F7A0A2C71D70100D65BFB /* Login.swift */; };
 		C50F7A0E2C73907200D65BFB /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50F7A0D2C73907200D65BFB /* KeyChainService.swift */; };
 		C51556C32B830402006FD0F2 /* BookInfoBottomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51556C22B830402006FD0F2 /* BookInfoBottomButtonView.swift */; };
@@ -142,7 +145,7 @@
 		E77E0BA42C74611000626110 /* NetworkResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BA32C74611000626110 /* NetworkResult.swift */; };
 		E77E0BA62C747A0B00626110 /* KakaoSignUpResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BA52C747A0B00626110 /* KakaoSignUpResponse.swift */; };
 		E77E0BAA2C747B1200626110 /* KakaoLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BA92C747B1200626110 /* KakaoLoginRequest.swift */; };
-		E77E0BAD2C747B4900626110 /* KakaoLoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BAC2C747B4900626110 /* KakaoLoginResponse.swift */; };
+		E77E0BAD2C747B4900626110 /* SocialLoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BAC2C747B4900626110 /* SocialLoginResponse.swift */; };
 		E77E0BB12C747FD900626110 /* APIEventLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BB02C747FD900626110 /* APIEventLogger.swift */; };
 		E77E0BB42C7488C800626110 /* HTTPHeaderField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BB32C7488C800626110 /* HTTPHeaderField.swift */; };
 		E77E0BB62C748AC400626110 /* TargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77E0BB52C748AC400626110 /* TargetType.swift */; };
@@ -182,6 +185,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C50ECCED2D782CA900BCDFDB /* AppleSignUpRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignUpRequest.swift; sourceTree = "<group>"; };
+		C50ECCF12D78352100BCDFDB /* AppleSignUpResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignUpResponse.swift; sourceTree = "<group>"; };
+		C50ECCF32D783D1500BCDFDB /* AppleLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginRequest.swift; sourceTree = "<group>"; };
 		C50F7A0A2C71D70100D65BFB /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		C50F7A0D2C73907200D65BFB /* KeyChainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainService.swift; sourceTree = "<group>"; };
 		C51556C22B830402006FD0F2 /* BookInfoBottomButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInfoBottomButtonView.swift; sourceTree = "<group>"; };
@@ -316,7 +322,7 @@
 		E77E0BA32C74611000626110 /* NetworkResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkResult.swift; sourceTree = "<group>"; };
 		E77E0BA52C747A0B00626110 /* KakaoSignUpResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoSignUpResponse.swift; sourceTree = "<group>"; };
 		E77E0BA92C747B1200626110 /* KakaoLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginRequest.swift; sourceTree = "<group>"; };
-		E77E0BAC2C747B4900626110 /* KakaoLoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginResponse.swift; sourceTree = "<group>"; };
+		E77E0BAC2C747B4900626110 /* SocialLoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginResponse.swift; sourceTree = "<group>"; };
 		E77E0BB02C747FD900626110 /* APIEventLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEventLogger.swift; sourceTree = "<group>"; };
 		E77E0BB32C7488C800626110 /* HTTPHeaderField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPHeaderField.swift; sourceTree = "<group>"; };
 		E77E0BB52C748AC400626110 /* TargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetType.swift; sourceTree = "<group>"; };
@@ -1033,6 +1039,7 @@
 			children = (
 				E77E0B9E2C745E4D00626110 /* KakaoSignUpRequest.swift */,
 				E7ACEA972CA29AC50079F2F1 /* NicknameValidateRequest.swift */,
+				C50ECCED2D782CA900BCDFDB /* AppleSignUpRequest.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -1041,6 +1048,7 @@
 			isa = PBXGroup;
 			children = (
 				E77E0BA52C747A0B00626110 /* KakaoSignUpResponse.swift */,
+				C50ECCF12D78352100BCDFDB /* AppleSignUpResponse.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -1049,6 +1057,7 @@
 			isa = PBXGroup;
 			children = (
 				E77E0BA92C747B1200626110 /* KakaoLoginRequest.swift */,
+				C50ECCF32D783D1500BCDFDB /* AppleLoginRequest.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1056,7 +1065,7 @@
 		E77E0BAB2C747B3B00626110 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				E77E0BAC2C747B4900626110 /* KakaoLoginResponse.swift */,
+				E77E0BAC2C747B4900626110 /* SocialLoginResponse.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1328,6 +1337,7 @@
 				C5B57A122D5C629800B4B18D /* EditProfile_Character.swift in Sources */,
 				E77E0BB82C7499A500626110 /* SignUpService.swift in Sources */,
 				E77E0B8F2C7390A400626110 /* BaseAPI.swift in Sources */,
+				C50ECCF22D78352100BCDFDB /* AppleSignUpResponse.swift in Sources */,
 				E7505C4B2CBD0C690082FE85 /* DetailBookViewModel.swift in Sources */,
 				E702A9AC2B85FB2F0081F65D /* ReadingLabel.swift in Sources */,
 				E7CD51652CAD5EE30063C0A5 /* HomeResponse.swift in Sources */,
@@ -1349,6 +1359,7 @@
 				C5BAF29D2BA49F0800DC33FE /* GreyLogoAndTextView.swift in Sources */,
 				E7A0DD2E2B7B617E006004B5 /* Search.swift in Sources */,
 				C5529F1B2BBD7AB300C3E614 /* EnterProfile.swift in Sources */,
+				C50ECCF42D783D1500BCDFDB /* AppleLoginRequest.swift in Sources */,
 				E75D6B092BEB5B7E0080EBA0 /* Bookmark.swift in Sources */,
 				C5338FA42B8DD76900D24B5F /* CommentReactionToken.swift in Sources */,
 				C5EB7CEF2C4794DE0038C237 /* SingleBookLocationInfoView.swift in Sources */,
@@ -1362,6 +1373,7 @@
 				C59BF6CE2D648EBB00528A82 /* SupportViewModel.swift in Sources */,
 				C51556CA2B83C9FB006FD0F2 /* SelectReviewClusterView.swift in Sources */,
 				E7A0DD2A2B7B4B12006004B5 /* SearchBar.swift in Sources */,
+				C50ECCEE2D782CA900BCDFDB /* AppleSignUpRequest.swift in Sources */,
 				C5A136372C350C5A0061D674 /* BookLocationListRow.swift in Sources */,
 				E7ACEA9A2CA29BF60079F2F1 /* NicknameValidateAPI.swift in Sources */,
 				E7A756662C07360800CF52A4 /* Memo.swift in Sources */,
@@ -1456,7 +1468,7 @@
 				E751B5702B8EC61A00880123 /* EditBookmark.swift in Sources */,
 				C54B93282C500A54008B73E0 /* BookShelfListByType.swift in Sources */,
 				E702A9A82B85CAF50081F65D /* ReadingItemView.swift in Sources */,
-				E77E0BAD2C747B4900626110 /* KakaoLoginResponse.swift in Sources */,
+				E77E0BAD2C747B4900626110 /* SocialLoginResponse.swift in Sources */,
 				C595A1E02B7A9E59006D88EC /* MainPage.swift in Sources */,
 				C52EC59B2C308181004F6BDB /* BookLocationData.swift in Sources */,
 			);

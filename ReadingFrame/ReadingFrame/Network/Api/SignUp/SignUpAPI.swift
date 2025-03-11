@@ -37,4 +37,22 @@ class SignUpAPI: BaseAPI {
     }
     
     /// 애플 회원가입 API
+    func signUpApple(request: AppleSignUpRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(SignUpService.signUpApple(request)).responseData { (response) in
+        switch response.result {
+        case .success:
+            guard let statusCode = response.response?.statusCode
+            else {
+                return
+            }
+            guard let data = response.data
+            else {
+                return
+            }
+            completion(self.judgeData(by: statusCode, data, AppleSignUpResponse.self))
+        case .failure(let err):
+            completion(.networkFail(err.localizedDescription))
+        }
+        }
+    }
 }

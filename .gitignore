@@ -109,3 +109,4 @@ iOSInjectionProject/
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.toptal.com/developers/gitignore/api/swift,xcode,cocoapods
+ReadingFrame/ReadingFrame/Network/Base/APIConstants.swift

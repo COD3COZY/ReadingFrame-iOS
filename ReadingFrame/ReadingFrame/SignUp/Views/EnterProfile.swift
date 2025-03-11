@@ -389,7 +389,41 @@ extension EnterProfile {
                 }
                 // TODO: 애플 회원가입 API 호출
                 else {
-                    // - keychain에서 UserIdentifier, idToken 불러오기
+                    // 키체인에 애플에서 받은 로그인 정보 있는지 확인
+                    if let userIdentifier = KeyChain.shared.getKeychainItem(key: .appleUserIdentifier),
+                    let idToken = KeyChain.shared.getKeychainItem(key: .appleIdentityToken) {
+                        // API 호출
+                        viewModel.signUpApple(
+                            request: AppleSignUpRequest(
+                                userIdentifier: userIdentifier,
+                                idToken: idToken,
+                                nickname: signupInfo.nickname,
+                                profileImageCode: signupInfo.profileImageCode
+                            )
+                        ) { success in
+                            // 애플 회원가입 API 응답 성공
+                            if success {
+                                // 닉네임 키체인에 저장
+                                // 카카오, 애플 유형에 따라 key 다르게 저장
+                                if KeyChain.shared.addKeychainItem(
+                                    key: KeychainKeys.appleNickname,
+                                    value: signupInfo.nickname
+                                ) {
+                                    // 메인 화면으로 이동
+                                    withAnimation {
+                                        isLoggedIn = true
+                                    }
+                                }
+                            }
+                            // 애플 회원가입 API 응답 실패
+                            else {
+                                
+                            }
+                        }
+                    }
+                    else {
+                        print("키체인에 애플 로그인 정보 없음 !!")
+                    }
                 }
                 
                 // TODO: 가입 실패 시 처리하는 로직

@@ -14,12 +14,15 @@ enum SignUpService {
     case signUpKakako(KakaoSignUpRequest)
     
     // 애플 회원가입 API
+    case signUpApple(AppleSignUpRequest)
 }
 
 extension SignUpService: TargetType {
     var method: HTTPMethod {
         switch self {
         case .signUpKakako:
+            return .post
+        case .signUpApple:
             return .post
         }
     }
@@ -28,12 +31,16 @@ extension SignUpService: TargetType {
         switch self {
         case .signUpKakako:
             return APIConstants.signUpKakaoURL
+        case .signUpApple:
+            return APIConstants.signUpAppleURL
         }
     }
     
     var parameters: RequestParams {
         switch self {
         case .signUpKakako(let request):
+            return .requestBody(request)
+        case .signUpApple(let request):
             return .requestBody(request)
         }
     }

@@ -163,12 +163,31 @@ extension Login {
                 // 기존 키체인에 닉네임이 있는지 확인
                 if let appleNickname = KeyChain.shared.getKeychainItem(key: KeychainKeys.appleNickname) {
                     // 닉네임이 있으면: 로그인 로직
-                    // TODO: 애플로그인 API 호출
-                    print(appleNickname)
+                    print("기존 닉네임(\(appleNickname) 가지고있음: 로그인 진행")
+                    // MARK: 애플로그인 API 호출
+                    // 키체인에서 애플 로그인 정보 확인
+                    if let userIdentifier = KeyChain.shared.getKeychainItem(key: .appleUserIdentifier),
+                       let idToken = KeyChain.shared.getKeychainItem(key: .appleIdentityToken) {
+                        // 애플로그인 API 호출
+                        viewModel.loginApple(
+                            request: AppleLoginRequest(
+                                userIdentifier: userIdentifier,
+                                idToken: idToken
+                            )
+                            
+                        ) { success in
+                            if success {
+                                isLoggedIn = true
+                            } else {
+                                print("로그인 실패")
+                            }
+                        }
+                    }
                     
                 } else {
                     // 닉네임이 없으면: 회원가입 로직
                     // 회원가입 화면으로 넘기기 위한 signUpInfo 저장
+                    print("기존 닉네임 없음: 회원가입 진행")
                     self.signupInfo = SignUpInfo(socialLoginType: .apple)
                     
                     // 회원가입 로직으로 전환

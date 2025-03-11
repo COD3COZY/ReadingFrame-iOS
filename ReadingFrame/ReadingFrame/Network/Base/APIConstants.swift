@@ -24,8 +24,14 @@ struct APIConstants {
     /// 카카오 회원가입 API
     static let signUpKakaoURL = "/member/sign-up/kakao"
     
+    /// 애플 회원가입 API
+    static let signUpAppleURL = "/member/sign-up/apple"
+    
     /// 카카오 로그인 API
     static let loginKakaoURL = "/member/sign-in/kakao"
+    
+    /// 애플 로그인 API
+    static let loginAppleURL = "/member/sign-in/apple"
     
     /// 메인 화면 조회 API
     static let homeURL = "/home"
@@ -53,6 +59,11 @@ struct APIConstants {
     
     /// 소장 여부 변경 API
     static let changeIsMineURL = "/book/isMine"
+    
+    /// 책갈피 등록 API
+    static func registerBookmarkURL(isbn: String) -> String {
+        return "/book/\(isbn)/bookmark"
+    }
 }
 
 /// 한글 인코딩

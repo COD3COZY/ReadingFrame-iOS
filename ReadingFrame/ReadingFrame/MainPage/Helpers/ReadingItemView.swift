@@ -15,6 +15,11 @@ struct ReadingItemView: View {
     /// 책 아이템 인덱스 값
     var bookIndex: Int
     
+    /// 보여줄 책정보
+    var currentBookInfo: HomeBookModel? {
+        viewModel.homeReadingBooks?[bookIndex]
+    }
+    
     /// 다 읽음 Alert이 띄워졌는지 확인하기 위한 변수
     @State private var isShowFinishReadAlert = false
     
@@ -130,8 +135,7 @@ struct ReadingItemView: View {
             .padding(.top, 15)
             // MARK: 책갈피 버튼 클릭 시 나타나는 Sheet
             .sheet(isPresented: $isSheetAppear) {
-                // 책갈피 등록 sheet 띄우기
-                //EditBookmark(book: book, isSheetAppear: $isSheetAppear)
+                bookmarkRegisterSheet
             }
             // MARK: 다 읽음 버튼 클릭 시 나타나는 Alert
             .alert(
@@ -196,6 +200,22 @@ struct ReadingItemView: View {
             }
         }
         .padding(.top, 18)
+    }
+}
+
+extension ReadingItemView {
+    private var bookmarkRegisterSheet: some View {
+        EditAllRecord(
+            book: EditRecordBookModel(
+                bookType: currentBookInfo?.bookType ?? .paperbook,
+                totalPage: currentBookInfo?.totalPage ?? 0,
+                isbn: currentBookInfo?.isbn ?? ""
+            ),
+            isSheetAppear: $isSheetAppear,
+            selectedTab: RecordType.bookmark.rawValue,
+            isForEditing: false,
+            isPickerAppear: false
+        )
     }
 }
 

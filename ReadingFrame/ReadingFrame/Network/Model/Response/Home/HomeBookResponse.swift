@@ -19,4 +19,5 @@ struct HomeBookResponse: Codable {
     var readPage: Int? // 읽은 페이지
     var isMine: Bool? // 소장 여부
     var isWriteReview: Bool? // 리뷰 작성 여부
+    var bookType: Int? // 책의 종류
 }

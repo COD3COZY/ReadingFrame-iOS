@@ -62,16 +62,16 @@ extension HomeService: TargetType {
             return APIConstants.finishedReadingURL
             
         case .deleteBook:
-            return APIConstants.deleteBookURL
+            return APIConstants.bookCommonURL
             
         case .hiddenReadBook:
-            return APIConstants.hiddenReadBookURL
+            return APIConstants.homeCommonURL
             
         case .changeReadingStatus:
-            return APIConstants.changeReadingStatusURL
+            return APIConstants.bookCommonURL
         
         case .changeIsMine:
-            return APIConstants.changeIsMineURL
+            return APIConstants.bookCommonURL
         }
     }
     
@@ -82,11 +82,11 @@ extension HomeService: TargetType {
         case .deleteBook(let isbn):
             return .path(isbn)
         case .hiddenReadBook(let isbn, let request):
-            return .pathBody(isbn, body: request)
+            return .pathBody(isbn + "/hidden", body: request)
         case .changeReadingStatus(let isbn, let request):
-            return .pathBody(isbn, body: request)
+            return .pathBody(isbn + "/reading-status", body: request)
         case .changeIsMine(let isbn, let request):
-            return .pathBody(isbn, body: request)
+            return .pathBody(isbn + "/is-mine", body: request)
         }
     }
 }

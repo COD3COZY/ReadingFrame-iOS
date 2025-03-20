@@ -48,22 +48,11 @@ struct APIConstants {
     /// 다 읽은 책 조회 API
     static let finishedReadingURL = "/home/finishRead"
     
-    /// 책 삭제 API
-    static let deleteBookURL = "/book/delete"
+    /// 책 관련 API에서 사용되는 공통 URL
+    static let bookCommonURL = "/book/"
     
-    /// 읽고 있는 책 숨기기&꺼내기 API
-    static let hiddenReadBookURL = "/home/hidden"
-    
-    /// 독서 상태 변경 API
-    static let changeReadingStatusURL = "/book/readingStatus"
-    
-    /// 소장 여부 변경 API
-    static let changeIsMineURL = "/book/isMine"
-    
-    /// 책갈피 등록 API
-    static func registerBookmarkURL(isbn: String) -> String {
-        return "/book/\(isbn)/bookmark"
-    }
+    /// 홈화면 관련  API에서 사용되는 공통 URL
+    static let homeCommonURL = "/home/"    
 }
 
 /// 한글 인코딩

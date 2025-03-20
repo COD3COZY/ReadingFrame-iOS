@@ -159,7 +159,7 @@ class EditAllRecordViewModel: ObservableObject {
         }
     }
     
-    // MARK: Methods
+    // MARK: - Methods
     /// 탭이 바뀔 경우, 기존에 입력된 정보 초기화시키기
     func changeTab() {
         self.selectedDate = Date()
@@ -180,9 +180,30 @@ class EditAllRecordViewModel: ObservableObject {
                 print("책갈피 PATCH API 호출")
             }
             else {
-                // TODO: 책갈피 POST API 호출하기
+                // MARK: 책갈피 POST API 호출하기
                 print("책갈피 POST API 호출")
+                
+                registerBookmark(
+                    isbn: self.book.isbn,
+                    request: PostNewBookmarkRequest(
+                        date: DateRange.dateToString(date: selectedDate),
+                        markPage: Int(self.bookMarkPage) ?? 0,
+                        mainLocation: pickedPlace != nil
+                            ? PlaceInfo(placeName: pickedPlace!.name ?? "",
+                                        address: pickedPlace!.title ?? "",
+                                        latitude: pickedPlace!.coordinate.latitude,
+                                        longitude: pickedPlace!.coordinate.longitude)
+                            : nil
+                    )
+                ) { success in
+                    if success {
+                        // 책갈피 등록 성공
+                    } else {
+                        print("책갈피 등록 실패")
+                    }
+                }
             }
+            
         case RecordType.memo.rawValue:
             if isForEditing {
                 // TODO: 메모 PATCH API 호출하기
@@ -249,6 +270,49 @@ class EditAllRecordViewModel: ObservableObject {
                 return false
             }
         } else { return false }
+    }
+    
+    /// 위치 객체 만들기
+    func getSelectedPlaceInfo() -> PlaceInfo? {
+        if let placemark = self.pickedPlace {
+            return PlaceInfo(placeName: placemark.name ?? "",
+                             address: placemark.title ?? "",
+                             latitude: placemark.coordinate.latitude,
+                             longitude: placemark.coordinate.longitude)
+        } else { return nil }
+    }
+}
+
+// MARK: Networking
+extension EditAllRecordViewModel {
+    /// 새로운 책갈피 등록 API
+    func registerBookmark(isbn: String, request: PostNewBookmarkRequest, completion: @escaping (Bool) -> (Void)) {
+        EditAllRecordAPI.shared.postNewBookmark(
+            isbn: self.book.isbn,
+            request: PostNewBookmarkRequest(date: DateRange.dateToString(date: selectedDate),
+                                            markPage: Int(self.bookMarkPage) ?? 0,
+                                            mainLocation: getSelectedPlaceInfo())) { response in
+            switch response {
+            case .success(let data):
+                print("새로운 책갈피 등록 성공 \(data)")
+                completion(true)
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
     }
 }
 

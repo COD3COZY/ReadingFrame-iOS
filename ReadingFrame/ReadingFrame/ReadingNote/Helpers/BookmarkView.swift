@@ -18,7 +18,7 @@ struct BookmarkView: View {
                 .font(.system(size: 24))
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("\(DateRange().dateToString(date: bookmark.date))")
+                Text("\(DateRange.dateToString(date: bookmark.date))")
                     .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundStyle(.black0)
                 

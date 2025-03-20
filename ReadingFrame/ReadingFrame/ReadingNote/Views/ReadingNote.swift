@@ -703,7 +703,7 @@ extension ReadingNote {
                     
                     VStack(alignment: .leading, spacing: 0) {
                         // MARK: 최초 리뷰 등록 날짜
-                        Text(DateRange().dateToString(date: vm.book?.firstReviewDate ?? Date(), style: "yy.MM.dd"))
+                        Text(DateRange.dateToString(date: vm.book?.firstReviewDate ?? Date(), style: "yy.MM.dd"))
                             .font(.footnote)
                             .foregroundStyle(.greyText)
                         
@@ -1117,18 +1117,6 @@ extension ReadingNote {
         case .audioBook:
             return "오디오북"
         }
-    }
-    
-    /// 버튼에 들어갈 날짜 정보
-    func dateToString(date: Date) -> String {
-        // DateFormatter 지정
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy.MM.dd."
-        
-        // Date -> String
-        let dateFormat = dateFormatter.string(from: date)
-        
-        return dateFormat
     }
 }
 

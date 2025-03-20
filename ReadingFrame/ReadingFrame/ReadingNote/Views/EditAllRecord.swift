@@ -493,6 +493,7 @@ extension EditAllRecord {
             isbn: "1234567"
         ),
         isSheetAppear: .constant(false),
-        isPickerAppear: true
+        selectedTab: RecordType.bookmark.rawValue,
+        isPickerAppear: false
     )
 }

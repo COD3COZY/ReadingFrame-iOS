@@ -65,7 +65,8 @@ final class MainPageViewModel: ObservableObject {
                                 readPage: list.readPage ?? 0,
                                 isHidden: false,
                                 isMine: list.isMine ?? false,
-                                isWriteReview: list.isWriteReview ?? false
+                                isWriteReview: list.isWriteReview ?? false,
+                                bookType: BookType(rawValue: list.bookType ?? -1)
                             )
                         }
                         

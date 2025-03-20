@@ -9,7 +9,7 @@ import Foundation
 
 /// 모든 화면에서 사용하는 날짜 관련 파일
 
-public struct DateRange {
+struct DateRange {
     
     /// 날짜 범위 반환 함수
     public func dateRange(date: Date) -> ClosedRange<Date> {
@@ -20,7 +20,7 @@ public struct DateRange {
     }
     
     /// 날짜 스타일 반환 함수(date -> string)
-    public func dateToString(date: Date = Date(), style: String = "yyyy.MM.dd") -> String {
+    static func dateToString(date: Date = Date(), style: String = "yyyy.MM.dd") -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = style
         

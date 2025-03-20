@@ -17,7 +17,16 @@ struct HomeBookModel {
     var readingPercent: Int?
     var totalPage: Int?
     var readPage: Int?
-    var isHidden: Bool? // 홈 화면에서 숨기기 여부(O: 숨김, X: 안 숨김)
-    var isMine: Bool? // 소장 여부
-    var isWriteReview: Bool? // 리뷰 작성 여부
+    
+    /// 홈 화면에서 숨기기 여부(O: 숨김, X: 안 숨김)
+    var isHidden: Bool?
+    
+    /// 소장 여부
+    var isMine: Bool?
+    
+    /// 리뷰 작성 여부
+    var isWriteReview: Bool?
+    
+    /// 책의 종류
+    var bookType: BookType?
 }

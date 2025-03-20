@@ -38,22 +38,22 @@ class LoginAPI: BaseAPI {
     
     /// 애플 로그인 API
     func loginApple(request: AppleLoginRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
-    AFManager.request(LoginService.loginApple(request), interceptor: MyRequestInterceptor()).responseData { (response) in
-        switch response.result {
-        case .success:
-            guard let statusCode = response.response?.statusCode
-            else {
-                return
+        AFManager.request(LoginService.loginApple(request), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, SocialLoginResponse.self))
+                
+            case .failure(let err):
+                completion(.networkFail(err.localizedDescription))
             }
-            guard let data = response.data
-            else {
-                return
-            }
-            completion(self.judgeData(by: statusCode, data, SocialLoginResponse.self))
-            
-        case .failure(let err):
-            completion(.networkFail(err.localizedDescription))
         }
     }
-}
 }

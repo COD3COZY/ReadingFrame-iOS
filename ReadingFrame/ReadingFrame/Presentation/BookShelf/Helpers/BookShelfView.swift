@@ -10,9 +10,6 @@ import SwiftUI
 /// 책 페이지 따라서 책등이랑 나무판만 있는 서가 UI
 struct BookShelfView: View {
     // MARK: - Properties
-
-    // TODO: 환경설정에서 가져와야 함. 아마도 UserDefaults에 저장시켜두고 가져와서 사용할 것 같음
-    // 참고용ex. let appleIdentifier = UserDefaults.standard.string(forKey: "appleUID")
     /// 책장 색상
     let shelfColor: ThemeColor
     
@@ -57,30 +54,38 @@ struct BookShelfView: View {
                 }
                 
                 // MARK: 책들 UI only
-                WrapLayout(alignment: .bottom, horizontalSpacing: 0, verticalSpacing: 30, isForBookshelf: true) {
-                    // 책 한 권 한 권 만들어주는 반복문
-                    ForEach(Array(pageWidths.enumerated()), id: \.offset) { index, width in
-                        VStack(spacing: 0) {
-                            // 책 한 권용 사각형 모양
-                            RoundedRectangle(cornerRadius: 2)
-                                .frame(
-                                    width: width, // 페이지수 따라서 달라질 두께
-                                    height: pageHeights.randomElement() ?? 100
-                                )
-                                .foregroundColor(shelfColor.color)
+                if totalPages.count == 0 {
+                    // 서가에 책이 없을 때
+                    Text("책을 추가하면 서가에 책이 꽂혀요📚")
+                        .frame(maxWidth: .infinity, maxHeight: 110, alignment: .center)
+                        .opacity(0.5)
+                } else {
+                    // 서가에 책이 있을 때
+                    WrapLayout(alignment: .bottom, horizontalSpacing: 0, verticalSpacing: 30, isForBookshelf: true) {
+                        // 책 한 권 한 권 만들어주는 반복문
+                        ForEach(Array(pageWidths.enumerated()), id: \.offset) { index, width in
+                            VStack(spacing: 0) {
+                                // 책 한 권용 사각형 모양
+                                RoundedRectangle(cornerRadius: 2)
+                                    .frame(
+                                        width: width, // 페이지수 따라서 달라질 두께
+                                        height: pageHeights.randomElement() ?? 100
+                                    )
+                                    .foregroundColor(shelfColor.color)
                                 // 구분되도록 투명도 번갈아가면서 연하게-진하게
-                                .opacity(index % 2 == 0 ? Double.random(in: 0.3...0.4) : Double.random(in: 0.5...1.0))
-                            
-                            
+                                    .opacity(index % 2 == 0 ? Double.random(in: 0.3...0.4) : Double.random(in: 0.5...1.0))
+                                
+                                
+                            }
                         }
                     }
-                }
-                .background(GeometryReader { geometry in
-                    Color.clear
-                        .preference(key: HeightPreferenceKey.self, value: geometry.size.height)
-                })
-                .onPreferenceChange(HeightPreferenceKey.self) { height in
-                    self.contentHeight = height
+                    .background(GeometryReader { geometry in
+                        Color.clear
+                            .preference(key: HeightPreferenceKey.self, value: geometry.size.height)
+                    })
+                    .onPreferenceChange(HeightPreferenceKey.self) { height in
+                        self.contentHeight = height
+                    }
                 }
             }
         }

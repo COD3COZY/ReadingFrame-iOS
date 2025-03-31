@@ -6,25 +6,35 @@
 //
 
 import Foundation
-import Observation
 
-@Observable
-class BookInfoModel {
-    /// 도서정보에서 조회할 책
-    var book: InitialBook
+/// 도서정보 뷰에서 보여줄 정보 모델
+/// - 도서정보 초기조회 API에서 readingStatus 제외한 
+struct BookInfoModel {
+    /// isbn
+    let isbn: String
+    /// 책 표지 이미지 URL
+    let cover: String
+    /// 책 제목
+    let title: String
+    /// 저자
+    let author: String
+    /// 카테고리
+    let categoryName: CategoryName
+    /// 출판사
+    let publisher: String
+    /// 발행일
+    let publicationDate: String
+    /// 전체 페이지
+    let totalPage: Int
+    /// 설명 텍스트
+    let description: String
+    
+    /// 한줄 평 전체 개수
+    let commentCount: Int
     
     /// 선택리뷰 top 10
-    var selectReviews: [selectReviewCode]
+    let selectedReviewList: [selectReviewCode]?
     
     /// 한줄평 최신순 5개
-    var comments: [Comment]
-    
-    /// 더미 기본값
-    init(book: InitialBook = InitialBook(),
-         selectReviews: [selectReviewCode] = [.informative, .insightful, .difficult, .comforting, .environmentalIssues, .creative],
-         comments: [Comment] = [Comment(), Comment(), Comment(), Comment(), Comment()]) {
-        self.book = book
-        self.selectReviews = selectReviews
-        self.comments = comments
-    }
+    let commentList: [CompactComment]?
 }

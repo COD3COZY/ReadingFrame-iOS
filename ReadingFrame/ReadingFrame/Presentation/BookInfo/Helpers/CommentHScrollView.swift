@@ -10,13 +10,13 @@ import SwiftUI
 /// 한줄평 박스 가로 스크롤로 보여주는 뷰
 struct CommentHScrollView: View {
     /// 받아올 한줄평들
-    var comments: [Comment]
+    var comments: [CompactComment]
     
     var body: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 10) {
                 // 한줄평 순서대로 보여주기
-                ForEach(comments, id: \.self) { comment in
+                ForEach(comments, id: \.userNickname) { comment in
                     singleCommentBox(comment: comment)
                 }
             }
@@ -27,39 +27,39 @@ struct CommentHScrollView: View {
         .scrollIndicators(.hidden)
 
     }
-    
-    
-    struct singleCommentBox: View {
-        var comment: Comment
-        
-        var body: some View {
-            VStack(spacing: 6) {
-                Text(comment.nickname)
-                    .font(.footnote)
-                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                Text(comment.commentText)
-                    .font(.footnote)
-                    .lineLimit(2) // 최대 두 줄까지 표시
-                    .truncationMode(.tail) // 말줄임표 추가
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                Spacer()
-            }
-            .padding(16)
-            .frame(width: 300, height: 100)
-            .background(
-                RoundedRectangle(cornerRadius: 15)
-                    .foregroundStyle(Color.grey1)
-            )
-
-        }
-    }
 }
 
-#Preview {
-    CommentHScrollView(comments: [Comment(commentText: "첫번째 리뷰"),
-                                  Comment(commentText: "두번째 리뷰"),
-                                  Comment(commentText: "세번째 리뷰"),
-                                  Comment(commentText: "네번째 리뷰"),
-                                  Comment(commentText: "다섯번째 리뷰")])
+extension CommentHScrollView {
+    private func singleCommentBox(comment: CompactComment) -> some View {
+        VStack(spacing: 6) {
+            Text("\(comment.userNickname)(\(maskEmail(comment.userEmail)))")
+                .font(.footnote)
+                .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Text(comment.comment)
+                .font(.footnote)
+                .lineLimit(2) // 최대 두 줄까지 표시
+                .truncationMode(.tail) // 말줄임표 추가
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Spacer()
+        }
+        .padding(16)
+        .frame(width: 300, height: 100)
+        .background(
+            RoundedRectangle(cornerRadius: 15)
+                .foregroundStyle(Color.grey1)
+        )
+    }
+    
+    /// 이메일 주소로 개인정보 보호 아이디 만들기
+    private func maskEmail(_ email: String) -> String {
+        guard let atIndex = email.firstIndex(of: "@") else { return email } // '@' 위치 찾기
+        
+        let localPart = String(email[..<atIndex]) // '@' 앞부분만 추출
+        
+        let prefixPart = localPart.prefix(3) // 앞 3글자
+        let maskedPart = String(repeating: "*", count: max(0, localPart.count - 3)) // 나머지를 '*'로 변환
+        
+        return prefixPart + maskedPart
+    }
 }

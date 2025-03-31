@@ -1,0 +1,54 @@
+//
+//  BookInfoViewModel.swift
+//  ReadingFrame
+//
+//  Created by 석민솔 on 3/24/25.
+//
+
+import Foundation
+
+class BookInfoViewModel: ObservableObject {
+    // MARK: - Properties
+    /// 독서상태
+    @Published var readingStatus: ReadingStatus
+    
+    /// 독서상태 제외한 책정보
+    var bookInfo: BookInfoModel?
+    
+    /// 선택리뷰
+    var selectReviews: [selectReviewCode] {
+        return bookInfo?.selectedReviewList ?? []
+    }
+    
+    /// 한줄평덜
+    var comments: [CompactComment] {
+        return bookInfo?.commentList ?? []
+    }
+    
+    /// readingStatus값 따라서 독서노트 있는지 아닌지 알려주는 변수
+    ///
+    /// - 미등록, 읽고싶은 : 하트 버튼, 내서재 추가하기 조합
+    /// - 읽는중, 다읽음: 독서노트로 이동하기버튼이냐
+    var haveReadingNote: Bool {
+        switch readingStatus {
+        case .unregistered, .wantToRead:    // 독서노트 없음
+            return false
+        case .reading, .finishRead:         // 독서노트 있음
+            return true
+        }
+    }
+
+    
+    // MARK: - init
+    init(isbn: String) {
+        readingStatus = .unregistered
+        fetchBookInfoData(isbn: isbn)
+    }
+    
+    // MARK: - Methods
+    /// 도서정보 초기조회 API 호출
+    func fetchBookInfoData(isbn: String) {
+        // TODO: isbn을 이용해서 도서정보 초기조회 API 호출하기
+        self.bookInfo = BookInfoModel(isbn: isbn, cover: "이미지", title: "제목", author: "작가", categoryName: .art, publisher: "출판사", publicationDate: "25.5.2", totalPage: 130, description: "히가시노 게이고의 가장 경이로운 대표작", commentCount: 0, selectedReviewList: [], commentList: [])
+    }
+}

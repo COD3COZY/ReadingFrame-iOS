@@ -51,6 +51,7 @@ struct Search: View {
                 // 로딩 중
                 if viewModel.isLoading {
                     ProgressView()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 }
                 // 결과 출력
                 else {
@@ -66,40 +67,7 @@ struct Search: View {
                         }
                         // 결과가 있다면
                         else {
-                            ScrollView() {
-                                VStack(spacing: 0) {
-                                    HStack(spacing: 0) {
-                                        Text("도서 검색")
-                                            .font(.thirdTitle)
-                                            .foregroundStyle(.black0)
-                                            .padding(.leading, 4)
-                                        
-                                        Spacer()
-                                        
-                                        HStack(spacing: 1) {
-                                            Text("\(viewModel.bookCount)")
-                                                .fontDesign(.rounded)
-                                            Text("건")
-                                        }
-                                        .font(.headline)
-                                        .fontWeight(.regular)
-                                        .foregroundStyle(.greyText)
-                                    }
-                                    
-                                    ForEach(Array(viewModel.searchBooks.enumerated()), id: \.offset) { index, book in
-                                        SearchBookView(book: book, searchText: $searchText)
-                                        
-                                        Rectangle()
-                                            .frame(height: 1)
-                                            .foregroundStyle(.grey1)
-                                    }
-                                    .padding(.top, 20)
-                                }
-                                .frame(minHeight: geometry.size.height)
-                                .padding(.top, 30)
-                                .padding(.horizontal, 16)
-                            }
-                            .frame(width: geometry.size.width)
+                            searchResultList
                         }
                     }
                 }
@@ -109,6 +77,59 @@ struct Search: View {
         .frame(maxWidth: .infinity) // 화면 전체 스크롤 가능하도록 설정
         .navigationTitle("검색하기")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+// MARK: - View Components
+extension Search {
+    /// 검색 결과 책들 리스트로 나타내기
+    private var searchResultList: some View {
+        ScrollView() {
+            VStack(spacing: 0) {
+                HStack(spacing: 0) {
+                    Text("도서 검색")
+                        .font(.thirdTitle)
+                        .foregroundStyle(.black0)
+                        .padding(.leading, 4)
+                    
+                    Spacer()
+                    
+                    HStack(spacing: 1) {
+                        Text("\(viewModel.bookCount)")
+                            .fontDesign(.rounded)
+                        Text("건")
+                    }
+                    .font(.headline)
+                    .fontWeight(.regular)
+                    .foregroundStyle(.greyText)
+                }
+                
+                ForEach(Array(viewModel.searchBooks.enumerated()), id: \.offset) { index, book in
+                    navigationToEachBookInfo(book)
+                }
+                .padding(.top, 20)
+            }
+            .padding(.top, 30)
+            .padding(.horizontal, 16)
+        }
+    }
+    
+    /// 책정보 페이지로 넘어가는 네비게이션링크
+    private func navigationToEachBookInfo(_ book: SearchBookResponse) -> some View {
+        NavigationLink {
+            BookInfo(isbn: book.isbn)
+                .toolbarRole(.editor)
+        } label: {
+            VStack(spacing: 0) {
+                SearchBookView(book: book, searchText: $searchText)
+                    .padding(.vertical, 15)
+                
+                Rectangle()
+                    .frame(height: 1)
+                    .foregroundStyle(.grey1)
+            }
+        }
+
     }
 }
 

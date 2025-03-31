@@ -23,14 +23,15 @@ struct BookShelf: View {
     
     // MARK: - View
     var body: some View {
-            // 페이지 데이터가 있을 때
-            if vm.totalPages != nil {
-                bookshelfView
-            }
-            // 페이지 데이터가 없을 때 로딩불가 페이지 보여주기
-            else {
-                ProgressView()
-            }
+        // 페이지 데이터가 있을 때
+        if vm.totalPages != nil {
+            bookshelfView
+        }
+        // 페이지 데이터가 없을 때 로딩불가 페이지 보여주기
+        else {
+            ProgressView()
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        }
     }
 }
 

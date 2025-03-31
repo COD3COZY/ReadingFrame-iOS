@@ -52,7 +52,10 @@ struct APIConstants {
     static let bookCommonURL = "/book/"
     
     /// 홈화면 관련  API에서 사용되는 공통 URL
-    static let homeCommonURL = "/home/"    
+    static let homeCommonURL = "/home/"
+    
+    /// 책장 관련 API에서 사용되는 공통 URL
+    static let bookshelfCommonURL = "/bookshelf/"
 }
 
 /// 한글 인코딩

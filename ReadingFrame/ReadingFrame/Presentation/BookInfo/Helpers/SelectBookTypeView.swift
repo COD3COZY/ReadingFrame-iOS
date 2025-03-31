@@ -29,21 +29,24 @@ struct SelectBookTypeView: View {
                         .foregroundStyle(Color.white)
                         // 버튼 선택됐으면 검은색, 아니라면 회색으로 배경색 변경
                         .background(paperBookButtonEnabled ? .black0 : .grey2)
+                        .shadow(
+                            color: paperBookButtonEnabled ? .black.opacity(0.2) : .clear,
+                            radius: 2,
+                            x: 0, y: 0
+                        )
                         .frame(width: 64, height: 64, alignment: .center)
                         .cornerRadius(20)
                 }
                 .onTapGesture {
-                    // 종이책만 선택되도록 paperBookButtonEnabled만 true로 변경
-                    paperBookButtonEnabled = true
-                    eBookButtonEnabled = false
-                    audioBookButtonEnabled = false
-                    
-                    // 전달할 책유형 종이책으로 변경
-                    bookType = .paperbook
-                    
-                    // 버튼 상태 확인용(주석처리 가능)
-                    print("button1")
-                    print("paper: ",paperBookButtonEnabled, "ebook: ", eBookButtonEnabled, "audio: ", audioBookButtonEnabled )
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        // 종이책만 선택되도록 paperBookButtonEnabled만 true로 변경
+                        paperBookButtonEnabled = true
+                        eBookButtonEnabled = false
+                        audioBookButtonEnabled = false
+                        
+                        // 전달할 책유형 종이책으로 변경
+                        bookType = .paperbook
+                    }
                 }
                 
                 // 종이책 텍스트
@@ -63,21 +66,24 @@ struct SelectBookTypeView: View {
                         .foregroundStyle(Color.white)
                         // 버튼 선택됐으면 검은색, 아니라면 회색으로 배경색 변경
                         .background(eBookButtonEnabled ? .black0 : .grey2)
+                        .shadow(
+                            color: eBookButtonEnabled ? .black.opacity(0.2) : .clear,
+                            radius: 2,
+                            x: 0, y: 0
+                        )
                         .frame(width: 64, height: 64, alignment: .center)
                         .cornerRadius(20)
                 }
                 .onTapGesture {
-                    // 전자책만 선택되도록 eBookButtonEnabled만 true로 변경
-                    paperBookButtonEnabled = false
-                    eBookButtonEnabled = true
-                    audioBookButtonEnabled = false
-                    
-                    // 전달할 책유형 전자책으로 변경
-                    bookType = .eBook
-                    
-                    // 버튼 상태 확인용(주석처리 가능)
-                    print("button2")
-                    print("paper: ",paperBookButtonEnabled, "ebook: ", eBookButtonEnabled, "audio: ", audioBookButtonEnabled )
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        // 전자책만 선택되도록 eBookButtonEnabled만 true로 변경
+                        paperBookButtonEnabled = false
+                        eBookButtonEnabled = true
+                        audioBookButtonEnabled = false
+                        
+                        // 전달할 책유형 전자책으로 변경
+                        bookType = .eBook
+                    }
                 }
                 
                 // 전자책 텍스트
@@ -97,21 +103,24 @@ struct SelectBookTypeView: View {
                         .foregroundStyle(Color.white)
                         // 버튼 선택됐으면 검은색, 아니라면 회색으로 배경색 변경
                         .background(audioBookButtonEnabled ? .black0 : .grey2)
+                        .shadow(
+                            color: audioBookButtonEnabled ? .black.opacity(0.2) : .clear,
+                            radius: 2,
+                            x: 0, y: 0
+                        )
                         .frame(width: 64, height: 64, alignment: .center)
                         .cornerRadius(20)
                 }
                 .onTapGesture {
-                    // 전자책만 선택되도록 audioBookButtonEnabled만 true로 변경
-                    paperBookButtonEnabled = false
-                    eBookButtonEnabled = false
-                    audioBookButtonEnabled = true
-                    
-                    // 전달할 책유형 오디오북으로 변경
-                    bookType = .audioBook
-                    
-                    // 버튼 상태 확인용(주석처리 가능)
-                    print("button3")
-                    print("paper: ",paperBookButtonEnabled, "ebook: ", eBookButtonEnabled, "audio: ", audioBookButtonEnabled )
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        // 전자책만 선택되도록 audioBookButtonEnabled만 true로 변경
+                        paperBookButtonEnabled = false
+                        eBookButtonEnabled = false
+                        audioBookButtonEnabled = true
+                        
+                        // 전달할 책유형 오디오북으로 변경
+                        bookType = .audioBook
+                    }
                 }
                 
                 // 오디오북 텍스트

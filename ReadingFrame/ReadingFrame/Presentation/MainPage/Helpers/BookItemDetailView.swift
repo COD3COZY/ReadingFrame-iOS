@@ -100,9 +100,9 @@ struct BookItemDetailView: View {
                                 // MARK: 정보 버튼
                                 NavigationLink {
                                     // 책 정보 화면으로 이동
-//                                    BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
-//                                        .toolbarRole(.editor) // back 텍스트 표시X
-//                                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                                    BookInfo(isbn: self.bookIsbn)
+                                        .toolbarRole(.editor) // back 텍스트 표시X
+                                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                                 } label: {
                                     Label("정보", systemImage: "info.circle")
                                 }
@@ -167,9 +167,9 @@ struct BookItemDetailView: View {
                                 // MARK: 정보 버튼
                                 NavigationLink {
                                     // 책 정보 화면으로 이동
-//                                    BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
-//                                        .toolbarRole(.editor) // back 텍스트 표시X
-//                                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                                    BookInfo(isbn: self.bookIsbn)
+                                        .toolbarRole(.editor) // back 텍스트 표시X
+                                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                                 } label: {
                                     Label("정보", systemImage: "info.circle")
                                 }
@@ -226,9 +226,11 @@ struct BookItemDetailView: View {
                 }
                 // MARK: - 책 등록 sheet
                 .sheet(isPresented: $isRegisterSheetAppear) {
-//                    RegisterBook(book: book.book as! InitialBook,
-//                                 readingStatus: $sheetReadingStatus,
-//                                 isSheetAppear: $isRegisterSheetAppear)
+                    RegisterBook(
+                        isSheetAppear: $isRegisterSheetAppear,
+                        readingStatus: $sheetReadingStatus,
+                        isbn: self.bookIsbn
+                    )
                 }
                 // MARK: 다 읽음 버튼 클릭 시 나타나는 Alert
                 .alert(
@@ -307,33 +309,28 @@ struct BookItemDetailView: View {
                 .padding(.top, 16)
         }
         .padding(.top, 16)
-        .background(
-            // 책 아이템 클릭 시, 각 화면으로 이동하기
-//            NavigationLink("", destination: destinationView(book: book))
-//                .opacity(0)
-        )
     }
     
-    // 아이템 클릭 시 이동하는 화면 함수
-    @ViewBuilder
-    func destinationView(book: RegisteredBook) -> some View {
-        // 읽고 싶은 책이라면
-        if (readingStatus == .wantToRead) {
-            // 책 정보 화면으로 이동
-            BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
-                .toolbarRole(.editor) // back 텍스트 표시X
-                .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
-        }
-        // 읽는 중, 다 읽은 책이라면
-        else {
-            // TODO: 독서노트 화면으로 이동
-            ReadingNote(book: book)
-                .toolbarRole(.editor) // back 텍스트 표시X
-                .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
-        }
-    }
+//    // 아이템 클릭 시 이동하는 화면 함수
+//    @ViewBuilder
+//    func destinationView(book: RegisteredBook) -> some View {
+//        // 읽고 싶은 책이라면
+//        if (readingStatus == .wantToRead) {
+//            // 책 정보 화면으로 이동
+//            BookInfo(isbn: book.book.ISBN)
+//                .toolbarRole(.editor) // back 텍스트 표시X
+//                .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+//        }
+//        // 읽는 중, 다 읽은 책이라면
+//        else {
+//            // 독서노트 화면으로 이동
+//            ReadingNote(isbn: book.book.ISBN)
+//                .toolbarRole(.editor) // back 텍스트 표시X
+//                .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+//        }
+//    }
 }
 
-#Preview {
-    BookItemDetailView(viewModel: DetailBookViewModel(readingStatus: .reading), bookIndex: 0, bookIsbn: "", readingStatus: .reading)
-}
+//#Preview {
+//    BookItemDetailView(viewModel: DetailBookViewModel(readingStatus: .reading), bookIndex: 0, bookIsbn: "", readingStatus: .reading)
+//}

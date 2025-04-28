@@ -40,35 +40,36 @@ struct ReadingItemView: View {
             // MARK: 책 표지
             NavigationLink {
                 // 책 정보 화면으로 이동
-//                BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
-//                    .toolbarRole(.editor) // back 텍스트 표시X
-//                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                BookInfo(isbn: currentBookInfo!.isbn)
+                    .toolbarRole(.editor) // back 텍스트 표시X
+                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
             } label: {
-                LoadableBookImage(bookCover: viewModel.homeReadingBooks?[bookIndex].cover ?? "")
+                LoadableBookImage(bookCover: currentBookInfo?.cover ?? "")
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .frame(width: 144, height: 220)
                     .shadow(color: Color(white: 0, opacity: 0.2), radius: 18, x: 2, y: 2)
             }
             
             // MARK: 책 이름
-            Text("\(viewModel.homeReadingBooks?[bookIndex].title ?? "")")
+            Text("\(currentBookInfo?.title ?? "")")
                 .font(.headline)
                 .foregroundStyle(.black0)
                 .padding(.top, 20)
             
             // MARK: 저자
-            Text("\(viewModel.homeReadingBooks?[bookIndex].author ?? "")")
+            Text("\(currentBookInfo?.author ?? "")")
                 .font(.footnote)
                 .foregroundStyle(.greyText)
                 .padding(.top, 2)
             
             // MARK: 막대 그래프 및 퍼센트
             ReadingPercentBar(
-                readPage: viewModel.homeReadingBooks?[bookIndex].readPage ?? 0,
-                totalPage: viewModel.homeReadingBooks?[bookIndex].totalPage ?? 0,
-                readingPercent: viewModel.homeReadingBooks?[bookIndex].readingPercent ?? 0)
-                .padding(.horizontal, 45)
-                .frame(height: 55)
+                readPage: currentBookInfo?.readPage ?? 0,
+                totalPage: currentBookInfo?.totalPage ?? 0,
+                readingPercent: currentBookInfo?.readingPercent ?? 0
+            )
+            .padding(.horizontal, 45)
+            .frame(height: 55)
             
             HStack(spacing: 10) {
                 // MARK: 책갈피 버튼
@@ -81,9 +82,9 @@ struct ReadingItemView: View {
                 // MARK: 독서노트 버튼
                 NavigationLink {
                     // 독서노트 화면으로 이동
-//                    ReadingNote(book: book)
-//                        .toolbarRole(.editor) // back 텍스트 표시X
-//                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                    ReadingNote(isbn: currentBookInfo!.isbn)
+                        .toolbarRole(.editor) // back 텍스트 표시X
+                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                 } label: {
                     ReadingLabel(label: "독서노트", image: "magazine")
                 }
@@ -113,7 +114,7 @@ struct ReadingItemView: View {
                     
                     // MARK: 소장 버튼
                     Button {
-                        if let isMine = viewModel.homeReadingBooks?[bookIndex].isMine {
+                        if let isMine = currentBookInfo?.isMine {
                             // 이미 소장한 책인 경우
                             if (isMine) {
                                 isShowMineTrueAlert.toggle()
@@ -145,12 +146,12 @@ struct ReadingItemView: View {
                 Button("확인") {
                     // 독서 상태 변경 API 호출
                     viewModel.changeReadingStatus(
-                        isbn: viewModel.homeReadingBooks![bookIndex].isbn,
+                        isbn: currentBookInfo!.isbn,
                         request: ChangeReadingStatusRequest(readingStatus: 2)) { success in
-                        if success {
-                            viewModel.homeReadingBooks?[bookIndex].readingStatus = .finishRead
+                            if success {
+                                viewModel.homeReadingBooks?[bookIndex].readingStatus = .finishRead
+                            }
                         }
-                    }
                 }
                 
                 Button("취소", role: .cancel) { }
@@ -165,10 +166,10 @@ struct ReadingItemView: View {
                 Button("확인") {
                     // 읽고 있는 책 숨기기 & 꺼내기 API 호출
                     viewModel.hiddenReadBook(
-                        isbn: viewModel.homeReadingBooks![bookIndex].isbn,
+                        isbn: currentBookInfo!.isbn,
                         request: HiddenReadBookRequest(isHidden: true)) { success in
-                        viewModel.homeReadingBooks?[bookIndex].isHidden = true
-                    }
+                            viewModel.homeReadingBooks?[bookIndex].isHidden = true
+                        }
                 }
                 
                 Button("취소", role: .cancel) { }
@@ -190,7 +191,7 @@ struct ReadingItemView: View {
                 Button("확인") {
                     // 소장 여부 변경 API 호출
                     viewModel.changeIsMine(
-                        isbn: viewModel.homeReadingBooks![bookIndex].isbn,
+                        isbn: currentBookInfo!.isbn,
                         request: ChangeIsMineRequest(isMine: true)) { success in
                             if success {
                                 viewModel.homeReadingBooks?[bookIndex].isMine = true
@@ -203,7 +204,9 @@ struct ReadingItemView: View {
     }
 }
 
+// MARK: - View Components
 extension ReadingItemView {
+    /// 책갈피 등록 Sheet
     private var bookmarkRegisterSheet: some View {
         EditAllRecord(
             book: EditRecordBookModel(

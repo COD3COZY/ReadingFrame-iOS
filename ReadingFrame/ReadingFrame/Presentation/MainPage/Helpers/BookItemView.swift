@@ -38,15 +38,15 @@ struct BookItemView: View {
                     // 읽고 싶은 책이라면
                     if (bookReadingStatus == .wantToRead) {
                         // 책 정보 화면으로 이동
-    //                        BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
-    //                            .toolbarRole(.editor) // back 텍스트 표시X
-    //                            .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                        BookInfo(isbn: matchReadingStatus(readingStatus: bookReadingStatus)?.isbn ?? "")
+                            .toolbarRole(.editor) // back 텍스트 표시X
+                            .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                     }
                     // 다 읽은 책 이라면
                     else if (bookReadingStatus == .finishRead) {
                         // 독서 노트 화면으로 이동
-    //                        ReadingNote(book: book)
-    //                            .toolbarRole(.editor) // back 텍스트 표시X
+                        ReadingNote(isbn: matchReadingStatus(readingStatus: bookReadingStatus)?.isbn ?? "")
+                            .toolbarRole(.editor) // back 텍스트 표시X
                     }
                 } label: {
                     LoadableBookImage(bookCover: matchReadingStatus(readingStatus: bookReadingStatus)?.cover ?? "")
@@ -97,9 +97,9 @@ struct BookItemView: View {
                             // MARK: 정보 버튼
                             NavigationLink {
                                 // 책 정보 화면으로 이동
-//                                BookInfo(modelData: BookInfoModel(book: book.book as! InitialBook))
-//                                    .toolbarRole(.editor) // back 텍스트 표시X
-//                                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                                BookInfo(isbn: matchReadingStatus(readingStatus: bookReadingStatus)?.isbn ?? "")
+                                    .toolbarRole(.editor) // back 텍스트 표시X
+                                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
                             } label: {
                                 Label("정보", systemImage: "info.circle")
                             }
@@ -140,9 +140,13 @@ struct BookItemView: View {
                     // sheet modal 보여주기 위한 코드
                     .sheet(isPresented: $isRegisterSheetAppear) {
                         // Sheet 뷰
-//                        RegisterBook(book: book.book as! InitialBook,
-//                                     readingStatus: $sheetReadingStatus,
-//                                     isSheetAppear: $isRegisterSheetAppear)
+                        if let book = matchReadingStatus(readingStatus: bookReadingStatus) {
+                            RegisterBook(
+                                isSheetAppear: $isRegisterSheetAppear,
+                                readingStatus: $sheetReadingStatus,
+                                isbn: book.isbn
+                            )
+                        }
                     }
                     // MARK: 소장 버튼 클릭 시 나타나는 Alert(소장한 책인 경우)
                     .alert(

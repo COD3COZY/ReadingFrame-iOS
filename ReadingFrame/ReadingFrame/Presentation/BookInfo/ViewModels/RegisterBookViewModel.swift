@@ -26,7 +26,7 @@ class RegisterBookViewModel: ObservableObject {
     }
     
     // MARK: - init
-    init(isbn: String, bookInfo: RegisterBookInfoModel) {
+    init(isbn: String, bookInfo: RegisterBookInfoModel?) {
         self.registerBookData = .init(
             isbn: isbn,
             readingStatus: .reading,

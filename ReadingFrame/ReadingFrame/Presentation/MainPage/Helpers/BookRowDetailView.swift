@@ -71,6 +71,7 @@ struct BookRowDetailView: View {
                 .padding(.top, 10)
                 
                 // MARK: 책 리스트
+                // TODO: row 탭했을 때, 읽고싶은 책 ? BookInfo로 연결 : ReadingNote로 연결
                 // 읽고 있는 책이라면, 숨기지 않은 책 띄우기
                 if (readingStatus == .reading) {
                     ForEach(Array(viewModel.notHideBookList().enumerated()), id: \.offset) { index, book in

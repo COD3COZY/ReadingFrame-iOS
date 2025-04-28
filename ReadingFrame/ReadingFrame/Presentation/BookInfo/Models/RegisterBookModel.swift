@@ -17,7 +17,7 @@ struct RegisterBookModel {
     var isMine: Bool
     var startDate: Date
     var recentDate: Date
-    let bookInformation: RegisterBookInfoModel
+    let bookInformation: RegisterBookInfoModel?
 }
 
 /// 책등록 시 서버에 보내줄 책의 정보들

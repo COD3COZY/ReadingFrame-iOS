@@ -39,7 +39,7 @@ struct RegisterBook: View {
         isSheetAppear: Binding<Bool>,
         readingStatus: Binding<ReadingStatus>,
         isbn: String,
-        bookInfo: RegisterBookInfoModel
+        bookInfo: RegisterBookInfoModel? = nil
     ) {
         self._isSheetAppear = isSheetAppear
         self._readingStatus = readingStatus

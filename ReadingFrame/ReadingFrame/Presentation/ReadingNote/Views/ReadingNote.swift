@@ -11,10 +11,6 @@ import MapKit
 /// 독서노트 화면
 struct ReadingNote: View {
     // MARK: - Properties
-    /// 책 객체
-    // TODO: book 변수 페이지 연결 로직들 수정하고 삭제 필!
-    @Bindable var book: RegisteredBook
-    
     /// View Model
     @StateObject var vm: ReadingNoteViewModel
     
@@ -101,10 +97,8 @@ struct ReadingNote: View {
     }
     
     // MARK: - init
-    // TODO: 아규먼트에 isbn 받아서 만드는 방식으로 수정하기, 현재는 더미 isbn 넣어둔 상태!
-    init(book: RegisteredBook) {
-        self.book = book
-        self._vm = StateObject(wrappedValue: ReadingNoteViewModel(isbn: "isbn"))
+    init(isbn: String) {
+        self._vm = StateObject(wrappedValue: ReadingNoteViewModel(isbn: isbn))
     }
     
     
@@ -1185,5 +1179,5 @@ extension ReadingNote {
 
 
 #Preview {
-    ReadingNote(book: RegisteredBook())
+    ReadingNote(isbn: "")
 }

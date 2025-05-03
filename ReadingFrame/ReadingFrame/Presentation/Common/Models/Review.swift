@@ -16,7 +16,7 @@ class Review: ObservableObject, Hashable {
     
     /// 선택리뷰들
     /// - 처음 생성 시에는 비어있음
-    @Published var selectReviews: [selectReviewCode] = []
+    @Published var selectReviews: [SelectReviewCode] = []
     
     /// 리뷰 남기는 일시
     @Published var reviewDate: Date = Date()
@@ -56,7 +56,7 @@ class Comment: Identifiable, Hashable {
     var commentDate: Date
     
     /// 내가 반응남긴 경우에 어떤 반응인지
-    var myReaction: commentReaction?
+    var myReaction: CommentReaction?
     
     // 한줄평에 달린 반응 개수
     var heartCount: Int
@@ -73,7 +73,7 @@ class Comment: Identifiable, Hashable {
     init(commentText: String = "저는 이 책을 읽기 위해 태어났습니다",
          nickname: String = "사용자",
          commentDate: Date = Date(),
-         myReaction: commentReaction? = nil,
+         myReaction: CommentReaction? = nil,
          heartCount: Int = 0,
          goodCount: Int = 0,
          wowCount: Int = 0,
@@ -130,7 +130,7 @@ class Comment: Identifiable, Hashable {
     }
     
     /// 반응 추가
-    func addReaction(reaction: commentReaction) {
+    func addReaction(reaction: CommentReaction) {
         switch reaction {
         case .heart:
             heartCount += 1
@@ -146,7 +146,7 @@ class Comment: Identifiable, Hashable {
     }
     
     /// 반응 제거
-    func removeReaction(reaction: commentReaction) {
+    func removeReaction(reaction: CommentReaction) {
         switch reaction {
         case .heart:
             heartCount -= 1
@@ -165,7 +165,7 @@ class Comment: Identifiable, Hashable {
 
 // MARK: - 관련 열거형
 /// 한줄평 반응
-enum commentReaction: Int {
+enum CommentReaction: Int {
     /// ❤️
     case heart
     /// 👍🏻
@@ -179,7 +179,7 @@ enum commentReaction: Int {
 }
 
 /// 선택리뷰 열거형. raw value는 정수입니다.
-enum selectReviewCode: Int, Codable {
+enum SelectReviewCode: Int, Codable {
     // MARK: 내용 및 구성
     /// 창의적이에요
     case creative

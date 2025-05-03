@@ -10,7 +10,7 @@ import SwiftUI
 /// 받아온 선택 리뷰들 줄바꿈해서 보여주는 뷰
 struct SelectReviewClusterView: View {
     /// 받아올 선택리뷰들
-    var selectReviews: [selectReviewCode]
+    var selectReviews: [SelectReviewCode]
     
     /// 리뷰 한단어
     var keyword: String? = nil
@@ -44,7 +44,7 @@ struct SelectReviewClusterView: View {
 
 /// 선택리뷰를 입력하면 토큰 모양 텍스트 박스 만들어주는 뷰
 @ViewBuilder
-func singleSelectReviewToken(_ selectReview: selectReviewCode) -> some View {
+func singleSelectReviewToken(_ selectReview: SelectReviewCode) -> some View {
     Text(selectReview.text)
         .font(.footnote)
         .padding(.vertical, 7)

@@ -16,7 +16,7 @@ struct EditReview_Select: View {
     @StateObject var review: Review = .init()
     
     /// 선택된 선택리뷰
-    var selected: [selectReviewCode] {
+    var selected: [SelectReviewCode] {
         review.selectReviews
     }
     
@@ -24,7 +24,7 @@ struct EditReview_Select: View {
     var selectReview_categorys: [String] = ["내용 및 구성", "감상", "기타"]
     
     /// 선택리뷰: 내용 및 구성, 감상, 기타
-    @State private var selectReviews: [[selectReviewCode]] = [
+    @State private var selectReviews: [[SelectReviewCode]] = [
         [.creative, .fastPaced, .realistic, .socialTheme, .philosophical, .historical, .environmentalIssues, .newPerspective, .specialized, .wellStructured, .convoluted], // 내용 및 구성
         [.touching, .leaveLingering, .comforting, .sad, .difficult, .easyToRead, .entertaining, .insightful, .informative, .immersive, .angering, .intense], // 감상
         [.trustworthyAuthor, .hiddenGem, .polarising, .wantToOwn, .recommend, .readMultiple, .goodForGift, .looksNice, .wantSequel] // 기타
@@ -270,7 +270,7 @@ extension EditReview_Select {
 extension EditReview_Select {
     // MARK: 토큰 뷰
     @ViewBuilder
-    func TokenView(_ token: selectReviewCode) -> some View {
+    func TokenView(_ token: SelectReviewCode) -> some View {
         HStack(spacing: 10) {
             Text(token.text)
                 .font(.callout)
@@ -289,7 +289,7 @@ extension EditReview_Select {
     // MARK: 카테고리별 토큰 선택 뷰
     /// 선택 리뷰 토큰들을 카테고리별로 세로로 나열하여 선택할 수 있는 뷰
     @ViewBuilder
-    func SelectReviewCategoryView(name: String, tokenSet: [selectReviewCode]) -> some View {
+    func SelectReviewCategoryView(name: String, tokenSet: [SelectReviewCode]) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             // 선택리뷰 카테고리 제목
             Text(name)

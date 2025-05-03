@@ -16,7 +16,7 @@ struct CommentReactionToken: View {
     @Bindable var comment: Comment
     
     /// 현재 버튼의 반응 유형
-    var reactionType: commentReaction
+    var reactionType: CommentReaction
     
     /// 현재 토큰의 반응 개수
     var reactionCount: Int

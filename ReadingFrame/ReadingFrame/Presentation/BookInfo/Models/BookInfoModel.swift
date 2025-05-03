@@ -33,7 +33,7 @@ struct BookInfoModel {
     let commentCount: Int
     
     /// 선택리뷰 top 10
-    let selectedReviewList: [selectReviewCode]?
+    let selectedReviewList: [SelectReviewCode]?
     
     /// 한줄평 최신순 5개
     let commentList: [CompactComment]?

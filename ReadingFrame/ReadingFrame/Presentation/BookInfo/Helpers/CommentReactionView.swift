@@ -18,7 +18,7 @@ struct CommentReactionView: View {
     
     // 반응 조회, 수정 버튼 보여줄 때 ForEach로 쓰려고 만들어둔 배열들
     /// 리액션 종류 배열
-    let reactionType: [commentReaction] = [.heart, .good, .wow, .sad, .angry]
+    let reactionType: [CommentReaction] = [.heart, .good, .wow, .sad, .angry]
     /// 리액션별 얼마나 눌렸는지 확인하는 배열
     var reactionCount: [Int] {
         return [comment.heartCount, comment.goodCount, comment.wowCount, comment.sadCount, comment.angryCount]

@@ -41,7 +41,7 @@ struct ReadingNoteModel: Codable {
     var commentReview: String?
 
     /// 선택리뷰 리스트
-    var selectReview: [selectReviewCode]?
+    var selectReview: [SelectReviewCode]?
 
     /// 소장여부
     var isMine: Bool

@@ -15,7 +15,7 @@ struct EmojiSelectPopover: View {
     @Bindable var comment: Comment
     
     /// 리액션 종류 배열
-    let reactionTypes: [commentReaction] = [.heart, .good, .wow, .sad, .angry]
+    let reactionTypes: [CommentReaction] = [.heart, .good, .wow, .sad, .angry]
     
     /// 리액션 종류별 이모지 순서대로
     let reactionEmoji: [String] = ["❤️", "👍🏻", "😲", "😢", "😤"]

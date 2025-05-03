@@ -52,7 +52,7 @@ class ReadingNoteViewModel: ObservableObject {
         // 더미 한줄평
         let dummycommentReview: String? = "베스트셀러 도서라고 언급이 많길래 한 번 읽어 봤는데 정말 재미있었습니다. 왜 베스트셀러인지 알 것 같았어요. 한 번쯤 꼭 보시길 추천합니다!"
         // 더미 선택리뷰
-        let dummyselectReview: [selectReviewCode]? = [.comforting, .easyToRead]
+        let dummyselectReview: [SelectReviewCode]? = [.comforting, .easyToRead]
         
         // 더미 책갈피
         let dummyBookmark: [Bookmark]? = [

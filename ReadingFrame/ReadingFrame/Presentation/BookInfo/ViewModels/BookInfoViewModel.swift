@@ -13,10 +13,10 @@ class BookInfoViewModel: ObservableObject {
     @Published var readingStatus: ReadingStatus
     
     /// 독서상태 제외한 책정보
-    var bookInfo: BookInfoModel?
+    @Published var bookInfo: BookInfoModel?
     
     /// 선택리뷰
-    var selectReviews: [selectReviewCode] {
+    var selectReviews: [SelectReviewCode] {
         return bookInfo?.selectedReviewList ?? []
     }
     
@@ -42,13 +42,42 @@ class BookInfoViewModel: ObservableObject {
     // MARK: - init
     init(isbn: String) {
         readingStatus = .unregistered
-        fetchBookInfoData(isbn: isbn)
+        fetchBookInfoData(isbn: isbn) { isSuccess in
+            if !isSuccess {
+                print("도서정보 조회 실패")
+            }
+        }
     }
     
     // MARK: - Methods
     /// 도서정보 초기조회 API 호출
-    func fetchBookInfoData(isbn: String) {
+    func fetchBookInfoData(isbn: String, completion: @escaping (Bool) -> (Void)) {
         // TODO: isbn을 이용해서 도서정보 초기조회 API 호출하기
-        self.bookInfo = BookInfoModel(isbn: isbn, cover: "이미지", title: "제목", author: "작가", categoryName: .art, publisher: "출판사", publicationDate: "25.5.2", totalPage: 130, description: "히가시노 게이고의 가장 경이로운 대표작", commentCount: 0, selectedReviewList: [], commentList: [])
+//        self.bookInfo = BookInfoModel(isbn: isbn, cover: "이미지", title: "제목", author: "작가", categoryName: .art, publisher: "출판사", publicationDate: "25.5.2", totalPage: 130, description: "히가시노 게이고의 가장 경이로운 대표작", commentCount: 0, selectedReviewList: [], commentList: [])
+        BookInfoAPI.shared.getBookInfo(isbn: isbn) { response in
+            switch response {
+            case .success(let data):
+                if let data = data as? BookInfoResponse {
+                    self.bookInfo = data.toEntity(isbn: isbn)
+                }
+                completion(true)
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
+
     }
 }

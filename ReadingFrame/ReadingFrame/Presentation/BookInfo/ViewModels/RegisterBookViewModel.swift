@@ -42,6 +42,6 @@ class RegisterBookViewModel: ObservableObject {
     // MARK: - Methods
     /// 책등록 API 호출
     func registerBook() {
-        
+        // TODO: 책등록 API 호출
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CompactComment {
+struct CompactComment: Codable {
     let userEmail: String
     let userNickname: String
     let comment: String

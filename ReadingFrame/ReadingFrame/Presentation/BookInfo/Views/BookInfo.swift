@@ -14,6 +14,8 @@ struct BookInfo: View {
     
     /// RegisterBook modal 띄워줄 변수
     @State var isRegisterSheetAppear: Bool = false
+    
+    // MARK: - init
     init(isbn: String) {
         _vm = StateObject(wrappedValue: BookInfoViewModel(isbn: isbn))
     }

@@ -240,7 +240,13 @@ struct BookItemDetailView: View {
                     Button("확인") {
                         if let index = viewModel.readingBooks.firstIndex(where: { $0.isbn == bookIsbn }) {
                             // 독서 상태 변경 API 호출
-                            viewModel.changeReadingStatus(isbn: viewModel.readingBooks[index].isbn, request: ChangeReadingStatusRequest(readingStatus: 2)) { success in
+                            viewModel.changeReadingStatus(
+                                isbn: viewModel.readingBooks[index].isbn,
+                                request: ChangeReadingStatusRequest(
+                                    readingStatus: ReadingStatus.finishRead.rawValue,
+                                    uuid: UUID().uuidString
+                                )
+                            ) { success in
                                 if success {
                                     viewModel.readingBooks[index].readingStatus = .finishRead
                                 }

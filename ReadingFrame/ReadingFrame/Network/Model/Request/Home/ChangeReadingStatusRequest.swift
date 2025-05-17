@@ -10,4 +10,5 @@ import Foundation
 /// 독서 상태 변경 Request 모델
 struct ChangeReadingStatusRequest: Encodable {
     let readingStatus: Int
+    let uuid: String?
 }

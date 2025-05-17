@@ -266,13 +266,13 @@ extension BookInfo {
         Button {
             // 미등록 -> 읽고싶은 책으로
             if vm.readingStatus != .wantToRead {
-                // TODO: 읽고싶은 책 등록 API 호출하고 성공하면 아래 코드 반영해주기(vm에서 반영해도 됨)
-                vm.readingStatus = .wantToRead
+                // 읽고싶은 책 등록 API 호출
+                vm.postWantToRead()
             }
             // 읽고싶은 책 -> 미등록으로
             else {
-                // TODO: 독서상태 변경 API (미등록으로 변경) 호출하고 성공하면 아래 코드 반영하기(vm에서 반영해도 됨)
-                vm.readingStatus = .unregistered
+                // 독서상태 미등록으로 변경하는 API 호출
+                vm.cancelWantToRead()
             }
         } label: {
             // 미등록일 때 빈 검은색 테두리 하트

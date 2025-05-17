@@ -14,6 +14,10 @@ enum BookInfoService {
     case getBookInfo(String)
     /// 책등록 API
     case postRegisterBook(String, RegisterBookRequest)
+    /// 읽고싶은 책 등록 API
+    case postWantToRead(String, WantToReadRegisterRequest)
+    /// 읽고싶은 책 취소 API
+    case cancelWantToRead(String, ChangeReadingStatusRequest)
 }
 
 extension BookInfoService: TargetType {
@@ -23,6 +27,10 @@ extension BookInfoService: TargetType {
             return .get
         case .postRegisterBook:
             return .post
+        case .postWantToRead:
+            return .post
+        case .cancelWantToRead:
+            return .patch
         }
     }
     
@@ -31,6 +39,10 @@ extension BookInfoService: TargetType {
         case .getBookInfo:
             return APIConstants.bookCommonURL
         case .postRegisterBook:
+            return APIConstants.bookCommonURL
+        case .postWantToRead:
+            return APIConstants.bookCommonURL
+        case .cancelWantToRead:
             return APIConstants.bookCommonURL
         }
     }
@@ -41,6 +53,10 @@ extension BookInfoService: TargetType {
             return .path(isbn + "/info")
         case .postRegisterBook(let isbn, let request):
             return .pathBody(isbn, body: request)
+        case .postWantToRead(let isbn, let request):
+            return .pathBody(isbn + "/want-to-read", body: request)
+        case .cancelWantToRead(let isbn, let request):
+            return .pathBody(isbn + "/reading-status", body: request)
         }
     }
 }

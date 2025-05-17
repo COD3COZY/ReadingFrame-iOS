@@ -147,7 +147,11 @@ struct ReadingItemView: View {
                     // 독서 상태 변경 API 호출
                     viewModel.changeReadingStatus(
                         isbn: currentBookInfo!.isbn,
-                        request: ChangeReadingStatusRequest(readingStatus: 2)) { success in
+                        request: ChangeReadingStatusRequest(
+                            readingStatus: ReadingStatus.finishRead.rawValue,
+                            uuid: UUID().uuidString
+                        )
+                    ) { success in
                             if success {
                                 viewModel.homeReadingBooks?[bookIndex].readingStatus = .finishRead
                             }

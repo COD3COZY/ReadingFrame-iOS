@@ -58,6 +58,7 @@
 		C5529F1B2BBD7AB300C3E614 /* EnterProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5529F1A2BBD7AB300C3E614 /* EnterProfile.swift */; };
 		C55AB2472D36B76D0036E081 /* ReviewNavigationDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55AB2462D36B76D0036E081 /* ReviewNavigationDestination.swift */; };
 		C55AB2492D4FD9410036E081 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55AB2482D4FD93B0036E081 /* Place.swift */; };
+		C55F88FD2DD89E6300F21E0B /* WantToReadRegisterRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55F88FC2DD89E6300F21E0B /* WantToReadRegisterRequest.swift */; };
 		C563455A2D18563600531ADC /* TabReadingNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56345592D18563600531ADC /* TabReadingNoteViewModel.swift */; };
 		C563455C2D193CF400531ADC /* EditAllRecordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C563455B2D193CF400531ADC /* EditAllRecordViewModel.swift */; };
 		C563455E2D19513C00531ADC /* EditRecordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C563455D2D19513C00531ADC /* EditRecordModel.swift */; };
@@ -249,6 +250,7 @@
 		C5529F1A2BBD7AB300C3E614 /* EnterProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterProfile.swift; sourceTree = "<group>"; };
 		C55AB2462D36B76D0036E081 /* ReviewNavigationDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewNavigationDestination.swift; sourceTree = "<group>"; };
 		C55AB2482D4FD93B0036E081 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
+		C55F88FC2DD89E6300F21E0B /* WantToReadRegisterRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WantToReadRegisterRequest.swift; sourceTree = "<group>"; };
 		C56345592D18563600531ADC /* TabReadingNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabReadingNoteViewModel.swift; sourceTree = "<group>"; };
 		C563455B2D193CF400531ADC /* EditAllRecordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAllRecordViewModel.swift; sourceTree = "<group>"; };
 		C563455D2D19513C00531ADC /* EditRecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecordModel.swift; sourceTree = "<group>"; };
@@ -907,6 +909,7 @@
 			isa = PBXGroup;
 			children = (
 				C5A6BB252DD85654008E9902 /* RegisterBookRequest.swift */,
+				C55F88FC2DD89E6300F21E0B /* WantToReadRegisterRequest.swift */,
 			);
 			path = BookInfo;
 			sourceTree = "<group>";
@@ -1451,6 +1454,7 @@
 				C5288E872CABEAC400865527 /* KeywordTextField.swift in Sources */,
 				C5288E882CABEAC400865527 /* EditReview_CheckReviews.swift in Sources */,
 				C51BF6A92DC664AA00E661FE /* BookInfoAPI.swift in Sources */,
+				C55F88FD2DD89E6300F21E0B /* WantToReadRegisterRequest.swift in Sources */,
 				C5288E892CABEAC400865527 /* EditReview_Comment.swift in Sources */,
 				C5288E8A2CABEAC400865527 /* EditReview_Keyword.swift in Sources */,
 				C5288E8B2CABEAC400865527 /* EditReview_Select.swift in Sources */,

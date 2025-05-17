@@ -55,4 +55,46 @@ class BookInfoAPI: BaseAPI {
             }
         }
     }
+    
+    /// 읽고싶은 책 등록
+    func postWantToRead(isbn: String, request: WantToReadRegisterRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(BookInfoService.postWantToRead(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, String.self))
+                
+            case .failure(let err):
+                completion(.networkFail(err.localizedDescription))
+            }
+        }
+    }
+    
+    /// 읽고싶은 책 취소
+    func cancelWantToRead(isbn: String, request: ChangeReadingStatusRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(BookInfoService.cancelWantToRead(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, String.self))
+                
+            case .failure(let err):
+                completion(.networkFail(err.localizedDescription))
+            }
+        }
+    }
 }

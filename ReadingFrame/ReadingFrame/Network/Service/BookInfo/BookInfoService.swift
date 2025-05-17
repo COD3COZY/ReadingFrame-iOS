@@ -12,6 +12,8 @@ import Alamofire
 enum BookInfoService {
     /// 도서정보 초기조회 API
     case getBookInfo(String)
+    /// 책등록 API
+    case postRegisterBook(String, RegisterBookRequest)
 }
 
 extension BookInfoService: TargetType {
@@ -19,12 +21,16 @@ extension BookInfoService: TargetType {
         switch self {
         case .getBookInfo:
             return .get
+        case .postRegisterBook:
+            return .post
         }
     }
     
     var endPoint: String {
         switch self {
         case .getBookInfo:
+            return APIConstants.bookCommonURL
+        case .postRegisterBook:
             return APIConstants.bookCommonURL
         }
     }
@@ -33,6 +39,8 @@ extension BookInfoService: TargetType {
         switch self {
         case .getBookInfo(let isbn):
             return .path(isbn + "/info")
+        case .postRegisterBook(let isbn, let request):
+            return .pathBody(isbn, body: request)
         }
     }
 }

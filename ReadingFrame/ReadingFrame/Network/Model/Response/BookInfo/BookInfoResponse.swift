@@ -34,7 +34,7 @@ extension BookInfoResponse {
             author: self.author,
             categoryName: CategoryName(rawValue: self.categoryName) ?? .etc,
             publisher: self.publisher,
-            publicationDate: self.publicationDate,
+            publicationDate: convertDateFormat(self.publicationDate)!,
             totalPage: self.totalPage,
             description: self.description,
             commentCount: self.commentCount,
@@ -57,5 +57,20 @@ extension BookInfoResponse {
             return selectReviewCodeList
         }
         else { return nil }
+    }
+    
+    /// "yyyy-MM-dd" 형식의 날짜를 "yyyy.MM.dd" 형식으로 바꿔주기
+    func convertDateFormat(_ dateString: String) -> String? {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd"
+
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "yyyy.MM.dd"
+
+        if let date = inputFormatter.date(from: dateString) {
+            return outputFormatter.string(from: date)
+        } else {
+            return nil  // 날짜 파싱 실패
+        }
     }
 }

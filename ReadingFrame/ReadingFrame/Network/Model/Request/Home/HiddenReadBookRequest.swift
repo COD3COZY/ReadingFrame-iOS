@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// 읽고 있는 책 숨기기&꺼내기 Response 모델
+/// 읽고 있는 책 숨기기&꺼내기 Request 모델
 struct HiddenReadBookRequest: Encodable {
     let isHidden: Bool
 }

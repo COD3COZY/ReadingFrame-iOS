@@ -29,7 +29,7 @@ struct MemoView: View {
                 Spacer()
                 
                 // MARK: 메모한 날짜
-                Text("\(DateRange.dateToString(date: memo.date))")
+                Text("\(DateUtils.dateToString(date: memo.date))")
                     .font(.system(size: 12, weight: .regular, design: .rounded))
                     .foregroundStyle(.greyText)
             }

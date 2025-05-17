@@ -1,5 +1,5 @@
 //
-//  DateRange.swift
+//  DateUtils.swift
 //  ReadingFrame
 //
 //  Created by 이윤지 on 2/28/24.
@@ -9,7 +9,7 @@ import Foundation
 
 /// 모든 화면에서 사용하는 날짜 관련 파일
 
-struct DateRange {
+struct DateUtils {
     
     /// 날짜 범위 반환 함수
     public func dateRange(date: Date) -> ClosedRange<Date> {

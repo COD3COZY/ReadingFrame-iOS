@@ -31,7 +31,7 @@ struct EditBookmark: View {
     
     /// 날짜 범위
     var dateRange: ClosedRange<Date> {
-        DateRange().dateRange(date: date)
+        DateUtils().dateRange(date: date)
     }
     
     /// 사용자가 입력한 책갈피 페이지

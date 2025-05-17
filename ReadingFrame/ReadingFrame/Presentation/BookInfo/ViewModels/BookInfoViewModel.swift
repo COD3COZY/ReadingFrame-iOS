@@ -41,7 +41,7 @@ class BookInfoViewModel: ObservableObject {
     
     // MARK: - init
     init(isbn: String) {
-        readingStatus = .unregistered
+        self.readingStatus = .unregistered
         fetchBookInfoData(isbn: isbn) { isSuccess in
             if !isSuccess {
                 print("도서정보 조회 실패")
@@ -52,13 +52,14 @@ class BookInfoViewModel: ObservableObject {
     // MARK: - Methods
     /// 도서정보 초기조회 API 호출
     func fetchBookInfoData(isbn: String, completion: @escaping (Bool) -> (Void)) {
-        // TODO: isbn을 이용해서 도서정보 초기조회 API 호출하기
 //        self.bookInfo = BookInfoModel(isbn: isbn, cover: "이미지", title: "제목", author: "작가", categoryName: .art, publisher: "출판사", publicationDate: "25.5.2", totalPage: 130, description: "히가시노 게이고의 가장 경이로운 대표작", commentCount: 0, selectedReviewList: [], commentList: [])
+        // isbn을 이용해서 도서정보 초기조회 API 호출하기
         BookInfoAPI.shared.getBookInfo(isbn: isbn) { response in
             switch response {
             case .success(let data):
                 if let data = data as? BookInfoResponse {
                     self.bookInfo = data.toEntity(isbn: isbn)
+                    self.readingStatus = ReadingStatus(rawValue: data.readingStatus) ?? .unregistered
                 }
                 completion(true)
             case .requestErr(let message):

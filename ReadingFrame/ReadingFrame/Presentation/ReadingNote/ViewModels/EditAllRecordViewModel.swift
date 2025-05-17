@@ -21,7 +21,7 @@ class EditAllRecordViewModel: ObservableObject {
     
     /// 날짜 범위
     var dateRange: ClosedRange<Date> {
-        DateRange().dateRange(date: selectedDate)
+        DateUtils().dateRange(date: selectedDate)
     }
     
     // MARK: 책갈피 관련
@@ -186,7 +186,7 @@ class EditAllRecordViewModel: ObservableObject {
                 registerBookmark(
                     isbn: self.book.isbn,
                     request: PostNewBookmarkRequest(
-                        date: DateRange.dateToString(date: selectedDate),
+                        date: DateUtils.dateToString(date: selectedDate),
                         markPage: Int(self.bookMarkPage) ?? 0,
                         mainLocation: pickedPlace != nil
                             ? PlaceInfo(placeName: pickedPlace!.name ?? "",
@@ -289,7 +289,7 @@ extension EditAllRecordViewModel {
     func registerBookmark(isbn: String, request: PostNewBookmarkRequest, completion: @escaping (Bool) -> (Void)) {
         EditAllRecordAPI.shared.postNewBookmark(
             isbn: self.book.isbn,
-            request: PostNewBookmarkRequest(date: DateRange.dateToString(date: selectedDate),
+            request: PostNewBookmarkRequest(date: DateUtils.dateToString(date: selectedDate),
                                             markPage: Int(self.bookMarkPage) ?? 0,
                                             mainLocation: getSelectedPlaceInfo())) { response in
             switch response {

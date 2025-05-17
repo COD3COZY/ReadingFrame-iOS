@@ -95,6 +95,7 @@ struct BookInfo: View {
                 }
                 // LazyVStack 패딩
                 .padding([.leading, .top, .trailing], 16)
+                .padding(.bottom, 50)
                 
                 
             }
@@ -238,7 +239,9 @@ extension BookInfo {
     private var bookInfoBottomBar: some View {
         HStack {
             // 독서노트 없을 때만: 읽고싶어요 하트 버튼
-            wantToReadHeartButton
+            if !vm.haveReadingNote {
+                wantToReadHeartButton
+            }
             
             // 내 서재에 추가하기 버튼
             addToMyBookButton

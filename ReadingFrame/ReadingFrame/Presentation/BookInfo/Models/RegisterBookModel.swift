@@ -21,7 +21,7 @@ struct RegisterBookModel {
 }
 
 /// 책등록 시 서버에 보내줄 책의 정보들
-struct RegisterBookInfoModel {
+struct RegisterBookInfoModel: Encodable {
     let cover: String
     let title: String
     let author: String

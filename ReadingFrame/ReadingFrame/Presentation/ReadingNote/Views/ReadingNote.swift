@@ -86,7 +86,7 @@ struct ReadingNote: View {
     
     /// 읽기 시작한 날 정할 수 있는 범위
     var startDateRange: ClosedRange<Date> {
-        DateRange().dateRange(date: vm.book?.startDate ?? Date())
+        DateUtils().dateRange(date: vm.book?.startDate ?? Date())
     }
     
     /// 다읽은 날 정할 수 있는 범위(읽기 시작한 날 ~ 현재)
@@ -697,7 +697,7 @@ extension ReadingNote {
                     
                     VStack(alignment: .leading, spacing: 0) {
                         // MARK: 최초 리뷰 등록 날짜
-                        Text(DateRange.dateToString(date: vm.book?.firstReviewDate ?? Date(), style: "yy.MM.dd"))
+                        Text(DateUtils.dateToString(date: vm.book?.firstReviewDate ?? Date(), style: "yy.MM.dd"))
                             .font(.footnote)
                             .foregroundStyle(.greyText)
                         

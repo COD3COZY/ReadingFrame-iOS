@@ -34,4 +34,25 @@ class BookInfoAPI: BaseAPI {
             }
         }
     }
+    
+    /// 책등록
+    func postRegisterBook(isbn: String, request: RegisterBookRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(BookInfoService.postRegisterBook(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, String.self))
+                
+            case .failure(let err):
+                completion(.networkFail(err.localizedDescription))
+            }
+        }
+    }
 }

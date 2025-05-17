@@ -99,14 +99,19 @@ struct RegisterBook: View {
             // 내 서재에 추가하기 버튼
             Button(action: {
                 // 책등록 API 호출
-                vm.registerBook()
+                vm.registerBook { isSuccess in
+                    if isSuccess {
+                        // TODO: 호출 결과 따라서 처리하기
+                        // modal 닫기
+                        isSheetAppear.toggle()
+                        
+                        // 등록을 확실히 시키겠다 알려주기
+                        isButtonPressed.toggle()
+                    } else {
+                        print("RegisterBook: 책등록 실패")
+                    }
+                }
                 
-                // TODO: 호출 결과 따라서 처리하기
-                // modal 닫기
-                isSheetAppear.toggle()
-                
-                // 등록을 확실히 시키겠다 알려주기
-                isButtonPressed.toggle()
             }, label: {
                 Text("내 서재에 추가하기")
                     .font(.headline)

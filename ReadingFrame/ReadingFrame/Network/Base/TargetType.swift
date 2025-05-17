@@ -69,8 +69,8 @@ extension TargetType {
             var urlRequest = try URLRequest(url: url, method: method)
             urlRequest.setValue(ContentType.json.rawValue, forHTTPHeaderField: HTTPHeaderField.contentType.rawValue)
             
-            let components = URLComponents(string: url.appendingPathComponent(endPoint.encodeURL()!).absoluteString)
-            urlRequest.url = components?.url
+//            let components = URLComponents(string: url.appendingPathComponent(endPoint.encodeURL()!).absoluteString)
+//            urlRequest.url = components?.url
             
             let bodyParams = body.toDictionary()
             urlRequest.httpBody = try JSONSerialization.data(withJSONObject: bodyParams, options: [])

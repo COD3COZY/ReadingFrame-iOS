@@ -12,7 +12,7 @@ struct BookInfoResponse: Codable {
     let cover: String
     let title: String
     let author: String
-    let categoryName: String
+    let categoryName: Int
     let readingStatus: Int
     let publisher: String
     let publicationDate: String
@@ -32,7 +32,7 @@ extension BookInfoResponse {
             cover: self.cover,
             title: self.title,
             author: self.author,
-            categoryName: CategoryName.toCategoryName(self.categoryName),
+            categoryName: CategoryName(rawValue: self.categoryName) ?? .etc,
             publisher: self.publisher,
             publicationDate: self.publicationDate,
             totalPage: self.totalPage,

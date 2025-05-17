@@ -379,9 +379,9 @@ enum CategoryName: Int, BookEnum, CaseIterable, Codable {
         }
     }
     
-    /// 카테코리 이름 문자열 값 받아서 enum으로 만들어주기
-    static func toCategoryName(_ categoryText: String) -> CategoryName {
-        return CategoryName.allCases.first(where: { $0.name == categoryText }) ?? .etc
-    }
+//    /// 카테코리 이름 문자열 값 받아서 enum으로 만들어주기
+//    static func toCategoryName(_ categoryText: String) -> CategoryName {
+//        return CategoryName.allCases.first(where: { $0.name == categoryText }) ?? .etc
+//    }
 
 }

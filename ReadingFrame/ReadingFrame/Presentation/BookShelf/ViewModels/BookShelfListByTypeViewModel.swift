@@ -40,12 +40,56 @@ class BookShelfListByTypeViewModel: ObservableObject {
     init(bookshelfSubtype: BookEnum, searchQuery: String = "") {
         self.bookshelfSubtype = bookshelfSubtype
         
+        // 정보 조회 API 호출
+        fetchBookshelfListData(type: bookshelfSubtype) { isSuccess in
+            if !isSuccess {
+                print("책장리스트 데이터 조회 실패")
+            }
+        }
         
         // combine 등록
         searchAsQueryChanges()
     }
     
     // MARK: - Methods
+    /// 책장 리스트용 조회 API 호출
+    func fetchBookshelfListData(type: BookEnum, completion: @escaping (Bool) -> (Void)) {
+        let bookshelfType: String = String(type.code)
+        
+        BookshelfAPI.shared.getBookshelfListByType(code: bookshelfType) { response in
+            switch response {
+            case .success(let data):
+                if let dtoData = data as? [BookshelfListResponse] {
+                    self.allBooks = dtoData.map { data in
+                        data.toEntity()
+                    }
+                    self.filteredBooks = self.allBooks
+                    completion(true)
+                }
+                else {
+                    print("데이터 처리과정 이상")
+                    completion(false)
+                }
+                
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
     /// 검색어 변하면 다시 검색시키기
     func searchAsQueryChanges() {
         $searchQuery

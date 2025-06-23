@@ -34,4 +34,24 @@ class BookshelfAPI: BaseAPI {
             }
         }
     }
+    
+    /// 책장 기본 조회
+    func getBookshelfListByType(code: String, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(BookshelfService.getDetailBookshelf(code), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, [BookshelfListResponse].self))
+            case .failure(let err):
+                completion(.networkFail(err.localizedDescription))
+            }
+        }
+    }
 }

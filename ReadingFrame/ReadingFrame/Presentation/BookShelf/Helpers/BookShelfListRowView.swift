@@ -47,9 +47,15 @@ struct BookShelfListRowView: View {
                     
                     // MARK: 진행률
                     // 읽고 있는 책일 때만 진행률 띄우기
-                    if let readingPercent = bookInfo.readingPercent, let readpage = bookInfo.readPage {
-                        ReadingPercentBar(readPage: readpage, totalPage: bookInfo.totalPage, readingPercent: readingPercent)
-                            .frame(height: 55)
+                    if let readingPercent = bookInfo.readingPercent,
+                       let readpage = bookInfo.readPage,
+                       let totalPage = bookInfo.totalPage {
+                        ReadingPercentBar(
+                            readPage: readpage,
+                            totalPage: totalPage,
+                            readingPercent: readingPercent
+                        )
+                        .frame(height: 55)
                     }
                 }
                 

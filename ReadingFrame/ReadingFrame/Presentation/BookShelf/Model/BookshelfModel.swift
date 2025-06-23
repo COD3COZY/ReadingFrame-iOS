@@ -39,7 +39,7 @@ struct BookShelfRowInfo: Identifiable {
     let bookType: BookType?
     let category: CategoryName
     let isMine: Bool?
-    let totalPage: Int
+    let totalPage: Int?
     let readPage: Int?
     let readingPercent: Int?
 }

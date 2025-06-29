@@ -78,7 +78,7 @@ class HomeAPI: BaseAPI {
     
     /// 다 읽은 책 조회
     func getFinishReadBooks(completion: @escaping (NetworkResult<Any>) -> (Void)) {
-        AFManager.request(HomeService.getWantToReadBooks, interceptor: MyRequestInterceptor()).responseData { (response) in
+        AFManager.request(HomeService.getFinishReadBooks, interceptor: MyRequestInterceptor()).responseData { (response) in
             switch response.result {
             case .success:
                 guard let statusCode = response.response?.statusCode

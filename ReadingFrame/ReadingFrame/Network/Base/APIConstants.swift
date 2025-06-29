@@ -43,10 +43,10 @@ struct APIConstants {
     static let readingURL = "/home/reading"
     
     /// 읽고 싶은 책 조회 API
-    static let wantToReadURL = "/home/wantToRead"
+    static let wantToReadURL = "/home/want-to-read"
     
     /// 다 읽은 책 조회 API
-    static let finishedReadingURL = "/home/finishRead"
+    static let finishedReadingURL = "/home/finish-read"
     
     /// 책 관련 API에서 사용되는 공통 URL
     static let bookCommonURL = "/book/"

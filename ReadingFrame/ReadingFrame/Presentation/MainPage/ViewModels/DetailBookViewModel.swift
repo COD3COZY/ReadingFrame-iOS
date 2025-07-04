@@ -9,18 +9,27 @@ import Foundation
 
 /// 읽고 있는 책, 다 읽은 책, 읽고 싶은 책 조회 뷰모델
 final class DetailBookViewModel: ObservableObject {
+    // MARK: - Properties
     /// 조회할 책 유형
     private var readingStatus: ReadingStatus
     
-    /// 읽고 있는 책 리스트
-    @Published var readingBooks: [ReadingBookModel] = []
+    /// 조회할 책 리스트
+    @Published var books: [any DetailBookModel] = []
     
-    /// 읽고 싶은 책 리스트
-    @Published var wantToReadBooks: [WantToReadBookModel] = []
+    /// 페이지 제목
+    var title: String {
+        if (readingStatus == .reading) {
+            return "읽고 있는 책"
+        }
+        else if (readingStatus == .wantToRead) {
+            return "읽고 싶은 책"
+        }
+        else {
+            return "다 읽은 책"
+        }
+    }
     
-    /// 다 읽은 책 리스트
-    @Published var finishReadBooks: [FinishReadBookModel] = []
-    
+    // MARK: - init
     init(readingStatus: ReadingStatus) {
         self.readingStatus = readingStatus
         
@@ -51,19 +60,23 @@ final class DetailBookViewModel: ObservableObject {
         }
     }
     
-    /// 독서 상태가 바뀌지 않은 책 리스트
-    func tempBookList(books: [RegisteredBook], readingStatus: ReadingStatus) -> [RegisteredBook] {
-        books.filter { $0.book.readingStatus == readingStatus }
-    }
-
+    // MARK: - Methods
     /// 숨긴 책 리스트(읽고 있는 책)
-    func hideBookList() -> [ReadingBookModel] {
-        readingBooks.filter { $0.isHidden == true }
+    func gethiddenBooks() -> [ReadingBookModel] {
+        if readingStatus == .reading, let books = self.books as? [ReadingBookModel] {
+            return books.filter { $0.isHidden == true }
+        }
+        
+        return []
     }
 
     /// 숨기지 않은 책 리스트(읽고 있는 책)
-    func notHideBookList() -> [ReadingBookModel] {
-        readingBooks.filter { $0.isHidden == false }
+    func getUnhiddenBooks() -> [DetailBookModel] {
+        if readingStatus == .reading, let books = self.books as? [ReadingBookModel] {
+            return books.filter { $0.isHidden == false }
+        }
+        
+        return books
     }
     
     /// CategoryName값 변환 함수
@@ -77,40 +90,9 @@ final class DetailBookViewModel: ObservableObject {
     }
     
     /// 읽고 있는 책 리스트 내의 책을 삭제하는 함수
-    func deleteBookInList(isbn: String) {
-        if let index = readingBooks.firstIndex(where: { $0.isbn == isbn }) {
-            readingBooks.remove(at: index)
-        }
-    }
-    
-    /// 책 유형에 따른 책 기본 정보 반환 함수
-    func getBookInfo(_ readingStatus: ReadingStatus, _ bookIndex: Int) -> (String, String, String) {
-        if readingStatus == .reading {
-            let book = readingBooks[bookIndex]
-            return (book.cover, book.title, book.author)
-        }
-        else if readingStatus == .wantToRead {
-            let book = wantToReadBooks[bookIndex]
-            return (book.cover, book.title, book.author)
-        }
-        else {
-            let book = finishReadBooks[bookIndex]
-            return (book.cover, book.title, book.author)
-        }
-    }
-    
-    /// 책 유형에 다른 배지 정보 반환 함수
-    func getBookBadge(readingStatus: ReadingStatus, bookIndex: Int) -> (BookType?, CategoryName, Bool) {
-        if readingStatus == .reading {
-            let book = readingBooks[bookIndex]
-            return (book.bookType, book.category, book.isMine)
-        }
-        else if readingStatus == .wantToRead {
-            return (nil, wantToReadBooks[bookIndex].category, false)
-        }
-        else {
-            let book = finishReadBooks[bookIndex]
-            return (book.bookType, book.category, book.isMine)
+    func deleteBookInList(book: DetailBookModel) {
+        books.removeAll {
+            $0.isbn == book.isbn
         }
     }
     
@@ -120,7 +102,7 @@ final class DetailBookViewModel: ObservableObject {
             switch response {
             case .success(let data):
                 if let books = data as? [ReadingBookResponse] {
-                    self.readingBooks = books.map { book in
+                    self.books = books.map { book in
                         ReadingBookModel(
                             isbn: book.isbn,
                             cover: book.cover,
@@ -163,7 +145,7 @@ final class DetailBookViewModel: ObservableObject {
             switch response {
             case .success(let data):
                 if let books = data as? [WantToReadBookResponse] {
-                    self.wantToReadBooks = books.map { book in
+                    self.books = books.map { book in
                         WantToReadBookModel(
                             isbn: book.isbn,
                             cover: book.cover,
@@ -199,7 +181,7 @@ final class DetailBookViewModel: ObservableObject {
             switch response {
             case .success(let data):
                 if let books = data as? [FinishReadBookResponse] {
-                    self.finishReadBooks = books.map { book in
+                    self.books = books.map { book in
                         FinishReadBookModel(
                             isbn: book.isbn,
                             cover: book.cover,

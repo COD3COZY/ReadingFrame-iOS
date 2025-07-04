@@ -24,26 +24,7 @@ struct Home: View {
                     // 검색 바 및 전환 버튼
                     VStack(alignment: .trailing, spacing: 0) {
                         
-                        // 검색바를 클릭한 경우
-                        NavigationLink {
-                            Search()
-                                .toolbarRole(.editor) // back 텍스트 표시X
-                                .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
-                        } label: {
-                            // MARK: 검색 바
-                            HStack {
-                                Image(systemName: "magnifyingglass")
-                                
-                                Text("제목, 작가를 입력하세요")
-                                
-                                Spacer()
-                            }
-                            .padding(EdgeInsets(top: 8, leading: 7, bottom: 8, trailing: 7))
-                            .foregroundStyle(.greyText)
-                            .background(Color(.grey1))
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                        }
-                        .padding([.leading, .trailing], 16)
+                        SearchBarButtonView()
                         
                         HStack {
                             // segmented control에서 책장 선택하면 책장 종류 선택하는 picker 보이도록

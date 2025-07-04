@@ -8,7 +8,7 @@
 import Foundation
 
 /// [Entity] 다 읽은 책 모델
-struct FinishReadBookModel {
+struct FinishReadBookModel: DetailBookModel {
     var readingStatus: ReadingStatus = .finishRead
     var isbn: String
     var cover: String

@@ -14,5 +14,5 @@ protocol DetailBookModel {
     var title: String { get }
     var author: String { get }
     var category: CategoryName { get }
-    var readingStatus: ReadingStatus { get }
+    var readingStatus: ReadingStatus { get set }
 }

@@ -148,8 +148,7 @@ struct ReadingItemView: View {
                     viewModel.changeReadingStatus(
                         isbn: currentBookInfo!.isbn,
                         request: ChangeReadingStatusRequest(
-                            readingStatus: ReadingStatus.finishRead.rawValue,
-                            uuid: UUID().uuidString
+                            readingStatus: ReadingStatus.finishRead.rawValue
                         )
                     ) { success in
                             if success {

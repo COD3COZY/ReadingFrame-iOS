@@ -41,7 +41,28 @@ struct BookRowDetailView: View {
                 
                 // 책 리스트
                 ForEach(viewModel.getUnhiddenBooks(), id: \.isbn) { book in
-                    BookItemDetailView(book: book)
+                    BookItemDetailView(
+                        book: book,
+                        changeToFinishReadBook: { isbn in
+                            viewModel.changeReadingStatus(
+                                isbn: isbn,
+                                request: ChangeReadingStatusRequest(readingStatus: ReadingStatus.finishRead.rawValue)) { _ in
+                                    print("success: changeToFinishReadBook")
+                                }
+                        },
+                        changeIsMine: { isbn in
+                            viewModel.changeIsMine(isbn: isbn, isMine: true) { _ in
+                                print("success: changeIsMine")
+                            }
+                        },
+                        toggleHiddenReadingBook: { isHidden, isbn in
+                            viewModel.hiddenReadBook(
+                                isbn: isbn,
+                                isHidden: isHidden) { _ in
+                                    print("success: toggleHiddenReadingBook")
+                                }
+                        }
+                    )
                         .swipeActions(edge: .trailing) {
                             deleteBookButton(book: book)
                         }
@@ -61,13 +82,34 @@ struct BookRowDetailView: View {
                     
                     // 홈 화면에서 숨긴 책 리스트
                     ForEach(viewModel.gethiddenBooks(), id: \.isbn) { book in
-                        BookItemDetailView(book: book)
-                            .swipeActions(edge: .trailing) {
-                                deleteBookButton(book: book)
+                        BookItemDetailView(
+                            book: book,
+                            changeToFinishReadBook: { isbn in
+                                viewModel.changeReadingStatus(
+                                    isbn: isbn,
+                                    request: ChangeReadingStatusRequest(readingStatus: ReadingStatus.finishRead.rawValue)) { _ in
+                                        print("success: changeToFinishReadBook")
+                                    }
+                            },
+                            changeIsMine: { isbn in
+                                viewModel.changeIsMine(isbn: isbn, isMine: true) { _ in
+                                    print("success: changeIsMine")
+                                }
+                            },
+                            toggleHiddenReadingBook: { isHidden, isbn in
+                                viewModel.hiddenReadBook(
+                                    isbn: isbn,
+                                    isHidden: isHidden) { _ in
+                                        print("success: toggleHiddenReadingBook")
+                                    }
                             }
+                        )
+                        .swipeActions(edge: .trailing) {
+                            deleteBookButton(book: book)
+                        }
+                        .listRowSeparator(.hidden) // list 구분선 제거
+                        .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                     }
-                    .listRowSeparator(.hidden) // list 구분선 제거
-                    .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                 }
             }
             .listStyle(.plain)

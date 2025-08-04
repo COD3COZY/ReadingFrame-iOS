@@ -240,8 +240,11 @@ final class DetailBookViewModel: ObservableObject {
     }
     
     /// 읽고 있는 책 숨기기&꺼내기
-    func hiddenReadBook(isbn: String, request: HiddenReadBookRequest, completion: @escaping (Bool) -> (Void)) {
-        HomeAPI.shared.hiddenReadBook(isbn: isbn, request: request) { response in
+    func hiddenReadBook(isbn: String, isHidden: Bool, completion: @escaping (Bool) -> (Void)) {
+        HomeAPI.shared.hiddenReadBook(
+            isbn: isbn,
+            request: HiddenReadBookRequest(isHidden: isHidden)
+        ) { response in
             switch response {
             case .success(let data):
                 print("읽고 있는 책 숨김 여부 변경 성공 \(data)")
@@ -292,8 +295,8 @@ final class DetailBookViewModel: ObservableObject {
     }
     
     /// 소장 여부 변경
-    func changeIsMine(isbn: String, request: ChangeIsMineRequest, completion: @escaping (Bool) -> (Void)) {
-        HomeAPI.shared.changeIsMine(isbn: isbn, request: request) { response in
+    func changeIsMine(isbn: String, isMine: Bool, completion: @escaping (Bool) -> (Void)) {
+        HomeAPI.shared.changeIsMine(isbn: isbn, request: ChangeIsMineRequest(isMine: isMine)) { response in
             switch response {
             case .success(let data):
                 print("소장 여부 변경 성공 \(data)")

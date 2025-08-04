@@ -12,73 +12,20 @@ import SwiftUI
 struct BookItemDetailView: View {
     // MARK: - Property
     /// 받아오는 책정보
-    let book: any DetailBookModel
-    
-    // 읽고 있는 책 관련 변수
-    /// 다 읽음 Popup 띄움 여부 확인
-    @State private var isShowFinishReadAlert = false
-    
-    /// 홈 화면에서 숨기기 Popup 띄움 여부 확인
-    @State private var isShowHideBookAlert = false
-    
-    /// 소장 Popup 띄움 여부 확인
-    @State private var isShowMineTrueAlert = false
-    
-    /// 미소장 Popup 띄움 여부 확인
-    @State private var isShowMineFalseAlert = false
-    
-    // 읽고 싶은 책 관련 변수
-    /// sheet가 띄워져 있는지 확인하는 변수
-    @State var isRegisterSheetAppear: Bool = false
-    
-    /// sheet를 띄우기 위한 기본 값
-    @State var sheetReadingStatus: ReadingStatus = .reading
+    let book: any DetailBookModel    
     
     // MARK: - Actions
     // 독서 상태 변경 API 호출
-    var changeReadingStatus: () -> Void = {
-//        viewModel.changeReadingStatus(
-//            isbn: viewModel.readingBooks[index].isbn,
-//            request: ChangeReadingStatusRequest(
-//                readingStatus: ReadingStatus.finishRead.rawValue,
-//                uuid: UUID().uuidString
-//            )
-//        ) { success in
-//            if success {
-//                viewModel.readingBooks[index].readingStatus = .finishRead
-//            }
-//        }
-    }
+    let changeToFinishReadBook: (String) -> Void
     
     // 소장 여부 변경 API 호출
-    var toggleIsMine: () -> Void = {
-//        if readingStatus == .reading {
-//            if let index = viewModel.readingBooks.firstIndex(where: { $0.isbn == bookIsbn }) {
-//                viewModel.changeIsMine(isbn: viewModel.readingBooks[index].isbn, request: ChangeIsMineRequest(isMine: true)) { success in
-//                    if success {
-//                        viewModel.readingBooks[index].isMine = true
-//                    }
-//                }
-//            }
-//        }
-//        else {
-//            viewModel.changeIsMine(isbn: viewModel.finishReadBooks[bookIndex].isbn, request: ChangeIsMineRequest(isMine: true)) { success in
-//                if success {
-//                    viewModel.finishReadBooks[bookIndex].isMine = true
-//                }
-//            }
-//        }
-    }
+    var changeIsMine: (String) -> Void
     
     // 읽고 있는 책 숨기기 & 꺼내기 API 호출
-    var toggleHiddenReadingBook: (Int) -> Void = { _ in
-//        viewModel.hiddenReadBook(
-//            isbn: viewModel.books[index].isbn,
-//            request: HiddenReadBookRequest(isHidden: true)
-//        ) { success in
-//            viewModel.books[index].isHidden = true
-//        }
-    }
+    var toggleHiddenReadingBook: (Bool, String) -> Void
+    
+    // MARK: - State
+    @State private var showAlreadyMineAlert = false
     
     // MARK: - View
     var body: some View {
@@ -111,8 +58,12 @@ struct BookItemDetailView: View {
             .opacity(0)
             
             // Menu
-            // TODO: 여기에 엄청 클로저 많이 들어갈 예정
-            BookItemDetailMenuView(readingStatus: book.readingStatus)
+            BookItemDetailMenuView(
+                bookInfo: self.book,
+                changeToFinishReadBook: changeToFinishReadBook,
+                changeIsMine: changeIsMine,
+                toggleHiddenReadingBook: toggleHiddenReadingBook
+            )
 
         }
     }
@@ -121,10 +72,14 @@ struct BookItemDetailView: View {
 #Preview {
     BookItemDetailView(
         book: WantToReadBookModel(
-        isbn: "",
-        cover: "",
-        title: "제목",
-        author: "저자",
-        category: .art)
+            isbn: "",
+            cover: "",
+            title: "제목",
+            author: "저자",
+            category: .art
+        ),
+        changeToFinishReadBook: { _ in },
+        changeIsMine: { _ in },
+        toggleHiddenReadingBook: { _, _ in }
     )
 }

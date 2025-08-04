@@ -129,8 +129,7 @@ class BookInfoViewModel: ObservableObject {
             BookInfoAPI.shared.cancelWantToRead(
                 isbn: bookInfo.isbn,
                 request: ChangeReadingStatusRequest(
-                    readingStatus: ReadingStatus.unregistered.rawValue,
-                    uuid: nil
+                    readingStatus: ReadingStatus.unregistered.rawValue
                 )
             ) { response in
                     switch response {

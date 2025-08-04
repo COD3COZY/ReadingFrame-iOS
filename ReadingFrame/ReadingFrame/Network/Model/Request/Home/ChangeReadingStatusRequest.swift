@@ -11,4 +11,11 @@ import Foundation
 struct ChangeReadingStatusRequest: Encodable {
     let readingStatus: Int
     let uuid: String?
+    
+    init(readingStatus: Int) {
+        self.readingStatus = readingStatus
+        self.uuid = readingStatus ==
+        ReadingStatus.finishRead.rawValue ?
+        UUID().uuidString : nil
+    }
 }

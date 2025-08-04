@@ -74,6 +74,10 @@
 		C58CF5B62E154EB7005BC7EE /* MainDetailReadingMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58CF5B52E154EB7005BC7EE /* MainDetailReadingMenuView.swift */; };
 		C58CF5B82E154EC6005BC7EE /* MainDetailFinishReadMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58CF5B72E154EC6005BC7EE /* MainDetailFinishReadMenuView.swift */; };
 		C58CF5BA2E166F01005BC7EE /* SearchBarButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58CF5B92E166F01005BC7EE /* SearchBarButtonView.swift */; };
+		C58CF5C82E1EB006005BC7EE /* MainDetailMenuButton_FinishReadAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58CF5C72E1EB006005BC7EE /* MainDetailMenuButton_FinishReadAlert.swift */; };
+		C58CF5CA2E1EB14C005BC7EE /* MainDetailMenuButton_InfoNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58CF5C92E1EB14C005BC7EE /* MainDetailMenuButton_InfoNavigation.swift */; };
+		C58CF5CC2E1EB1D8005BC7EE /* MainDetailMenuButton_WriteReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58CF5CB2E1EB1D8005BC7EE /* MainDetailMenuButton_WriteReview.swift */; };
+		C58CF5CE2E1EB2A9005BC7EE /* MainDetailMenuButton_ReadReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58CF5CD2E1EB2A9005BC7EE /* MainDetailMenuButton_ReadReview.swift */; };
 		C58F57172B8CF35D004085A5 /* BookInfo_ReviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58F57162B8CF35D004085A5 /* BookInfo_ReviewModel.swift */; };
 		C58F57192B8D001F004085A5 /* CommentReactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58F57182B8D001F004085A5 /* CommentReactionView.swift */; };
 		C595A1DE2B7A9DD6006D88EC /* AppTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C595A1DD2B7A9DD6006D88EC /* AppTabView.swift */; };
@@ -279,6 +283,10 @@
 		C58CF5B52E154EB7005BC7EE /* MainDetailReadingMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDetailReadingMenuView.swift; sourceTree = "<group>"; };
 		C58CF5B72E154EC6005BC7EE /* MainDetailFinishReadMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDetailFinishReadMenuView.swift; sourceTree = "<group>"; };
 		C58CF5B92E166F01005BC7EE /* SearchBarButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarButtonView.swift; sourceTree = "<group>"; };
+		C58CF5C72E1EB006005BC7EE /* MainDetailMenuButton_FinishReadAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDetailMenuButton_FinishReadAlert.swift; sourceTree = "<group>"; };
+		C58CF5C92E1EB14C005BC7EE /* MainDetailMenuButton_InfoNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDetailMenuButton_InfoNavigation.swift; sourceTree = "<group>"; };
+		C58CF5CB2E1EB1D8005BC7EE /* MainDetailMenuButton_WriteReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDetailMenuButton_WriteReview.swift; sourceTree = "<group>"; };
+		C58CF5CD2E1EB2A9005BC7EE /* MainDetailMenuButton_ReadReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDetailMenuButton_ReadReview.swift; sourceTree = "<group>"; };
 		C58F57162B8CF35D004085A5 /* BookInfo_ReviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookInfo_ReviewModel.swift; sourceTree = "<group>"; };
 		C58F57182B8D001F004085A5 /* CommentReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentReactionView.swift; sourceTree = "<group>"; };
 		C595A1DD2B7A9DD6006D88EC /* AppTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabView.swift; sourceTree = "<group>"; };
@@ -1053,6 +1061,10 @@
 				C58CF5B52E154EB7005BC7EE /* MainDetailReadingMenuView.swift */,
 				C58CF5B72E154EC6005BC7EE /* MainDetailFinishReadMenuView.swift */,
 				E7F6D81D2BA6D92E00181586 /* BookRowDetailView.swift */,
+				C58CF5C72E1EB006005BC7EE /* MainDetailMenuButton_FinishReadAlert.swift */,
+				C58CF5C92E1EB14C005BC7EE /* MainDetailMenuButton_InfoNavigation.swift */,
+				C58CF5CB2E1EB1D8005BC7EE /* MainDetailMenuButton_WriteReview.swift */,
+				C58CF5CD2E1EB2A9005BC7EE /* MainDetailMenuButton_ReadReview.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1537,6 +1549,7 @@
 				E7505C4B2CBD0C690082FE85 /* DetailBookViewModel.swift in Sources */,
 				E702A9AC2B85FB2F0081F65D /* ReadingLabel.swift in Sources */,
 				E7CD51652CAD5EE30063C0A5 /* HomeResponse.swift in Sources */,
+				C58CF5C82E1EB006005BC7EE /* MainDetailMenuButton_FinishReadAlert.swift in Sources */,
 				E70764392C3AD27900373B8D /* MemoView.swift in Sources */,
 				E751B5722B8EC6B000880123 /* DragIndicator.swift in Sources */,
 				E751B56E2B8E0D3100880123 /* FinishReadRowView.swift in Sources */,
@@ -1544,6 +1557,7 @@
 				E7B2E94D2D1853D500566E88 /* SearchService.swift in Sources */,
 				C55AB2492D4FD9410036E081 /* Place.swift in Sources */,
 				C5B57A0A2D5BA15200B4B18D /* CircleBorderCharcterView.swift in Sources */,
+				C58CF5CE2E1EB2A9005BC7EE /* MainDetailMenuButton_ReadReview.swift in Sources */,
 				E77E0BA42C74611000626110 /* NetworkResult.swift in Sources */,
 				E707643D2C3AF30D00373B8D /* EditAllRecord.swift in Sources */,
 				E7F6D81E2BA6D92E00181586 /* BookRowDetailView.swift in Sources */,
@@ -1618,6 +1632,7 @@
 				C58CF5B02E151EB5005BC7EE /* BookItemDetailMenuView.swift in Sources */,
 				C55AB2472D36B76D0036E081 /* ReviewNavigationDestination.swift in Sources */,
 				C52EC59F2C308258004F6BDB /* LocationManager.swift in Sources */,
+				C58CF5CC2E1EB1D8005BC7EE /* MainDetailMenuButton_WriteReview.swift in Sources */,
 				E7ACEAA02CA2B08B0079F2F1 /* LoginViewModel.swift in Sources */,
 				C53A34B22C37D99A008A88F0 /* BottomSheetHelper.swift in Sources */,
 				E768F08B2CE487E8003E2CB3 /* WantToReadBookModel.swift in Sources */,
@@ -1652,6 +1667,7 @@
 				C5338FA62B8DD89C00D24B5F /* EmojiSelectPopover.swift in Sources */,
 				C58F57172B8CF35D004085A5 /* BookInfo_ReviewModel.swift in Sources */,
 				C5B57A182D5CF0D900B4B18D /* SignUpNavigationDestination.swift in Sources */,
+				C58CF5CA2E1EB14C005BC7EE /* MainDetailMenuButton_InfoNavigation.swift in Sources */,
 				C54B93222C4FF841008B73E0 /* SearchMapViewHelper.swift in Sources */,
 				C523ABE72C859CB600C4D9F8 /* BookShelfListRowView.swift in Sources */,
 				E768F09B2CE512F8003E2CB3 /* ChangeIsMineRequest.swift in Sources */,

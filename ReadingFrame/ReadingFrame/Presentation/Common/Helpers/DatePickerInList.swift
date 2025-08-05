@@ -24,14 +24,7 @@ struct DatePickerInList: View {
         
     /// 버튼에 들어갈 날짜 text
     var dateString: String {
-        // DateFormatter 형식 지정
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy.MM.dd"
-        
-        // Date -> String
-        let dateString = dateFormatter.string(from: selectedDate)
-        
-        return dateString
+        return DateUtils.dateToString(date: selectedDate)
     }
     
     var body: some View {

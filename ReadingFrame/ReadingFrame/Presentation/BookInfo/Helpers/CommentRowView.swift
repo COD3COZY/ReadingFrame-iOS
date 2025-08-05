@@ -16,14 +16,7 @@ struct CommentRowView: View {
     
     /// 버튼에 들어갈 날짜 text
     var dateString: String {
-        // DateFormatter 형식 지정
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy.MM.dd"
-        
-        // Date -> String
-        let dateString = dateFormatter.string(from: comment.commentDate)
-        
-        return dateString
+        DateUtils.dateToString(date: comment.commentDate)
     }
     
     /// 이 row의 리뷰가 유저의 리뷰인지 확인하고 더보기 버튼 대신 삭제 버튼을 띄워줄 값

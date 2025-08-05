@@ -28,4 +28,14 @@ struct DateUtils {
         
         return dateToString
     }
+    
+    /// String날짜를 Date 객체로 변환
+    static func stringToDate(_ dateString: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        
+        let stringToDate = dateFormatter.date(from: dateString)
+        
+        return stringToDate ?? Date()
+    }
 }

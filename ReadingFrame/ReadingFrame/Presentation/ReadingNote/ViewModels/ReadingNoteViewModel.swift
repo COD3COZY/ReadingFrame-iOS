@@ -37,64 +37,42 @@ class ReadingNoteViewModel: ObservableObject {
     // MARK: - init()
     init(isbn: String) {
         self.isbn = isbn
-        fetchData()
+        fetchData { isSuccess in
+            if !isSuccess {
+                print("독서노트 조회 실패")
+            }
+        }
     }
     
     
     // MARK: - Methods
     
     /// 서버에서 데이터 가져오기
-    // TODO: 서버에서 데이터 가져오는 방식으로 바꾸기
-    // 지금은 일단 객체 초기화로
-    func fetchData() {
-        // 더미 키워드리뷰
-        let dummykeywordReview: String? = nil
-        // 더미 한줄평
-        let dummycommentReview: String? = "베스트셀러 도서라고 언급이 많길래 한 번 읽어 봤는데 정말 재미있었습니다. 왜 베스트셀러인지 알 것 같았어요. 한 번쯤 꼭 보시길 추천합니다!"
-        // 더미 선택리뷰
-        let dummyselectReview: [SelectReviewCode]? = [.comforting, .easyToRead]
-        
-        // 더미 책갈피
-        let dummyBookmark: [Bookmark]? = [
-            Bookmark(id: "", date: Date(), markPage: 10, markPercent: 14)
-        ]
-        
-        // 더미 메모
-        let dummyMemo: [Memo]? = nil /*[
-            Memo(id: "1", date: Date(), markPage: 32, markPercent: 10, memo: "메모")
-        ]*/
-        
-        // 더미 인물
-        let dummyCharacter: [Character]? = [
-            Character(emoji: 129401, name: "얼굴", preview: "슬픈 얼굴이지요 너무 슬퍼서 울고 있는 얼굴입니다", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "슬픈 얼굴이지요 너무 슬퍼서 울고 있는 얼굴입니다", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "슬픈 얼굴이지요 너무 슬퍼서 울고 있는 얼굴입니다", description: "어쩌구룰루"),
-        ]
-        
-        // 하루 전 날짜 가져오기
-        let calendar = Calendar.current
-        let weekBefore = calendar.date(byAdding: .day, value: -7, to: Date())   // 일주일전
-        let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())    // 어제
-        
-        self.book = ReadingNoteModel(cover: "https://image.yes24.com/goods/96565175/XL",
-                                     title: "사이보그가 되다",
-                                     author: "김초엽, 김원영",
-                                     categoryName: .humanSocial,
-                                     totalPage: 380, readPage: 38,
-                                     readingPercent: 10,
-                                     firstReviewDate: Date(),
-                                     keywordReview: dummykeywordReview,
-                                     commentReview: dummycommentReview,
-                                     selectReview: dummyselectReview,
-                                     isMine: false,
-                                     bookType: .paperbook,
-                                     readingStatus: .reading,
-                                     mainLocation: nil,
-                                     startDate: weekBefore!,
-                                     recentDate: yesterday!,
-                                     bookmarks: dummyBookmark,
-                                     memos: dummyMemo,
-                                     characters: dummyCharacter)
+    func fetchData(completion: @escaping (Bool) -> (Void)) {
+        ReadingNoteAPI.shared.getReadingNote(isbn: isbn) { response in
+            switch response {
+            case .success(let data):
+                if let data = data as? ReadingNoteResponse {
+                    self.book = data.toEntity()
+                }
+                completion(true)
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
     }
     
     /// 소장여부 바꾸기: 소장 <-> 비소장

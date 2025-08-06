@@ -31,7 +31,7 @@ class BaseAPI {
     }()
     
     /// API 통신 응답 분기 처리
-    func judgeData<T: Codable>(by statusCode: Int, _ data: Data, _ type: T.Type) -> NetworkResult<Any> {
+    func judgeData<T: Decodable>(by statusCode: Int, _ data: Data, _ type: T.Type) -> NetworkResult<Any> {
         let decoder = JSONDecoder()
         guard let decodedData = try? decoder.decode(CommonResponse<T>.self, from: data)
         else {

@@ -8,7 +8,7 @@
 import Foundation
 
 /// 카카오 회원가입 Response 모델
-struct KakaoSignUpResponse: Codable {
+struct KakaoSignUpResponse: Decodable {
     let xAuthToken: String
     
     enum CodingKeys: String, CodingKey {

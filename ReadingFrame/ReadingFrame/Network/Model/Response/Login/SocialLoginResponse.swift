@@ -9,7 +9,7 @@ import Foundation
 
 /// 소셜로그인 Response 모델
 /// - 카카오, 애플 둘 다 해당
-struct SocialLoginResponse: Codable {
+struct SocialLoginResponse: Decodable {
     let xAuthToken: String
     
     enum CodingKeys: String, CodingKey {

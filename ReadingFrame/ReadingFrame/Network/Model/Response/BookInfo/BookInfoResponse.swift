@@ -8,7 +8,7 @@
 import Foundation
 
 /// 도서정보 초기조회 
-struct BookInfoResponse: Codable {
+struct BookInfoResponse: Decodable {
     let cover: String
     let title: String
     let author: String

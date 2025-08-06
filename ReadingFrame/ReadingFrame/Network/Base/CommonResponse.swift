@@ -8,7 +8,7 @@
 import Foundation
 
 // 공통 API 응답 모델
-struct CommonResponse<T: Codable>: Codable {
+struct CommonResponse<T: Decodable>: Decodable {
     var status: Int
     var message: String
     var data: T?

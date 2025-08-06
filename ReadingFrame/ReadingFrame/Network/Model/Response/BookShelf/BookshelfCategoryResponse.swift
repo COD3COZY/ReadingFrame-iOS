@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BookshelfCategoryResponse: Codable {
+struct BookshelfCategoryResponse: Decodable {
     let categoryCode: Int
     let categoryCount: Int
     let totalPage: [Int]

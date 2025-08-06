@@ -8,7 +8,7 @@
 import Foundation
 
 /// 책장 리스트용 조회용 모델
-struct BookshelfListResponse: Codable {
+struct BookshelfListResponse: Decodable {
     let ISBN: String
     let cover: String
     let title: String

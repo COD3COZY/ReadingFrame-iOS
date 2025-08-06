@@ -8,7 +8,7 @@
 import Foundation
 
 /// 읽고 싶은 책 Response 모델
-struct WantToReadBookResponse: Codable {
+struct WantToReadBookResponse: Decodable {
     var isbn: String
     var cover: String
     var title: String

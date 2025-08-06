@@ -8,7 +8,7 @@
 import Foundation
 
 /// 애플 회원가입 Response 모델
-struct AppleSignUpResponse: Codable {
+struct AppleSignUpResponse: Decodable {
     let xAuthToken: String
     
     enum CodingKeys: String, CodingKey {

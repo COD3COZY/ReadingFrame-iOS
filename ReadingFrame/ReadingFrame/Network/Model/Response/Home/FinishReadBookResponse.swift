@@ -8,7 +8,7 @@
 import Foundation
 
 /// 홈 화면의 다 읽은 책 Response 모델
-struct FinishReadBookResponse: Codable {
+struct FinishReadBookResponse: Decodable {
     var isbn: String
     var cover: String
     var title: String

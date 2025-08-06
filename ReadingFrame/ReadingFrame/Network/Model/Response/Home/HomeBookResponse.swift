@@ -8,7 +8,7 @@
 import Foundation
 
 /// 홈 조회 전체 책 리스트 Response 모델
-struct HomeBookResponse: Codable {
+struct HomeBookResponse: Decodable {
     var readingStatus: Int // 독서 상태
     var isbn: String // ISBN
     var cover: String // 표지 이미지 URL

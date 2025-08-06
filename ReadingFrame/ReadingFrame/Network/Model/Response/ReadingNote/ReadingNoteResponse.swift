@@ -61,7 +61,7 @@ extension ReadingNoteResponse {
             cover: self.cover,
             title: self.title,
             author: self.author,
-            categoryName: CategoryName.etc , // TODO: 일단 하드코딩. 백엔드 수정사항 반영하기
+            categoryName: CategoryName.toCategoryName(self.categoryName),
             totalPage: self.totalPage,
             readPage: self.readPage,
             readingPercent: self.readingPercent,

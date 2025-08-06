@@ -30,6 +30,7 @@ struct BookShelfSectionView: View {
             NavigationLink {
                 BookShelfListByType(vm: .init(bookshelfSubtype: bookshelfType))
                     .toolbarRole(.editor) // back 텍스트 표시X
+                    .toolbar(.hidden, for: .tabBar)
             } label: {
                 BookShelfView(
                     shelfColor: shelfColor,

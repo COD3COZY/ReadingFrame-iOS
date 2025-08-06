@@ -32,6 +32,7 @@ struct BookShelfListTitleView: View {
             NavigationLink {
                 BookShelfListByType(vm: .init(bookshelfSubtype: bookshelfType))
                     .toolbarRole(.editor) // back 텍스트 표시X
+                    .toolbar(.hidden, for: .tabBar)
             } label: {
                 Image(systemName: "chevron.right")
                     .foregroundStyle(Color.black0)

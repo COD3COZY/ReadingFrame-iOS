@@ -70,6 +70,7 @@ extension MyPage {
         NavigationLink {
             SearchBadge()
                 .toolbarRole(.editor)
+                .toolbar(.hidden, for: .tabBar)
         } label: {
             badgeBox
         }
@@ -115,6 +116,7 @@ extension MyPage {
                         nickname: nickname
                     )
                     .toolbarRole(.editor)
+                    .toolbar(.hidden, for: .tabBar)
                 }
             } label: {
                 mypageListRow(text: "프로필 편집")
@@ -124,6 +126,7 @@ extension MyPage {
             NavigationLink {
                 Settings()
                     .toolbarRole(.editor)
+                    .toolbar(.hidden, for: .tabBar)
             } label: {
                 mypageListRow(text: "환경설정")
             }
@@ -132,6 +135,7 @@ extension MyPage {
             NavigationLink {
                 Support()
                     .toolbarRole(.editor)
+                    .toolbar(.hidden, for: .tabBar)
             } label: {
                 mypageListRow(text: "도움말 및 지원")
             }

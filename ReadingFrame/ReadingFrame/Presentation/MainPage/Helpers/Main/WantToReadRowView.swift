@@ -32,6 +32,7 @@ struct WantToReadRowView: View {
                 NavigationLink {
                     BookRowDetailView(readingStatus: .wantToRead)
                         .toolbarRole(.editor)
+                        .toolbar(.hidden, for: .tabBar)
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.title3)

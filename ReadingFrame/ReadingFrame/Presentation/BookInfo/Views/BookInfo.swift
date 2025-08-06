@@ -66,6 +66,7 @@ struct BookInfo: View {
                                 // 한줄평 페이지로 이동
                                 BookInfo_Review()
                                     .toolbarRole(.editor)   // 이전 버튼 뒤에 화면 이름 표기 없음
+                                    .toolbar(.hidden, for: .tabBar)
                             } label: {
                                 Image(systemName: "chevron.forward")
                                     .font(.headline)
@@ -143,6 +144,7 @@ extension BookInfo {
                     // 한줄평 페이지로 연결
                     BookInfo_Review()
                         .toolbarRole(.editor)   // 이전 버튼 뒤에 화면 이름 표기 없음
+                        .toolbar(.hidden, for: .tabBar)
                 } label: {
                     HStack(alignment: .center, spacing: 5) {
                         Image(systemName: "bubble")

@@ -47,6 +47,7 @@ struct BookItemView: View {
                         // 독서 노트 화면으로 이동
                         ReadingNote(isbn: matchReadingStatus(readingStatus: bookReadingStatus)?.isbn ?? "")
                             .toolbarRole(.editor) // back 텍스트 표시X
+                            .toolbar(.hidden, for: .tabBar)
                     }
                 } label: {
                     LoadableBookImage(bookCover: matchReadingStatus(readingStatus: bookReadingStatus)?.cover ?? "")

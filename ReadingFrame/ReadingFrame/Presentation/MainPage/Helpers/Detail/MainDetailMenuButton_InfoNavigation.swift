@@ -17,6 +17,8 @@ struct MainDetailMenuButton_InfoNavigation: View {
         NavigationLink {
             // 책 정보 화면(BookInfo)으로 이동
             BookInfo(isbn: self.isbn)
+                .toolbarRole(.editor)
+                .toolbar(.hidden, for: .tabBar)
         } label: {
             Label("정보", systemImage: "info.circle")
         }

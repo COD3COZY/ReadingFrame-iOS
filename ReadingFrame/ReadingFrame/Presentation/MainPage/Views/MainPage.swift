@@ -118,6 +118,7 @@ extension MainPage {
             NavigationLink {
                 destination
                     .toolbarRole(.editor)
+                    .toolbar(.hidden, for: .tabBar)
             } label: {
                 Image(systemName: "chevron.right")
                     .font(.title3)

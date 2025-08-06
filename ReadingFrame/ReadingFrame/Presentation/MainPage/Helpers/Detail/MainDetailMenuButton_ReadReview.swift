@@ -17,6 +17,8 @@ struct MainDetailMenuButton_ReadReview: View {
         NavigationLink {
             // 독서노트 화면(ReadingNote) 연결
             ReadingNote(isbn: self.isbn)
+                .toolbarRole(.editor)
+                .toolbar(.hidden, for: .tabBar)
         } label: {
             Label("리뷰 확인하기", systemImage: "bubble")
         }

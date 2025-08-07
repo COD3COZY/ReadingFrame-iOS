@@ -35,4 +35,24 @@ class EditAllRecordAPI: BaseAPI {
         }
     }
     
+    /// 책갈피 수정 API
+    func patchBookmark(isbn: String, request: PatchBookmarkRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(EditAllRecordService.patchBookmark(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, String.self))
+                
+            case .failure(let err):
+                completion(.networkFail(err.localizedDescription))
+            }
+        }
+    }
 }

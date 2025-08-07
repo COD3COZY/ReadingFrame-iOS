@@ -176,8 +176,27 @@ class EditAllRecordViewModel: ObservableObject {
         switch selectedTab {
         case RecordType.bookmark.rawValue:
             if isForEditing {
-                // TODO: 책갈피 PATCH API 호출하기
+                // MARK: 책갈피 PATCH API 호출하기
                 print("책갈피 PATCH API 호출")
+                
+                guard let bookmarkID = bookmarkEditInfo?.id else {
+                    print("바꿀 책갈피가 없어요")
+                    return
+                }
+                
+                editBookmark(
+                    isbn: self.book.isbn,
+                    request: PatchBookmarkRequest(
+                        date: DateUtils.dateToString(date: selectedDate),
+                        markPage: Int(self.bookMarkPage) ?? 0,
+                        mainLocation: getSelectedPlaceInfo(),
+                        uuid: bookmarkID
+                    )
+                ) { success in
+                    if !success {
+                        print("책갈피 수정 실패")
+                    }
+                }
             }
             else {
                 // MARK: 책갈피 POST API 호출하기
@@ -188,12 +207,7 @@ class EditAllRecordViewModel: ObservableObject {
                     request: PostNewBookmarkRequest(
                         date: DateUtils.dateToString(date: selectedDate),
                         markPage: Int(self.bookMarkPage) ?? 0,
-                        mainLocation: pickedPlace != nil
-                            ? PlaceInfo(placeName: pickedPlace!.name ?? "",
-                                        address: pickedPlace!.title ?? "",
-                                        latitude: pickedPlace!.coordinate.latitude,
-                                        longitude: pickedPlace!.coordinate.longitude)
-                            : nil
+                        mainLocation: getSelectedPlaceInfo()
                     )
                 ) { success in
                     if success {
@@ -288,13 +302,41 @@ extension EditAllRecordViewModel {
     /// 새로운 책갈피 등록 API
     func registerBookmark(isbn: String, request: PostNewBookmarkRequest, completion: @escaping (Bool) -> (Void)) {
         EditAllRecordAPI.shared.postNewBookmark(
-            isbn: self.book.isbn,
-            request: PostNewBookmarkRequest(date: DateUtils.dateToString(date: selectedDate),
-                                            markPage: Int(self.bookMarkPage) ?? 0,
-                                            mainLocation: getSelectedPlaceInfo())) { response in
+            isbn: isbn,
+            request: request
+        ) { response in
             switch response {
             case .success(let data):
                 print("새로운 책갈피 등록 성공 \(data)")
+                completion(true)
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
+    /// 책갈피 수정 API
+    func editBookmark(isbn: String, request: PatchBookmarkRequest, completion: @escaping (Bool) -> (Void)) {
+        EditAllRecordAPI.shared.patchBookmark(
+            isbn: isbn,
+            request: request
+        ) { response in
+            switch response {
+            case .success(let data):
+                print("책갈피 수정 성공 \(data)")
                 completion(true)
             case .requestErr(let message):
                 print("Request Err: \(message)")

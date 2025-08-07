@@ -12,6 +12,8 @@ import Alamofire
 enum EditAllRecordService {
     /// 책갈피 등록 API
     case postNewBookmark(String, PostNewBookmarkRequest)
+    /// 책갈피 수정 API
+    case patchBookmark(String, PatchBookmarkRequest)
 }
 
 extension EditAllRecordService: TargetType {
@@ -19,6 +21,8 @@ extension EditAllRecordService: TargetType {
         switch self {
         case .postNewBookmark:
             return .post
+        case .patchBookmark:
+            return .patch
         }
     }
     
@@ -26,12 +30,16 @@ extension EditAllRecordService: TargetType {
         switch self {
         case .postNewBookmark:
             return APIConstants.bookCommonURL
+        case .patchBookmark:
+            return APIConstants.bookCommonURL
         }
     }
     
     var parameters: RequestParams {
         switch self {
         case .postNewBookmark(let isbn, let request):
+            return .pathBody(isbn + "/bookmark", body: request)
+        case .patchBookmark(let isbn, let request):
             return .pathBody(isbn + "/bookmark", body: request)
         }
     }

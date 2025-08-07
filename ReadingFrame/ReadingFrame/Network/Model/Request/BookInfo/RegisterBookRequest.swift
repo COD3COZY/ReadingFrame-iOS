@@ -12,7 +12,7 @@ import MapKit
 struct RegisterBookRequest: Encodable {
     let readingStatus: Int
     let bookType: Int
-    let mainLocation: BookRegisterMainLocationRequest?
+    let mainLocation: LocationDTO?
     let isMine: Bool
     let startDate: String
     let recentDate: String?
@@ -37,7 +37,7 @@ extension RegisterBookRequest {
         self.bookInformation = bookInformation
         
         self.mainLocation = mainLocation.map {
-            BookRegisterMainLocationRequest(
+            LocationDTO(
                 placeName: $0.name ?? "",
                 address: $0.title ?? "",
                 latitude: String($0.coordinate.latitude),
@@ -47,9 +47,3 @@ extension RegisterBookRequest {
     }
 }
 
-struct BookRegisterMainLocationRequest: Encodable {
-    let placeName: String
-    let address: String
-    let latitude: String
-    let longitude: String
-}

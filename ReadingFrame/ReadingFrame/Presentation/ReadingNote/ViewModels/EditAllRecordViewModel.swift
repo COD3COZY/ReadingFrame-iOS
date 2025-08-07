@@ -189,7 +189,7 @@ class EditAllRecordViewModel: ObservableObject {
                     request: PatchBookmarkRequest(
                         date: DateUtils.dateToString(date: selectedDate),
                         markPage: Int(self.bookMarkPage) ?? 0,
-                        mainLocation: getSelectedPlaceInfo(),
+                        mainLocation: getSelectedLocationInfo(),
                         uuid: bookmarkID
                     )
                 ) { success in
@@ -207,7 +207,7 @@ class EditAllRecordViewModel: ObservableObject {
                     request: PostNewBookmarkRequest(
                         date: DateUtils.dateToString(date: selectedDate),
                         markPage: Int(self.bookMarkPage) ?? 0,
-                        mainLocation: getSelectedPlaceInfo()
+                        mainLocation: getSelectedLocationInfo()
                     )
                 ) { success in
                     if success {
@@ -287,12 +287,12 @@ class EditAllRecordViewModel: ObservableObject {
     }
     
     /// 위치 객체 만들기
-    func getSelectedPlaceInfo() -> PlaceInfo? {
+    func getSelectedLocationInfo() -> LocationDTO? {
         if let placemark = self.pickedPlace {
-            return PlaceInfo(placeName: placemark.name ?? "",
+            return LocationDTO(placeName: placemark.name ?? "",
                              address: placemark.title ?? "",
-                             latitude: placemark.coordinate.latitude,
-                             longitude: placemark.coordinate.longitude)
+                             latitude: String(placemark.coordinate.latitude),
+                             longitude: String(placemark.coordinate.longitude))
         } else { return nil }
     }
 }

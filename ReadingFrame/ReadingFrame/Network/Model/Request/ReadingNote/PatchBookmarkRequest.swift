@@ -11,6 +11,6 @@ import Foundation
 struct PatchBookmarkRequest: Encodable {
     let date: String
     let markPage: Int
-    let mainLocation: PlaceInfo?
+    let mainLocation: LocationDTO?
     let uuid: String
 }

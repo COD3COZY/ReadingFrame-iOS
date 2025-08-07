@@ -7,9 +7,10 @@
 
 import Foundation
 
+/// 책갈피 등록 DTO
 struct PostNewBookmarkRequest: Encodable {
     let date: String
     let markPage: Int
-    let mainLocation: PlaceInfo?
+    let mainLocation: LocationDTO?
     let uuid: String = UUID().uuidString
 }

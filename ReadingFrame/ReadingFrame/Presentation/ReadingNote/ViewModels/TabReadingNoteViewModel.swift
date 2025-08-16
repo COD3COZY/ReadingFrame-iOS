@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class TabReadingNoteViewModel: ObservableObject {
     // - MARK: Properties
@@ -31,13 +32,21 @@ class TabReadingNoteViewModel: ObservableObject {
     /// 인물 검색했을 때 검색결과로 조회된 인물 배열
     @Published var filteredCharacter: [Character]?
     
+    /// 인물사전 검색용 텍스트
+    @Published var searchText: String = ""
+    
+    private var cancellables = Set<AnyCancellable>()
+    
     /// 수정/추가를 위해 필요한 책정보
     @Published var book: EditRecordBookModel
+    
     
     // MARK: - init
     init(selectedTab: readingNoteTab, book: EditRecordBookModel) {
         self.book = book
         self.selectedTab = selectedTab
+        
+        searchCharacterCombine()
     }
     
     // MARK: - Methods
@@ -127,5 +136,15 @@ class TabReadingNoteViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    /// 인물사전 검색 combine 로직
+    func searchCharacterCombine() {
+        $searchText
+            .removeDuplicates()
+            .sink { query in
+                self.searchCharacter(searchQuery: query)
+            }
+            .store(in: &cancellables)
     }
 }

@@ -19,9 +19,6 @@ struct TabReadingNote: View {
     /// 뷰모델
     @StateObject var vm: TabReadingNoteViewModel
     
-    /// 사용자가 입력한 검색어
-    @State private var searchText: String = ""
-    
     /// 탭바 애니메이션 구현용
     @Namespace private var animation
     
@@ -102,7 +99,7 @@ struct TabReadingNote: View {
                 }
                 else {
                     // MARK: 인물사전 검색
-                    SearchBar(searchText: $searchText, placeholder: "인물의 이름, 한줄소개를 입력하세요")
+                    SearchBar(searchText: $vm.searchText, placeholder: "인물의 이름, 한줄소개를 입력하세요")
                         .padding(.top, 15)
                         .padding(.horizontal, 16)
                 }
@@ -185,12 +182,6 @@ struct TabReadingNote: View {
                 vm.fetchMemoData()
             case .character:
                 vm.fetchCharacterData()
-            }
-        }
-        .onChange(of: searchText) {
-            // 인물사전 검색하기
-            withAnimation {
-                vm.searchCharacter(searchQuery: searchText)
             }
         }
     }

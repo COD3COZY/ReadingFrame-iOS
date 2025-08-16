@@ -1,0 +1,40 @@
+//
+//  TabReadingNoteAPI.swift
+//  ReadingFrame
+//
+//  Created by 석민솔 on 8/16/25.
+//
+
+import Foundation
+
+class TabReadingNoteAPI: BaseAPI {
+    static let shared = TabReadingNoteAPI()
+    
+    private override init() {
+        super.init()
+    }
+    
+    /// 책갈피 전체조회 API
+    func fetchAllBookmark(
+        isbn: String,
+        completion: @escaping (NetworkResult<Any>) -> (Void)
+    ) {
+        AFManager.request(TabReadingNoteService.fetchAllBookmark(isbn), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, [BookmarkTapResponse].self))
+                
+            case .failure(let err):
+                completion(.networkFail(err.localizedDescription))
+            }
+        }
+    }
+}

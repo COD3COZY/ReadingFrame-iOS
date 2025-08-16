@@ -38,35 +38,43 @@ class TabReadingNoteViewModel: ObservableObject {
     init(selectedTab: readingNoteTab, book: EditRecordBookModel) {
         self.book = book
         self.selectedTab = selectedTab
-        
-        switch selectedTab {
-        case .bookmark:
-            fetchBookmarkData()
-        case .memo:
-            fetchMemoData()
-        case .character:
-            fetchCharacterData()
-        }
     }
     
     // MARK: - Methods
     /// 책갈피 데이터 불러오기
-    func fetchBookmarkData() {
-        // TODO: 책갈피 전체조회 API 호출하기
-        
-        // FIXME: 아래쪽 더미 데이터 지우기
-        self.bookmarkData = [
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 1, location: PlaceInfo(placeName: "원자력병원", address: "", latitude: 37.6287618, longitude: 127.08264)),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 2),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 3),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 4),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 5),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 6),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 7),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 8),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 9),
-            Bookmark(id: "", date: Date(), markPage: 35, markPercent: 0)
-        ]
+    func fetchBookmarkData(completion: @escaping (Bool) -> (Void)) {
+        TabReadingNoteAPI.shared.fetchAllBookmark(isbn: book.isbn) { response in
+            switch response {
+            case .success(let data):
+                if let bookmarks = data as? [BookmarkTapResponse] {
+                    self.bookmarkData = bookmarks.map {
+                        Bookmark(
+                            id: $0.uuid,
+                            date: DateUtils.stringToDate($0.date),
+                            markPage: $0.markPage,
+                            markPercent: $0.markPercent
+                        )
+                    }
+                }
+                completion(true)
+                
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
     }
     
     /// 메모 데이터 불러오기

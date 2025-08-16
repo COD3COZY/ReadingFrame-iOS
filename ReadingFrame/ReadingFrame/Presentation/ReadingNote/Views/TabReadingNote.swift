@@ -158,11 +158,29 @@ struct TabReadingNote: View {
         } //: ZStack
         .navigationTitle("나의 기록")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            switch vm.selectedTab {
+            case .bookmark:
+                vm.fetchBookmarkData { success in
+                    if !success {
+                        print("책갈피 호출 실패")
+                    }
+                }
+            case .memo:
+                vm.fetchMemoData()
+            case .character:
+                vm.fetchCharacterData()
+            }
+        }
         .onChange(of: vm.selectedTab) { oldValue, newValue in
             // 탭이 달라질 때 데이터 불러오기
             switch newValue {
             case .bookmark:
-                vm.fetchBookmarkData()
+                vm.fetchBookmarkData { success in
+                    if !success {
+                        print("책갈피 데이터 로드 실패")
+                    }
+                }
             case .memo:
                 vm.fetchMemoData()
             case .character:
@@ -176,8 +194,10 @@ struct TabReadingNote: View {
             }
         }
     }
-    
-    // MARK: - FUNCTION
+}
+
+// MARK: - FUNCTION
+extension TabReadingNote {
     /// 탭 바 및 애니메이션 구현
     @ViewBuilder func tabAnimate() -> some View {
         VStack(spacing: 0) {
@@ -218,7 +238,6 @@ struct TabReadingNote: View {
         } //: VStack
     }
 }
-
 
 // MARK: - Components
 extension TabReadingNote {

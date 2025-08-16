@@ -111,6 +111,14 @@ struct ReadingNote: View {
                 .navigationTitle("독서노트")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { deleteButton }
+                // refresh data when view appears
+                .onAppear {
+                    vm.fetchData { isSuccess in
+                        if !isSuccess {
+                            print("독서노트 조회 실패 - onAppear")
+                        }
+                    }
+                }
                 // sheet setup
                 // TODO: sheet onDismiss일 때 독서노트 조회 API 호출하기(재로딩)
                 .sheet(isPresented: $isAllRecordSheetAppear) { editAllRecordSheet }
@@ -185,14 +193,59 @@ extension ReadingNote {
     /// 네비게이션 스택 이하 전체 뷰
     private var mainContent: some View {
         ZStack(alignment: .bottom) {
-            ScrollView {
-                contentStack
+            if vm.isLoading {
+                // 로딩 상태
+                VStack {
+                    Spacer()
+                    ProgressView("독서노트 로딩 중...")
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .foregroundColor(.black0)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(.grey1)
+            } else if vm.hasError {
+                // 에러 상태
+                VStack {
+                    Spacer()
+                    Text("독서노트를 불러올 수 없습니다")
+                        .font(.headline)
+                        .foregroundColor(.red0)
+                    Button("다시 시도") {
+                        vm.fetchData { isSuccess in
+                            if !isSuccess {
+                                print("독서노트 재시도 실패")
+                            }
+                        }
+                    }
+                    .padding(.top, 10)
+                    .foregroundColor(.main)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(.grey1)
+            } else if vm.book != nil {
+                // 정상 상태 - 데이터 표시
+                ScrollView {
+                    contentStack
+                }
+                .padding(.bottom, 70)
+                .background(.grey1)
+                .ignoresSafeArea(.container)
+                
+                recordBtn
+            } else {
+                // 데이터 없음 상태
+                VStack {
+                    Spacer()
+                    Text("독서노트 데이터가 없습니다")
+                        .font(.headline)
+                        .foregroundColor(.greyText)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(.grey1)
             }
-            .padding(.bottom, 70)
-            .background(.grey1)
-            .ignoresSafeArea(.container)
-            
-            recordBtn
         }
     }
     

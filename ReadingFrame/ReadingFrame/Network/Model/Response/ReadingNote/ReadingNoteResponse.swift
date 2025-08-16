@@ -25,7 +25,7 @@ struct ReadingNoteResponse: Decodable {
     var readingStatus: Int
     var mainLocation: String?
     var startDate: String
-    var recentDate: String
+    var recentDate: String?
     var bookmarks: [BookmarkDTO]?
     var memos: [MemoDTO]?
     var characters: [CharacterDTO]?
@@ -65,14 +65,36 @@ extension ReadingNoteResponse {
             totalPage: self.totalPage,
             readPage: self.readPage,
             readingPercent: self.readingPercent,
+            firstReviewDate: self.firstReviewDate != nil ? DateUtils.stringToDate(self.firstReviewDate!) : nil,
+            keywordReview: self.keywordReview,
+            commentReview: self.commentReview,
+            selectReview: self.selectReview?.compactMap { SelectReviewCode(rawValue: $0) },
             isMine: self.isMine,
             bookType: BookType(rawValue: self.bookType) ?? .paperbook,
             readingStatus: ReadingStatus(rawValue: self.readingStatus) ?? .unregistered,
+            mainLocation: self.mainLocation,
             startDate: DateUtils.stringToDate(self.startDate),
-            recentDate: DateUtils.stringToDate(self.recentDate),
+            recentDate: DateUtils.stringToDate(self.recentDate ?? self.startDate),
+            bookmarks: self.toBookmarks(from: self.bookmarks),
             memos: self.toMemos(from: self.memos),
             characters: self.toCharacters(from: self.characters)
         )
+    }
+    
+    func toBookmarks(from bookmarkDTOs: [BookmarkDTO]?) -> [Bookmark]? {
+        guard let bookmarkDTOs else { return nil }
+        
+        let bookmarkEntities = bookmarkDTOs.map {
+            Bookmark(
+                id: $0.uuid,
+                date: DateUtils.stringToDate($0.date),
+                markPage: $0.markPage,
+                markPercent: $0.markPercent,
+                location: nil
+            )
+        }
+        
+        return bookmarkEntities
     }
     
     func toMemos(from memoDTOs: [MemoDTO]?) -> [Memo]? {

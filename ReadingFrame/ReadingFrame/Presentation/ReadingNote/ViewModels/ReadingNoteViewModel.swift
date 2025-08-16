@@ -14,6 +14,8 @@ import MapKit
 class ReadingNoteViewModel: ObservableObject {
     // MARK: - Properties
     @Published var book: ReadingNoteModel?
+    @Published var isLoading: Bool = false
+    @Published var hasError: Bool = false
     
     /// 해당 책의 isbn값
     var isbn: String
@@ -37,11 +39,6 @@ class ReadingNoteViewModel: ObservableObject {
     // MARK: - init()
     init(isbn: String) {
         self.isbn = isbn
-        fetchData { isSuccess in
-            if !isSuccess {
-                print("독서노트 조회 실패")
-            }
-        }
     }
     
     
@@ -49,27 +46,64 @@ class ReadingNoteViewModel: ObservableObject {
     
     /// 서버에서 데이터 가져오기
     func fetchData(completion: @escaping (Bool) -> (Void)) {
+        print("ReadingNoteViewModel: fetchData called for ISBN: \(isbn)")
+        
+        DispatchQueue.main.async {
+            self.isLoading = true
+            self.hasError = false
+        }
+        
         ReadingNoteAPI.shared.getReadingNote(isbn: isbn) { response in
             switch response {
             case .success(let data):
-                if let data = data as? ReadingNoteResponse {
-                    self.book = data.toEntity()
+                if let readingNoteResponse = data as? ReadingNoteResponse {
+                    DispatchQueue.main.async {
+                        self.book = readingNoteResponse.toEntity()
+                        self.isLoading = false
+                    }
+                }
+                else {
+                    print("ReadingNoteViewModel: Unknown data type: \(type(of: data))")
+                    DispatchQueue.main.async {
+                        self.isLoading = false
+                        self.hasError = true
+                    }
                 }
                 completion(true)
             case .requestErr(let message):
                 print("Request Err: \(message)")
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    self.hasError = true
+                }
                 completion(false)
             case .pathErr:
                 print("Path Err")
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    self.hasError = true
+                }
                 completion(false)
             case .serverErr(let message):
                 print("Server Err: \(message)")
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    self.hasError = true
+                }
                 completion(false)
             case .networkFail(let message):
                 print("Network Err: \(message)")
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    self.hasError = true
+                }
                 completion(false)
             case .unknown(let error):
                 print("Unknown Err: \(error)")
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    self.hasError = true
+                }
                 completion(false)
             }
         }

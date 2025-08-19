@@ -55,4 +55,27 @@ class EditAllRecordAPI: BaseAPI {
             }
         }
     }
+    
+    /// 책갈피 삭제 API
+    func deleteBookmark(isbn: String, uuid: String, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        let request = DeleteBookmarkRequest(uuid: uuid)
+        
+        AFManager.request(EditAllRecordService.deleteBookmark(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, String.self))
+                
+            case .failure(let err):
+                completion(.networkFail(err.localizedDescription))
+            }
+        }
+    }
 }

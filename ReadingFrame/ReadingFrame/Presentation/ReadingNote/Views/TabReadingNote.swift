@@ -243,7 +243,7 @@ extension TabReadingNote {
                             .padding(.vertical, 24)
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
-                                    vm.bookmarkData?.remove(at: index)
+                                    vm.deleteBookmark(id: item.id)
                                 } label: {
                                     Image(systemName: "trash.fill")
                                 }

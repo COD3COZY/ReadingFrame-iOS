@@ -86,6 +86,53 @@ class TabReadingNoteViewModel: ObservableObject {
         }
     }
     
+    /// 책갈피 삭제하고 뷰로직 처리
+    func deleteBookmark(id: String) {
+        deleteBookmark(id: id) { success in
+            if success {
+                self.bookmarkData?.removeAll {
+                    $0.id == id
+                }
+            }
+        }
+    }
+    
+    /// 책갈피 삭제 API 호출
+    private func deleteBookmark(id: String, completion: @escaping (Bool) -> (Void)) {
+        EditAllRecordAPI.shared.deleteBookmark(isbn: self.book.isbn, uuid: id) { response in
+            switch response {
+            case .success(let data):
+                if let bookmarks = data as? [BookmarkTapResponse] {
+                    self.bookmarkData = bookmarks.map {
+                        Bookmark(
+                            id: $0.uuid,
+                            date: DateUtils.stringToDate($0.date),
+                            markPage: $0.markPage,
+                            markPercent: $0.markPercent
+                        )
+                    }
+                }
+                completion(true)
+                
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
     /// 메모 데이터 불러오기
     func fetchMemoData() {
         // TODO: 메모 전체조회 API 호출하기

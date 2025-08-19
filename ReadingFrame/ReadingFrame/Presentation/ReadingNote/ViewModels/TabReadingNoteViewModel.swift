@@ -190,22 +190,50 @@ class TabReadingNoteViewModel: ObservableObject {
     
     /// 인물사전 데이터 불러오기
     func fetchCharacterData() {
-        // TODO: 인물사전 전체조회 API 호출하기
-        
-        // FIXME: 아래쪽 더미 데이터 지우기
-        self.characterData = [
-            Character(emoji: 129401, name: "얼굴", preview: "슬픈 얼굴이지요 너무 슬퍼서 울고 있는 얼굴입니다", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루"),
-            Character(emoji: 129401, name: "얼굴", preview: "어쩌구", description: "어쩌구룰루")
-        ]
-        
-        self.filteredCharacter = characterData
+        self.fetchCharacterData { success in
+            if success {
+                self.filteredCharacter = self.characterData
+            } else {
+                print("인물사전 데이터 불러오기 실패")
+            }
+        }
+    }
+    
+    /// 인물사전 전체조회 API 호출
+    private func fetchCharacterData(completion: @escaping(Bool) -> Void) {
+        TabReadingNoteAPI.shared.fetchAllCharacter(isbn: self.book.isbn) { response in
+            switch response {
+            case .success(let data):
+                if let characterList = data as? [CharacterTapResponse] {
+                    self.characterData = characterList.map {
+                        Character(
+                            emoji: $0.emoji,
+                            name: $0.name,
+                            preview: $0.preview,
+                            description: $0.description
+                        )
+                    }
+                    
+                    completion(true)
+                }
+                
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
     }
     
     /// 인물사전 검색하기

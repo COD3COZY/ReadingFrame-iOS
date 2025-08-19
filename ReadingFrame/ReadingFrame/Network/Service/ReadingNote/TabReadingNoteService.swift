@@ -13,21 +13,21 @@ enum TabReadingNoteService {
     case fetchAllBookmark(String)
     /// 메모 전체조회 API
     case fetchAllMemo(String)
+    /// 인물사전 전체조회 API
+    case fetchAllCharacter(String)
 }
 
 extension TabReadingNoteService: TargetType {
     var method: HTTPMethod {
         switch self {
-        case .fetchAllBookmark:
-            return .get
-        case .fetchAllMemo:
+        case .fetchAllBookmark, .fetchAllMemo, .fetchAllCharacter:
             return .get
         }
     }
     
     var endPoint: String {
         switch self {
-        case .fetchAllBookmark, .fetchAllMemo:
+        case .fetchAllBookmark, .fetchAllMemo, .fetchAllCharacter:
             return APIConstants.bookCommonURL
         }
     }
@@ -38,6 +38,8 @@ extension TabReadingNoteService: TargetType {
             return .path(isbn + "/bookmark")
         case .fetchAllMemo(let isbn):
             return .path(isbn + "/memo")
+        case .fetchAllCharacter(let isbn):
+            return .path(isbn + "/character-dictionary")
         }
     }
 }

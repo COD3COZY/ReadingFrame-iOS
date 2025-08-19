@@ -58,4 +58,25 @@ class TabReadingNoteAPI: BaseAPI {
             }
         }
     }
+    
+    /// 인물사전 전체조회 API
+    func fetchAllCharacter(isbn: String, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(TabReadingNoteService.fetchAllCharacter(isbn), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, [CharacterTapResponse].self))
+                
+            case .failure(let err):
+                completion(.networkFail(err.localizedDescription))
+            }
+        }
+    }
 }

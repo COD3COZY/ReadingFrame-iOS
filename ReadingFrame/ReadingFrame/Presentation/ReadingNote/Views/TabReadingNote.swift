@@ -158,11 +158,7 @@ struct TabReadingNote: View {
         .onAppear {
             switch vm.selectedTab {
             case .bookmark:
-                vm.fetchBookmarkData { success in
-                    if !success {
-                        print("책갈피 호출 실패")
-                    }
-                }
+                vm.fetchBookmarkData()
             case .memo:
                 vm.fetchMemoData()
             case .character:
@@ -173,11 +169,7 @@ struct TabReadingNote: View {
             // 탭이 달라질 때 데이터 불러오기
             switch newValue {
             case .bookmark:
-                vm.fetchBookmarkData { success in
-                    if !success {
-                        print("책갈피 데이터 로드 실패")
-                    }
-                }
+                vm.fetchBookmarkData()
             case .memo:
                 vm.fetchMemoData()
             case .character:

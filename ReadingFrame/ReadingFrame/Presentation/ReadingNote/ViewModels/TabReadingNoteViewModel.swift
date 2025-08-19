@@ -50,8 +50,17 @@ class TabReadingNoteViewModel: ObservableObject {
     }
     
     // MARK: - Methods
-    /// 책갈피 데이터 불러오기
-    func fetchBookmarkData(completion: @escaping (Bool) -> (Void)) {
+    /// 책갈피 전체조회
+    func fetchBookmarkData() {
+        self.fetchBookmarkData { success in
+            if !success {
+                print("책갈피 데이터 로드 실패")
+            }
+        }
+    }
+    
+    /// 책갈피 전체조회 API 호출
+    private func fetchBookmarkData(completion: @escaping (Bool) -> (Void)) {
         TabReadingNoteAPI.shared.fetchAllBookmark(isbn: book.isbn) { response in
             switch response {
             case .success(let data):
@@ -133,20 +142,50 @@ class TabReadingNoteViewModel: ObservableObject {
         }
     }
     
-    /// 메모 데이터 불러오기
+    /// 메모 전체조회
     func fetchMemoData() {
-        // TODO: 메모 전체조회 API 호출하기
-        
-        // FIXME: 아래쪽 더미 데이터 지우기
-        self.memoData = [
-            Memo(id: "0", date: Date(), markPage: 10, markPercent: 10, memo: "hello"),
-            Memo(id: "1", date: Date(), markPage: 10, markPercent: 10, memo: "hello"),
-            Memo(id: "2", date: Date(), markPage: 10, markPercent: 10, memo: "hello"),
-            Memo(id: "3", date: Date(), markPage: 10, markPercent: 10, memo: "hello"),
-            Memo(id: "4", date: Date(), markPage: 10, markPercent: 10, memo: "hello"),
-            Memo(id: "5", date: Date(), markPage: 10, markPercent: 10, memo: "hello"),
-            Memo(id: "6", date: Date(), markPage: 10, markPercent: 10, memo: "hello"),
-        ]
+        self.fetchMemoData(isbn: self.book.isbn) { success in
+            if !success {
+                print("메모 데이터 호출 실패")
+            }
+        }
+    }
+    
+    /// 메모 전체조회 API 호출
+    private func fetchMemoData(isbn: String, completion: @escaping (Bool) -> Void) {
+        TabReadingNoteAPI.shared.fetchAllMemo(isbn: isbn) { response in
+            switch response {
+            case .success(let data):
+                if let memos = data as? [MemoTapResponse] {
+                    self.memoData = memos.map {
+                        Memo(
+                            id: $0.uuid,
+                            date: DateUtils.stringToDate($0.date),
+                            markPage: $0.markPage,
+                            markPercent: $0.markPercent,
+                            memo: $0.memoText
+                        )
+                    }
+                }
+                completion(true)
+                
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
     }
     
     /// 인물사전 데이터 불러오기

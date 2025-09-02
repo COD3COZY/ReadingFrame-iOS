@@ -82,6 +82,29 @@ class TabReadingNoteAPI: BaseAPI {
         }
     }
     
+    /// 메모 삭제 API
+    func deleteMemo(isbn: String, uuid: String, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        let request = TabReadingNoteDeleteRequest(uuid: uuid)
+        
+        AFManager.request(TabReadingNoteService.deleteMemo(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, String.self))
+                
+            case .failure(let err):
+                completion(.networkFail(err.localizedDescription))
+            }
+        }
+    }
+    
     /// 인물사전 전체조회 API
     func fetchAllCharacter(isbn: String, completion: @escaping (NetworkResult<Any>) -> (Void)) {
         AFManager.request(TabReadingNoteService.fetchAllCharacter(isbn), interceptor: MyRequestInterceptor()).responseData { (response) in

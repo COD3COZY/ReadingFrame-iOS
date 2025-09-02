@@ -15,6 +15,8 @@ enum TabReadingNoteService {
     case deleteBookmark(String, TabReadingNoteDeleteRequest)
     /// 메모 전체조회 API
     case fetchAllMemo(String)
+    /// 메모 삭제 API
+    case deleteMemo(String, TabReadingNoteDeleteRequest)
     /// 인물사전 전체조회 API
     case fetchAllCharacter(String)
 }
@@ -24,7 +26,7 @@ extension TabReadingNoteService: TargetType {
         switch self {
         case .fetchAllBookmark, .fetchAllMemo, .fetchAllCharacter:
             return .get
-        case .deleteBookmark:
+        case .deleteBookmark, .deleteMemo:
             return .delete
         }
     }
@@ -41,6 +43,8 @@ extension TabReadingNoteService: TargetType {
             return .pathBody(isbn + "/bookmark", body: request)
         case .fetchAllMemo(let isbn):
             return .path(isbn + "/memo")
+        case .deleteMemo(let isbn, let request):
+            return .pathBody(isbn + "/memo", body: request)
         case .fetchAllCharacter(let isbn):
             return .path(isbn + "/character-dictionary")
         }

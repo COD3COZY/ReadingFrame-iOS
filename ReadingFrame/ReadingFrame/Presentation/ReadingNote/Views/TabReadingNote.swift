@@ -269,7 +269,7 @@ extension TabReadingNote {
                             .padding(.vertical, 24)
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
-                                    vm.memoData?.remove(at: index)
+                                    vm.deleteMemo(id: item.id)
                                 } label: {
                                     Image(systemName: "trash.fill")
                                 }

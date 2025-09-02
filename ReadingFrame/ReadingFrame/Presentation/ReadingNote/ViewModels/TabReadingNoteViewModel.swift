@@ -178,6 +178,43 @@ class TabReadingNoteViewModel: ObservableObject {
         }
     }
     
+    /// 메모 삭제하고 뷰로직 처리
+    func deleteMemo(id: String) {
+        deleteMemo(id: id) { success in
+            if success {
+                self.memoData?.removeAll {
+                    $0.id == id
+                }
+            }
+        }
+    }
+    
+    /// 메모 삭제 API 호출
+    private func deleteMemo(id: String, completion: @escaping (Bool) -> (Void)) {
+        TabReadingNoteAPI.shared.deleteMemo(isbn: self.book.isbn, uuid: id) { response in
+            switch response {
+            case .success(let _):
+                completion(true)
+                
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
     /// 인물사전 데이터 불러오기
     func fetchCharacterData() {
         self.fetchCharacterData { success in

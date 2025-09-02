@@ -14,6 +14,7 @@ class EditAllRecordAPI: BaseAPI {
         super.init()
     }
     
+    // MARK: 책갈피
     /// 책갈피 등록 API
     func postNewBookmark(isbn: String, request: PostNewBookmarkRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
         AFManager.request(EditAllRecordService.postNewBookmark(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
@@ -61,6 +62,27 @@ class EditAllRecordAPI: BaseAPI {
         let request = DeleteBookmarkRequest(uuid: uuid)
         
         AFManager.request(EditAllRecordService.deleteBookmark(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, String.self))
+                
+            case .failure(let err):
+                completion(.networkFail(err.localizedDescription))
+            }
+        }
+    }
+    
+    // MARK: 메모
+    func postNewMemo(isbn: String, request: PostNewMemoRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(EditAllRecordService.postNewMemo(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
             switch response.result {
             case .success:
                 guard let statusCode = response.response?.statusCode

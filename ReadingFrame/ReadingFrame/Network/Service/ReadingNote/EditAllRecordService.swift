@@ -16,6 +16,8 @@ enum EditAllRecordService {
     case patchBookmark(String, PatchBookmarkRequest)
     /// 책갈피 삭제 API
     case deleteBookmark(String, DeleteBookmarkRequest)
+    /// 메모 등록 API
+    case postNewMemo(String, PostNewMemoRequest)
 }
 
 extension EditAllRecordService: TargetType {
@@ -27,18 +29,13 @@ extension EditAllRecordService: TargetType {
             return .patch
         case .deleteBookmark:
             return .delete
+        case .postNewMemo:
+            return .post
         }
     }
     
     var endPoint: String {
-        switch self {
-        case .postNewBookmark:
-            return APIConstants.bookCommonURL
-        case .patchBookmark:
-            return APIConstants.bookCommonURL
-        case .deleteBookmark:
-            return APIConstants.bookCommonURL
-        }
+        return APIConstants.bookCommonURL
     }
     
     var parameters: RequestParams {
@@ -49,6 +46,8 @@ extension EditAllRecordService: TargetType {
             return .pathBody(isbn + "/bookmark", body: request)
         case .deleteBookmark(let isbn, let request):
             return .pathBody(isbn + "/bookmark", body: request)
+        case .postNewMemo(let isbn, let request):
+            return .pathBody(isbn + "/memo", body: request)
         }
     }
 }

@@ -224,9 +224,23 @@ class EditAllRecordViewModel: ObservableObject {
                 print("메모 PATCH API 호출")
             }
             else {
-                // TODO: 메모 POST API 호출하기
+                // MARK: 메모 POST API 호출하기
                 print("메모 POST API 호출")
+                
+                postMemo(
+                    isbn: self.book.isbn,
+                    request: PostNewMemoRequest(
+                        date: DateUtils.dateToString(date: selectedDate),
+                        markPage: Int(self.bookMarkPage),
+                        memoText: self.inputMemo
+                    )
+                ) { success in
+                    if !success {
+                        print("메모 등록 실패")
+                    }
+                }
             }
+            
         case RecordType.character.rawValue:
             if isForEditing {
                 // TODO: 인물사전 PATCH API 호출하기
@@ -337,6 +351,35 @@ extension EditAllRecordViewModel {
             switch response {
             case .success(let data):
                 print("책갈피 수정 성공 \(data)")
+                completion(true)
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
+    /// 메모 등록 API
+    func postMemo(isbn: String, request: PostNewMemoRequest, completion: @escaping (Bool) -> (Void)) {
+        EditAllRecordAPI.shared.postNewMemo(
+            isbn: isbn,
+            request: request
+        ) { response in
+            switch response {
+            case .success(let data):
+                print("새로운 메모 등록 성공 \(data)")
                 completion(true)
             case .requestErr(let message):
                 print("Request Err: \(message)")

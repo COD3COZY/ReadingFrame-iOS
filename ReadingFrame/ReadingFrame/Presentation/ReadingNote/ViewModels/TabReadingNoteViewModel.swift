@@ -110,17 +110,7 @@ class TabReadingNoteViewModel: ObservableObject {
     private func deleteBookmark(id: String, completion: @escaping (Bool) -> (Void)) {
         TabReadingNoteAPI.shared.deleteBookmark(isbn: self.book.isbn, uuid: id) { response in
             switch response {
-            case .success(let data):
-                if let bookmarks = data as? [BookmarkTapResponse] {
-                    self.bookmarkData = bookmarks.map {
-                        Bookmark(
-                            id: $0.uuid,
-                            date: DateUtils.stringToDate($0.date),
-                            markPage: $0.markPage,
-                            markPercent: $0.markPercent
-                        )
-                    }
-                }
+            case .success(let _):
                 completion(true)
                 
             case .requestErr(let message):

@@ -108,7 +108,7 @@ class TabReadingNoteViewModel: ObservableObject {
     
     /// 책갈피 삭제 API 호출
     private func deleteBookmark(id: String, completion: @escaping (Bool) -> (Void)) {
-        EditAllRecordAPI.shared.deleteBookmark(isbn: self.book.isbn, uuid: id) { response in
+        TabReadingNoteAPI.shared.deleteBookmark(isbn: self.book.isbn, uuid: id) { response in
             switch response {
             case .success(let data):
                 if let bookmarks = data as? [BookmarkTapResponse] {

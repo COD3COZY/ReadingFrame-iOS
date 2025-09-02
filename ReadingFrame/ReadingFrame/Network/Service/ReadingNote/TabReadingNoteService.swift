@@ -11,6 +11,8 @@ import Alamofire
 enum TabReadingNoteService {
     /// 책갈피 전체조회 API
     case fetchAllBookmark(String)
+    /// 책갈피 삭제 API
+    case deleteBookmark(String, TabReadingNoteDeleteRequest)
     /// 메모 전체조회 API
     case fetchAllMemo(String)
     /// 인물사전 전체조회 API
@@ -22,20 +24,21 @@ extension TabReadingNoteService: TargetType {
         switch self {
         case .fetchAllBookmark, .fetchAllMemo, .fetchAllCharacter:
             return .get
+        case .deleteBookmark:
+            return .delete
         }
     }
     
     var endPoint: String {
-        switch self {
-        case .fetchAllBookmark, .fetchAllMemo, .fetchAllCharacter:
-            return APIConstants.bookCommonURL
-        }
+        return APIConstants.bookCommonURL
     }
     
     var parameters: RequestParams {
         switch self {
         case .fetchAllBookmark(let isbn):
             return .path(isbn + "/bookmark")
+        case .deleteBookmark(let isbn, let request):
+            return .pathBody(isbn + "/bookmark", body: request)
         case .fetchAllMemo(let isbn):
             return .path(isbn + "/memo")
         case .fetchAllCharacter(let isbn):

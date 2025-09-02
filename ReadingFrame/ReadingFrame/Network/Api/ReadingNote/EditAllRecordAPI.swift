@@ -57,29 +57,6 @@ class EditAllRecordAPI: BaseAPI {
         }
     }
     
-    /// 책갈피 삭제 API
-    func deleteBookmark(isbn: String, uuid: String, completion: @escaping (NetworkResult<Any>) -> (Void)) {
-        let request = TabReadingNoteDeleteRequest(uuid: uuid)
-        
-        AFManager.request(EditAllRecordService.deleteBookmark(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
-            switch response.result {
-            case .success:
-                guard let statusCode = response.response?.statusCode
-                else {
-                    return
-                }
-                guard let data = response.data
-                else {
-                    return
-                }
-                completion(self.judgeData(by: statusCode, data, String.self))
-                
-            case .failure(let err):
-                completion(.networkFail(err.localizedDescription))
-            }
-        }
-    }
-    
     // MARK: 메모
     func postNewMemo(isbn: String, request: EditAllRecordMemoRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
         AFManager.request(EditAllRecordService.postNewMemo(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in

@@ -59,7 +59,7 @@ class EditAllRecordAPI: BaseAPI {
     
     /// 책갈피 삭제 API
     func deleteBookmark(isbn: String, uuid: String, completion: @escaping (NetworkResult<Any>) -> (Void)) {
-        let request = DeleteBookmarkRequest(uuid: uuid)
+        let request = TabReadingNoteDeleteRequest(uuid: uuid)
         
         AFManager.request(EditAllRecordService.deleteBookmark(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
             switch response.result {

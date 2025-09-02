@@ -15,7 +15,7 @@ enum EditAllRecordService {
     /// 책갈피 수정 API
     case patchBookmark(String, PatchBookmarkRequest)
     /// 책갈피 삭제 API
-    case deleteBookmark(String, DeleteBookmarkRequest)
+    case deleteBookmark(String, TabReadingNoteDeleteRequest)
     /// 메모 등록 API
     case postNewMemo(String, EditAllRecordMemoRequest)
     /// 메모 수정 API

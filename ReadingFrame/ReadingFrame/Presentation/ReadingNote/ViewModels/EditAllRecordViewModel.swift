@@ -176,7 +176,7 @@ class EditAllRecordViewModel: ObservableObject {
         switch selectedTab {
         case RecordType.bookmark.rawValue:
             if isForEditing {
-                // MARK: 책갈피 PATCH API 호출하기
+                // MARK: 책갈피 PATCH API 호출
                 print("책갈피 PATCH API 호출")
                 
                 guard let bookmarkID = bookmarkEditInfo?.id else {
@@ -199,7 +199,7 @@ class EditAllRecordViewModel: ObservableObject {
                 }
             }
             else {
-                // MARK: 책갈피 POST API 호출하기
+                // MARK: 책갈피 POST API 호출
                 print("책갈피 POST API 호출")
                 
                 registerBookmark(
@@ -220,11 +220,30 @@ class EditAllRecordViewModel: ObservableObject {
             
         case RecordType.memo.rawValue:
             if isForEditing {
-                // TODO: 메모 PATCH API 호출하기
+                // MARK: 메모 PATCH API 호출
                 print("메모 PATCH API 호출")
+                
+                guard let memoID = memoEditInfo?.id else {
+                    print("바꿀 메모가 없어요")
+                    return
+                }
+                
+                editMemo(
+                    isbn: self.book.isbn,
+                    request: EditAllRecordMemoRequest(
+                        uuid: memoID,
+                        date: DateUtils.dateToString(date: selectedDate),
+                        markPage: Int(self.bookMarkPage),
+                        memoText: self.inputMemo
+                    )
+                ) { success in
+                    if !success {
+                        print("메모 수정 실패")
+                    }
+                }
             }
             else {
-                // MARK: 메모 POST API 호출하기
+                // MARK: 메모 POST API 호출
                 print("메모 POST API 호출")
                 
                 postMemo(
@@ -381,6 +400,35 @@ extension EditAllRecordViewModel {
             switch response {
             case .success(let data):
                 print("새로운 메모 등록 성공 \(data)")
+                completion(true)
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
+    /// 메모 수정 API
+    func editMemo(isbn: String, request: EditAllRecordMemoRequest, completion: @escaping (Bool) -> (Void)) {
+        EditAllRecordAPI.shared.patchMemo(
+            isbn: isbn,
+            request: request
+        ) { response in
+            switch response {
+            case .success(let data):
+                print("메모 수정 성공 \(data)")
                 completion(true)
             case .requestErr(let message):
                 print("Request Err: \(message)")

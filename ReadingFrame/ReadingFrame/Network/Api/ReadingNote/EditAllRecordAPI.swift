@@ -100,4 +100,25 @@ class EditAllRecordAPI: BaseAPI {
             }
         }
     }
+    
+    /// 메모 수정 API
+    func patchMemo(isbn: String, request: EditAllRecordMemoRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(EditAllRecordService.patchMemo(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, String.self))
+                
+            case .failure(let err):
+                completion(.networkFail(err.localizedDescription))
+            }
+        }
+    }
 }

@@ -17,7 +17,7 @@ enum EditAllRecordService {
     /// 책갈피 삭제 API
     case deleteBookmark(String, DeleteBookmarkRequest)
     /// 메모 등록 API
-    case postNewMemo(String, PostNewMemoRequest)
+    case postNewMemo(String, EditAllRecordMemoRequest)
 }
 
 extension EditAllRecordService: TargetType {

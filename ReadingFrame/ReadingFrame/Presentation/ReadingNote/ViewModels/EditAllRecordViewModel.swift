@@ -229,7 +229,8 @@ class EditAllRecordViewModel: ObservableObject {
                 
                 postMemo(
                     isbn: self.book.isbn,
-                    request: PostNewMemoRequest(
+                    request: EditAllRecordMemoRequest(
+                        uuid: UUID().uuidString,
                         date: DateUtils.dateToString(date: selectedDate),
                         markPage: Int(self.bookMarkPage),
                         memoText: self.inputMemo
@@ -372,7 +373,7 @@ extension EditAllRecordViewModel {
     }
     
     /// 메모 등록 API
-    func postMemo(isbn: String, request: PostNewMemoRequest, completion: @escaping (Bool) -> (Void)) {
+    func postMemo(isbn: String, request: EditAllRecordMemoRequest, completion: @escaping (Bool) -> (Void)) {
         EditAllRecordAPI.shared.postNewMemo(
             isbn: isbn,
             request: request

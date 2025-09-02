@@ -81,7 +81,7 @@ class EditAllRecordAPI: BaseAPI {
     }
     
     // MARK: 메모
-    func postNewMemo(isbn: String, request: PostNewMemoRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+    func postNewMemo(isbn: String, request: EditAllRecordMemoRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
         AFManager.request(EditAllRecordService.postNewMemo(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
             switch response.result {
             case .success:

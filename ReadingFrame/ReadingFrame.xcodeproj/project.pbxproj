@@ -29,6 +29,7 @@
 		C52CE0E42CD372F500C6D09A /* ReadingNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CE0E32CD372F500C6D09A /* ReadingNoteViewModel.swift */; };
 		C52DF9C52E66C8D1004DAD4E /* EditAllRecordMemoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52DF9C42E66C8D1004DAD4E /* EditAllRecordMemoRequest.swift */; };
 		C52DF9C72E681E71004DAD4E /* EditAllRecordCharacterRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52DF9C62E681E71004DAD4E /* EditAllRecordCharacterRequest.swift */; };
+		C52DF9C92E682753004DAD4E /* DeleteCharacterRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52DF9C82E682753004DAD4E /* DeleteCharacterRequest.swift */; };
 		C52EC5992C308162004F6BDB /* BookMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52EC5982C308162004F6BDB /* BookMapViewModel.swift */; };
 		C52EC59B2C308181004F6BDB /* BookLocationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52EC59A2C308181004F6BDB /* BookLocationData.swift */; };
 		C52EC59D2C3081EE004F6BDB /* BookMapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52EC59C2C3081EE004F6BDB /* BookMapModel.swift */; };
@@ -251,6 +252,7 @@
 		C52CE0E32CD372F500C6D09A /* ReadingNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingNoteViewModel.swift; sourceTree = "<group>"; };
 		C52DF9C42E66C8D1004DAD4E /* EditAllRecordMemoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAllRecordMemoRequest.swift; sourceTree = "<group>"; };
 		C52DF9C62E681E71004DAD4E /* EditAllRecordCharacterRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAllRecordCharacterRequest.swift; sourceTree = "<group>"; };
+		C52DF9C82E682753004DAD4E /* DeleteCharacterRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCharacterRequest.swift; sourceTree = "<group>"; };
 		C52EC5982C308162004F6BDB /* BookMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMapViewModel.swift; sourceTree = "<group>"; };
 		C52EC59A2C308181004F6BDB /* BookLocationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookLocationData.swift; sourceTree = "<group>"; };
 		C52EC59C2C3081EE004F6BDB /* BookMapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMapModel.swift; sourceTree = "<group>"; };
@@ -1006,6 +1008,7 @@
 				C5ADEEE72E54D559005BDD0B /* TabReadingNoteDeleteRequest.swift */,
 				C52DF9C42E66C8D1004DAD4E /* EditAllRecordMemoRequest.swift */,
 				C52DF9C62E681E71004DAD4E /* EditAllRecordCharacterRequest.swift */,
+				C52DF9C82E682753004DAD4E /* DeleteCharacterRequest.swift */,
 			);
 			path = ReadingNote;
 			sourceTree = "<group>";
@@ -1632,6 +1635,7 @@
 				E751B56E2B8E0D3100880123 /* FinishReadRowView.swift in Sources */,
 				E768F08F2CE48CD1003E2CB3 /* HomeBookModel.swift in Sources */,
 				E7B2E94D2D1853D500566E88 /* SearchService.swift in Sources */,
+				C52DF9C92E682753004DAD4E /* DeleteCharacterRequest.swift in Sources */,
 				C52DF9C72E681E71004DAD4E /* EditAllRecordCharacterRequest.swift in Sources */,
 				C55AB2492D4FD9410036E081 /* Place.swift in Sources */,
 				C5B57A0A2D5BA15200B4B18D /* CircleBorderCharcterView.swift in Sources */,

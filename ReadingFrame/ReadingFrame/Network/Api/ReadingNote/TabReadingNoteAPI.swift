@@ -125,4 +125,27 @@ class TabReadingNoteAPI: BaseAPI {
             }
         }
     }
+    
+    /// 인물 삭제 API
+    func deleteCharacter(isbn: String, name: String, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        let request = DeleteCharacterRequest(name: name)
+        
+        AFManager.request(TabReadingNoteService.deleteCharacter(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, String.self))
+                
+            case .failure(let err):
+                completion(.networkFail(err.localizedDescription))
+            }
+        }
+    }
 }

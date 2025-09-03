@@ -193,7 +193,7 @@ class TabReadingNoteViewModel: ObservableObject {
     private func deleteMemo(id: String, completion: @escaping (Bool) -> (Void)) {
         TabReadingNoteAPI.shared.deleteMemo(isbn: self.book.isbn, uuid: id) { response in
             switch response {
-            case .success(let _):
+            case .success:
                 completion(true)
                 
             case .requestErr(let message):

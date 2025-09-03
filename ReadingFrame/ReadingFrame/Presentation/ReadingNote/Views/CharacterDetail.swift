@@ -22,6 +22,8 @@ struct CharacterDetail: View {
     /// 인물사전 삭제 alert 띄움 여부
     @State var isShowDeleteAlert: Bool = false
     
+    @Environment(\.dismiss) private var dismiss
+    
     // MARK: - BODY
     var body: some View {
         ScrollView {
@@ -96,8 +98,14 @@ struct CharacterDetail: View {
         ) {
             Button("아니오", role: .cancel) { }
             Button("예", role: .destructive) {
-                // TODO: 인물사전 삭제 API 호출
-                // TODO: 이전 화면으로 이동하기
+                // 인물사전 삭제 API 호출 후 빠져나가기
+                deleteCharacter(name: character.name) { success in
+                    if success {
+                        dismiss()
+                    } else {
+                        print("인물사전 삭제 실패")
+                    }
+                }
             }
         } message: {
             Text("삭제된 인물사전은 복구할 수 없습니다.")
@@ -116,6 +124,35 @@ extension CharacterDetail {
             characterEditInfo: self.character,
             isPickerAppear: false
         )
+    }
+}
+
+// MARK: methods
+extension CharacterDetail {
+    /// 인물 삭제 API 호출
+    private func deleteCharacter(name: String, completion: @escaping (Bool) -> (Void)) {
+        TabReadingNoteAPI.shared.deleteCharacter(isbn: bookInfo.isbn, name: name) { response in
+            switch response {
+            case .success:
+                completion(true)
+                
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
     }
 }
 

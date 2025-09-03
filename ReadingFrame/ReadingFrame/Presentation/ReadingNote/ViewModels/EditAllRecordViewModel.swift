@@ -269,6 +269,19 @@ class EditAllRecordViewModel: ObservableObject {
             else {
                 // TODO: 인물사전 POST API 호출하기
                 print("인물사전 POST API 호출")
+                
+                postCharacter(
+                    isbn: self.book.isbn,
+                    request: EditAllRecordCharacterRequest(
+                        emoji: Int(characterEmoji.unicodeScalars.first!.value),
+                        name: self.characterName,
+                        preview: self.characterPreview,
+                        description: self.characterDescription)
+                ) { success in
+                    if success {
+                        print("인물사전 등록 성공!")
+                    }
+                }
             }
         default: break
         }
@@ -429,6 +442,35 @@ extension EditAllRecordViewModel {
             switch response {
             case .success(let data):
                 print("메모 수정 성공 \(data)")
+                completion(true)
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
+    /// 인물사전 등록 API
+    func postCharacter(isbn: String, request: EditAllRecordCharacterRequest, completion: @escaping (Bool) -> (Void)) {
+        EditAllRecordAPI.shared.postNewCharacter(
+            isbn: isbn,
+            request: request
+        ) { response in
+            switch response {
+            case .success(let data):
+                print("새로운 인물 등록 성공 \(data)")
                 completion(true)
             case .requestErr(let message):
                 print("Request Err: \(message)")

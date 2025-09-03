@@ -18,18 +18,16 @@ enum EditAllRecordService {
     case postNewMemo(String, EditAllRecordMemoRequest)
     /// 메모 수정 API
     case patchMemo(String, EditAllRecordMemoRequest)
+    /// 인물사전 등록 API
+    case postNewCharacter(String, EditAllRecordCharacterRequest)
 }
 
 extension EditAllRecordService: TargetType {
     var method: HTTPMethod {
         switch self {
-        case .postNewBookmark:
+        case .postNewBookmark, .postNewMemo, .postNewCharacter:
             return .post
-        case .patchBookmark:
-            return .patch
-        case .postNewMemo:
-            return .post
-        case .patchMemo:
+        case .patchBookmark, .patchMemo:
             return .patch
         }
     }
@@ -46,6 +44,8 @@ extension EditAllRecordService: TargetType {
             return .pathBody(isbn + "/bookmark", body: request)
         case .postNewMemo(let isbn, let request), .patchMemo(let isbn, let request):
             return .pathBody(isbn + "/memo", body: request)
+        case .postNewCharacter(let isbn, let request):
+            return .pathBody(isbn + "/character-dictionary", body: request)
         }
     }
 }

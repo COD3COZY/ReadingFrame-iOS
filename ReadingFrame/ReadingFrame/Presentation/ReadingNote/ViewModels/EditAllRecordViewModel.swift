@@ -263,11 +263,25 @@ class EditAllRecordViewModel: ObservableObject {
             
         case RecordType.character.rawValue:
             if isForEditing {
-                // TODO: 인물사전 PATCH API 호출하기
+                // MARK: 인물사전 PATCH API 호출하기
                 print("인물사전 PATCH API 호출")
+                
+                editCharacter(
+                    isbn: self.book.isbn,
+                    request: EditAllRecordCharacterRequest(
+                        emoji: Int(characterEmoji.unicodeScalars.first!.value),
+                        name: self.characterName,
+                        preview: self.characterPreview,
+                        description: self.characterDescription
+                    )
+                ) { success in
+                    if success {
+                        print("인물사전 수정 성공!")
+                    }
+                }
             }
             else {
-                // TODO: 인물사전 POST API 호출하기
+                // MARK: 인물사전 POST API 호출하기
                 print("인물사전 POST API 호출")
                 
                 postCharacter(
@@ -276,7 +290,8 @@ class EditAllRecordViewModel: ObservableObject {
                         emoji: Int(characterEmoji.unicodeScalars.first!.value),
                         name: self.characterName,
                         preview: self.characterPreview,
-                        description: self.characterDescription)
+                        description: self.characterDescription
+                    )
                 ) { success in
                     if success {
                         print("인물사전 등록 성공!")
@@ -465,6 +480,35 @@ extension EditAllRecordViewModel {
     /// 인물사전 등록 API
     func postCharacter(isbn: String, request: EditAllRecordCharacterRequest, completion: @escaping (Bool) -> (Void)) {
         EditAllRecordAPI.shared.postNewCharacter(
+            isbn: isbn,
+            request: request
+        ) { response in
+            switch response {
+            case .success(let data):
+                print("새로운 인물 등록 성공 \(data)")
+                completion(true)
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
+    /// 인물사전 수정 API
+    func editCharacter(isbn: String, request: EditAllRecordCharacterRequest, completion: @escaping (Bool) -> (Void)) {
+        EditAllRecordAPI.shared.patchCharacter(
             isbn: isbn,
             request: request
         ) { response in

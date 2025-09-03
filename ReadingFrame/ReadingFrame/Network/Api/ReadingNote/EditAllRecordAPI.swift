@@ -100,8 +100,30 @@ class EditAllRecordAPI: BaseAPI {
     }
     
     // MARK: 인물사전
+    /// 인물사전 등록 API
     func postNewCharacter(isbn: String, request: EditAllRecordCharacterRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
         AFManager.request(EditAllRecordService.postNewCharacter(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
+            switch response.result {
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, String.self))
+                
+            case .failure(let err):
+                completion(.networkFail(err.localizedDescription))
+            }
+        }
+    }
+    
+    /// 인물사전 수정 API
+    func patchCharacter(isbn: String, request: EditAllRecordCharacterRequest, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(EditAllRecordService.patchCharacter(isbn, request), interceptor: MyRequestInterceptor()).responseData { (response) in
             switch response.result {
             case .success:
                 guard let statusCode = response.response?.statusCode

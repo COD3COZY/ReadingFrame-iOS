@@ -343,6 +343,10 @@ struct EditAllRecord: View {
                 .fill(.grey1)
         )
         .ignoresSafeArea(edges: .bottom)
+        .onTapGesture {
+            // 키보드 숨기기
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),to: nil, from: nil, for: nil)
+        }
     }
 }
 

@@ -68,7 +68,7 @@ extension ReadingNoteResponse {
             firstReviewDate: self.firstReviewDate != nil ? DateUtils.stringToDate(self.firstReviewDate!) : nil,
             keywordReview: self.keywordReview,
             commentReview: self.commentReview,
-            selectReview: self.selectReview?.compactMap { SelectReviewCode(rawValue: $0) },
+            selectReview: self.selectReview?.isEmpty == true ? nil : self.selectReview?.compactMap { SelectReviewCode(rawValue: $0) },
             isMine: self.isMine,
             bookType: BookType(rawValue: self.bookType) ?? .paperbook,
             readingStatus: ReadingStatus(rawValue: self.readingStatus) ?? .unregistered,

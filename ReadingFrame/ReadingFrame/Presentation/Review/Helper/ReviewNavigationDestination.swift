@@ -30,3 +30,10 @@ enum ReviewNavigationDestination: Hashable {
         }
     }
 }
+
+enum ReviewTypeDestination: Int {
+    case select
+    case keyword
+    case comment
+    case check
+}

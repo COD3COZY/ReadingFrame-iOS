@@ -12,14 +12,14 @@ import Observation
 /// 사용자가 개별 책에 등록하는 3종 리뷰
 class Review: ObservableObject, Hashable {
     /// 리뷰 구분을 위한 id
-    let id: UUID = UUID()
+    let id: UUID
     
     /// 선택리뷰들
     /// - 처음 생성 시에는 비어있음
-    @Published var selectReviews: [SelectReviewCode] = []
+    @Published var selectReviews: [SelectReviewCode]
     
     /// 리뷰 남기는 일시
-    @Published var reviewDate: Date = Date()
+    @Published var reviewDate: Date
     
     /// 이 책을 기억하고 싶은 단어 한 가지
     /// - DB) 15글자 제한
@@ -28,6 +28,20 @@ class Review: ObservableObject, Hashable {
     /// 한줄평
     /// - DB) 200자 제한
     @Published var comment: String?
+    
+    init(
+        id: UUID = UUID(),
+        selectReviews: [SelectReviewCode] = [],
+        reviewDate: Date = Date(),
+        keyword: String? = nil,
+        comment: String? = nil
+    ) {
+        self.id = id
+        self.selectReviews = selectReviews
+        self.reviewDate = reviewDate
+        self.keyword = keyword
+        self.comment = comment
+    }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)

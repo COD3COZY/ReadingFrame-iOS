@@ -735,6 +735,8 @@ extension ReadingNote {
                     } label : {
                         Image(systemName: "ellipsis")
                             .foregroundStyle(.black0)
+                            .frame(width: 32, height: 32, alignment: .center)
+                            .contentShape(Rectangle())
                     }
                 }
                 
@@ -767,7 +769,7 @@ extension ReadingNote {
                         
                         Image(systemName: "chevron.right")
                             .foregroundStyle(.black0)
-                            .frame(width: 13)
+                            .frame(width: 24, height: 24, alignment: .center)
                     }
                 }
             }

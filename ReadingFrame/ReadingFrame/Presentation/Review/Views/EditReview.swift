@@ -28,20 +28,23 @@ struct EditReview: View {
         VStack {
             switch vm.currentPage {
             case ReviewTypeDestination.select.rawValue:
-                // TODO: EditReview_Select 수정해서 입력하기
-                EmptyView()
+                EditReview_Select(
+                    confirmedSelected: $vm.review.selectReviews,
+                    moveToNextPage: vm.moveToNextPage,
+                    moveToLastPage: vm.moveToLastPage
+                )
                 
             case ReviewTypeDestination.keyword.rawValue:
                 // TODO: EditReview_Keyword 수정해서 입력하기
-                EmptyView()
+                Text("keyword")
                 
             case ReviewTypeDestination.comment.rawValue:
                 // TODO: EditReview_Comment 수정해서 입력하기
-                EmptyView()
+                Text("comment")
                 
             case ReviewTypeDestination.check.rawValue:
-                // TODO: EditReview_CheckReviews 수정해서 주석 해제하기
-                EmptyView()
+                // TODO: EditReview_CheckReviews 수정해서 입력하기
+                Text("check")
                 
             default:
                 GreyLogoAndTextView(text: "잘못된 화면이에요")

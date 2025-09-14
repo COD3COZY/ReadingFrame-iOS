@@ -131,57 +131,6 @@ struct ReadingNote: View {
                         vm.modifyLocation(isRegistering: self.isRegisteringLocation, place: newPlace)
                     }
                 }
-                // 리뷰 작성 Navigation 연결
-                .navigationDestination(for: ReviewNavigationDestination.self) { destination in
-                    if destination.identifier == "EditReview_Select_Make" {
-                        EditReview_Select(popToRootAction: popToRoot)
-                            .toolbarRole(.editor)
-                            .navigationBarBackButtonHidden()
-                    }
-                    else if destination.identifier == "EditReview_Select_Edit" {
-                        if case let .editReview_select_edit(data) = destination {
-                            EditReview_Select(
-                                review: data,
-                                isEditMode: true,
-                                popToRootAction: popToRoot
-                            )
-                            .toolbarRole(.editor)
-                            .navigationBarBackButtonHidden()
-                        }
-                    }
-                    else if destination.identifier == "EditReview_Keyword" {
-                        if case let .editReview_keyword(data) = destination {
-                            EditReview_Keyword(
-                                review: data,
-                                popToRootAction: popToRoot,
-                                dismissAction: popLast
-                            )
-                            .toolbarRole(.editor)
-                            .navigationBarBackButtonHidden()
-                        }
-                    }
-                    else if destination.identifier == "EditReview_Comment" {
-                        if case let .editReview_comment(data) = destination {
-                            EditReview_Comment(
-                                review: data,
-                                popToRootAction: popToRoot,
-                                dismissAction: popLast
-                            )
-                            .toolbarRole(.editor)
-                            .navigationBarBackButtonHidden()
-                        }
-                    }
-                    else if destination.identifier == "EditReview_CheckReviews" {
-                        if case let .editReview_checkReviews(data) = destination {
-                            EditReview_CheckReviews(
-                                review: data,
-                                popToRootAction: popToRoot
-                            )
-                            .toolbarRole(.editor)
-                            .navigationBarBackButtonHidden()
-                        }
-                    }
-                }
         }
         .tint(.black0)
     }
@@ -770,9 +719,11 @@ extension ReadingNote {
                     
                     // MARK: 리뷰 수정, 삭제 버튼
                     Menu {
-                        NavigationLink(
-                            value: ReviewNavigationDestination.editReview_checkReviews(data: vm.getReview())
-                        ) {
+                        NavigationLink {
+                            EditReview(review: vm.getReview())
+                                .toolbarRole(.editor)
+                                .navigationBarBackButtonHidden()
+                        } label: {
                             Label("수정", systemImage: "pencil.line")
                         }
                         
@@ -799,9 +750,11 @@ extension ReadingNote {
             // 리뷰가 없다면
             else {
                 // 리뷰 작성 화면으로 이동
-                NavigationLink(
-                    value: ReviewNavigationDestination.editReview_select_make
-                ) {
+                NavigationLink {
+                    EditReview()
+                        .toolbarRole(.editor)
+                        .navigationBarBackButtonHidden()
+                } label: {
                     HStack(alignment: .center, spacing: 0) {
                         Image(systemName: "bubble")
                             .foregroundStyle(.black0)

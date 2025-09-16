@@ -36,4 +36,5 @@ enum ReviewTypeDestination: Int {
     case keyword
     case comment
     case check
+    case selectEdit
 }

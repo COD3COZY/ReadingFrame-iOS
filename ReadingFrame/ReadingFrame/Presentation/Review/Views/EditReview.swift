@@ -30,6 +30,7 @@ struct EditReview: View {
             case ReviewTypeDestination.select.rawValue:
                 EditReview_Select(
                     confirmedSelected: $vm.review.selectReviews,
+                    isEditMode: false,
                     moveToNextPage: vm.moveToNextPage,
                     moveToLastPage: vm.moveToLastPage
                 )
@@ -45,6 +46,13 @@ struct EditReview: View {
             case ReviewTypeDestination.check.rawValue:
                 // TODO: EditReview_CheckReviews 수정해서 입력하기
                 Text("check")
+            case ReviewTypeDestination.selectEdit.rawValue:
+                EditReview_Select(
+                    confirmedSelected: $vm.review.selectReviews,
+                    isEditMode: true,
+                    moveToNextPage: vm.moveToNextPage,
+                    moveToLastPage: vm.moveToLastPage
+                )
                 
             default:
                 GreyLogoAndTextView(text: "잘못된 화면이에요")

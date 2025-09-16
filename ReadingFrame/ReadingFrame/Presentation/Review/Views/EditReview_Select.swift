@@ -49,12 +49,13 @@ struct EditReview_Select: View {
     // MARK: - init
     init(
         confirmedSelected: Binding<[SelectReviewCode]>,
+        isEditMode: Bool,
         moveToNextPage: @escaping () -> Void,
         moveToLastPage: @escaping () -> Void
     ) {
         self._confirmedSelected = confirmedSelected
         self.selected = confirmedSelected.wrappedValue
-        self.isEditMode = !confirmedSelected.isEmpty
+        self.isEditMode = isEditMode
         
         self.moveToNextPage = moveToNextPage
         self.moveToLastPage = moveToLastPage
@@ -333,6 +334,7 @@ extension EditReview_Select {
 #Preview {
     EditReview_Select(
         confirmedSelected: .constant([]),
+        isEditMode: false,
         moveToNextPage: {},
         moveToLastPage: {}
     )

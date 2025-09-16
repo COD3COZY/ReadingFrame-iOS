@@ -32,7 +32,7 @@ class EditReviewViewModel: ObservableObject {
     
     // MARK: - Methods
     func moveToNextPage() {
-        if (currentPage + 1) <= ReviewTypeDestination.check.rawValue {
+        if (currentPage + 1) <= ReviewTypeDestination.selectEdit.rawValue {
             currentPage += 1
         } else {
             return

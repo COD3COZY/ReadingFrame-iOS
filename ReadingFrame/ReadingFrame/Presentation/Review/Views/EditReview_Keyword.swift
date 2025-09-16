@@ -10,22 +10,28 @@ import SwiftUI
 /// 이 책을 기억하고 싶은 단어 한가지 키워드 입력 페이지
 struct EditReview_Keyword: View {
     // MARK: - Properties
-    /// 전달받을 전체 리뷰 객체
-    @StateObject var review: Review
+    /// 외부로 확정할 단어
+    @Binding var confirmedKeyword: String?
     
-    /// 기록할 단어
+    /// 이 페이지에서 기록할 단어
     @State var keyword: String = ""
     
-    // MARK: 리뷰 네비게이션 Stack 관리 관련
-    /// 리뷰 전체 빠져나가기 위한 클로저
-    let popToRootAction: () -> Void
+    // 화면 전환용
+    let moveToPreviousPage: () -> Void
+    let moveToNextPage: () -> Void
     
-    ///  이전으로 돌아가기
-    let dismissAction: () -> Void
-    
-    /// 리뷰 작성 빠져나가기 alert
-    @State var exitReviewAlert: Bool = false
-    
+    // MARK: - init
+    init(
+        confirmedKeyword: Binding<String?>,
+        moveToPreviousPage: @escaping () -> Void,
+        moveToNextPage: @escaping () -> Void
+    ) {
+        self._confirmedKeyword = confirmedKeyword
+        self.keyword = confirmedKeyword.wrappedValue ?? ""
+        
+        self.moveToPreviousPage = moveToPreviousPage
+        self.moveToNextPage = moveToNextPage
+    }
     
     // MARK: - View
     var body: some View {
@@ -47,10 +53,6 @@ struct EditReview_Keyword: View {
                 // 키워드 입력 박스
                 KeywordTextField(text: $keyword, parentViewWidth: geometry.size.width)
                     .frame(maxWidth: geometry.size.width, maxHeight: 45, alignment: .topLeading)
-                    // 키워드 입력되면 바로 review 객체에 입력시키기
-                    .onChange(of: keyword) {
-                        review.keyword = self.keyword
-                    }
                 
                 Spacer()
                 
@@ -59,55 +61,12 @@ struct EditReview_Keyword: View {
                     .padding(.vertical, 16)
             }
             .padding(.horizontal, 16)
-            .navigationTitle("리뷰 작성")
-            .navigationBarTitleDisplayMode(.inline) // 상단에 바 뜨는 모양
-            // 상단 이전 버튼(리뷰 빠져나가기)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        exitReviewAlert.toggle()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .foregroundStyle(.black0)
-                            .fontWeight(.medium)
-                    }
-                    // MARK: < 버튼 클릭 시 나타나는 Alert
-                    .alert(
-                        "이 페이지에서 나가시겠습니까?",
-                        isPresented: $exitReviewAlert
-                    ) {
-                        Button("아니오", role: .cancel) { }
-                        Button("예", role: .destructive) {
-                            // 독서노트 작성 빠져나가기
-                            popToRootAction()
-                        }
-                    } message: {
-                        Text("변경사항이 저장되지 않을 수 있습니다.")
-                    }
-                }
-            }
-            .task {
-                // 선택리뷰 확인
-                print("---Keyword 입력 페이지 task ----")
-                print("Review객체정보\n- selected: \(review.selectReviews)\n- keyword: \(review.keyword ?? "없어요. 없다니까요")\n- comment: \(review.comment ?? "없어요, 없다니까요")")
-                
-                // 뷰에서 review 넘겨줬을 때 입력되어있는 키워드 있으면 self.keyword에도 반영
-                if let keywordText = self.review.keyword {
-                    self.keyword = keywordText
-                }
-            }
-            .onDisappear {
-                if keyword.count > 0 {
-                    print("작성한 키워드 review 객체에 입력")
-                    review.keyword = self.keyword
-                }
-            }
         }
     }
 }
 
 #Preview {
-    EditReview_Keyword(review: .init(), popToRootAction: {}, dismissAction: {})
+    EditReview_Keyword(confirmedKeyword: .constant("키워드"), moveToPreviousPage: {}, moveToNextPage: {})
 }
 
 extension EditReview_Keyword {
@@ -115,7 +74,9 @@ extension EditReview_Keyword {
         HStack {
             // 이전 버튼
             Button {
-                dismissAction()
+                withAnimation {
+                    moveToPreviousPage()
+                }
             } label: {
                 HStack {
                     Image(systemName: "chevron.left")
@@ -137,9 +98,14 @@ extension EditReview_Keyword {
             Spacer()
             
             // 다음 버튼
-            NavigationLink(
-                value: ReviewNavigationDestination.editReview_comment(data: self.review)
-            ) {
+            Button {
+                if !keyword.isEmpty {
+                    confirmedKeyword = keyword
+                }
+                withAnimation {
+                    moveToNextPage()
+                }
+            } label: {
                 HStack {
                     Text("다음")
                         .font(.headline)
@@ -154,11 +120,6 @@ extension EditReview_Keyword {
                 .padding(.vertical, 15)
                 .padding(.horizontal, 25)
                 .background(RoundedRectangle(cornerRadius: 40).fill(Color.main))
-//                .onTapGesture {
-//                    if keyword.count > 0 {
-//                        review.keyword = self.keyword
-//                    }
-//                }
             }
         }
     }

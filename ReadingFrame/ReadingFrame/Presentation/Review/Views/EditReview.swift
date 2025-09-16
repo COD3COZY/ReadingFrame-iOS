@@ -36,8 +36,11 @@ struct EditReview: View {
                 )
                 
             case ReviewTypeDestination.keyword.rawValue:
-                // TODO: EditReview_Keyword 수정해서 입력하기
-                Text("keyword")
+                EditReview_Keyword(
+                    confirmedKeyword: $vm.review.keyword,
+                    moveToPreviousPage: vm.moveToPreviousPage,
+                    moveToNextPage: vm.moveToNextPage
+                )
                 
             case ReviewTypeDestination.comment.rawValue:
                 // TODO: EditReview_Comment 수정해서 입력하기

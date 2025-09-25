@@ -43,8 +43,11 @@ struct EditReview: View {
                 )
                 
             case ReviewTypeDestination.comment.rawValue:
-                // TODO: EditReview_Comment 수정해서 입력하기
-                Text("comment")
+                EditReview_Comment(
+                    confirmedComment: $vm.review.comment,
+                    moveToPreviousPage: vm.moveToPreviousPage,
+                    moveToNextPage: vm.moveToNextPage
+                )
                 
             case ReviewTypeDestination.check.rawValue:
                 // TODO: EditReview_CheckReviews 수정해서 입력하기

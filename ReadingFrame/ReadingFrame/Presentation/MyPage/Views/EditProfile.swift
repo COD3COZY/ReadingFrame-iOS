@@ -98,10 +98,10 @@ extension EditProfile {
                     editButton
                 }
             }
-            }
-            .environmentObject(vm)
-            }
-            }
+        }
+        .environmentObject(vm)
+    }
+    
     /// 프로필 수정 버튼 연필모양
     private var editButton: some View {
         Image(systemName: "pencil")

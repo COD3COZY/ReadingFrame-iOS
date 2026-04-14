@@ -23,9 +23,15 @@ final class LoginViewModel: ObservableObject {
         }
     }
 
+    /// 백엔드가 404 로 내려주는 메시지 분기
+    /// - "해당 사용자가 존재하지 않습니다." → 미가입(회원가입 필요)
+    /// - "ID 토큰이 유효하지 않습니다." → 인증 실패
+    private enum ServerMessage {
+        static let userNotFound = "해당 사용자가 존재하지 않습니다."
+        static let invalidIdToken = "ID 토큰이 유효하지 않습니다."
+    }
+
     /// 소셜 로그인 응답 → SocialLoginResult 매핑
-    /// - 4xx(`requestErr`) 는 "미가입 유저" 로 간주해 회원가입 플로우로 보낸다.
-    ///   (백엔드가 별도 코드/메시지로 구분한다면 여기서만 세분화하면 됨)
     private static func handleSocialLoginResponse(_ response: NetworkResult<Any>) -> SocialLoginResult {
         switch response {
         case .success(let data):
@@ -38,8 +44,16 @@ final class LoginViewModel: ObservableObject {
                 return .failure("토큰 키체인 저장 실패")
             }
         case .requestErr(let message):
-            print("Request Err: \(message)")
-            return .needsSignUp
+            let msg = (message as? String) ?? "\(message)"
+            print("Request Err: \(msg)")
+            switch msg {
+            case ServerMessage.userNotFound:
+                return .needsSignUp
+            case ServerMessage.invalidIdToken:
+                return .failure(msg)
+            default:
+                return .failure(msg)
+            }
         case .pathErr:
             print("Path Err")
             return .failure("Path Err")

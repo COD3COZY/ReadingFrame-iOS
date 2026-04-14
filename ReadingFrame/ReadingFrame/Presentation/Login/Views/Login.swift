@@ -125,92 +125,51 @@ extension Login {
 
     private var appleLoginButton: some View {
         SignInWithAppleButton { (request) in
-            
+
         } onCompletion: { (result) in
-            
-            // getting error or success
             switch result {
-            case .success(let user):
-                print("success")
-                
-                // do login
-                guard let credential = user.credential as? ASAuthorizationAppleIDCredential else {
-                    print("error")
-                    return
-                }
-                
-                // 서버에 보내줄 유저 ID
-                let userIdentifier = credential.user
-                // 서버에 보내줄 토큰
-                let idToken = credential.identityToken
-                
-                // 값 확인하는 프린트문
-                print("userID: \(String(describing: userIdentifier))")
-                print("user idToken: \(String(decoding: idToken!, as: UTF8.self))")
-                
-                // 키체인에 userIdentifier, idToken 저장
-                // userIdentifier 저장
-                if KeyChain.shared.addKeychainItem(key: KeychainKeys.appleUserIdentifier, value: userIdentifier) {
-                    print("appleUserIdentifier 키체인에 저장 완!")
-                }
-                
-                // idToken 저장
-                if KeyChain.shared.addKeychainItem(key: KeychainKeys.appleIdentityToken, value: String(decoding: idToken!, as: UTF8.self)) {
-                    print("appleIdentityToken 키체인에 저장 완!")
-                }
-                
-                
-                // 기존 키체인에 닉네임이 있는지 확인
-                if let appleNickname = KeyChain.shared.getKeychainItem(key: KeychainKeys.appleNickname) {
-                    // 닉네임이 있으면: 로그인 로직
-                    print("기존 닉네임(\(appleNickname) 가지고있음: 로그인 진행")
-                    // MARK: 애플로그인 API 호출
-                    // 키체인에서 애플 로그인 정보 확인
-                    if let userIdentifier = KeyChain.shared.getKeychainItem(key: .appleUserIdentifier),
-                       let idToken = KeyChain.shared.getKeychainItem(key: .appleIdentityToken) {
-                        // 애플로그인 API 호출
-                        viewModel.loginApple(
-                            request: AppleLoginRequest(
-                                userIdentifier: userIdentifier,
-                                idToken: idToken
-                            )
-                            
-                        ) { success in
-                            if success {
-                                isLoggedIn = true
-                            } else {
-                                print("로그인 실패")
-                            }
-                        }
-                    }
-                    
-                } else {
-                    // 닉네임이 없으면: 회원가입 로직
-                    // 회원가입 화면으로 넘기기 위한 signUpInfo 저장
-                    print("기존 닉네임 없음: 회원가입 진행")
-                    self.signupInfo = SignUpInfo(socialLoginType: .apple)
-                    
-                    // 회원가입 로직으로 전환
-                    haveToSignUp = true
-                }
-                
-                
-                // TODO: 서버에서 토큰 받으면 -> 토큰 활용해서 홈화면으로 이동
-                // 일단 false 되는 로직으로 만들어두었습니다.
-                if isLoggedIn {
-                    // 홈화면 이동
-                    isLoggedIn = true
-                }
-                
+            case .success(let auth):
+                handleAppleAuth(auth)
             case .failure(let error):
                 print(error.localizedDescription)
-                
             }
         }
         .signInWithAppleButtonStyle(.black)
         .frame(height: 55)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .padding(.horizontal)
+    }
+
+    /// Apple 인증 성공 후 처리
+    /// - 키체인의 닉네임 유무로 분기하지 않고, **백엔드에 먼저 로그인 요청**을 보내서
+    ///   기존 유저/신규 유저를 판별한다. (다른 기기에서 가입한 유저도 로그인 가능)
+    private func handleAppleAuth(_ auth: ASAuthorization) {
+        guard let credential = auth.credential as? ASAuthorizationAppleIDCredential,
+              let idTokenData = credential.identityToken,
+              let idToken = String(data: idTokenData, encoding: .utf8) else {
+            print("Apple credential 파싱 실패")
+            return
+        }
+
+        let userIdentifier = credential.user
+
+        // 기기 로컬 캐시 (재로그인 속도/디버깅 용. 서버 판단의 근거는 아님)
+        _ = KeyChain.shared.addKeychainItem(key: .appleUserIdentifier, value: userIdentifier)
+        _ = KeyChain.shared.addKeychainItem(key: .appleIdentityToken, value: idToken)
+
+        viewModel.loginApple(
+            request: AppleLoginRequest(userIdentifier: userIdentifier, idToken: idToken)
+        ) { result in
+            switch result {
+            case .success:
+                isLoggedIn = true
+            case .needsSignUp:
+                self.signupInfo = SignUpInfo(socialLoginType: .apple)
+                haveToSignUp = true
+            case .failure(let message):
+                print("Apple 로그인 실패: \(message)")
+            }
+        }
     }
     
     private var kakaoLoginButton: some View {
@@ -235,102 +194,57 @@ extension Login {
 }
 
 extension Login {
-    // TODO: 카카오 로그인 구현하기
+    /// 카카오 로그인 진입점
+    /// - 카카오 OAuth → 이메일 확보 → 백엔드에 로그인 요청 → 결과에 따라 분기
+    ///   (키체인의 닉네임/이메일 유무는 "기존 유저" 판단 근거로 쓰지 않음. 판단 주체는 백엔드.)
     func kakaoLogin() {
-        // 카카오톡 앱 설치 여부 확인
-        if (UserApi.isKakaoTalkLoginAvailable()) {
-            // 카카오톡 앱을 통한 로그인 실행
-            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
-                if let error = error {
-                    print("Kakao Login Error: \(error)")
-                }
-                
-                // KeyChain에 카카오 닉네임이 저장되어 있다면
-                if let nickname = KeyChain.shared.getKeychainItem(key: .kakaoNickname), !nickname.isEmpty {
-                    // 카카오 로그인 API 연결
-                    viewModel.loginKakao(request: KakaoLoginRequest(email: KeyChain.shared.getKeychainItem(key: .kakaoEmail)!)) { success in
-                        if success {
-                            isLoggedIn = true
-                        } else {
-                            print("로그인 실패")
-                        }
-                    }
-                }
-                // KeyChain에 카카오 이메일이 저장되어 있지 않다면
-                else {
-                    // 카카오 이메일 정보 가져오기
-                    UserApi.shared.me {(user, error) in
-                        if let error = error {
-                            print("Kakao Data Error: \(error)")
-                        }
-                        
-                        print(user?.kakaoAccount?.email ?? "no email..")
-                        
-                        // 카카오 이메일 저장
-                        if let email = user?.kakaoAccount?.email {
-                            // 키체인에 카카오 이메일 저장 성공
-                            if KeyChain.shared.addKeychainItem(key: .kakaoEmail, value: email) {
-                                self.signupInfo = SignUpInfo(socialLoginType: .kakao)
-                                
-                                // 회원가입 로직으로 전환
-                                haveToSignUp = true
-                            }
-                            // 키체인에 저장 실패
-                            else {
-                                print("키체인에 카카오 이메일 저장 실패")
-                            }
-                        }
-                    }
-                }
+        let onOAuth: (Error?) -> Void = { error in
+            if let error = error {
+                print("Kakao Login Error: \(error)")
+                return
             }
+            resolveKakaoEmailAndLogin()
         }
-        // 사파리를 통한 카카오 로그인 진행
-        else {
-            UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
-                if let error = error {
-                    print(error)
-                }
-                
-                // KeyChain에 카카오 닉네임이 저장되어 있다면
-                if let _ = KeyChain.shared.getKeychainItem(key: .kakaoNickname) {
-                    // 카카오 로그인 API 연결
-                    viewModel.loginKakao(request: KakaoLoginRequest(email: KeyChain.shared.getKeychainItem(key: .kakaoEmail)!)) { success in
-                        if success {
-                            isLoggedIn = true
-                        } else {
-                            print("로그인 실패")
-                        }
-                    }
-                }
-                // KeyChain에 카카오 이메일이 저장되어 있지 않다면
-                else {
-                    // 카카오 이메일 정보 가져오기
-                    UserApi.shared.me {(user, error) in
-                        if let error = error {
-                            print("Kakao Data Error: \(error)")
-                        }
-                        
-                        print(user?.kakaoAccount?.email ?? "no email..")
-                        
-                        // 카카오 이메일 저장
-                        if let email = user?.kakaoAccount?.email {
-                            // 키체인에 카카오 이메일 저장 성공
-                            if KeyChain.shared.addKeychainItem(key: .kakaoEmail, value: email) {
-                                
-                                print("키체인에 카카오 이메일 저장 성공")
-                                
-                                self.signupInfo = SignUpInfo(socialLoginType: .kakao)
-                                
-                                // 회원가입 로직으로 전환
-                                haveToSignUp = true
-                            }
-                            // 키체인에 저장 실패
-                            else {
-                                print("키체인에 카카오 이메일 저장 실패")
-                            }
-                        }
-                    }
-                }
+
+        if UserApi.isKakaoTalkLoginAvailable() {
+            UserApi.shared.loginWithKakaoTalk { _, error in onOAuth(error) }
+        } else {
+            UserApi.shared.loginWithKakaoAccount { _, error in onOAuth(error) }
+        }
+    }
+
+    /// 카카오 이메일을 확보한 뒤 백엔드 로그인 호출
+    private func resolveKakaoEmailAndLogin() {
+        if let cached = KeyChain.shared.getKeychainItem(key: .kakaoEmail), !cached.isEmpty {
+            performKakaoLogin(email: cached)
+            return
+        }
+
+        UserApi.shared.me { user, error in
+            if let error = error {
+                print("Kakao Data Error: \(error)")
+                return
+            }
+            guard let email = user?.kakaoAccount?.email else {
+                print("Kakao 이메일 조회 실패")
+                return
+            }
+            performKakaoLogin(email: email)
+        }
+    }
+
+    private func performKakaoLogin(email: String) {
+        viewModel.loginKakao(request: KakaoLoginRequest(email: email)) { result in
+            switch result {
+            case .success:
+                _ = KeyChain.shared.addKeychainItem(key: .kakaoEmail, value: email)
+                isLoggedIn = true
+            case .needsSignUp:
+                _ = KeyChain.shared.addKeychainItem(key: .kakaoEmail, value: email)
+                self.signupInfo = SignUpInfo(socialLoginType: .kakao)
+                haveToSignUp = true
+            case .failure(let message):
+                print("카카오 로그인 실패: \(message)")
             }
         }
     }

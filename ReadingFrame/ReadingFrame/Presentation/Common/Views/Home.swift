@@ -9,16 +9,18 @@ import SwiftUI
 
 struct Home: View {
     // MARK: - Properties
+    @EnvironmentObject private var coordinator: Coordinator
+
     /// segmented control 변수
     @State var selection: String = "book.closed"
-    
+
     /// 서재 정렬 어떤 타입으로 할건지(책 종류별, 독서상태별, 장르별)
     @State var bookshelfType: BookshelfSort = .booktype
 
-    
+
     // MARK: - View
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $coordinator.path) {
             ScrollView() {
                 VStack(alignment: .leading, spacing: 0) {
                     // 검색 바 및 전환 버튼
@@ -57,11 +59,57 @@ struct Home: View {
             }
             .scrollIndicators(.hidden)
             .frame(maxWidth: .infinity)
+            .navigationDestination(for: Path.self) { path in
+                destinationView(for: path)
+            }
         }
         .tint(.black0) // accentcolor를 검정색으로(뒤로가기 버튼 색상 설정을 위함)
     } // 화면 전체 스크롤 가능하도록 설정
+
+    @ViewBuilder
+    private func destinationView(for path: Path) -> some View {
+        switch path {
+        case .bookInfo(let isbn):
+            BookInfo(isbn: isbn).pushedScreen()
+        case .readingNote(let isbn):
+            ReadingNote(isbn: isbn).pushedScreen()
+        case .bookInfoReview:
+            BookInfo_Review().pushedScreen()
+        case .bookRowDetail(let status):
+            BookRowDetailView(readingStatus: status).pushedScreen()
+        case .search:
+            Search().pushedScreen()
+        case .bookShelfListByType(let subtype):
+            BookShelfListByType(vm: .init(bookshelfSubtype: subtype)).pushedScreen()
+        case .tabReadingNote(let bookType, let totalPage, let isbn, let tab):
+            TabReadingNote(
+                bookType: bookType,
+                totalPage: totalPage,
+                isbn: isbn,
+                selectedTab: tab
+            )
+            .pushedScreen()
+        case .editReview(let review):
+            EditReview(review: review)
+                .navigationBarBackButtonHidden()
+                .pushedScreen()
+        case .characterDetail(let character, let bookInfo):
+            CharacterDetail(character: character, bookInfo: bookInfo).pushedScreen()
+        case .searchBadge:
+            SearchBadge().pushedScreen()
+        case .editProfile(let character, let nickname):
+            EditProfile(character: character, nickname: nickname).pushedScreen()
+        case .editProfileCharacter:
+            EmptyView()
+        case .settings:
+            Settings().pushedScreen()
+        case .support:
+            Support().pushedScreen()
+        }
+    }
 }
 
 #Preview {
     Home()
+        .environmentObject(Coordinator())
 }

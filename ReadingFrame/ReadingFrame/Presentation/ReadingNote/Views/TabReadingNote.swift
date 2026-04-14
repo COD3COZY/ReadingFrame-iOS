@@ -16,6 +16,8 @@ enum readingNoteTab : String, CaseIterable {
 
 struct TabReadingNote: View {
     // MARK: - PROPERTY
+    @EnvironmentObject private var coordinator: Coordinator
+
     /// 뷰모델
     @StateObject var vm: TabReadingNoteViewModel
     
@@ -300,14 +302,13 @@ extension TabReadingNote {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(Array(characters.enumerated()), id: \.offset) { index, item in
-                            
+
                             // 누르면 상세 페이지로 연결되는 인물사전 카드 형태의 버튼
-                            NavigationLink {
-                                CharacterDetail(
+                            Button {
+                                coordinator.push(.characterDetail(
                                     character: item,
                                     bookInfo: vm.book
-                                )
-                                .toolbarRole(.editor) // back 텍스트 표시X
+                                ))
                             } label: {
                                 CharacterView(character: item)
                                     .padding(16)

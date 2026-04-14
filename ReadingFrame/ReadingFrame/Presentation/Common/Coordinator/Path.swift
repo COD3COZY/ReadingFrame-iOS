@@ -18,9 +18,9 @@ enum Path: Hashable {
     case bookShelfListByType(bookshelfSubtype: BookshelfSubtype)
 
     // MARK: ReadingNote 내부에서 push되던 화면들
-    case tabReadingNote(bookType: BookType, totalPage: Int, isbn: String, selectedTab: RecordType)
-    case editReview(reviewID: String?)
-    case characterDetail(characterID: String, isbn: String)
+    case tabReadingNote(bookType: BookType, totalPage: Int, isbn: String, selectedTab: readingNoteTab)
+    case editReview(review: Review?)
+    case characterDetail(character: Character, bookInfo: EditRecordBookModel)
 
     // MARK: MyPage 탭
     case searchBadge

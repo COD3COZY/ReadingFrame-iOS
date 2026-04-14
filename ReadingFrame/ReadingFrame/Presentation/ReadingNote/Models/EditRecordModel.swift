@@ -8,7 +8,7 @@
 import Foundation
 
 /// 독서노트 추가하는
-struct EditRecordBookModel {
+struct EditRecordBookModel: Hashable {
     var bookType: BookType
     var totalPage: Int
     var isbn: String

@@ -12,10 +12,10 @@ import SwiftUI
 /// - review를 입력해서 생성할 시, 편집모드
 struct EditReview: View {
     // MARK: - Properties
+    @EnvironmentObject private var coordinator: Coordinator
+
     @ObservedObject var vm: EditReviewViewModel
-    
-    @Environment(\.dismiss) private var dismiss
-    
+
     @State private var showExitAlert: Bool = false
     
     // MARK: - init
@@ -53,7 +53,7 @@ struct EditReview: View {
                 EditReview_CheckReviews(
                     review: vm.review,
                     popToRootAction: {
-                        dismiss()
+                        coordinator.popLast()
                     },
                     registerReview: vm.registerReview,
                     moveToSelectReviewEdit: vm.moveToNextPage
@@ -95,7 +95,7 @@ struct EditReview: View {
                     Button("아니오", role: .cancel) { }
                     Button("예", role: .destructive) {
                         // 리뷰 작성 빠져나가기
-                        dismiss()
+                        coordinator.popLast()
                     }
                 } message: {
                     Text("변경사항이 저장되지 않을 수 있습니다.")

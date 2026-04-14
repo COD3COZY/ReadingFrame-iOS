@@ -10,19 +10,19 @@ import SwiftUI
 /// 인물사전 상세 화면
 struct CharacterDetail: View {
     // MARK: - PROPERTY
+    @EnvironmentObject private var coordinator: Coordinator
+
     /// 인물사전 객체
     var character: Character
-    
+
     /// 인물 수정을 위해 필요한 해당 책의 기본정보
     let bookInfo: EditRecordBookModel
-    
+
     /// 인물사전 수정 시트 띄움 여부
     @State var isRecordSheetAppear: Bool = false
-    
+
     /// 인물사전 삭제 alert 띄움 여부
     @State var isShowDeleteAlert: Bool = false
-    
-    @Environment(\.dismiss) private var dismiss
     
     // MARK: - BODY
     var body: some View {
@@ -101,7 +101,7 @@ struct CharacterDetail: View {
                 // 인물사전 삭제 API 호출 후 빠져나가기
                 deleteCharacter(name: character.name) { success in
                     if success {
-                        dismiss()
+                        coordinator.popLast()
                     } else {
                         print("인물사전 삭제 실패")
                     }

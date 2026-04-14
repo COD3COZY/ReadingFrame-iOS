@@ -9,6 +9,8 @@ import SwiftUI
 
 /// 검색 창 화면
 struct Search: View {
+    @EnvironmentObject private var coordinator: Coordinator
+
     /// 사용자가 입력한 검색어
     @State private var searchText: String = ""
     
@@ -116,14 +118,13 @@ extension Search {
     
     /// 책정보 페이지로 넘어가는 네비게이션링크
     private func navigationToEachBookInfo(_ book: SearchBookResponse) -> some View {
-        NavigationLink {
-            BookInfo(isbn: book.isbn)
-                .toolbarRole(.editor)
+        Button {
+            coordinator.push(.bookInfo(isbn: book.isbn))
         } label: {
             VStack(spacing: 0) {
                 SearchBookView(book: book, searchText: $searchText)
                     .padding(.vertical, 15)
-                
+
                 Rectangle()
                     .frame(height: 1)
                     .foregroundStyle(.grey1)

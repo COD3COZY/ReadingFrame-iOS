@@ -9,6 +9,8 @@ import SwiftUI
 
 /// 홈 화면의 읽고 있는 책 리스트에 들어가는 개별 뷰
 struct ReadingItemView: View {
+    @EnvironmentObject private var coordinator: Coordinator
+
     /// 홈 화면 뷰모델
     @ObservedObject var viewModel: MainPageViewModel
     
@@ -38,11 +40,8 @@ struct ReadingItemView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             // MARK: 책 표지
-            NavigationLink {
-                // 책 정보 화면으로 이동
-                BookInfo(isbn: currentBookInfo!.isbn)
-                    .toolbarRole(.editor) // back 텍스트 표시X
-                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+            Button {
+                coordinator.push(.bookInfo(isbn: currentBookInfo!.isbn))
             } label: {
                 LoadableBookImage(bookCover: currentBookInfo?.cover ?? "")
                     .clipShape(RoundedRectangle(cornerRadius: 15))
@@ -80,11 +79,8 @@ struct ReadingItemView: View {
                 }
                 
                 // MARK: 독서노트 버튼
-                NavigationLink {
-                    // 독서노트 화면으로 이동
-                    ReadingNote(isbn: currentBookInfo!.isbn)
-                        .toolbarRole(.editor) // back 텍스트 표시X
-                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                Button {
+                    coordinator.push(.readingNote(isbn: currentBookInfo!.isbn))
                 } label: {
                     ReadingLabel(label: "독서노트", image: "magazine")
                 }

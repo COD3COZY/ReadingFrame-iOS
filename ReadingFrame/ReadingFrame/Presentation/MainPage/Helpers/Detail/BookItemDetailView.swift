@@ -11,8 +11,10 @@ import SwiftUI
 /// 모든 책 상세 페이지의 리스트에 들어갈 아이템 뷰
 struct BookItemDetailView: View {
     // MARK: - Property
+    @EnvironmentObject private var coordinator: Coordinator
+
     /// 받아오는 책정보
-    let book: any DetailBookModel    
+    let book: any DetailBookModel
     
     // MARK: - Actions
     // 독서 상태 변경 API 호출
@@ -40,22 +42,16 @@ struct BookItemDetailView: View {
                     .frame(height: 1)
             }
             
-            NavigationLink {
+            Button {
                 if book.readingStatus == .wantToRead {
-                        // BookInfo로 연결
-                        BookInfo(isbn: book.isbn)
-                            .toolbarRole(.editor) // back 텍스트 표시X
-                            .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
-                    } else {
-                        // ReadingNote로 연결
-                        ReadingNote(isbn: book.isbn)
-                            .toolbarRole(.editor) // back 텍스트 표시X
-                            .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
-                    }
+                    coordinator.push(.bookInfo(isbn: book.isbn))
+                } else {
+                    coordinator.push(.readingNote(isbn: book.isbn))
+                }
             } label: {
-                EmptyView()
+                Color.clear
+                    .contentShape(Rectangle())
             }
-            .opacity(0)
             
             // Menu
             BookItemDetailMenuView(

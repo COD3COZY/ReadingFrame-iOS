@@ -10,15 +10,14 @@ import SwiftUI
 /// 리뷰 확인 화면(독서노트) 연결하는 메뉴 버튼
 struct MainDetailMenuButton_ReadReview: View {
     // MARK: - Properties
+    @EnvironmentObject private var coordinator: Coordinator
+
     let isbn: String
-    
+
     // MARK: - View
     var body: some View {
-        NavigationLink {
-            // 독서노트 화면(ReadingNote) 연결
-            ReadingNote(isbn: self.isbn)
-                .toolbarRole(.editor)
-                .toolbar(.hidden, for: .tabBar)
+        Button {
+            coordinator.push(.readingNote(isbn: self.isbn))
         } label: {
             Label("리뷰 확인하기", systemImage: "bubble")
         }

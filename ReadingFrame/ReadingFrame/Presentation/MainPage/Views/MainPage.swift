@@ -10,6 +10,8 @@ import SwiftUI
 /// 홈 화면
 struct MainPage: View {
     // MARK: - Properties
+    @EnvironmentObject private var coordinator: Coordinator
+
     /// 홈 화면 뷰모델
     @StateObject var viewModel = MainPageViewModel()
     
@@ -67,7 +69,7 @@ extension MainPage {
             sectionHeader(
                 title: "읽고 있는 책",
                 count: viewModel.readingBooksCount,
-                destination: BookRowDetailView(readingStatus: .reading)
+                destination: .bookRowDetail(readingStatus: .reading)
             )
             
             readingBooksContent
@@ -103,7 +105,7 @@ extension MainPage {
     // finishReadBooksSection
     
     // MARK: - Common Components
-    private func sectionHeader(title: String, count: Int, destination: some View) -> some View {
+    private func sectionHeader(title: String, count: Int, destination: Path) -> some View {
         HStack {
             HStack(spacing: 5) {
                 Text(title)
@@ -112,13 +114,11 @@ extension MainPage {
             }
             .font(.thirdTitle)
             .foregroundStyle(.black0)
-            
+
             Spacer()
-            
-            NavigationLink {
-                destination
-                    .toolbarRole(.editor)
-                    .toolbar(.hidden, for: .tabBar)
+
+            Button {
+                coordinator.push(destination)
             } label: {
                 Image(systemName: "chevron.right")
                     .font(.title3)
@@ -175,16 +175,14 @@ extension MainPage {
                 Spacer()
                 
                 // MARK: 검색하기 버튼
-                NavigationLink {
-                    Search()
-                        .toolbarRole(.editor) // back 텍스트 표시X
-                        .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                Button {
+                    coordinator.push(.search)
                 } label: {
                     HStack {
                         Text("검색하기")
                             .font(.subheadline)
                             .foregroundStyle(.black0)
-                        
+
                         Image(systemName: "chevron.right")
                             .font(.system(size: 14).weight(.medium))
                             .foregroundStyle(.black0)

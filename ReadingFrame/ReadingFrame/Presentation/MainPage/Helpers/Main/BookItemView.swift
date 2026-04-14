@@ -9,6 +9,8 @@ import SwiftUI
 
 /// 홈 화면의 읽고 싶은 책, 다 읽은 책 리스트에 들어가는 개별 뷰
 struct BookItemView: View {
+    @EnvironmentObject private var coordinator: Coordinator
+
     /// 홈 화면 뷰모델
     @ObservedObject var viewModel: MainPageViewModel
     
@@ -34,20 +36,12 @@ struct BookItemView: View {
         VStack {
             VStack(alignment: .leading, spacing: 0) {
                 // MARK: 책 표지
-                NavigationLink {
-                    // 읽고 싶은 책이라면
-                    if (bookReadingStatus == .wantToRead) {
-                        // 책 정보 화면으로 이동
-                        BookInfo(isbn: matchReadingStatus(readingStatus: bookReadingStatus)?.isbn ?? "")
-                            .toolbarRole(.editor) // back 텍스트 표시X
-                            .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
-                    }
-                    // 다 읽은 책 이라면
-                    else if (bookReadingStatus == .finishRead) {
-                        // 독서 노트 화면으로 이동
-                        ReadingNote(isbn: matchReadingStatus(readingStatus: bookReadingStatus)?.isbn ?? "")
-                            .toolbarRole(.editor) // back 텍스트 표시X
-                            .toolbar(.hidden, for: .tabBar)
+                Button {
+                    let isbn = matchReadingStatus(readingStatus: bookReadingStatus)?.isbn ?? ""
+                    if bookReadingStatus == .wantToRead {
+                        coordinator.push(.bookInfo(isbn: isbn))
+                    } else if bookReadingStatus == .finishRead {
+                        coordinator.push(.readingNote(isbn: isbn))
                     }
                 } label: {
                     LoadableBookImage(bookCover: matchReadingStatus(readingStatus: bookReadingStatus)?.cover ?? "")
@@ -96,11 +90,10 @@ struct BookItemView: View {
                         // 다 읽은 책 이라면
                         else if (bookReadingStatus == .finishRead){
                             // MARK: 정보 버튼
-                            NavigationLink {
-                                // 책 정보 화면으로 이동
-                                BookInfo(isbn: matchReadingStatus(readingStatus: bookReadingStatus)?.isbn ?? "")
-                                    .toolbarRole(.editor) // back 텍스트 표시X
-                                    .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+                            Button {
+                                coordinator.push(.bookInfo(
+                                    isbn: matchReadingStatus(readingStatus: bookReadingStatus)?.isbn ?? ""
+                                ))
                             } label: {
                                 Label("정보", systemImage: "info.circle")
                             }

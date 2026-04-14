@@ -9,6 +9,8 @@ import SwiftUI
 
 /// 홈 화면의 읽고 있는 책 리스트
 struct ReadingRowView: View {
+    @EnvironmentObject private var coordinator: Coordinator
+
     /// 홈 화면 뷰모델
     @ObservedObject var viewModel: MainPageViewModel
     
@@ -31,10 +33,8 @@ struct ReadingRowView: View {
             Spacer()
             
             // MARK: 읽고 있는 책 상세 페이지로 이동
-            NavigationLink {
-                BookRowDetailView(readingStatus: .reading)
-                    .toolbarRole(.editor)
-                    .toolbar(.hidden, for: .tabBar)
+            Button {
+                coordinator.push(.bookRowDetail(readingStatus: .reading))
             } label: {
                 Image(systemName: "chevron.right")
                     .font(.title3)

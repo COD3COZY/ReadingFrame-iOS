@@ -10,6 +10,8 @@ import SwiftUI
 /// 도서정보와 리뷰 간략하게 조회하는 페이지.
 struct BookInfo: View {
     // MARK: - Parameters
+    @EnvironmentObject private var coordinator: Coordinator
+
     @StateObject var vm: BookInfoViewModel
     
     /// RegisterBook modal 띄워줄 변수
@@ -62,11 +64,8 @@ struct BookInfo: View {
                             Spacer()
                             
                             // 한줄평 페이지 링크용 right chevron
-                            NavigationLink {
-                                // 한줄평 페이지로 이동
-                                BookInfo_Review()
-                                    .toolbarRole(.editor)   // 이전 버튼 뒤에 화면 이름 표기 없음
-                                    .toolbar(.hidden, for: .tabBar)
+                            Button {
+                                coordinator.push(.bookInfoReview)
                             } label: {
                                 Image(systemName: "chevron.forward")
                                     .font(.headline)
@@ -140,11 +139,8 @@ extension BookInfo {
                     .padding(.bottom, 10)
                 
                 // MARK: 리뷰 개수(한줄평 페이지 연결)
-                NavigationLink {
-                    // 한줄평 페이지로 연결
-                    BookInfo_Review()
-                        .toolbarRole(.editor)   // 이전 버튼 뒤에 화면 이름 표기 없음
-                        .toolbar(.hidden, for: .tabBar)
+                Button {
+                    coordinator.push(.bookInfoReview)
                 } label: {
                     HStack(alignment: .center, spacing: 5) {
                         Image(systemName: "bubble")

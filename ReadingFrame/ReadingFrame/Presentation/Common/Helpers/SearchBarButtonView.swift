@@ -9,18 +9,18 @@ import SwiftUI
 
 /// 누르면 SearchView로 이동하는 버튼 역할을 하는 뷰
 struct SearchBarButtonView: View {
+    @EnvironmentObject private var coordinator: Coordinator
+
     var body: some View {
-        NavigationLink {
-            Search()
-                .toolbarRole(.editor) // back 텍스트 표시X
-                .toolbar(.hidden, for: .tabBar) // toolbar 숨기기
+        Button {
+            coordinator.push(.search)
         } label: {
             // MARK: 검색 바
             HStack {
                 Image(systemName: "magnifyingglass")
-                
+
                 Text("제목, 작가를 입력하세요")
-                
+
                 Spacer()
             }
             .padding(EdgeInsets(top: 8, leading: 7, bottom: 8, trailing: 7))

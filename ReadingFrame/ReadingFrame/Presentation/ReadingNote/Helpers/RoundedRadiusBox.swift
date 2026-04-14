@@ -12,10 +12,10 @@ struct RoundedRadiusBox: Shape {
     var radius: CGFloat = .infinity
     var corners: UIRectCorner = .allCorners
         
-    func path(in rect: CGRect) -> Path {
+    func path(in rect: CGRect) -> SwiftUI.Path {
         let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-            
-        return Path(path.cgPath)
+
+        return SwiftUI.Path(path.cgPath)
     }
 }
 

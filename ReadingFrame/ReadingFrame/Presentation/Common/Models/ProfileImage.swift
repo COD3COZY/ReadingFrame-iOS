@@ -8,13 +8,13 @@
 import Foundation
 import SwiftUI
 
-struct ProfileCharacter {
+struct ProfileCharacter: Hashable {
     var character: ProfileCharacterType
     var color: ThemeColor
 }
 
 /// 캐릭터 유형선택용 열거형
-enum ProfileCharacterType: String {
+enum ProfileCharacterType: String, Hashable {
     case R = "character_main"
     case A = "character_A"
     case M = "character_M"
@@ -24,7 +24,7 @@ enum ProfileCharacterType: String {
 
 
 /// 테마 색상 5종
-enum ThemeColor: String {
+enum ThemeColor: String, Hashable {
     case main = "main"
     case yellow = "yellow"
     case emerald = "emerald"

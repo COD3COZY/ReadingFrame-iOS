@@ -9,28 +9,35 @@ import SwiftUI
 
 struct AppTabView: View {
     @State private var selectedTab: Int = 0
-    
+
+    @StateObject private var homeCoordinator = Coordinator()
+    @StateObject private var mapCoordinator = Coordinator()
+    @StateObject private var myPageCoordinator = Coordinator()
+
     var body: some View {
         ZStack {
             TabView(selection: $selectedTab) {
                 // Tab1: 홈
                 Home()
+                    .environmentObject(homeCoordinator)
                     .tabItem {
                         Image(selectedTab == 0 ? "home_selected" : "home_deselected")
                         Text("홈")
                     }
                     .tag(0)
-                
+
                 // Tab2: 책지도
                 BookMap()
+                    .environmentObject(mapCoordinator)
                     .tabItem {
                         Image(selectedTab == 1 ? "map_selected" : "map_deselected")
                         Text("책지도")
                     }
                     .tag(1)
-                
+
                 // Tab3: 마이페이지
                 MyPage()
+                    .environmentObject(myPageCoordinator)
                     .tabItem {
                         Image(selectedTab == 2 ? "myPage_selected" : "myPage_deselected")
                         Text("마이")

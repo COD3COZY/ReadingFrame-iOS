@@ -50,8 +50,15 @@ struct EditReview: View {
                 )
                 
             case ReviewTypeDestination.check.rawValue:
-                // TODO: EditReview_CheckReviews 수정해서 입력하기
-                Text("check")
+                EditReview_CheckReviews(
+                    review: vm.review,
+                    popToRootAction: {
+                        dismiss()
+                    },
+                    registerReview: vm.registerReview,
+                    moveToSelectReviewEdit: vm.moveToNextPage
+                )
+                
             case ReviewTypeDestination.selectEdit.rawValue:
                 EditReview_Select(
                     confirmedSelected: $vm.review.selectReviews,

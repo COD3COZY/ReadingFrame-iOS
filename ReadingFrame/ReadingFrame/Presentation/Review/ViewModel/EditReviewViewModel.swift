@@ -48,4 +48,10 @@ class EditReviewViewModel: ObservableObject {
     func moveToLastPage() {
         currentPage = ReviewTypeDestination.check.rawValue
     }
+    
+    // MARK: Networking
+    /// 리뷰 등록하기
+    func registerReview() {
+        
+    }
 }

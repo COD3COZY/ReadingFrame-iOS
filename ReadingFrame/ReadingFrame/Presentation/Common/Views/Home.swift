@@ -99,12 +99,24 @@ struct Home: View {
             SearchBadge().pushedScreen()
         case .editProfile(let character, let nickname):
             EditProfile(character: character, nickname: nickname).pushedScreen()
-        case .editProfileCharacter:
-            EmptyView()
+        case .editProfileCharacter(let currentProfile):
+            ProfileCharacterView(initialProfile: currentProfile).pushedScreen()
         case .settings:
             Settings().pushedScreen()
         case .support:
             Support().pushedScreen()
+        }
+    }
+    
+    /// EditProfile의 VM을 주입받아 처리하기 위한 서브뷰
+    private struct ProfileCharacterView: View {
+        @EnvironmentObject var editProfileVM: EditProfileViewModel
+        let initialProfile: ProfileCharacter
+        
+        var body: some View {
+            EditProfile_Character(initialProfile: initialProfile) { newProfile in
+                editProfileVM.saveCharacter(newProfile)
+            }
         }
     }
 }

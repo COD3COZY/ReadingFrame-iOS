@@ -10,16 +10,21 @@ import SwiftUI
 /// 프로필 캐릭터 수정하는 뷰
 struct EditProfile_Character: View {
     // MARK: - Properties
-    @ObservedObject var vm: EditProfileViewModel
     @Environment(\.dismiss) private var dismiss
+    
+    /// 초기 캐릭터 정보
+    let initialProfile: ProfileCharacter
+    
+    /// 완료 시 실행할 저장 로직 (데이터를 넘겨주고 결과를 Bool로 받음)
+    var onSave: (ProfileCharacter) -> Bool
     
     /// 현재 화면에서 고르는 캐릭터(저장하기 전 모니터링용 객체)
     @State var profileToChoose: ProfileCharacter
     
     /// 선택값이 변경되면 완료 버튼 활성화
     var isCompleteButtonAbled: Bool {
-        vm.profileCharacter.character != profileToChoose.character
-        || vm.profileCharacter.color != profileToChoose.color
+        initialProfile.character != profileToChoose.character
+        || initialProfile.color != profileToChoose.color
     }
     
     // alert 관련 변수들
@@ -31,9 +36,10 @@ struct EditProfile_Character: View {
     
     
     // MARK: - init
-    init(vm: ObservedObject<EditProfileViewModel>) {
-        self._vm = vm
-        self._profileToChoose = State(wrappedValue: vm.wrappedValue.profileCharacter)
+    init(initialProfile: ProfileCharacter, onSave: @escaping (ProfileCharacter) -> Bool) {
+        self.initialProfile = initialProfile
+        self.onSave = onSave
+        self._profileToChoose = State(wrappedValue: initialProfile)
     }
     
     // MARK: - View
@@ -280,8 +286,7 @@ extension EditProfile_Character {
     private var completeButton: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Button {
-                // TODO: 저장하고 이 뷰 나가기
-                if vm.saveCharacter(profileToChoose) {
+                if onSave(profileToChoose) {
                     dismiss()  // 뷰 닫기
                 } else {
                     showCannotChangeAlert.toggle()
@@ -305,14 +310,7 @@ extension EditProfile_Character {
 
 #Preview {
     EditProfile_Character(
-        vm: ObservedObject(
-            wrappedValue: EditProfileViewModel(
-                character: ProfileCharacter(
-                    character: .R,
-                    color: .main
-                ),
-                nickname: "홍길동"
-            )
-        )
+        initialProfile: ProfileCharacter(character: .R, color: .main),
+        onSave: { _ in true }
     )
 }

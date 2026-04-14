@@ -10,6 +10,8 @@ import SwiftUI
 /// 프로필 캐릭터와 닉네임 수정하는 페이지
 struct EditProfile: View {
     // MARK: Properties
+    @EnvironmentObject private var coordinator: Coordinator
+    
     @StateObject var vm: EditProfileViewModel
     
     /// 현재 뷰에서 수정할 닉네임
@@ -90,16 +92,16 @@ extension EditProfile {
                 baseSize: 180
             )
             .overlay(alignment: .bottomTrailing) {
-                NavigationLink {
-                    EditProfile_Character(vm: ObservedObject(wrappedValue: vm))
-                        .toolbarRole(.editor)
+                Button {
+                    coordinator.push(.editProfileCharacter(currentProfile: vm.profileCharacter))
                 } label: {
                     editButton
                 }
             }
-        }
-    }
-    
+            }
+            .environmentObject(vm)
+            }
+            }
     /// 프로필 수정 버튼 연필모양
     private var editButton: some View {
         Image(systemName: "pencil")

@@ -62,18 +62,6 @@ struct ReadingNote: View {
     /// 책 유형 버튼 표시 여부
     @State private var showBookTypeButtons: Bool = false
     
-    // MARK: 네비게이션 스택 관련 변수들
-    @State private var path: [ReviewNavigationDestination] = []
-        
-    func popToRoot() {
-        path.removeAll()
-    }
-    
-    func popLast() {
-        path.removeLast()
-    }
-        
-    
     // MARK: 계산 프로퍼티
     /// 소장 버튼의 텍스트 색상을 결정하는 변수
     var isMineBtnColor: Color {
@@ -105,34 +93,32 @@ struct ReadingNote: View {
     
     // MARK: - View
     var body: some View {
-        NavigationStack(path: $path) {
-            mainContent
-                // navigation setup
-                .navigationTitle("독서노트")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar { deleteButton }
-                // refresh data when view appears
-                .onAppear {
-                    vm.fetchData { isSuccess in
-                        if !isSuccess {
-                            print("독서노트 조회 실패 - onAppear")
-                        }
+        mainContent
+            // navigation setup
+            .navigationTitle("독서노트")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { deleteButton }
+            // refresh data when view appears
+            .onAppear {
+                vm.fetchData { isSuccess in
+                    if !isSuccess {
+                        print("독서노트 조회 실패 - onAppear")
                     }
                 }
-                // sheet setup
-                // TODO: sheet onDismiss일 때 독서노트 조회 API 호출하기(재로딩)
-                .sheet(isPresented: $isAllRecordSheetAppear) { editAllRecordSheet }
-                .sheet(isPresented: $isCharacterRecordSheetAppear) { makeCharacterRecordSheet }
-                .sheet(isPresented: $showSearchLocation) { searchLocationSheet }
-                // 위치 변경 시 API 호출
-                .onChange(of: pickedPlace) { old, new in
-                    print("위치 골랐음")
-                    if let newPlace = new {
-                        vm.modifyLocation(isRegistering: self.isRegisteringLocation, place: newPlace)
-                    }
+            }
+            // sheet setup
+            // TODO: sheet onDismiss일 때 독서노트 조회 API 호출하기(재로딩)
+            .sheet(isPresented: $isAllRecordSheetAppear) { editAllRecordSheet }
+            .sheet(isPresented: $isCharacterRecordSheetAppear) { makeCharacterRecordSheet }
+            .sheet(isPresented: $showSearchLocation) { searchLocationSheet }
+            // 위치 변경 시 API 호출
+            .onChange(of: pickedPlace) { old, new in
+                print("위치 골랐음")
+                if let newPlace = new {
+                    vm.modifyLocation(isRegistering: self.isRegisteringLocation, place: newPlace)
                 }
-        }
-        .tint(.black0)
+            }
+            .tint(.black0)
     }
 }
 

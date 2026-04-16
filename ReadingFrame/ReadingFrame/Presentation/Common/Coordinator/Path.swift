@@ -25,7 +25,6 @@ enum Path: Hashable {
     // MARK: MyPage 탭
     case searchBadge
     case editProfile(character: ProfileCharacter, nickname: String)
-    case editProfileCharacter(currentProfile: ProfileCharacter)
     case settings
     case support
 }

@@ -23,6 +23,7 @@ class EditProfileViewModel: ObservableObject {
     /// 캐릭터 저장 작업하고 결과 리턴
     func saveCharacter(_ character: ProfileCharacter) -> Bool {
         // TODO: 프로필 이미지 변경 API 호출하기
+        print("프로필 이미지 변경")
         
         // 호출 결과에 따라 뷰에서 결과 처리
         let testReturn: Bool = true

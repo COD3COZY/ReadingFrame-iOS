@@ -10,9 +10,10 @@ import SwiftUI
 /// 프로필 캐릭터와 닉네임 수정하는 페이지
 struct EditProfile: View {
     // MARK: Properties
-    @EnvironmentObject private var coordinator: Coordinator
-    
     @StateObject var vm: EditProfileViewModel
+
+    /// 캐릭터 수정 sheet 표시 여부
+    @State private var showCharacterEdit = false
     
     /// 현재 뷰에서 수정할 닉네임
     @State var nickname: String
@@ -80,6 +81,13 @@ struct EditProfile: View {
         .alert(nicknameChangeResultMessage, isPresented: $showCompleteButtonAlert) {
             Button("확인", role: .cancel) { }
         }
+        .sheet(isPresented: $showCharacterEdit) {
+            NavigationStack {
+                EditProfile_Character(initialProfile: vm.profileCharacter) { newProfile in
+                    vm.saveCharacter(newProfile)
+                }
+            }
+        }
     }
 }
 
@@ -93,13 +101,12 @@ extension EditProfile {
             )
             .overlay(alignment: .bottomTrailing) {
                 Button {
-                    coordinator.push(.editProfileCharacter(currentProfile: vm.profileCharacter))
+                    showCharacterEdit = true
                 } label: {
                     editButton
                 }
             }
         }
-        .environmentObject(vm)
     }
     
     /// 프로필 수정 버튼 연필모양

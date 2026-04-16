@@ -9,10 +9,11 @@ import SwiftUI
 
 /// 리뷰 남기기 화면 연결하는 메뉴 버튼
 struct MainDetailMenuButton_WriteReview: View {
+    @EnvironmentObject private var coordinator: Coordinator
+
     var body: some View {
-        NavigationLink {
-            // TODO: 리뷰 남기기 화면 연결
-            // coordinator 도입하면 그때 공사 가능할듯
+        Button {
+            coordinator.push(.editReview(review: nil))
         } label: {
             Label("리뷰 남기기", systemImage: "bubble")
         }

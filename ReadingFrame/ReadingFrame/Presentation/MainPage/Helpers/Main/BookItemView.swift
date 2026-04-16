@@ -120,11 +120,7 @@ struct BookItemView: View {
                                 Label("소장", systemImage: "square.and.arrow.down")
                             }
                             // MARK: 리뷰 남기기 버튼
-                            Button {
-                                // TODO: 리뷰 등록 화면으로 이동
-                            } label: {
-                                Label("리뷰 남기기", systemImage: "ellipsis.bubble")
-                            }
+                            MainDetailMenuButton_WriteReview()
                         }
                     } label: {
                         Image(systemName: "ellipsis")

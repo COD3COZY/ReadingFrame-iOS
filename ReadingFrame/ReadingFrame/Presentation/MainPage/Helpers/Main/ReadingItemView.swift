@@ -102,11 +102,7 @@ struct ReadingItemView: View {
                     }
                     
                     // MARK: 리뷰 남기기 버튼
-                    Button {
-                        // TODO: 리뷰 등록 화면으로 이동
-                    } label: {
-                        Label("리뷰 남기기 버튼", systemImage: "bubble")
-                    }
+                    MainDetailMenuButton_WriteReview()
                     
                     // MARK: 소장 버튼
                     Button {

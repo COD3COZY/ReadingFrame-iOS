@@ -40,16 +40,9 @@ final class SignUpViewModel: ObservableObject {
             switch response {
             case .success(let data):
                 if let data = data as? KakaoSignUpResponse {
-                    // KeyChain에 토큰 저장
-                    if KeyChainService.shared.addToken(token: data.xAuthToken) {
-                        print("카카오 로그인 성공!! \(String(describing: KeyChainService.shared.getToken()))")
-                        completion(true)
-                    }
-                    else {
-                        print("키체인에 토큰 저장 실패")
-                        completion(false)
-                    }
-                        
+                    LoginManager.shared.handleLoginSuccess(token: data.xAuthToken)
+                    print("카카오 회원가입 성공!! \(String(describing: KeyChainService.shared.getToken()))")
+                    completion(true)
                 }
             case .requestErr(let message):
                 print("Request Err: \(message)")
@@ -77,16 +70,9 @@ final class SignUpViewModel: ObservableObject {
             switch response {
             case .success(let data):
                 if let data = data as? AppleSignUpResponse {
-                    // KeyChain에 토큰 저장
-                    if KeyChainService.shared.addToken(token: data.xAuthToken) {
-                        print("애플 로그인 성공!! \(String(describing: KeyChainService.shared.getToken()))")
-                        completion(true)
-                    }
-                    else {
-                        print("키체인에 토큰 저장 실패")
-                        completion(false)
-                    }
-                        
+                    LoginManager.shared.handleLoginSuccess(token: data.xAuthToken)
+                    print("애플 회원가입 성공!! \(String(describing: KeyChainService.shared.getToken()))")
+                    completion(true)
                 }
             case .requestErr(let message):
                 print("Request Err: \(message)")

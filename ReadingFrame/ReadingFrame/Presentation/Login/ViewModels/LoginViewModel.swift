@@ -38,7 +38,7 @@ final class LoginViewModel: ObservableObject {
             guard let data = data as? SocialLoginResponse else {
                 return .failure("응답 디코딩 실패")
             }
-            if KeyChain.shared.addToken(token: data.xAuthToken) {
+            if KeyChainService.shared.addToken(token: data.xAuthToken) {
                 return .success
             } else {
                 return .failure("토큰 키체인 저장 실패")

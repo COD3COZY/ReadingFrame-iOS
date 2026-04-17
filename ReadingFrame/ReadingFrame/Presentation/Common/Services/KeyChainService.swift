@@ -8,14 +8,14 @@
 import Foundation
 import Security
 
-class KeyChain {
+class KeyChainService {
     /// 전역 키체인 객체
-    static let shared = KeyChain()
+    static let shared = KeyChainService()
     
     /// 서비스 이름
     private let service = Bundle.main.bundleIdentifier
     
-    func addItem(id: Any, pwd: Any) -> Bool {
+    private func addItem(id: Any, pwd: Any) -> Bool {
         let addQuery: [CFString: Any] = [kSecClass: kSecClassGenericPassword,
                                    kSecAttrAccount: id,
                                    kSecAttrService: service as Any,
@@ -36,7 +36,7 @@ class KeyChain {
         return result
     }
     
-    func getItem(key: Any) -> Any? {
+    private func getItem(key: Any) -> Any? {
         let query: [CFString: Any] = [kSecClass: kSecClassGenericPassword,
                                 kSecAttrAccount: key,
                                 kSecAttrService: service as Any,
@@ -64,7 +64,7 @@ class KeyChain {
         
     }
     
-    func updateItem(value: Any, key: Any) -> Bool {
+    private func updateItem(value: Any, key: Any) -> Bool {
         let prevQuery: [CFString: Any] = [kSecClass: kSecClassGenericPassword,
                                     kSecAttrAccount: key]
         let updateQuery: [CFString: Any] = [kSecValueData: (value as AnyObject).data(using: String.Encoding.utf8.rawValue) as Any]
@@ -80,13 +80,13 @@ class KeyChain {
         return result
     }
     
-    func deleteItem(key: String) -> Bool {
+    private func deleteItem(key: KeychainKeys) -> Bool {
         let deleteQuery: [CFString: Any] = [kSecClass: kSecClassGenericPassword,
-                                      kSecAttrAccount: key]
+                                      kSecAttrAccount: key.rawValue]
         let status = SecItemDelete(deleteQuery as CFDictionary)
         if status == errSecSuccess { return true }
         
-        print("deleteItem \'\(key)\' Error : \(status.description)")
+        print("deleteItem \'\(key.rawValue)\' Error : \(status.description)")
         return false
     }
     
@@ -94,43 +94,43 @@ class KeyChain {
 
 
 // 키체인 존재하는 값 활용하는 부분들
-extension KeyChain {
+extension KeyChainService {
     // MARK: xAuthToken
     /// xAuthToken get
     func getToken() -> String? {
-        KeyChain.shared.getItem(key: "xAuthToken") as? String
+        getItem(key: KeychainKeys.xAuthToken.rawValue) as? String
     }
     
     /// xAuthToken 추가
     func addToken(token: String) -> Bool {
-        KeyChain.shared.addItem(id: "xAuthToken", pwd: token)
+        addItem(id: KeychainKeys.xAuthToken.rawValue, pwd: token)
     }
     
     /// xAuthToken 없애기
     func deleteToken() -> Bool {
-        KeyChain.shared.deleteItem(key: "xAuthToken")
+        deleteItem(key: .xAuthToken)
     }
     
     // MARK: KeychainKeys 열거형 활용
     /// KeychainKeys enum 이용해서 value get
     func getKeychainItem(key: KeychainKeys) -> String? {
-        KeyChain.shared.getItem(key: key.rawValue) as? String
+        getItem(key: key.rawValue) as? String
     }
     
     /// KeychainKeys enum 이용해서 추가
     func addKeychainItem(key: KeychainKeys, value: String) -> Bool {
-        KeyChain.shared.addItem(id: key.rawValue, pwd: value)
+        addItem(id: key.rawValue, pwd: value)
     }
     
     /// KeychainKeys enum 이용해서 delete
     func deleteKeychainItem(key: KeychainKeys) -> Bool {
-        KeyChain.shared.deleteItem(key: key.rawValue)
+        deleteItem(key: key)
     }
     
     /// 카카오 회원탈퇴
     func deleteKakaoAccount() -> Bool {
-        if deleteItem(key: "kakaoNickname") == false { return false }
-        if deleteItem(key: "kakaoEmail")  == false { return false }
+        if deleteItem(key: KeychainKeys.kakaoNickname) == false { return false }
+        if deleteItem(key: KeychainKeys.kakaoEmail)  == false { return false }
         if deleteToken() == false { return false }
         
         return true
@@ -138,9 +138,9 @@ extension KeyChain {
     
     /// 애플 회원탈퇴
     func deleteAppleAccount() -> Bool {
-        if deleteItem(key: "appleUserIdentifier")  == false { return false }
-        if deleteItem(key: "appleIdentityToken")  == false { return false }
-        if deleteItem(key: "appleNickname") == false { return false }
+        if deleteItem(key: KeychainKeys.appleUserID)  == false { return false }
+        if deleteItem(key: KeychainKeys.appleIDToken)  == false { return false }
+        if deleteItem(key: KeychainKeys.appleNickname) == false { return false }
         if deleteToken() == false { return false }
         
         return true
@@ -150,11 +150,14 @@ extension KeyChain {
 /// 키체인에서 사용되는 key 모아서 관리
 enum KeychainKeys: String {
     // 애플
-    case appleUserIdentifier = "appleUserIdentifier"
-    case appleIdentityToken = "appleIdentityToken"
+    case appleUserID = "appleUserIdentifier"
+    case appleIDToken = "appleIdentityToken"
     case appleNickname = "appleNickname"
     
     // 카카오
     case kakaoEmail = "kakaoEmail"
     case kakaoNickname = "kakaoNickname"
+    
+    // 자체토큰
+    case xAuthToken = "xAuthToken"
 }

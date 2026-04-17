@@ -154,8 +154,8 @@ extension Login {
         let userIdentifier = credential.user
 
         // 기기 로컬 캐시 (재로그인 속도/디버깅 용. 서버 판단의 근거는 아님)
-        _ = KeyChain.shared.addKeychainItem(key: .appleUserIdentifier, value: userIdentifier)
-        _ = KeyChain.shared.addKeychainItem(key: .appleIdentityToken, value: idToken)
+        _ = KeyChainService.shared.addKeychainItem(key: .appleUserID, value: userIdentifier)
+        _ = KeyChainService.shared.addKeychainItem(key: .appleIDToken, value: idToken)
 
         viewModel.loginApple(
             request: AppleLoginRequest(userIdentifier: userIdentifier, idToken: idToken)
@@ -215,7 +215,7 @@ extension Login {
 
     /// 카카오 이메일을 확보한 뒤 백엔드 로그인 호출
     private func resolveKakaoEmailAndLogin() {
-        if let cached = KeyChain.shared.getKeychainItem(key: .kakaoEmail), !cached.isEmpty {
+        if let cached = KeyChainService.shared.getKeychainItem(key: .kakaoEmail), !cached.isEmpty {
             performKakaoLogin(email: cached)
             return
         }
@@ -237,10 +237,10 @@ extension Login {
         viewModel.loginKakao(request: KakaoLoginRequest(email: email)) { result in
             switch result {
             case .success:
-                _ = KeyChain.shared.addKeychainItem(key: .kakaoEmail, value: email)
+                _ = KeyChainService.shared.addKeychainItem(key: .kakaoEmail, value: email)
                 isLoggedIn = true
             case .needsSignUp:
-                _ = KeyChain.shared.addKeychainItem(key: .kakaoEmail, value: email)
+                _ = KeyChainService.shared.addKeychainItem(key: .kakaoEmail, value: email)
                 self.signupInfo = SignUpInfo(socialLoginType: .kakao)
                 haveToSignUp = true
             case .failure(let message):

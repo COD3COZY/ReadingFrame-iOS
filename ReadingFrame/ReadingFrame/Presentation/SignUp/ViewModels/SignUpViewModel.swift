@@ -41,8 +41,8 @@ final class SignUpViewModel: ObservableObject {
             case .success(let data):
                 if let data = data as? KakaoSignUpResponse {
                     // KeyChain에 토큰 저장
-                    if KeyChain.shared.addToken(token: data.xAuthToken) {
-                        print("카카오 로그인 성공!! \(String(describing: KeyChain.shared.getToken()))")
+                    if KeyChainService.shared.addToken(token: data.xAuthToken) {
+                        print("카카오 로그인 성공!! \(String(describing: KeyChainService.shared.getToken()))")
                         completion(true)
                     }
                     else {
@@ -78,8 +78,8 @@ final class SignUpViewModel: ObservableObject {
             case .success(let data):
                 if let data = data as? AppleSignUpResponse {
                     // KeyChain에 토큰 저장
-                    if KeyChain.shared.addToken(token: data.xAuthToken) {
-                        print("애플 로그인 성공!! \(String(describing: KeyChain.shared.getToken()))")
+                    if KeyChainService.shared.addToken(token: data.xAuthToken) {
+                        print("애플 로그인 성공!! \(String(describing: KeyChainService.shared.getToken()))")
                         completion(true)
                     }
                     else {

@@ -64,18 +64,18 @@ extension LaunchView {
     /// 로그인 여부 & 데이터 로딩 함수
     func LaunchSomething() {
         // !!!: 테스트용 토큰 임의로 만들고 삭제하는 코드 여기에 작성하시면 됩니다
-        // ex. KeyChain.shared.addToken()
-        // ex. KeyChain.shared.deleteToken()
+        // ex. KeyChainService.shared.addToken()
+        // ex. KeyChainService.shared.deleteToken()
         
         // FIXME: 추후 삭제 예정, 회원가입 로직 확인을 위해 키체인에 데이터 있으면 삭제
         // 카카오
-        if let _ = KeyChain.shared.getKeychainItem(key: .kakaoEmail),
-           let _ = KeyChain.shared.getKeychainItem(key: .kakaoNickname),
-           let _ = KeyChain.shared.getKeychainItem(key: .appleNickname)
+        if let _ = KeyChainService.shared.getKeychainItem(key: .kakaoEmail),
+           let _ = KeyChainService.shared.getKeychainItem(key: .kakaoNickname),
+           let _ = KeyChainService.shared.getKeychainItem(key: .appleNickname)
         {
-            if KeyChain.shared.deleteKeychainItem(key: .kakaoEmail),
-               KeyChain.shared.deleteKeychainItem(key: .kakaoNickname),
-               KeyChain.shared.deleteKeychainItem(key: .appleNickname) {
+            if KeyChainService.shared.deleteKeychainItem(key: .kakaoEmail),
+               KeyChainService.shared.deleteKeychainItem(key: .kakaoNickname),
+               KeyChainService.shared.deleteKeychainItem(key: .appleNickname) {
                 print("키체인 카카오 계정 삭제 완료")
             } else {
                 print("키체인 카카오 계정 삭제 실패")
@@ -85,9 +85,9 @@ extension LaunchView {
             print("카카오 계정 조회 불가")
         }
 //        // 애플
-//        if let _ = KeyChain.shared.getKeychainItem(key: .appleNickname)
+//        if let _ = KeyChainService.shared.getKeychainItem(key: .appleNickname)
 //        {
-//            if KeyChain.shared.deleteKeychainItem(key: .appleNickname) {
+//            if KeyChainService.shared.deleteKeychainItem(key: .appleNickname) {
 //                print("키체인 애플 계정 삭제 완료")
 //            } else {
 //                print("키체인 애플 계정 삭제 실패")
@@ -97,8 +97,8 @@ extension LaunchView {
 //            print("애플 계정 조회 불가")
 //        }
         
-//        if let _ = KeyChain.shared.getToken() {
-//            if KeyChain.shared.deleteToken() {
+//        if let _ = KeyChainService.shared.getToken() {
+//            if KeyChainService.shared.deleteToken() {
 //                print("키체인 xAuthToken 삭제 완료")
 //            } else {
 //                print("키체인 xAuthToken 삭제 실패")
@@ -109,7 +109,7 @@ extension LaunchView {
         
         
         // xAuthToken 있는지 키체인에서 불러오기
-        if let token = KeyChain.shared.getToken() {
+        if let token = KeyChainService.shared.getToken() {
             print("토큰 있다")
             print(token)
             

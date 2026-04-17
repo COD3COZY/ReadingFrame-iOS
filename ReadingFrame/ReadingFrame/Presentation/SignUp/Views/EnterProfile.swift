@@ -21,10 +21,6 @@ struct EnterProfile: View {
     /// 선택한 캐릭터(기본은 R)
     @State var characterChoose: ProfileCharacterType = .R
     
-    /// 가입이 완료되면 메인화면으로 보여줄 때 변수
-//    @State var isLoggedIn: Bool = false
-    @Binding var isLoggedIn: Bool
-    
     /// 뷰모델
     @ObservedObject var viewModel = SignUpViewModel()
     
@@ -374,9 +370,7 @@ extension EnterProfile {
                                 value: signupInfo.nickname
                             ) {
                                 // 메인 화면으로 이동
-                                withAnimation {
-                                    isLoggedIn = true
-                                }
+                                withAnimation { }
                             }
                             
                         }
@@ -447,5 +441,5 @@ extension EnterProfile {
 }
 
 #Preview {
-    EnterProfile(signupInfo: SignUpInfo(socialLoginType: .kakao), isLoggedIn: .constant(false))
+    EnterProfile(signupInfo: SignUpInfo(socialLoginType: .kakao))
 }

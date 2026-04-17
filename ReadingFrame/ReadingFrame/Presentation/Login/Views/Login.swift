@@ -15,71 +15,51 @@ struct Login: View {
     // MARK: - Properties
     /// 뷰모델
     @ObservedObject var viewModel = LoginViewModel()
-    
-    /// 로그인 되었는지 확인하는 변수
-    @State var isLoggedIn: Bool = false
-    
+
     /// 회원가입해야하는지 로그인만 하면 되는지 확인하는 변수
     /// - True: 회원가입이 필요한 유저, EnterNickname 화면으로 이동
-    /// - False: 회원가입이 이미 되어 있는 유저, 홈화면(AppTabView)으로 이동
+    /// - False: 회원가입이 이미 되어 있는 유저, LoginManager가 AppTabView로 전환
     @State var haveToSignUp: Bool = false
-    
+
     /// API 전송을 위한 회원가입 정보
-    /// - 회원가입이 필요하다면 생성시켜주면 됩니다
     @State var signupInfo: SignUpInfo?
-    
+
     // 회원가입용 NavigationStack을 위한 변수들
     @StateObject private var navigationManager = SignUpNavigationManager()
-//    @State var moveToEnterProfile: Bool = false
-    
+
     // MARK: - View
     var body: some View {
-        VStack {
-            if isLoggedIn == false {
-                // 로그인이 안되어있는 상황
-                if haveToSignUp == false {
-                    
-                    // 회원가입으로 넘어가기 야매 버튼
-                    // TODO: 이 버튼 없애고 정식 로직 밟기
-                    Button {
-                        haveToSignUp.toggle()
-                        // 회원탈퇴
-                        UserApi.shared.unlink {(error) in
-                            if let error = error {
-                                print(error)
-                            }
-                            else {
-                                print("unlink() success.")
-                            }
-                        }
-                    } label: {
-                        Text("회원가입으로 넘어가기")
-                    }
-                    .padding(.bottom, 30)
-                    
-                    // 기본 로그인 화면
-                    LogInView
-                    
-                } else {
-                    // 회원가입이 필요한 상태라면 닉네임 입력 화면으로 넘어가기
-                    NavigationStack(path: $navigationManager.path) {
-                        EnterNickname(
-                            signupInfo: self.signupInfo ?? SignUpInfo(socialLoginType: .apple)
-                        )
-                        .environmentObject(navigationManager)
-                        .navigationDestination(for: SignUpNavigationDestination.self) { destination in
-                            if case let .enterProfile(data) = destination {
-                                EnterProfile(
-                                    signupInfo: data,
-                                    isLoggedIn: $isLoggedIn
-                                )
-                            }
-                        }
+        if haveToSignUp {
+            NavigationStack(path: $navigationManager.path) {
+                EnterNickname(
+                    signupInfo: self.signupInfo ?? SignUpInfo(socialLoginType: .apple)
+                )
+                .environmentObject(navigationManager)
+                .navigationDestination(for: SignUpNavigationDestination.self) { destination in
+                    if case let .enterProfile(data) = destination {
+                        EnterProfile(signupInfo: data)
                     }
                 }
-            } else {
-                // 로그인이 완료되면 메인화면으로 화면 넘어가도록 처리
-                AppTabView()
+            }
+        } else {
+            VStack {
+                // 회원가입으로 넘어가기 야매 버튼
+                // TODO: 이 버튼 없애고 정식 로직 밟기
+                Button {
+                    haveToSignUp.toggle()
+                    UserApi.shared.unlink { error in
+                        if let error = error {
+                            print(error)
+                        } else {
+                            print("unlink() success.")
+                        }
+                    }
+                } label: {
+                    Text("회원가입으로 넘어가기")
+                }
+                .padding(.bottom, 30)
+
+                LogInView
             }
         }
     }
@@ -94,26 +74,21 @@ extension Login {
     private var LogInView: some View {
         VStack(spacing: 0) {
             // 캐릭터들 이미지
-            // TODO: 로직 구현되면 onTapGesture 없애기
-            // 지금은 API가 없으니까 일단 이 이미지 누르면 메인화면으로 넘어가도록 설정
             Image("character_set")
                 .resizable()
                 .scaledToFit()
-                .onTapGesture {
-                    isLoggedIn.toggle()
-                }
-            
+
             // 환영 문구 텍스트
             Text("독서기록에 가장 적합한 틀, ReadingFrame\n ReadingFrame과 함께 즐거운 독서경험을 만들어보세요!")
                 .foregroundStyle(Color.greyText)
                 .font(.footnote)
                 .multilineTextAlignment(.center)
                 .padding(.top, 80)
-            
+
             // 애플 로그인 버튼
             appleLoginButton
                 .padding(.top, 80)
-            
+
             // 카카오 로그인 버튼
             kakaoLoginButton
                 .padding(.top, 10)
@@ -124,9 +99,9 @@ extension Login {
     }
 
     private var appleLoginButton: some View {
-        SignInWithAppleButton { (request) in
+        SignInWithAppleButton { _ in
 
-        } onCompletion: { (result) in
+        } onCompletion: { result in
             switch result {
             case .success(let auth):
                 handleAppleAuth(auth)
@@ -153,7 +128,6 @@ extension Login {
 
         let userIdentifier = credential.user
 
-        // 기기 로컬 캐시 (재로그인 속도/디버깅 용. 서버 판단의 근거는 아님)
         _ = KeyChainService.shared.addKeychainItem(key: .appleUserID, value: userIdentifier)
         _ = KeyChainService.shared.addKeychainItem(key: .appleIDToken, value: idToken)
 
@@ -161,8 +135,8 @@ extension Login {
             request: AppleLoginRequest(userIdentifier: userIdentifier, idToken: idToken)
         ) { result in
             switch result {
-            case .success:
-                isLoggedIn = true
+            case .success(let token):
+                LoginManager.shared.handleLoginSuccess(token: token)
             case .needsSignUp:
                 self.signupInfo = SignUpInfo(socialLoginType: .apple)
                 haveToSignUp = true
@@ -171,7 +145,7 @@ extension Login {
             }
         }
     }
-    
+
     private var kakaoLoginButton: some View {
         HStack(alignment: .center) {
             Spacer()
@@ -195,8 +169,6 @@ extension Login {
 
 extension Login {
     /// 카카오 로그인 진입점
-    /// - 카카오 OAuth → 이메일 확보 → 백엔드에 로그인 요청 → 결과에 따라 분기
-    ///   (키체인의 닉네임/이메일 유무는 "기존 유저" 판단 근거로 쓰지 않음. 판단 주체는 백엔드.)
     func kakaoLogin() {
         let onOAuth: (Error?) -> Void = { error in
             if let error = error {
@@ -213,7 +185,6 @@ extension Login {
         }
     }
 
-    /// 카카오 이메일을 확보한 뒤 백엔드 로그인 호출
     private func resolveKakaoEmailAndLogin() {
         if let cached = KeyChainService.shared.getKeychainItem(key: .kakaoEmail), !cached.isEmpty {
             performKakaoLogin(email: cached)
@@ -236,9 +207,9 @@ extension Login {
     private func performKakaoLogin(email: String) {
         viewModel.loginKakao(request: KakaoLoginRequest(email: email)) { result in
             switch result {
-            case .success:
+            case .success(let token):
                 _ = KeyChainService.shared.addKeychainItem(key: .kakaoEmail, value: email)
-                isLoggedIn = true
+                LoginManager.shared.handleLoginSuccess(token: token)
             case .needsSignUp:
                 _ = KeyChainService.shared.addKeychainItem(key: .kakaoEmail, value: email)
                 self.signupInfo = SignUpInfo(socialLoginType: .kakao)

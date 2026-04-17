@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  LaunchView.swift
 //  ReadingFrame
 //
 //  Created by 석민솔 on 1/30/24.
@@ -8,37 +8,9 @@
 import SwiftUI
 
 struct LaunchView: View {
-    // MARK: - Properties
-    /// 런칭 처리 끝난 후에 바꿔줘서 화면 전환시키기 위한 변수
-    @State var isLoading: Bool = true
-    
-    /// 로그인되어있는지 확인하는 변수
-    /// (이 변수에 따라 로그인 화면으로 이동할지, 홈화면으로 이동할지 결정됨)
-    @State var isLoggedIn: Bool = false
-    
-    // MARK: - View
     var body: some View {
-        if isLoading {
-            // MARK: Launch screen UI
-            SplashScreenView
-                .onAppear {
-                    // 런칭처리하는 코드
-                    LaunchSomething()
-                }
-        } else {
-            // MARK: 런칭 끝나고 보여줄 화면
-            if isLoggedIn {
-                // 로그인 만료되지 않은 경우에는 메인화면으로 이동
-                AppTabView()
-                
-            } else {
-                // 로그인 필요할 경우 로그인 화면으로 이동
-                Login()
-            }
-            
-        }
+        SplashScreenView
     }
-    
 }
 
 // MARK: - 스플래시 스크린
@@ -55,77 +27,6 @@ extension LaunchView {
                 .font(.title)
                 .fontWeight(.light)
             Spacer()
-        }
-    }
-}
-
-// MARK: - Methods
-extension LaunchView {
-    /// 로그인 여부 & 데이터 로딩 함수
-    func LaunchSomething() {
-        // !!!: 테스트용 토큰 임의로 만들고 삭제하는 코드 여기에 작성하시면 됩니다
-        // ex. KeyChainService.shared.addToken()
-        // ex. KeyChainService.shared.deleteToken()
-        
-        // FIXME: 추후 삭제 예정, 회원가입 로직 확인을 위해 키체인에 데이터 있으면 삭제
-        // 카카오
-        if let _ = KeyChainService.shared.getKeychainItem(key: .kakaoEmail),
-           let _ = KeyChainService.shared.getKeychainItem(key: .kakaoNickname),
-           let _ = KeyChainService.shared.getKeychainItem(key: .appleNickname)
-        {
-            if KeyChainService.shared.deleteKeychainItem(key: .kakaoEmail),
-               KeyChainService.shared.deleteKeychainItem(key: .kakaoNickname),
-               KeyChainService.shared.deleteKeychainItem(key: .appleNickname) {
-                print("키체인 카카오 계정 삭제 완료")
-            } else {
-                print("키체인 카카오 계정 삭제 실패")
-            }
-            
-        } else {
-            print("카카오 계정 조회 불가")
-        }
-//        // 애플
-//        if let _ = KeyChainService.shared.getKeychainItem(key: .appleNickname)
-//        {
-//            if KeyChainService.shared.deleteKeychainItem(key: .appleNickname) {
-//                print("키체인 애플 계정 삭제 완료")
-//            } else {
-//                print("키체인 애플 계정 삭제 실패")
-//            }
-//            
-//        } else {
-//            print("애플 계정 조회 불가")
-//        }
-        
-//        if let _ = KeyChainService.shared.getToken() {
-//            if KeyChainService.shared.deleteToken() {
-//                print("키체인 xAuthToken 삭제 완료")
-//            } else {
-//                print("키체인 xAuthToken 삭제 실패")
-//            }
-//        } else {
-//            print("키체인 토큰 조회 불가")
-//        }
-        
-        
-        // xAuthToken 있는지 키체인에서 불러오기
-        if let token = KeyChainService.shared.getToken() {
-            print("토큰 있다")
-            print(token)
-            
-            // 토큰 있다면 AppTabView로 전환
-            isLoggedIn = true
-            
-        } else {
-            // 토큰 없다면 -> 로그인 화면으로 바로 이동
-            print("토큰 없음. 못찾음.")
-            
-        }
-        
-        // 런칭 처리 완료. 로딩 끝내기
-        // 시간이 너무 짧게 걸려서 일단 2초정도는 스플래시 보여주려고 합니다
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.isLoading = false
         }
     }
 }

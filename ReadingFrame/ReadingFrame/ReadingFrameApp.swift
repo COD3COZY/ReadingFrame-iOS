@@ -11,16 +11,18 @@ import KakaoSDKCommon
 
 @main
 struct ReadingFrameApp: App {
-    
+    @StateObject private var loginManager = LoginManager.shared
+
     init() {
         KakaoSDK.initSDK(appKey: Bundle.main.object(forInfoDictionaryKey: "KAKAO_APP_KEY") as! String)
     }
-    
+
     var body: some Scene {
         WindowGroup {
-            LaunchView()
+            ContentView()
+                .environmentObject(loginManager)
                 .onOpenURL { url in
-                    if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                    if AuthApi.isKakaoTalkLoginUrl(url) {
                         _ = AuthController.handleOpenUrl(url: url)
                     }
                 }

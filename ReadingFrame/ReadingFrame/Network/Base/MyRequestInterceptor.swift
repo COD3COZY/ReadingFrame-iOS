@@ -29,5 +29,7 @@ final class MyRequestInterceptor: RequestInterceptor {
             completion(.doNotRetryWithError(error))
             return
         }
+        LoginManager.shared.handleUnauthorized()
+        completion(.doNotRetry)
     }
 }

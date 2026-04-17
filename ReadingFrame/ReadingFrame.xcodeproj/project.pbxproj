@@ -128,6 +128,8 @@
 		C5BAF29D2BA49F0800DC33FE /* GreyLogoAndTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BAF29C2BA49F0800DC33FE /* GreyLogoAndTextView.swift */; };
 		C5BB8B662B7CF3CE00A49858 /* SearchLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BB8B652B7CF3CE00A49858 /* SearchLocation.swift */; };
 		C5BC42A12F92A1730014A0AF /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC42A02F92A1730014A0AF /* LoginManager.swift */; };
+		C5BC42A32F92A19F0014A0AF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC42A22F92A19F0014A0AF /* ContentView.swift */; };
+		C5BC42A52F92A1B40014A0AF /* LoginRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC42A42F92A1B40014A0AF /* LoginRootView.swift */; };
 		C5BE52252B68F53E00FF07F8 /* ReadingFrameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BE52242B68F53E00FF07F8 /* ReadingFrameApp.swift */; };
 		C5BE52272B68F53E00FF07F8 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BE52262B68F53E00FF07F8 /* LaunchView.swift */; };
 		C5BE52292B68F54000FF07F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5BE52282B68F54000FF07F8 /* Assets.xcassets */; };
@@ -358,6 +360,8 @@
 		C5BAF29C2BA49F0800DC33FE /* GreyLogoAndTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreyLogoAndTextView.swift; sourceTree = "<group>"; };
 		C5BB8B652B7CF3CE00A49858 /* SearchLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocation.swift; sourceTree = "<group>"; };
 		C5BC42A02F92A1730014A0AF /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
+		C5BC42A22F92A19F0014A0AF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C5BC42A42F92A1B40014A0AF /* LoginRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRootView.swift; sourceTree = "<group>"; };
 		C5BE52212B68F53E00FF07F8 /* ReadingFrame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReadingFrame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5BE52242B68F53E00FF07F8 /* ReadingFrameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingFrameApp.swift; sourceTree = "<group>"; };
 		C5BE52262B68F53E00FF07F8 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
@@ -492,6 +496,7 @@
 		C50F7A092C71D6F200D65BFB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C5BC42A42F92A1B40014A0AF /* LoginRootView.swift */,
 				C50F7A0A2C71D70100D65BFB /* Login.swift */,
 			);
 			path = Views;
@@ -890,6 +895,7 @@
 		C595A1E22B7A9FC0006D88EC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C5BC42A22F92A19F0014A0AF /* ContentView.swift */,
 				C595A1DD2B7A9DD6006D88EC /* AppTabView.swift */,
 				E790FA292B81F25200EA38C6 /* Home.swift */,
 				E751B56F2B8EC61A00880123 /* EditBookmark.swift */,
@@ -1778,6 +1784,7 @@
 				E77E0B8A2C736E8B00626110 /* BadgeRowView.swift in Sources */,
 				E7CD51622CAD502E0063C0A5 /* MainPageViewModel.swift in Sources */,
 				E77E0BC52C75E71800626110 /* LoginAPI.swift in Sources */,
+				C5BC42A32F92A19F0014A0AF /* ContentView.swift in Sources */,
 				E768F0892CE4819F003E2CB3 /* HomeBookResponse.swift in Sources */,
 				E75D6B042BEB12100080EBA0 /* RoundedRadiusBox.swift in Sources */,
 				E7B2E94B2D1853C000566E88 /* SearchViewModel.swift in Sources */,
@@ -1826,6 +1833,7 @@
 				E77E0BAD2C747B4900626110 /* SocialLoginResponse.swift in Sources */,
 				C5801E282E448E0C00536693 /* PatchBookmarkRequest.swift in Sources */,
 				C595A1E02B7A9E59006D88EC /* MainPage.swift in Sources */,
+				C5BC42A52F92A1B40014A0AF /* LoginRootView.swift in Sources */,
 				C5801E1A2E4262FE00536693 /* ReadingNoteResponse.swift in Sources */,
 				C52EC59B2C308181004F6BDB /* BookLocationData.swift in Sources */,
 				D700C0010000000000000C00 /* Coordinator.swift in Sources */,

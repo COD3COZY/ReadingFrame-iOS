@@ -40,7 +40,7 @@ struct MyPage: View {
             ) {
                 Button("취소", role: .cancel) { }
                 Button("로그아웃", role: .destructive) {
-                    // TODO: 로그아웃 처리하기
+                    LoginManager.shared.logout()
                 }
             }
             .navigationTitle("마이페이지")

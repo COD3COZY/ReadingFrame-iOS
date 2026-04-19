@@ -43,8 +43,8 @@ struct Login: View {
             }
         } else {
             VStack {
-                // 회원가입으로 넘어가기 야매 버튼
-                // TODO: 이 버튼 없애고 정식 로직 밟기
+                #if DEBUG
+                // 회원가입화면 확인을 위한 개발자용 버튼
                 Button {
                     haveToSignUp.toggle()
                     UserApi.shared.unlink { error in
@@ -58,6 +58,7 @@ struct Login: View {
                     Text("회원가입으로 넘어가기")
                 }
                 .padding(.bottom, 30)
+                #endif
 
                 LogInView
             }

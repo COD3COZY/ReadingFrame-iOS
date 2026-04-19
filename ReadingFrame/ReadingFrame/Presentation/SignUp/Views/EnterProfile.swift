@@ -351,8 +351,8 @@ extension EnterProfile {
                 print("signupInfo.socialLoginType:  \(signupInfo.socialLoginType)")
                 
                 
-                // 회원가입 API 호출
-                // MARK: 카카오 회원가입 API 호출
+                // MARK: 회원가입 API 호출
+                // 카카오 회원가입 API 호출
                 if signupInfo.socialLoginType == .kakao {
                     viewModel.signUpKakao(
                         request: KakaoSignUpRequest(
@@ -361,31 +361,21 @@ extension EnterProfile {
                             email: KeyChainService.shared.getKeychainItem(key: .kakaoEmail)!
                         )
                     ) { success in
-                        // 카카오 회원가입 API 응답 성공
-                        if success {
-                            // 닉네임 키체인에 저장
-                            // 카카오, 애플 유형에 따라 key 다르게 저장
-                            if KeyChainService.shared.addKeychainItem(
-                                key: KeychainKeys.kakaoNickname,
-                                value: signupInfo.nickname
-                            ) {
-                                // 메인 화면으로 이동
-                                withAnimation { }
-                            }
-                            
-                        }
-                        // 카카오 회원가입 API 응답 실패
-                        else {
-                            
+                        // 닉네임 키체인에 저장
+                        if success, KeyChainService.shared.addKeychainItem(
+                            key: KeychainKeys.kakaoNickname,
+                            value: signupInfo.nickname
+                        ) {
+                            print("카카오 회원가입 성공")
                         }
                     }
                     
                 }
-                // TODO: 애플 회원가입 API 호출
+                // 애플 회원가입 API 호출
                 else {
                     // 키체인에 애플에서 받은 로그인 정보 있는지 확인
                     if let userIdentifier = KeyChainService.shared.getKeychainItem(key: .appleUserID),
-                    let idToken = KeyChainService.shared.getKeychainItem(key: .appleIDToken) {
+                       let idToken = KeyChainService.shared.getKeychainItem(key: .appleIDToken) {
                         // API 호출
                         viewModel.signUpApple(
                             request: AppleSignUpRequest(
@@ -395,23 +385,12 @@ extension EnterProfile {
                                 profileImageCode: signupInfo.profileImageCode
                             )
                         ) { success in
-                            // 애플 회원가입 API 응답 성공
-                            if success {
-                                // 닉네임 키체인에 저장
-                                // 카카오, 애플 유형에 따라 key 다르게 저장
-                                if KeyChainService.shared.addKeychainItem(
-                                    key: KeychainKeys.appleNickname,
-                                    value: signupInfo.nickname
-                                ) {
-                                    // 메인 화면으로 이동
-                                    withAnimation {
-                                        isLoggedIn = true
-                                    }
-                                }
-                            }
-                            // 애플 회원가입 API 응답 실패
-                            else {
-                                
+                            // 닉네임 키체인에 저장
+                            if success, KeyChainService.shared.addKeychainItem(
+                                key: KeychainKeys.appleNickname,
+                                value: signupInfo.nickname
+                            ) {
+                                print("애플 회원가입 성공")
                             }
                         }
                     }
